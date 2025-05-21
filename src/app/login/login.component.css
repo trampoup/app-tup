@@ -1,0 +1,193 @@
+/* 1) Importa o Manrope antes de tudo */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap');
+
+/* 2) Define como fonte padrão do HTML e do body.mat-typography */
+html,
+body,
+body.mat-typography {
+  font-family: 'Manrope', sans-serif !important;
+}
+
+/* 3) Opcional: assegura que inputs, botões e headings também usem Manrope */
+input,
+button,
+h1, h2, h3, h4, h5, h6,
+p, a, label, span, div {
+  font-family: inherit;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  :root {
+    --primary-color:  #28BFB6;
+    --text-color: #333;
+    --bg-input: #f5f5f5;
+    --texto: #6886FF;
+    --font-family: 'Manrope', sans-serif;
+  }
+  
+  body {
+    font-family: var(--font-family);
+    color: var(--text-color);
+    background: #fff;
+  }
+  
+  .logo h1 {
+    margin-top: 1rem; /* ou quanto espaço você quiser, ex: 16px */
+  }
+  
+  .container {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  /* ===== Lado do formulário ===== */
+  .login-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  
+  .login-box {
+    width: 100%;
+    max-width: 380px;
+  }
+  
+  .logo {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .logo img {
+    height: 50px;
+    vertical-align: middle;
+  }
+  
+  .logo h1 {
+    display: inline-block;
+    margin-left: 0.5rem;
+    font-weight: 600;
+    font-size: 1.5rem;
+  }
+  
+  /* Formulário */
+  .form-group {
+    margin-bottom: 1.25rem;
+    position: relative;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: var(--bg-input);
+    transition: border-color 0.2s;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+  
+  /* Ícone dentro do input da senha */
+  .password-group .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #888;
+  }
+  
+  /* Link de "Esqueci minha senha" */
+  .forgot {
+    text-align: right;
+    margin-bottom: 1.5rem;
+  }
+  
+  .forgot a {
+    font-size: 0.9rem;
+    
+    text-decoration: none;
+  }
+  
+  /* Botão principal */
+  .btn-primary {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    color: #fff;
+    background:  #28BFB6;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+  }
+  
+  .btn-primary:hover {
+    background: #28BFB6;
+  }
+  
+  /* Separador "ou" */
+  .separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+  }
+  
+  .separator span {
+    flex: 1;
+    height: 1px;
+    background: #ddd;
+  }
+  
+  .separator small {
+    margin: 0 0.75rem;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  /* Link de cadastro */
+  .signup {
+    text-align: center;
+    font-size: 0.95rem;
+  }
+  
+  .signup a {
+   
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  /* ===== Lado da imagem/fundo ===== */
+  .image-section {
+    flex: 1;
+    background: url("../../assets/imagens/imagem-trampo.png") no-repeat center/cover;
+  }
+  
+  /* ===== Responsivo ===== */
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+    .image-section {
+      display: none;
+    }
+  }
+  
