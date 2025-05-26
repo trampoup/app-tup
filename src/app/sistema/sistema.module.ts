@@ -15,6 +15,13 @@ import { MeuPerfilClienteComponent } from './meu-perfil/meu-perfil-cliente/meu-p
 import { CadastroSiteComponent } from './mini-site/cadastro-site/cadastro-site.component';
 import { VisualizarSiteComponent } from './mini-site/visualizar-site/visualizar-site.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ListaDeConversaComOsProfissionaisComponent } from './bate-papo/cliente/lista-de-conversa-com-os-profissionais/lista-de-conversa-com-os-profissionais.component';
+import { ListaDeConversaComOsClientesComponent } from './bate-papo/profissional/lista-de-conversa-com-os-clientes/lista-de-conversa-com-os-clientes.component';
+import { ConversaComClienteComponent } from './bate-papo/profissional/conversa-com-cliente/conversa-com-cliente.component';
+import { NotificacaoClienteComponent } from './notificacoes/cliente/notificacao-cliente/notificacao-cliente.component';
+import { VisualizacaoNotificacaoClienteComponent } from './notificacoes/cliente/visualizacao-notificacao-cliente/visualizacao-notificacao-cliente.component';
+import { VisualizacaoNotificacaoProfissionalComponent } from './notificacoes/profissional/visualizacao-notificacao-profissional/visualizacao-notificacao-profissional.component';
+import { NotificacaoProfissionalComponent } from './notificacoes/profissional/notificacao-profissional/notificacao-profissional.component';
 
 
 @NgModule({
@@ -30,7 +37,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MeuPerfilProfissionalComponent,
     MeuPerfilClienteComponent,
     CadastroSiteComponent,
-    VisualizarSiteComponent
+    VisualizarSiteComponent,
+    ListaDeConversaComOsProfissionaisComponent,
+    ListaDeConversaComOsClientesComponent,
+    ConversaComClienteComponent,
+    NotificacaoClienteComponent,
+    VisualizacaoNotificacaoClienteComponent,
+    VisualizacaoNotificacaoProfissionalComponent,
+    NotificacaoProfissionalComponent
   ],
   imports:[
     CommonModule, 

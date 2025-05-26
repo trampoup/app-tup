@@ -1,6 +1,6 @@
 import { TipoCupom } from './tipo-cupom.enum';
 
-export interface Cupom {
+export class Cupom {
   id?: number;
   tipoCupom?: TipoCupom;
   titulo?: string;

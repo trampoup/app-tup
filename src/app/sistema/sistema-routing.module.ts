@@ -13,6 +13,10 @@ import { VisualizarSiteComponent } from './mini-site/visualizar-site/visualizar-
 import { CadastroSiteComponent } from './mini-site/cadastro-site/cadastro-site.component';
 import { CadastroDeServicoComponent } from './servicos/cadastro-de-servico/cadastro-de-servico.component';
 import { ListaDeServicosComponent } from './servicos/lista-de-servicos/lista-de-servicos.component';
+import { ConversaComClienteComponent } from './bate-papo/profissional/conversa-com-cliente/conversa-com-cliente.component';
+import { ListaDeConversaComOsClientesComponent } from './bate-papo/profissional/lista-de-conversa-com-os-clientes/lista-de-conversa-com-os-clientes.component';
+import { ConversaComProfissionalComponent } from './bate-papo/cliente/conversa-com-profissional/conversa-com-profissional.component';
+import { ListaDeConversaComOsProfissionaisComponent } from './bate-papo/cliente/lista-de-conversa-com-os-profissionais/lista-de-conversa-com-os-profissionais.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -34,6 +38,22 @@ const routes: Routes = [
       // mini site
       { path: 'cadastro-de-site', component: CadastroSiteComponent},
       { path: 'visualizacao-do-site', component: VisualizarSiteComponent},
+
+       // Bate Papo com o Cliente
+       { path: 'conversa-com-o-profissional', component: ConversaComProfissionalComponent},
+       { path: 'lista-de-conversas-com-os-profissionais', component: ListaDeConversaComOsProfissionaisComponent},
+
+        // Bate Papo com o profissional 
+        { path: 'conversa-com-cliente', component: ConversaComClienteComponent},
+        { path: 'lista-de-conversa-como-os-clientes', component: ListaDeConversaComOsClientesComponent},
+
+         // Notificacoes do Cliente
+         { path: 'notificacao-do-cliente', component: ConversaComProfissionalComponent},
+         { path: 'lista-de-notificacoes-cliente', component: ListaDeConversaComOsProfissionaisComponent},
+  
+          // Notificacoes do profissional 
+          { path: 'notificacao-do-profissional', component: ConversaComClienteComponent},
+          { path: 'lista-de-notificacoes-profissional', component: ListaDeConversaComOsClientesComponent},
 
       // meu perfil com roles
       { path: 'meu-perfil-admin', component: MeuPerfilAdminComponent},

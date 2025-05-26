@@ -17,7 +17,7 @@
           <img src="assets/icones/seta-down-icon.svg" alt="Dropdown Icon" class="dropdown-icon" />
         </button>
         <div class="dropdown-menu" id="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
-          <button routerLink="/usuario/meu-perfil" class="dropdown-item">Meu perfil</button>
+          <button routerLink="/usuario/meu-perfil-cliente" class="dropdown-item">Meu perfil</button>
           <button class="dropdown-item" (click)="logout()">Sair</button>
         </div>
       </div>
@@ -43,51 +43,34 @@
           <h3 class="sidebar-title">HOME</h3>
 
           <div class="sidebar-list">
-            <a routerLink="/usuario/painel-principal" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/painel-principal')}">
+            <a routerLink="/usuario/painel-principal-cliente" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/painel-principal-cliente')}">
               <img src="assets/icones/home-icon.svg" alt="home icon" />
-              <span>Inicio</span>
+              <span>Início</span>
             </a>
 
-            <a routerLink="/usuario/notificacoes" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/notificacoes')}">
+            <a routerLink="/usuario/lista-de-notificacoes-cliente" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/lista-de-notificacoes-cliente')}">
               <img src="assets/icones/notificacao.svg" alt="home icon" />
               <span>Notificações</span>
             </a>
           </div>
         </div>
-
-        <div *ngIf="permissaoUsuario === 'Administrador' || permissaoUsuario === 'Coordenador'">
-          <h3 class="sidebar-title">ADMINISTRATIVO</h3>
-          <div class="sidebar-list">
-            <a routerLink="/usuario/colaboradores" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/colaboradores')}">
-              <img src="assets/icones/People-icon.svg" alt="image" />
-              <span>Colaboradores</span>
-            </a>
-            <a routerLink="/usuario/empresas" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/empresas')}">
-              <img src="assets/icones/empresas-icon.svg" alt="home icon" />
-              <span>Empresas</span>
-            </a>
-            <a routerLink="/usuario/perifericos" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/perifericos')}">
-              <img src="assets/icones/empresas-icon.svg" alt="home icon" />
-              <span>Periféricos</span>
-            </a>
-          </div>
-        </div>        
+       
 
         <div>
             <h3 class="sidebar-title">RECURSOS</h3>
   
             <div class="sidebar-list">
-              <a routerLink="/usuario/processos" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/processos')}">
+              <a routerLink="/usuario/lista-de-servicos" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/lista-de-servicos')}">
                 <img src="assets/icones/servicos-icon.svg" alt="home icon" />
                 <span>Serviços</span>
               </a>
   
-              <a routerLink="/usuario/atividades" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/atividades')}">
+              <a routerLink="/usuario/visualizacao-de-cupons" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/visualizacao-de-cupons')}">
                 <img src="assets/icones/cupons-icon.svg" alt="home icon" />
                 <span>Cupons</span>
               </a>
 
-              <a routerLink="/usuario/chat" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/chat')}">
+              <a routerLink="/usuario/lista-de-conversas-com-os-profissionais" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/lista-de-conversas-com-os-profissionais')}">
                 <img src="assets/icones/conversas-icon.svg" alt="home icon" />
                 <span>Conversas</span>
               </a>
