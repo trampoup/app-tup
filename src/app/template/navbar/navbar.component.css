@@ -246,9 +246,9 @@
   /* Active link */
   .active-link {
     color: var(--lm-primary);
-    background: #e5e8f1;
+    background: var(--lm-sidebar-hover);
     margin: 0 1rem;
-    border-radius: 8px;
+    border-radius: 0 50px 50px 0;
     margin-left: 0;
     align-items: center;
     height: 40px;
@@ -301,7 +301,11 @@
     margin-left: 280px !important;
     background: var(--lm-background);
   }
-  
+
+  mat-drawer-content .router-content { /*isso que faz o conteudo da pagina nao ficar la embaixo.*/
+  padding-top: 80px;
+}
+
   mat-drawer-content.shifted {
     margin-left: 90px !important;
   }
