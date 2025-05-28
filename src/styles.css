@@ -28,8 +28,8 @@ html {
 }
 
 :root {
-  --lm-primary: #172973;
-  --lm-accent: #273e74;
+  --lm-primary: #156578;
+  --lm-accent: #002035;
   --lm-accent-02: #a9abae;
   --lm-background: #e4e5eb;
   --lm-bg-second: #fbfdfb;
@@ -53,8 +53,8 @@ html {
   --lm-border02: #ced4da;
   --lm-border03: #bfc4de;
   /* Buttons */
-  --primary-button: #5ea828;
-  --primary-btnHover: #1d7206;
+  --primary-button: #28BFB6;
+  --primary-btnHover: #156578;
   /* container background */
   --form-background: #ffffff;
   --container-background: #ffffff;
@@ -113,7 +113,7 @@ button {
   color: var(--lm-branco);
   background-color: var(--primary-button);
   border: none;
-  border-radius: 8px;
+  border-radius: 50%;
   cursor: pointer;
   text-align: center;
   transition: background-color 0.3s, border-color 0.3s;
