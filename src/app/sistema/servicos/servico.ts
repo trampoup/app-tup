@@ -1,3 +1,3 @@
-export interface Servico { //irei adicionar mais conforme informações.
+export class Servico { //irei adicionar mais conforme informações.
   id?: number;
 }
