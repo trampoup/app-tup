@@ -1,7 +1,7 @@
 .main-container {
     margin: 120px 32px 24px;
     max-width: 100%;
-    background: #ffffff;
+    background: var(--lm-branco);
     border-radius: 24px;
     padding: 40px 64px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -13,7 +13,7 @@
     background-size: cover;
     background-position: center;
     padding: 32px;
-    color: #ffffff;
+    color: var(--lm-branco);
     border-radius: 24px;
 }
 
@@ -21,7 +21,7 @@
     margin: 0;
     font-size: 2.5rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--lm-branco);
 }
 
 .banner p {
@@ -31,7 +31,7 @@
 
 .anuncios-container {
     margin-top: 50px;
-    padding: 0 20px;
+    padding: 0px;
 }
 
 .anuncios-topico h1 {
@@ -47,6 +47,52 @@
     flex-wrap: wrap;
     gap: 16px;
 }
+
+/* 2) Tablet pequeno (≥300px): 1 colunas */
+@media screen and (min-width: 300px) {
+  .anuncios-lista,
+  .destaques-lista,
+  .servicos-lista {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .main-container{
+    padding: 15px;
+  }
+
+}
+
+/* 3) Tablet grande / desktop médio (≥700px): 2 colunas */
+@media screen and (min-width: 700px) {
+  .anuncios-lista,
+  .destaques-lista,
+  .servicos-lista {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 3) Tablet grande / desktop médio (≥800px): 3 colunas */
+@media screen and (min-width: 800px) {
+  .anuncios-lista,
+  .destaques-lista,
+  .servicos-lista {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 4) Desktop amplo (≥1200px): 4 colunas – seu “padrão” atual */
+@media screen and (min-width: 1200px) {
+  .anuncios-lista,
+  .destaques-lista,
+  .servicos-lista {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .main-container{
+    padding: 40px 64px;
+  }
+}
+
 
 .anuncio-card,
 .destaques-card,
