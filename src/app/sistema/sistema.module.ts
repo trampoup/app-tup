@@ -22,6 +22,7 @@ import { NotificacaoClienteComponent } from './notificacoes/cliente/notificacao-
 import { VisualizacaoNotificacaoClienteComponent } from './notificacoes/cliente/visualizacao-notificacao-cliente/visualizacao-notificacao-cliente.component';
 import { VisualizacaoNotificacaoProfissionalComponent } from './notificacoes/profissional/visualizacao-notificacao-profissional/visualizacao-notificacao-profissional.component';
 import { NotificacaoProfissionalComponent } from './notificacoes/profissional/notificacao-profissional/notificacao-profissional.component';
+import { VisualizacaoDeFavoritosComponent } from './favoritos/visualizacao-de-favoritos/visualizacao-de-favoritos.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { NotificacaoProfissionalComponent } from './notificacoes/profissional/no
     NotificacaoClienteComponent,
     VisualizacaoNotificacaoClienteComponent,
     VisualizacaoNotificacaoProfissionalComponent,
-    NotificacaoProfissionalComponent
+    NotificacaoProfissionalComponent,
+    VisualizacaoDeFavoritosComponent
   ],
   imports:[
     CommonModule, 

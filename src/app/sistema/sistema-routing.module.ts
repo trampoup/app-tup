@@ -17,6 +17,7 @@ import { ConversaComClienteComponent } from './bate-papo/profissional/conversa-c
 import { ListaDeConversaComOsClientesComponent } from './bate-papo/profissional/lista-de-conversa-com-os-clientes/lista-de-conversa-com-os-clientes.component';
 import { ConversaComProfissionalComponent } from './bate-papo/cliente/conversa-com-profissional/conversa-com-profissional.component';
 import { ListaDeConversaComOsProfissionaisComponent } from './bate-papo/cliente/lista-de-conversa-com-os-profissionais/lista-de-conversa-com-os-profissionais.component';
+import { VisualizacaoDeFavoritosComponent } from './favoritos/visualizacao-de-favoritos/visualizacao-de-favoritos.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -54,6 +55,9 @@ const routes: Routes = [
           // Notificacoes do profissional 
           { path: 'notificacao-do-profissional', component: ConversaComClienteComponent},
           { path: 'lista-de-notificacoes-profissional', component: ListaDeConversaComOsClientesComponent},
+
+          // Visualizar profissionais favoritos
+          { path:'visualizacao-de-profissionais-favoritos', component: VisualizacaoDeFavoritosComponent},
 
       // meu perfil com roles
       { path: 'meu-perfil-admin', component: MeuPerfilAdminComponent},
