@@ -1,1 +1,34 @@
-<p>lista-de-cupons works!</p>
+<section class="main-container">
+    <div class="banner">
+        <h1>Cupons</h1>
+        <p>Crie ou aproveite cupons especiais para atrair mais clientes. <br>
+            Incentive novas conexões com ofertas que valorizam seu trampo.</p>
+    </div>
+
+    <div class="cupons-titulo">
+        <p>Inicio > <span>Cupons</span></p>
+
+        <button class="btn-cadastrar-cupom" [routerLink]="['/usuario/cadastro-de-cupom']" *ngIf="authService.isAdministrador() || authService.isProfissional()">
+            Cadastrar cupom 
+            <img src="assets/icones/plus-icon.svg" alt="plus-icon">
+        </button>
+
+    </div>
+
+    <div class="lista-cupons" *ngIf="cupons.length > 0; else semCupons">
+        <ul>
+            <li *ngFor="let cupom of cupons">
+                {{ cupom.descricao }} – Validade: {{ cupom.validade | date }}
+            </li>
+        </ul>
+    </div>
+
+    <ng-template #semCupons>
+        <div class="lista-vazia">
+            <img src="assets/icones/no-data-icon.svg" alt="Sem cupons">
+            <p>Nenhum cupom cadastrado.</p>
+        </div>
+    </ng-template>
+
+
+</section>

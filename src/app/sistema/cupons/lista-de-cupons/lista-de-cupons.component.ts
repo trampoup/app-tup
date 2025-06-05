@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/configs/auth.service';
 
 @Component({
   selector: 'app-lista-de-cupons',
@@ -6,8 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./lista-de-cupons.component.css']
 })
 export class ListaDeCuponsComponent implements OnInit {
-
-  constructor() { }
+  cupons: any[] = [];
+  
+  constructor(public authService:AuthService) { }
 
   ngOnInit(): void {
   }
