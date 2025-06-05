@@ -9,7 +9,7 @@
 }
 
 .banner {
-    background-image: url("src/assets/imagens/capa-dashboard-inicial.png");
+    background-image: url("/assets/imagens/capa-dashboard-inicial.png");
     background-size: cover;
     background-position: center;
     padding: 32px;

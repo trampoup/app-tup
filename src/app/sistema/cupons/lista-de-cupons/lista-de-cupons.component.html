@@ -6,9 +6,9 @@
     </div>
 
     <div class="cupons-titulo">
-        <p>Inicio > <span>Cupons</span></p>
+        <p><a [routerLink]="getRotaInicial()">Inicio</a> > <span>Cupons</span></p>
 
-        <button class="btn-cadastrar-cupom" [routerLink]="['/usuario/cadastro-de-cupom']" *ngIf="authService.isAdministrador() || authService.isProfissional()">
+        <button class="btn-cadastrar-cupom" [routerLink]="['/usuario/cadastro-de-cupom']" *ngIf="this.isCliente()">
             Cadastrar cupom 
             <img src="assets/icones/plus-icon.svg" alt="plus-icon">
         </button>

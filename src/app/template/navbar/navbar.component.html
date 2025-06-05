@@ -43,7 +43,7 @@
           <h3 class="sidebar-title">HOME</h3>
 
           <div class="sidebar-list">
-            <a routerLink="/usuario/painel-principal-cliente" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/painel-principal-cliente')}">
+            <a [routerLink]="rotaInicial()" class="sidebar-link" [ngClass]="{ 'active-link': isActive(rotaInicial()) }">
               <img src="assets/icones/home-icon.svg" alt="home icon" />
               <span>Início</span>
             </a>

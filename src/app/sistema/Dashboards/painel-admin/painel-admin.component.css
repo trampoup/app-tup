@@ -1,0 +1,159 @@
+.main-container {
+    margin: 120px 32px 24px;
+    max-width: 100%;
+    background: var(--lm-branco);
+    border-radius: 24px;
+    padding: 40px 64px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.banner {
+    background-image: url("/assets/imagens/capa-dashboard-inicial.png");
+    background-size: cover;
+    background-position: center;
+    padding: 32px;
+    color: var(--lm-branco);
+    border-radius: 24px;
+}
+
+.banner h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--lm-branco);
+}
+
+.banner p {
+    margin: 10px 0 0;
+    font-size: 1.2rem;
+}
+
+.anuncios-container {
+    margin-top: 50px;
+    padding: 0px;
+}
+
+.anuncios-topico h1 {
+    font-size: 22px;
+    margin-bottom: 1rem;
+}
+
+.anuncios-lista,
+.destaques-lista,
+.servicos-lista {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+/* 2) Tablet pequeno (≥300px): 1 colunas */
+@media screen and (min-width: 300px) {
+  .anuncios-lista,
+  .destaques-lista,
+  .servicos-lista {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .main-container{
+    padding: 15px;
+  }
+
+}
+
+/* 3) Tablet grande / desktop médio (≥700px): 2 colunas */
+@media screen and (min-width: 700px) {
+  .anuncios-lista,
+  .destaques-lista,
+  .servicos-lista {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 3) Tablet grande / desktop médio (≥800px): 3 colunas */
+@media screen and (min-width: 800px) {
+  .anuncios-lista,
+  .destaques-lista,
+  .servicos-lista {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 4) Desktop amplo (≥1200px): 4 colunas – seu “padrão” atual */
+@media screen and (min-width: 1200px) {
+  .anuncios-lista,
+  .destaques-lista,
+  .servicos-lista {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .main-container{
+    padding: 40px 64px;
+  }
+}
+
+
+.anuncio-card,
+.destaques-card,
+.servicos-card {
+    display: inline-block;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.anuncio-card:hover,
+.destaques-card:hover,
+.servicos-card:hover {
+    transform: scale(1.02);
+}
+
+
+/*O card se ajusta ao tamanho da imagem ou terá um tamanho fixo para upload das imagens?*/
+.anuncio-card img,
+.destaques-lista img,
+.servicos-lista img {
+    width: 100%;
+    display: block;
+    height: auto;
+}
+
+.paginacao {
+    display: flex;
+    justify-content: flex-end;
+    /* Alinha os botões à direita */
+    align-items: center;
+    margin-top: 1.5rem;
+    gap: 0.4rem;
+    width: 100%;
+}
+
+.button-paginacao {
+    all: unset;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 4px 8px;
+}
+
+.indices {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #00cfc8;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#botao2 {
+    /*so para fim visual de acordo com figma, irei implementar a logica*/
+    color: var(--primary-button);
+    background-color: var(--lm-branco);
+    border: 2px solid var(--primary-button);
+}
