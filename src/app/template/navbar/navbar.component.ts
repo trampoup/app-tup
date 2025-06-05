@@ -50,6 +50,10 @@ export class NavbarComponent implements OnInit {
    //   (err: any) => console.error('Erro ao buscar perfil do usuário', err)
    // );
   }
+  
+  rotaInicial(): string{
+    return this.authService.getRotaInicial();
+  }
 
   ngAfterViewInit(): void {
     if (!this.sidebar || !this.header || !this.content) {

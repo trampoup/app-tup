@@ -9,7 +9,7 @@
 }
 
 .banner {
-    background-image: url("src/assets/imagens/capa-dashboard-inicial.png");
+    background-image: url("/assets/imagens/cupons-capa.png");
     background-size: cover;
     background-position: center;
     padding: 32px;
@@ -30,11 +30,11 @@
 }
 
 .cupons-titulo {
-  display: flex;               
-  justify-content: space-between;
-  align-items: center;         
-  width: 100%;
-  margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 30px;
 }
 
 .cupons-titulo span {
@@ -42,7 +42,11 @@
     font-weight: bold;
 }
 
-.btn-cadastrar-cupom{
+.cupons-titulo a {
+    color: black;
+}
+
+.btn-cadastrar-cupom {
     display: inline-flex;
     background-color: var(--secondary-button);
     border-radius: 10px;
@@ -54,13 +58,38 @@
 .lista-vazia {
     display: flex;
     flex-direction: column;
-    align-items: center;   /* centraliza horizontalmente */
-    justify-content: center; /* centraliza verticalmente */
+    align-items: center;
+    /* centraliza horizontalmente */
+    justify-content: center;
+    /* centraliza verticalmente */
     text-align: center;
-    padding: 1rem;         /* espaçamento interno (ajusta conforme necessidade) */
-    height: 100%;          /* ocupa toda a altura disponível do pai */
+    padding: 1rem;
+    /* espaçamento interno*/
+    height: 100%;
+    /* ocupa toda a altura disponível do pai */
 }
 
-.lista-vazia img{
-    margin-bottom: 1rem; /*espaçamento entre a imagem e o paragrafo.*/
+.lista-vazia img {
+    margin-bottom: 1rem;
+    /*espaçamento entre a imagem e o paragrafo.*/
+}
+
+@media screen and (min-width: 300px) and (max-width: 600px) {
+    .main-container {
+        padding: 15px;
+    }
+}
+
+/* De 601px até 1023px (tablets e desktops pequenos) */
+@media screen and (min-width: 601px) and (max-width: 1023px) {
+    .main-container {
+        padding: 25px;
+    }
+}
+
+/* A partir de 1024px (desktop médio/alto) */
+@media screen and (min-width: 1024px) {
+    .main-container {
+        padding: 40px 64px;
+    }
 }
