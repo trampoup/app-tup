@@ -18,7 +18,6 @@ import { ListaDeConversaComOsClientesComponent } from './bate-papo/profissional/
 import { ConversaComProfissionalComponent } from './bate-papo/cliente/conversa-com-profissional/conversa-com-profissional.component';
 import { ListaDeConversaComOsProfissionaisComponent } from './bate-papo/cliente/lista-de-conversa-com-os-profissionais/lista-de-conversa-com-os-profissionais.component';
 import { VisualizacaoDeFavoritosComponent } from './favoritos/visualizacao-de-favoritos/visualizacao-de-favoritos.component';
-import { EditarCuponsComponent } from './cupons/editar-cupons/editar-cupons.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -32,7 +31,6 @@ const routes: Routes = [
       // cupons
       { path: 'cadastro-de-cupom', component: CadastroCuponsComponent},
       { path: 'visualizacao-de-cupons', component: ListaDeCuponsComponent},
-      { path:'editar-cupom', component: EditarCuponsComponent},
       
       // servicos
       { path: 'cadastro-de-servico', component: CadastroDeServicoComponent},
