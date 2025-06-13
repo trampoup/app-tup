@@ -55,6 +55,10 @@ export class NavbarComponent implements OnInit {
     return this.authService.getRotaInicial();
   }
 
+  rotaDashboard(): string{
+    return this.authService.getRotaDashboard()
+  }
+
   ngAfterViewInit(): void {
     if (!this.sidebar || !this.header || !this.content) {
       console.error('Erro: Elementos da Navbar não foram encontrados');

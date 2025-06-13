@@ -18,11 +18,18 @@ import { ListaDeConversaComOsClientesComponent } from './bate-papo/profissional/
 import { ConversaComProfissionalComponent } from './bate-papo/cliente/conversa-com-profissional/conversa-com-profissional.component';
 import { ListaDeConversaComOsProfissionaisComponent } from './bate-papo/cliente/lista-de-conversa-com-os-profissionais/lista-de-conversa-com-os-profissionais.component';
 import { VisualizacaoDeFavoritosComponent } from './favoritos/visualizacao-de-favoritos/visualizacao-de-favoritos.component';
+import { InicioAdminComponent } from './inicios/inicio-admin/inicio-admin.component';
+import { InicioProfissionalComponent } from './inicios/inicio-profissional/inicio-profissional.component';
+import { InicioClienteComponent } from './inicios/inicio-cliente/inicio-cliente.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
     component: LayoutComponent,
     children: [
+       //inicios
+       { path: 'inicio-admin', component: InicioAdminComponent},
+       { path: 'inicio-profissional', component: InicioProfissionalComponent},
+       { path: 'inicio-cliente', component: InicioClienteComponent},
        //dashboards
       { path: 'painel-principal-admin', component: PainelAdminComponent},
       { path: 'painel-principal-profissional', component: PainelProfissionalComponent},
