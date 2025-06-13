@@ -41,6 +41,7 @@ html {
   /* texto */
   --lm-text: #37383c;
   --lm-text02: #156578;
+  --lm-text03: #F5A002;
   /* sistema */
   --success: #5ea828;
   --info: #177ab8;
@@ -56,10 +57,12 @@ html {
   --primary-button: #28BFB6;
   --primary-btnHover: #156578;
   --secondary-button: #1C9212;
+  --tertiary-button: #002035;
   /* container background */
   --form-background: #ffffff;
   --container-background: #ffffff;
   --container-modal: #ffffff;
+  --card-background: #D9E8FF;
   /* inputs */
   --bg-input: #ffffff;
   /* tabela */

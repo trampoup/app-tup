@@ -48,6 +48,11 @@
               <span>Início</span>
             </a>
 
+            <a [routerLink]="rotaDashboard()" class="sidebar-link" [ngClass]="{ 'active-link': isActive(rotaDashboard()) }">
+              <img src="assets/icones/dashboard-icon.svg" alt="home icon" />
+              <span>Dashboard</span>
+            </a>
+
             <a routerLink="/usuario/lista-de-notificacoes-cliente" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/lista-de-notificacoes-cliente')}">
               <img src="assets/icones/notificacao.svg" alt="home icon" />
               <span>Notificações</span>
