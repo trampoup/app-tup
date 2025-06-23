@@ -154,6 +154,7 @@
 
 #btn-meus-servicos{
   font-size: 1rem; 
+  padding: 1rem 2rem;    /* mais alto e mais largo */
   border-radius: 10px;
   background-color: var(--tertiary-button);
   margin-top: 100px;
