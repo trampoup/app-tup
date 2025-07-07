@@ -1,0 +1,258 @@
+.container{
+    min-height: 100vh;
+    width: 100%;
+}
+
+/*----------------PAGINA DE OPÇÕES DO USUARIO---------------*/
+.option-user-page{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    min-height: 100vh;
+}
+
+/*PARTE DA IMAGEM*/
+.image-section {
+  flex: 1;
+  /* para garantir altura mínima — ajuste ao seu layout */
+  min-height: 400px;
+  background: url("/assets/imagens/imagem-trampo-completa.png") no-repeat center/cover;
+  border-radius: 0 50% 50% 0;   /*bordas arredondadas do lado esquerdo.*/
+  display: flex;
+  justify-content:center;
+  align-items: center;
+}
+
+.text-image{
+    color: white;
+    width: 80%;
+}
+
+.text-image h1{
+    font-size: 50px;
+    line-height: 1.2;
+}
+
+.text-image strong{
+    font-size: 65px;
+}
+
+/*PARTE DA OPÇÃO*/
+.select-user-option{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    row-gap: 1.5rem;
+    
+}
+
+.select-user-option h1{
+    color: #37383C;
+    width: 70%;
+    font-size: 40px;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.dual-options{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-option{
+    display: grid;              
+    justify-content: center; /* ítem 1 colado na esquerda, ítem 2 colado na direita */
+    align-items: center;        /* alinha verticalmente ao centro */
+    background-color: white;
+    color: #585A60;
+    border: 1.5px solid #898989; /* largura: 2px, estilo: solid, cor: preto */
+    border-radius: 10px;
+    padding: 15px;
+    width: 100%;
+}
+
+.card-option:hover{
+    border: 1.5px solid #89C3BF; /* largura: 2px, estilo: solid, cor: preto */
+}
+
+.card-option p{
+    margin-top: 30px;
+    width: 70%;
+    text-align: left;
+}
+
+.card-icons{
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-icons::after {
+  content: "";
+  display: inline-block;     /* vira parte do fluxo flex */
+  width: 20px;
+  height: 20px;
+  border: 1px solid #898989;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.next-btn{
+    background-color: #89C3BF;
+    border-radius: 15px;
+    width: 80%;
+    font-size: 20px;
+}
+
+.next-btn:hover{
+    background-color: #6ec2bd;
+}
+
+.card-option.selected {
+  border: 2px solid #398EE8;
+}
+
+/* e o círculo vira vermelho */
+.card-option.selected .card-icons::after {
+  border-color: #398EE8;
+  background: #398EE8;
+}
+
+/*SEPARADOR*/
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+    align-self: center;
+    width: 80%;
+}
+
+.separator span {
+    flex: 1;
+    height: 1px;
+    background: #ddd;
+}
+
+.separator small {
+    margin: 0 0.75rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Link de LOGIN */
+.sign-in {
+    text-align: center;
+    font-size: 1rem;
+}
+
+.sign-in a {
+    font-weight: 600;
+    color: #6886FF;
+    text-decoration: none;
+}
+
+
+/*----------------PAGINA DE CADASTRO DO PROFISSIONAL ---------------*/
+.profissional-cadastro-page{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    min-height: 100vh;
+    padding-block: 40px;   
+}
+
+.image-section-cadastro {
+  /* para garantir altura mínima — ajuste ao seu layout */
+    background: url("/assets/imagens/imagem-trampo-completa.png") no-repeat center/cover;
+    justify-content:center;
+    align-items: center;
+    margin-inline: 40px;
+    height: 100%;
+    border-radius: 20px;
+}
+
+/*FORMS DE CADASTRO*/
+.section-cadastro{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cadastro-title{
+    align-self: center;
+}
+
+.cadastro-title h1{
+    font-weight: 600;
+}
+
+.forms-cadastro{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-inline: 30px;
+}
+
+/* Faz todo label dentro de .form-group ficar acima do respectivo input/select */
+.forms-cadastro .form-group > label {
+    display: block;
+    margin-bottom: 0.5rem; /* ajuste a distância se quiser mais/menos espaço */
+}
+
+/* Faça o input esticar por toda a largura do pai */
+input,
+select{
+    width: 100%;
+    box-sizing: border-box;
+    /* inclui padding/border no cálculo de 100% */
+    padding: 15px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+label {
+    font-size: 1rem;
+}
+
+#cadastrar-btn{
+    background-color: var(--lm-sidebar-hover);
+    align-self: center;
+}
+
+  /* Estilo para o container do checkbox de termos de uso */
+.terms-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;        /* proíbe quebra de linha entre os itens */
+    align-items: center;
+    margin-bottom: 1rem;
+    white-space: nowrap;      /* reforça que não haja wrap de texto */
+    margin: 0 auto 1rem;      /* centra o bloco e adiciona um espaçamento embaixo */
+    gap: 0.5rem;
+}
+
+.terms-container p {
+    margin: 0;         /* elimina a margem padrão do <p> */
+    display: inline;   /* faz o texto fluir na mesma linha */
+    font-size: 14px;
+    color: #040404;
+}
+  
+.terms-container a {
+    color:  #6886FF;
+    cursor: pointer;
+    font-weight: 600;
+}
+  
+.terms-container input[type="checkbox"] {
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+label.required::after {
+    content: " *";
+    color: red;
+  }

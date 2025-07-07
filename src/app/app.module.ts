@@ -14,6 +14,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { EsqueciSenhaComponent } from './esqueci-senha/esqueci-senha.component';
 import { AuthService } from './configs/services/auth.service';
 import { TokenInterceptor } from './configs/security/token.interceptor';
+import { CadastroComponent } from './cadastro/cadastro.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { TokenInterceptor } from './configs/security/token.interceptor';
     LoginComponent,
     LayoutComponent,
     EsqueciSenhaComponent,
+    CadastroComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,162 @@
+<div class="container">
+
+    <!-- PAGINA PARA ESCOLHER O TIPO DE USUARIO -->
+    <section  *ngIf="step === 0" class="option-user-page">
+        <section class="image-section">
+            <div class="text-image">
+                <h1>
+                Cada <strong>conexão</strong> começa com uma <strong>escolha.</strong>
+                    Qual é o seu papel hoje?
+                </h1>
+            </div>
+        </section>
+
+        <section class="select-user-option">
+            <h1>Como você quer usar o trampoUP?</h1>
+
+            <div class="dual-options">
+
+               <button class="card-option"  
+               [class.selected]="selectedRole === roleUsuario.CLIENTE"  
+               (click)="selectRole(roleUsuario.CLIENTE)">
+
+                    <div class="card-icons">
+                        <img src="/assets/icones/cliente-cadastro-icon.svg" alt="cliente-icon">
+                    </div>
+                    <p>Sou Cliente, quero encontrar serviços</p>
+
+                </button> 
+
+                <button class="card-option" 
+                [class.selected]="selectedRole === roleUsuario.PROFISSIONAL"  
+                (click)="selectRole(roleUsuario.PROFISSIONAL)">
+
+                    <div class="card-icons">
+                        <img src="/assets/icones/profissional-cadastro-icon.svg" alt="profissional-icon">
+                    </div>
+
+                    <p>Sou Profissional, quero oferecer meus serviços</p>
+                </button>
+            
+            </div>
+
+            <button (click)="next()" class="next-btn">Próximo</button>
+            
+            <div class="separator"><span></span><small>ou</small><span></span></div>
+
+            <p class="sign-in">
+                Já possui uma conta? Faça
+                <a routerLink="/login">Login</a>
+                agora!
+            </p>
+
+        </section>
+
+    </section>
+
+
+
+
+    <!-- PAGINA CADASTRO PROFISSIONAL -->
+    <section class="profissional-cadastro-page" *ngIf="step===1 && this.selectedRole === roleUsuario.PROFISSIONAL">
+        
+        <section class="image-section-cadastro"></section>
+
+        <section class="section-cadastro">
+            <div class="cadastro-title">
+                <h1>Seja Bem-vindo(a)</h1>
+            </div>
+            
+            <div class="forms-cadastro">
+
+                <div class="form-group">
+                    <label class="form-label required" for="nome">Razão Social</label>
+                    <input id="nome" type="text" placeholder="Digite sua razão social">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label required" for="email">Email</label>
+                    <input id="email" type="email" placeholder="Digite e-mail">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label required" for="cpf">CPF</label>
+                    <input id="cpf" type="text" placeholder="000.000.000-00">
+                </div>   
+
+                <div class="form-group">
+                    <label class="form-label" for="cnpj">CNPJ</label>
+                    <input id="cnpj" type="text" placeholder="00.000.000/0000-0">
+                </div>   
+
+                <div class="form-group">
+                    <label class="form-label" for="setor">Setor</label>
+                    <select class="form-select" name="setor" id="setor">
+                        <option value="''" disabled hidden selected>Selecione seu setor.</option>
+                    </select>
+                </div>                   
+
+                <div class="form-group">
+                    <label class="form-label" for="estado">Estado</label>
+                    <select class="form-select" name="estado" id="estado">
+                        <option value="''" disabled hidden selected>Selecione seu estado</option>
+                    </select>
+                </div>                        
+
+                <div class="form-group">
+                    <label class="form-label" for="estado">Cidade</label>
+                    <select class="form-select" name="cidade" id="cidade">
+                        <option value="''" disabled hidden selected>Selecione sua cidade</option>
+                    </select>
+                </div>   
+
+                <div class="form-group">
+                    <label class="form-label" for="endereco">CNPJ</label>
+                    <input id="endereco" type="text" placeholder="Digite seu endereço.">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label required" for="senha">Senha</label>
+                    <input id="senha" type="password" placeholder="Digite sua senha.">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label required" for="confirmar-senha">Confirmar senha</label>
+                    <input id="confirmar-senha" type="password" placeholder="Confirme sua senha.">
+                </div>    
+
+                <div class="form-group terms-container">
+                    <input type="checkbox" id="terms">
+                    <p for="terms">
+                        Eu li e concordo com os
+                        <a target="_blank">termos de uso</a>
+                        e
+                        <a target="_blank">política de privacidade</a>
+                    </p>
+                </div>
+
+                <button  id="cadastrar-btn" class="next-btn">
+                    Cadastrar
+                </button>
+
+                <div class="separator"><span></span><small>ou</small><span></span></div>
+
+                <p class="sign-in">
+                    Já possui uma conta? Faça
+                    <a routerLink="/login">Login</a>
+                    agora!
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+
+
+    </section>
+
+
+
+</div>
