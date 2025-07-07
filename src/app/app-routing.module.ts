@@ -4,9 +4,11 @@ import { LoginComponent } from './login/login.component';
 import { EsqueciSenhaComponent } from './esqueci-senha/esqueci-senha.component';
 import { LayoutComponent } from './layout/layout.component';
 import { PainelAdminComponent } from './sistema/Dashboards/painel-admin/painel-admin.component';
+import { CadastroComponent } from './cadastro/cadastro.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path: 'cadastro', component: CadastroComponent},
   { path: 'recuperacao-de-senha', component: EsqueciSenhaComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '', component: LayoutComponent, children: [
