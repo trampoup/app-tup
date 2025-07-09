@@ -16,7 +16,7 @@
   /* para garantir altura mínima — ajuste ao seu layout */
   min-height: 400px;
   background: url("/assets/imagens/imagem-trampo-completa.png") no-repeat center/cover;
-  border-radius: 0 50% 50% 0;   /*bordas arredondadas do lado esquerdo.*/
+  border-radius: 0 50% 50% 0;   /*bordas arredondadas do lado direito.*/
   display: flex;
   justify-content:center;
   align-items: center;
@@ -156,7 +156,7 @@
 
 
 /*----------------PAGINA DE CADASTRO DO PROFISSIONAL ---------------*/
-.profissional-cadastro-page{
+.cadastro-page{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     min-height: 100vh;
@@ -255,4 +255,85 @@ label {
 label.required::after {
     content: " *";
     color: red;
-  }
+}
+
+@media (max-width: 768px) {
+    .image-section {
+        display: none;
+    }
+    .option-user-page {
+        grid-template-columns: 1fr; /* Coloca tudo em uma coluna */
+    }
+
+    .image-section-cadastro {
+        display: none;
+    }
+    .cadastro-page {
+        grid-template-columns: 1fr; /* Coloca tudo em uma coluna */
+    }
+
+      /* Centraliza e limita a largura da seção de cadastro */
+    .section-cadastro {
+        display: flex;
+        flex-direction: column;
+        align-items: center;       /* centra conteúdo horizontalmente */
+        justify-content: center;   /* centra conteúdo vertical (se precisar) */
+        width: 100%;
+        max-width: 400px;          /* ajuste conforme o design */
+        margin: 0 auto;            /* centraliza na tela */
+        padding: 20px 16px;        /* espaçamento interno */
+    }
+
+
+    /* Centraliza o título */
+    .cadastro-title h1 {
+        text-align: center;
+        width: 100%;
+    }
+
+    /* Ajusta o formulário para ocupar toda a largura até o limite */
+    .forms-cadastro {
+        width: 100%;
+        gap: 16px;
+        padding-inline: 0;
+        justify-content: center; /* centraliza os itens */
+    }
+
+    /* Inputs e selects já estão 100%, só limitamos max-width */
+    input,
+    select {
+        max-width: 100%;
+    }
+
+    #id-cadastrar-btn {
+        float: none;
+        width: 100%;
+        text-align: center;
+        margin-top: 24px;
+    }
+    
+    .terms-container {
+        display: grid;
+        grid-template-columns: auto 1fr;  /* coluna 1: width auto (checkbox); coluna 2: o resto */
+        align-items: start;               /* alinha topo do checkbox com o topo do texto */
+        margin-top: 1rem;       /* espaçamento superior */
+        justify-content: center; /* centraliza os itens */
+        font-size: 12px;           /* reduz o texto */
+        flex-wrap: wrap;        /* permite quebra de linha */
+        width: 100%;            /* não ultrapassa a largura da tela */
+        margin: 1rem auto;      /* centraliza com margem */
+        white-space: normal;    /* autoriza quebras */
+    }
+
+    .terms-container p {
+        margin: 0;
+        /* se quiser forçar quebra de palavras longas: */
+        word-break: break-word;
+    }
+
+    .terms-container input[type="checkbox"] {
+        margin-right: 0.5rem; /* mantém o espaçamento entre checkbox e texto */
+        width: 16px;          /* tamanho do checkbox */
+        height: 16px;         /* tamanho do checkbox */
+    }
+}
