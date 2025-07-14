@@ -48,7 +48,7 @@
 }
 
 .select-user-option h1{
-    color: #37383C;
+    color: var(--lm-text);
     width: 70%;
     font-size: 40px;
     text-align: center;
@@ -155,7 +155,7 @@
 }
 
 
-/*----------------PAGINA DE CADASTRO DO PROFISSIONAL ---------------*/
+/*----------------PAGINAS DE CADASTRO---------------*/
 .cadastro-page{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -257,6 +257,151 @@ label.required::after {
     color: red;
 }
 
+
+/* PAGINA DE CATEGORIAS */
+.categorias-page {
+    min-height: 100vh;
+    background: url("/assets/imagens/imagem-trampo-completa.png") no-repeat center/cover;
+    padding: 60px;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;      /* centro horizontal de todos os filhos */
+    max-width: 100%;
+    background: var(--lm-branco);
+    border-radius: 24px;
+    padding: 60px 64px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+
+.title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;   /* empilha h1 e p verticalmente */
+    margin-bottom: 20px;
+    text-align: center;       /* garante que o texto fique centralizado */
+    font-family: 'Manrope', sans-serif !important;
+}
+
+.title h1 {
+    font-size: 2rem;
+    font-weight: regular;
+    color: var(--lm-text);
+    margin-bottom: 10px;      /* espaço entre o título e a descrição */
+}
+
+.title p {
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: var(--lm-text);
+    max-width: 60%;         /* limite de largura para a descrição */
+}
+
+/* CATEGORIAS CARD */
+.categories-section{
+    display: grid;
+    grid-template-columns: repeat(4, 300px);
+    column-gap: 40px;
+    row-gap: 40px;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    row-gap: 40px; /* espaçamento entre linhas */
+    align-self: center;
+}
+
+.card-categoria{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;    /* <— ESSA LINHA */
+    border-radius: 25px;
+    height: 150px;
+    width: 300px;
+    margin-left: 0px;
+    padding: 20px 0px;
+    border: 2px solid #898989; 
+}
+
+.card-categoria:hover{
+    border: 2px solid #89C3BF;
+}
+
+.left{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+}
+
+.left img{
+    width: 100px;
+    height: 100px;
+}
+
+.left p{
+    display: flex;
+    margin-top: 2px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.right{
+  content: "";
+  display: inline-block;     /* vira parte do fluxo flex */
+  width: 30px;
+  height: 30px;
+  border: 1px solid #898989;
+  border-radius: 50%;
+  background: #fff;
+  margin-right: 45px; 
+  margin-bottom: 100px;
+}
+
+#educacao-icon{
+    margin-left: 20px;
+}
+
+#eventos-left,
+#educacao-left{
+    margin-left: 50px;
+}
+
+.categories-section,
+.final-section {
+  width: 100%;
+  max-width: 1320px;       /* 4×300 + 3×40 */
+  box-sizing: border-box;  /* inclui padding/border no cálculo */
+}
+
+.final-section{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.final-section p{
+    font-size: 18px;
+    color: var(--lm-text);
+}
+
+.final-section button{
+    background-color: var(--primary-button);
+    border-radius: 10px;
+    width: 200px;
+    font-size: 20px;
+}
+
+
+/* Responsividade */
 @media (max-width: 768px) {
     .image-section {
         display: none;
@@ -335,5 +480,62 @@ label.required::after {
         margin-right: 0.5rem; /* mantém o espaçamento entre checkbox e texto */
         width: 16px;          /* tamanho do checkbox */
         height: 16px;         /* tamanho do checkbox */
+    }
+    /* RESPONSIVIDADE TELA DE CATEGORIAS */
+    .categorias-page{
+        padding: 20px;
+    }
+
+    .title h1{
+        font-size: 1.6rem;
+    }
+
+    .title p{
+        font-size: 1rem;
+        max-width: 100%; /* reduz o limite de largura */
+    }
+
+    /* 1) Grid de cards passa a uma coluna só (ou 2, se preferir) */
+    .categories-section {
+        grid-template-columns: repeat(1, 300px);
+        justify-content: center;
+        column-gap: 16px;
+        row-gap: 24px;
+    }
+
+    /* 2) Cada card ocupa 100% da faixa */
+    .card-categoria {
+        width: 100%;
+        max-width: none;       /* garante full-width */
+        height: auto;          /* deixa a altura crescer conforme o conteúdo */
+    }
+
+    #educacao-left{
+        margin-left: 20px; 
+    }
+
+    #eventos-left{
+        margin-left: 35px; 
+    }
+
+    /* 4) Final-section vira coluna e centraliza tudo */
+    .final-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        margin: 24px 0 0;
+        padding: 0 16px;
+        width: 100%;
+    }
+
+    .final-section p {
+        text-align: center;
+        font-size: 16px;
+    }
+
+    .final-section button {
+        width: 100%;
+        max-width: 300px;
     }
 }

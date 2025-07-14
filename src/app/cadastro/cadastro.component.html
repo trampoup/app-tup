@@ -23,7 +23,7 @@
                     <div class="card-icons">
                         <img src="/assets/icones/cliente-cadastro-icon.svg" alt="cliente-icon">
                     </div>
-                    <p>Sou Cliente, quero encontrar serviços</p>
+                    <p>Sou Cliente, quero contratar um serviço</p>
 
                 </button> 
 
@@ -85,6 +85,12 @@
                 </div>   
 
                 <div class="form-group">
+                    <label class="form-label required" for="telefone">Telefone</label>
+                    <input id="telefone" type="text" placeholder="(00) 00000-0000">
+                </div>   
+
+
+                <div class="form-group">
                     <label class="form-label" for="cnpj">CNPJ</label>
                     <input id="cnpj" type="text" placeholder="00.000.000/0000-0">
                 </div>   
@@ -111,7 +117,7 @@
                 </div>   
 
                 <div class="form-group">
-                    <label class="form-label" for="endereco">CNPJ</label>
+                    <label class="form-label" for="endereco">Endereço</label>
                     <input id="endereco" type="text" placeholder="Digite seu endereço.">
                 </div>
                 
@@ -153,7 +159,7 @@
         </section>
     </section>
 
-
+    <!-- Página de Cadastro De Cliente -->
     <section class="cadastro-page" *ngIf="step===1 && this.selectedRole === roleUsuario.CLIENTE">
 
         <section class="image-section-cadastro"></section>
@@ -184,6 +190,11 @@
                     <label class="form-label required" for="cpf">CPF</label>
                     <input id="cpf" type="text" placeholder="000.000.000-00">
                 </div>
+
+                <div class="form-group">
+                    <label class="form-label required" for="telefone">Telefone</label>
+                    <input id="telefone" type="text" placeholder="(00) 00000-0000">
+                </div>  
 
                 <div class="form-group">
                     <label class="form-label" for="estado">Estado</label>
@@ -224,7 +235,7 @@
                     </p>
                 </div>
 
-                <button  id="cadastrar-btn" class="next-btn">
+                <button  id="cadastrar-btn" class="next-btn" (click)="next()">
                     Cadastrar
                 </button>
 
@@ -241,5 +252,102 @@
 
         </section>
     </section>
+
+
+    <!-- CATEGORIAS -->
+     <section  class="categorias-page" *ngIf="step===2 && this.selectedRole === roleUsuario.CLIENTE">
+        
+        <section class="main-container">
+
+            <div class="title">
+                <h1>
+                    👋 Olá, {{"João"}}, Bem-vindo ao TrampoUP!
+                </h1>
+                <p>
+                    Selecione suas áreas de interesse para que a gente possa te mostrar profissionais
+                    e oportunidades que realmente combinam com você.
+                </p>
+            </div>
+
+            <div class="categories-section">
+
+                <button class="card-option card-categoria">
+                    <div class="left">
+                        <img src="/assets/icones/servicos-tec-icon.svg" alt="servicos-tec-icon">
+                        <p>Serviços Técnicos</p>
+                    </div>
+                    <div class="right"></div>
+                </button>
+
+
+                <button class="card-option card-categoria">
+                    <div class="left">
+                        <img src="/assets/icones/servicos-domec-icon.svg" alt="servicos-domesticos-icon">
+                        <p>Serviços Domésticos</p>
+                    </div>
+                    <div class="right"></div>
+                </button>
+
+
+                <button class="card-option card-categoria">
+                    <div class="left">
+                        <img src="/assets/icones/servicos-manuntencao-icon.svg" alt="servicos-manuntencao-icon">
+                        <p>Serviços de Manutenção</p>
+                    </div>
+                    <div class="right"></div>
+                </button>
+
+
+                <button class="card-option card-categoria">
+                    <div class="left">
+                        <img src="/assets/icones/beleza-estetica-icon.svg" alt="beleza e estética icon">
+                        <p>Beleza e Estética</p>
+                    </div>
+                    <div class="right"></div>
+                </button>
+
+                <button class="card-option card-categoria">
+                    <div class="left">
+                        <img src="/assets/icones/servicos-transporte-icon.svg" alt="servicos-transporte-icon">
+                        <p>Serviços de Transporte</p>
+                    </div>
+                    <div class="right"></div>
+                </button>
+
+                <button class="card-option card-categoria">
+                    <div id="educacao-left" class="left">
+                        <img id="educacao-icon" src="/assets/icones/educacao-icon.svg" alt="educacao-icon">
+                        <p>Educação</p>
+                    </div>
+                    <div class="right"></div>
+                </button>
+
+                <button class="card-option card-categoria">
+                    <div id="eventos-left" class="left">
+                        <img id="eventos-icon" src="/assets/icones/eventos-icon.svg" alt="eventos-icon">
+                        <p>Eventos</p>
+                    </div>
+                    <div class="right"></div>
+                </button>
+
+                <button class="card-option card-categoria">
+                    <div class="left">
+                        <img src="/assets/icones/servicos-admin-icon.svg" alt="servicos-admin-icon">
+                        <p>Serviços Administrativos</p>
+                    </div>
+                    <div class="right"></div>
+                </button>
+
+
+            </div>
+
+            <div class="final-section">
+                <p><strong>Você selecionou:</strong> <span> {{"2"}}</span> de <span>{{"8"}}</span> interesses.</p>
+                <button routerLink="/usuario/inicio-cliente" class="next-btn">Avançar</button>
+            </div>
+
+        </section>
+
+     </section>
 
 </div>

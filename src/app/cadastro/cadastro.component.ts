@@ -15,6 +15,7 @@ export class CadastroComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
   selectRole(role: TipoUsuario) {
