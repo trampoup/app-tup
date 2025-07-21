@@ -4,4 +4,5 @@ export const environment = {
   clientSecret: "@2026",
   obterTokenUrl: "/oauth/token",
   apiURLBase:"https://backend-trampoup.onrender.com"
+  // apiURLBase: "http://localhost:8083"
 };

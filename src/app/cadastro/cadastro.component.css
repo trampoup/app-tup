@@ -13,7 +13,6 @@
 /*PARTE DA IMAGEM*/
 .image-section {
   flex: 1;
-  /* para garantir altura mínima — ajuste ao seu layout */
   min-height: 400px;
   background: url("/assets/imagens/imagem-trampo-completa.png") no-repeat center/cover;
   border-radius: 0 50% 50% 0;   /*bordas arredondadas do lado direito.*/
@@ -164,7 +163,7 @@
 }
 
 .image-section-cadastro {
-  /* para garantir altura mínima — ajuste ao seu layout */
+    display: flex;
     background: url("/assets/imagens/imagem-trampo-completa.png") no-repeat center/cover;
     justify-content:center;
     align-items: center;
@@ -180,12 +179,45 @@
     gap: 12px;
 }
 
+.text-image-cadastro{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.text-image-cadastro h1{
+    font-size: 7rem;
+    line-height: 1.5;
+    text-align: center;
+    justify-content: center;
+}
+
+.text-image-cadastro p{
+    font-size: 2rem;
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+}
+
 .cadastro-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     align-self: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: var(--lm-primary);
+    padding: 15px;
 }
 
 .cadastro-title h1{
+    color: white;
     font-weight: 600;
+    margin: 0;
+    font-size: 2rem;
+    text-align: center;
 }
 
 .forms-cadastro{
@@ -413,6 +445,8 @@ label.required::after {
     .image-section-cadastro {
         display: none;
     }
+
+
     .cadastro-page {
         grid-template-columns: 1fr; /* Coloca tudo em uma coluna */
     }
@@ -538,4 +572,71 @@ label.required::after {
         width: 100%;
         max-width: 300px;
     }
+}
+
+    @media screen and (min-width: 769px) and (max-width: 1279px) {
+    /* Ex.: diminuir o título do cliente */
+    .text-image-cadastro h1 {
+        font-size: 4.5rem;    /* ajuste para seu design */
+    }
+    .text-image-cadastro p {
+        font-size: 1.2rem;
+        width: 80%;
+    }
+
+    /* Ex.: afina espaçamentos do form */
+    .forms-cadastro {
+        padding-inline: 20px;
+        gap: 10px;
+    }
+
+    /* Inputs e selects já estão 100%, só limitamos max-width */
+    input,
+    select {
+        max-width: 100%;
+    }
+
+    .terms-container {
+        display: grid;
+        grid-template-columns: auto 1fr;  /* coluna 1: width auto (checkbox); coluna 2: o resto */
+        align-items: start;               /* alinha topo do checkbox com o topo do texto */
+        margin-top: 1rem;       /* espaçamento superior */
+        justify-content: center; /* centraliza os itens */
+        font-size: 12px;           /* reduz o texto */
+        flex-wrap: wrap;        /* permite quebra de linha */
+        width: 100%;            /* não ultrapassa a largura da tela */
+        margin: 1rem auto;      /* centraliza com margem */
+        white-space: normal;    /* autoriza quebras */
+    }
+
+    .terms-container p {
+        margin: 0;
+        /* se quiser forçar quebra de palavras longas: */
+        word-break: break-word;
+    }
+
+    .terms-container input[type="checkbox"] {
+        margin-right: 0.5rem; /* mantém o espaçamento entre checkbox e texto */
+        width: 16px;          /* tamanho do checkbox */
+        height: 16px;         /* tamanho do checkbox */
+    }
+    
+    /* RESPONSIVIDADE TELA DE CATEGORIAS */
+    .categories-section{
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+        column-gap: 20px; /* espaçamento entre colunas */
+        row-gap: 24px;    /* espaçamento entre linhas */
+    }
+
+    .cadastro-title{
+        padding: 5px;
+    }
+
+
+    .cadastro-title h1{
+        font-size: 1.2rem; /* ajuste para seu design */
+        width: 100%;
+        text-align: center;
+    }
+
 }

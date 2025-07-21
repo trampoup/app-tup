@@ -8,7 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { TemplateModule } from './template/template.module';
 import { LayoutComponent } from './layout/layout.component';
 import { SistemaModule } from './sistema/sistema.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { EsqueciSenhaComponent } from './esqueci-senha/esqueci-senha.component';
@@ -31,7 +31,8 @@ import { CadastroComponent } from './cadastro/cadastro.component';
     HttpClientModule,
     TemplateModule,
     SistemaModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     AuthService,

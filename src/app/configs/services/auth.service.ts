@@ -5,23 +5,26 @@ import { TipoUsuario } from 'src/app/login/tipo-usuario.enum';
 import { Usuario } from 'src/app/login/usuario';
 import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { LoginDTO } from 'src/app/login/LoginDTO';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  tokenURL: string = environment.apiURLBase + environment.obterTokenUrl
-  clientID: string = environment.clientId;
+  apiUrl: string = environment.apiURLBase + "/api/usuarios";
+  tokenUrl: string = environment.apiURLBase + environment.obterTokenUrl;
+  clientId: string = environment.clientId;
   clientSecret: string = environment.clientSecret;
 
-
-
   //SOMENTE PARA FINS VISUAIS DA TELA DE CUPONS, POSTERIORMENTE COM O LOGIN SERÁ MODIFICADO.
-  private tipoUsuarioAtual: TipoUsuario = TipoUsuario.ADMINISTRADOR;
+  private tipoUsuarioAtual: TipoUsuario = TipoUsuario.ADMIN;
+
+
+  constructor(private http: HttpClient) {}
 
   isAdministrador(): boolean {
-    return this.tipoUsuarioAtual === TipoUsuario.ADMINISTRADOR;
+    return this.tipoUsuarioAtual === TipoUsuario.ADMIN;
   }
 
   isProfissional(): boolean {
@@ -42,7 +45,7 @@ export class AuthService {
 
   getRoleUsuario(): TipoUsuario {
     if (this.isAdministrador()) {
-      return TipoUsuario.ADMINISTRADOR;
+      return TipoUsuario.ADMIN;
     } else if (this.isProfissional()) {
       return TipoUsuario.PROFISSIONAL;
     } else {
@@ -60,20 +63,6 @@ export class AuthService {
     }
   }
 
-  login(username: string, password: string): Observable<any> {
-    const params = new HttpParams()
-      .set('username', username) // email
-      .set('password', password) // senha
-      .set('grant_type', 'password')
-
-    const headers = {
-      'Authorization': 'Basic ' + btoa(`${this.clientID}: ${this.clientSecret}`),
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
-
-    return this.http.post(this.tokenURL, params.toString(), { headers });
-  }
-
   obterPerfilUsuario(): Observable<Usuario> {
     const fakeUser: Usuario = {
       id: 1,
@@ -83,6 +72,23 @@ export class AuthService {
     return of(fakeUser);
   }
 
+  login(loginDTO: LoginDTO) : Observable<any> {  const params = new HttpParams()
+                        .set('username', loginDTO.email)
+                        .set('password', loginDTO.senha)
+                        .set('grant_type', 'password')
 
-  constructor(private http: HttpClient) { }
+
+    const headers = {
+      'Authorization': 'Basic ' + btoa(`${this.clientId}:${this.clientSecret}`),
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+
+    return this.http.post( this.tokenUrl, params.toString(), { headers });
+  }
+  
+  encerrarSessao(){
+    localStorage.removeItem('access_token')
+  }
+
+
 }

@@ -6,24 +6,25 @@
           <h1 style="margin-bottom: 10px;">Bem-vindo(a) 👋🏻</h1>
         </div>
   
-        <!-- Sem formulário Angular, só botão com (click) -->
-        <div class="form-group">
-          <label for="email">E-mail</label>
-          <input type="email" id="email" placeholder="Digite seu e-mail" />
-        </div>
-  
-        <div class="form-group password-group">
-          <label for="senha">Senha</label>
-          <input type="password" id="senha" placeholder="Digite sua senha" />
-          <i class="fa-regular fa-eye toggle-password"></i>
-        </div>
-  
-        <div class="forgot">
-          <a routerLink="/esqueci-minha-senha">Esqueci minha senha</a>
-        </div>
-  
-        <button class="btn-primary" (click)="login()">Entrar</button>
-  
+         <form [formGroup]="loginForm" (ngSubmit)="onFormSubmitHandler($event)">
+           <div class="form-group">
+             <label for="email">E-mail</label>
+             <input type="email" id="email" formControlName="email" placeholder="Digite seu e-mail" />
+           </div>
+     
+           <div class="form-group password-group">
+             <label for="senha">Senha</label>
+             <input type="password" id="senha" formControlName="senha"  placeholder="Digite sua senha" />
+             <i class="fa-regular fa-eye toggle-password"></i>
+           </div>
+     
+           <div class="forgot">
+             <a routerLink="/esqueci-minha-senha">Esqueci minha senha</a>
+           </div>
+     
+           <button class="btn-primary" (click)="login()">Entrar</button>
+        </form>
+          
         <div class="separator"><span></span><small>ou</small><span></span></div>
   
         <p class="signup">

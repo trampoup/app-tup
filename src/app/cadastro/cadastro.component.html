@@ -60,11 +60,18 @@
     <!-- PAGINA CADASTRO PROFISSIONAL -->
     <section class="cadastro-page" *ngIf="step===1 && this.selectedRole === roleUsuario.PROFISSIONAL">
         
-        <section class="image-section-cadastro"></section>
+        <section class="image-section-cadastro">
+            <div class="text-image-cadastro">
+                <h1>
+                    <strong>Mostre quem você é.</strong>
+                </h1>
+                <p>Conquiste respeito e vire referência.</p>
+            </div>
+        </section>
 
         <section class="section-cadastro">
             <div class="cadastro-title">
-                <h1>Seja Bem-vindo(a)</h1>
+                <h1>Formulário de cadastro do Profissional</h1>
             </div>
             
             <div class="forms-cadastro">
@@ -162,11 +169,18 @@
     <!-- Página de Cadastro De Cliente -->
     <section class="cadastro-page" *ngIf="step===1 && this.selectedRole === roleUsuario.CLIENTE">
 
-        <section class="image-section-cadastro"></section>
+        <section class="image-section-cadastro">
+            <div class="text-image-cadastro">
+                <h1>
+                    <strong>Procurou, achou e resolveu.</strong>
+                </h1>
+                <p>O poder de contratar está com você.</p>
+            </div>
+        </section>
 
         <section class="section-cadastro">
             <div class="cadastro-title">
-                <h1>Seja Bem-vindo(a)</h1>
+                <h1>Formulário de cadastro do Cliente</h1>
             </div>
             
             <div class="forms-cadastro">
