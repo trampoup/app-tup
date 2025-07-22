@@ -4,7 +4,7 @@
         <div class="welcome">
             <div class="bom-dia">
                 <h1> Bom dia, {{ usuario?.nome }} 👋</h1>
-                <p>{{ usuario?.tipoUsuario}}</p>
+                <p>{{ tipoUsuarioDescricao[usuario?.tipoUsuario!]}}</p>
             </div>
 
             <div class="clima">

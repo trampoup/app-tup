@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/configs/services/auth.service';
 import { ServicosService } from 'src/app/configs/services/servicos.service';
 import { Usuario } from 'src/app/login/usuario';
 import * as ApexCharts from 'apexcharts';
+import { TipoUsuarioDescricao } from 'src/app/login/tipo-usuario-descricao';
 
 import {
   ApexAxisChartSeries,
@@ -25,7 +26,6 @@ export type ChartOptions = {
 };
 
 
-
 @Component({
   selector: 'app-painel-admin',
   templateUrl: './painel-admin.component.html',
@@ -44,7 +44,7 @@ export class PainelAdminComponent implements OnInit {
   quantidadeProfissionaisAtivos: number = 80;
   quantidadeServicos: number = 61;
 
-
+  tipoUsuarioDescricao = TipoUsuarioDescricao;
 
   novosUsuarios = [ //PROVISORIO
     {

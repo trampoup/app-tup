@@ -15,7 +15,8 @@ export class CadastroComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-
+    // this.step = 1;
+    // this.selectedRole = this.roleUsuario.PROFISSIONAL; // Inicializa a role selecionada como nula
   }
 
   selectRole(role: TipoUsuario) {

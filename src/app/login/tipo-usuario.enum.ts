@@ -1,5 +1,5 @@
 export enum TipoUsuario {
-  ADMINISTRADOR = 'Administrador',
-  PROFISSIONAL = 'Profissional',
-  CLIENTE = 'Cliente',
+  ADMIN = 'ROLE_ADMIN',
+  PROFISSIONAL = 'ROLE_PROFISSIONAL',
+  CLIENTE = 'ROLE_CLIENTE',
 }
