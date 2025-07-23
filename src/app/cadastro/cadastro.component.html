@@ -55,8 +55,6 @@
     </section>
 
 
-
-
     <!-- PAGINA CADASTRO PROFISSIONAL -->
     <section class="cadastro-page" *ngIf="step===1 && this.selectedRole === roleUsuario.PROFISSIONAL">
         
@@ -74,68 +72,77 @@
                 <h1>Formulário de cadastro do Profissional</h1>
             </div>
             
-            <div class="forms-cadastro">
+            <form [formGroup]="profissionalForm" class="forms-cadastro" (ngSubmit)="onSubmitProfissional()">
 
                 <div class="form-group">
-                    <label class="form-label required" for="nome">Razão Social</label>
-                    <input id="nome" type="text" placeholder="Digite sua razão social">
+                    <label class="form-label required"  for="nome">Razão Social</label>
+                    <input id="nome" type="text" formControlName="nome" placeholder="Digite sua razão social">
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label required" for="email">Email</label>
-                    <input id="email" type="email" placeholder="Digite e-mail">
+                    <label class="form-label required"  for="email">Email</label>
+                    <input id="email" type="email" formControlName="email" placeholder="Digite e-mail">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="cpf">CPF</label>
-                    <input id="cpf" type="text" placeholder="000.000.000-00">
+                    <input id="cpf" type="text" formControlName="cpf" placeholder="000.000.000-00">
                 </div>   
 
                 <div class="form-group">
                     <label class="form-label required" for="telefone">Telefone</label>
-                    <input id="telefone" type="text" placeholder="(00) 00000-0000">
+                    <input id="telefone" type="text" formControlName="telefone" placeholder="(00) 00000-0000">
                 </div>   
 
 
                 <div class="form-group">
                     <label class="form-label" for="cnpj">CNPJ</label>
-                    <input id="cnpj" type="text" placeholder="00.000.000/0000-0">
+                    <input id="cnpj" type="text" formControlName="cnpj" placeholder="00.000.000/0000-0">
                 </div>   
 
                 <div class="form-group">
                     <label class="form-label" for="setor">Setor</label>
-                    <select class="form-select" name="setor" id="setor">
-                        <option value="''" disabled hidden selected>Selecione seu setor</option>
+                    <select class="form-select" formControlName="setor" name="setor" id="setor">
+                        <option value="" disabled hidden selected>Selecione seu setor</option>
+                        <option *ngFor="let cat of categoriasKeys" [value]="cat">
+                        {{ cat | keyToLabel }}
+                        </option>
                     </select>
                 </div>                   
 
                 <div class="form-group">
-                    <label class="form-label" for="estado">Estado</label>
-                    <select class="form-select" name="estado" id="estado">
-                        <option value="''" disabled hidden selected>Selecione seu estado</option>
+                    <label class="form-label required" for="estado">Estado</label>
+                    <select class="form-select" formControlName="estado" (change)="onEstadoChange($event)" name="estado" id="estado">
+                        <option value="" disabled hidden selected>Selecione seu estado</option>
+                            <option *ngFor="let estado of listaEstados" [value]="estado.sigla">
+                                {{ estado.nome }}
+                            </option>
                     </select>
                 </div>                        
 
                 <div class="form-group">
-                    <label class="form-label" for="estado">Cidade</label>
-                    <select class="form-select" name="cidade" id="cidade">
-                        <option value="''" disabled hidden selected>Selecione sua cidade</option>
+                    <label class="form-label required" for="cidade">Cidade</label>
+                    <select class="form-select" formControlName="cidade" name="cidade" id="cidade">
+                        <option value="" disabled hidden selected>Selecione sua cidade</option>
+                        <option *ngFor="let cidade of listaCidades" [value]="cidade.nome">
+                            {{ cidade.nome }}
+                        </option>
                     </select>
                 </div>   
 
                 <div class="form-group">
                     <label class="form-label" for="endereco">Endereço</label>
-                    <input id="endereco" type="text" placeholder="Digite seu endereço.">
+                    <input id="endereco" type="text" formControlName="endereco" placeholder="Digite seu endereço.">
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label required" for="senha">Senha</label>
-                    <input id="senha" type="password" placeholder="Digite sua senha.">
+                    <input id="senha" type="password" formControlName="senha" placeholder="Digite sua senha.">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="confirmar-senha">Confirmar senha</label>
-                    <input id="confirmar-senha" type="password" placeholder="Confirme sua senha.">
+                    <input id="confirmar-senha" type="password" formControlName="confirmarSenha" placeholder="Confirme sua senha.">
                 </div>    
 
                 <div class="form-group terms-container">
@@ -148,7 +155,7 @@
                     </p>
                 </div>
 
-                <button  id="cadastrar-btn" class="next-btn">
+                <button type="submit" id="cadastrar-btn" class="next-btn">
                     Cadastrar
                 </button>
 
@@ -159,8 +166,7 @@
                     <a routerLink="/login">Login</a>
                     agora!
                 </p>
-
-            </div>
+            </form>
 
 
         </section>
@@ -183,60 +189,66 @@
                 <h1>Formulário de cadastro do Cliente</h1>
             </div>
             
-            <div class="forms-cadastro">
+            <form class="forms-cadastro" [formGroup]="clienteForm" (ngSubmit)="onSubmitCliente()">
 
                 <div class="form-group">
-                    <label class="form-label required" for="nome">Nome</label>
-                    <input id="nome" type="text" placeholder="Digite seu nome">
+                    <label class="form-label required"  for="nome">Nome</label>
+                    <input id="nome" type="text" formControlName="nome" placeholder="Digite seu nome">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="sobrenome">Sobrenome</label>
-                    <input id="sobrenome" type="text" placeholder="Digite seu sobrenome">
+                    <input id="sobrenome" type="text" formControlName="sobrenome" placeholder="Digite seu sobrenome">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="email">Email</label>
-                    <input id="email" type="email" placeholder="Digite e-mail">
+                    <input id="email" type="email" formControlName="email" placeholder="Digite e-mail">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="cpf">CPF</label>
-                    <input id="cpf" type="text" placeholder="000.000.000-00">
+                    <input id="cpf" type="text" formControlName="cpf" placeholder="000.000.000-00">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="telefone">Telefone</label>
-                    <input id="telefone" type="text" placeholder="(00) 00000-0000">
+                    <input id="telefone" type="text" formControlName="telefone" placeholder="(00) 00000-0000">
                 </div>  
 
                 <div class="form-group">
                     <label class="form-label" for="estado">Estado</label>
-                    <select class="form-select" name="estado" id="estado">
-                        <option value="''" disabled hidden selected>Selecione seu estado</option>
+                    <select class="form-select" formControlName="estado" (change)="onEstadoChange($event)" name="estado" id="estado">
+                        <option value="" disabled hidden selected>Selecione seu estado</option>
+                            <option *ngFor="let estado of listaEstados" [value]="estado.sigla">
+                                {{ estado.nome }}
+                            </option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label" for="cidade">Cidade</label>
-                    <select class="form-select" name="cidade" id="cidade">
-                        <option value="''" disabled hidden selected>Selecione sua cidade</option>
+                    <select class="form-select" formControlName="cidade" name="cidade" id="cidade">
+                        <option value="" disabled hidden selected>Selecione sua cidade</option>
+                        <option *ngFor="let cidade of listaCidades" [value]="cidade.nome">
+                            {{ cidade.nome }}
+                        </option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label" for="endereco">Endereço</label>
-                    <input id="endereco" type="text" placeholder="Digite seu endereço.">
+                    <input id="endereco" type="text" formControlName="endereco" placeholder="Digite seu endereço.">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="senha">Senha</label>
-                    <input id="senha" type="password" placeholder="Digite sua senha.">
+                    <input id="senha" type="password" formControlName="senha" placeholder="Digite sua senha.">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="confirmar-senha">Confirmar senha</label>
-                    <input id="confirmar-senha" type="password" placeholder="Confirme sua senha.">
+                    <input id="confirmar-senha" type="password" formControlName="confirmarSenha" placeholder="Confirme sua senha.">
                 </div>
 
                 <div class="form-group terms-container">
@@ -249,7 +261,7 @@
                     </p>
                 </div>
 
-                <button  id="cadastrar-btn" class="next-btn" (click)="next()">
+                <button type="submit" id="cadastrar-btn" class="next-btn">
                     Cadastrar
                 </button>
 
@@ -262,7 +274,7 @@
                 </p>                
 
 
-            </div>
+            </form>
 
         </section>
     </section>
@@ -275,7 +287,7 @@
 
             <div class="title">
                 <h1>
-                    👋 Olá, {{"João"}}, Bem-vindo ao TrampoUP!
+                    👋 Olá, {{this.clienteForm.get("nome")?.value}}, Bem-vindo ao TrampoUP!
                 </h1>
                 <p>
                     Selecione suas áreas de interesse para que a gente possa te mostrar profissionais
@@ -285,7 +297,7 @@
 
             <div class="categories-section">
 
-                <button class="card-option card-categoria">
+                <button class="card-option card-categoria" [class.selected]="isCategorySelected('SERVICOS_TECNICOS')"(click)="toggleCategory('SERVICOS_TECNICOS')">
                     <div class="left">
                         <img src="/assets/icones/servicos-tec-icon.svg" alt="servicos-tec-icon">
                         <p>Serviços Técnicos</p>
@@ -294,7 +306,7 @@
                 </button>
 
 
-                <button class="card-option card-categoria">
+                <button class="card-option card-categoria" [class.selected]="isCategorySelected('SERVICOS_DOMESTICOS')"(click)="toggleCategory('SERVICOS_DOMESTICOS')">
                     <div class="left">
                         <img src="/assets/icones/servicos-domec-icon.svg" alt="servicos-domesticos-icon">
                         <p>Serviços Domésticos</p>
@@ -303,7 +315,7 @@
                 </button>
 
 
-                <button class="card-option card-categoria">
+                <button class="card-option card-categoria" [class.selected]="isCategorySelected('SERVICOS_MANUTENCAO')"(click)="toggleCategory('SERVICOS_MANUTENCAO')">
                     <div class="left">
                         <img src="/assets/icones/servicos-manuntencao-icon.svg" alt="servicos-manuntencao-icon">
                         <p>Serviços de Manutenção</p>
@@ -312,7 +324,7 @@
                 </button>
 
 
-                <button class="card-option card-categoria">
+                <button class="card-option card-categoria" [class.selected]="isCategorySelected('BELEZA_E_ESTETICA')"(click)="toggleCategory('BELEZA_E_ESTETICA')">
                     <div class="left">
                         <img src="/assets/icones/beleza-estetica-icon.svg" alt="beleza e estética icon">
                         <p>Beleza e Estética</p>
@@ -320,7 +332,7 @@
                     <div class="right"></div>
                 </button>
 
-                <button class="card-option card-categoria">
+                <button class="card-option card-categoria" [class.selected]="isCategorySelected('SERVICOS_DE_TRANSPORTE')"(click)="toggleCategory('SERVICOS_DE_TRANSPORTE')">
                     <div class="left">
                         <img src="/assets/icones/servicos-transporte-icon.svg" alt="servicos-transporte-icon">
                         <p>Serviços de Transporte</p>
@@ -328,7 +340,7 @@
                     <div class="right"></div>
                 </button>
 
-                <button class="card-option card-categoria">
+                <button class="card-option card-categoria" [class.selected]="isCategorySelected('EDUCACAO_AULAS_PARTICULARES')"(click)="toggleCategory('EDUCACAO_AULAS_PARTICULARES')">
                     <div id="educacao-left" class="left">
                         <img id="educacao-icon" src="/assets/icones/educacao-icon.svg" alt="educacao-icon">
                         <p>Educação</p>
@@ -336,7 +348,7 @@
                     <div class="right"></div>
                 </button>
 
-                <button class="card-option card-categoria">
+                <button class="card-option card-categoria" [class.selected]="isCategorySelected('EVENTOS')"(click)="toggleCategory('EVENTOS')">
                     <div id="eventos-left" class="left">
                         <img id="eventos-icon" src="/assets/icones/eventos-icon.svg" alt="eventos-icon">
                         <p>Eventos</p>
@@ -344,7 +356,7 @@
                     <div class="right"></div>
                 </button>
 
-                <button class="card-option card-categoria">
+                <button class="card-option card-categoria" [class.selected]="isCategorySelected('ADMINISTRATIVOS_E_ONLINE')"(click)="toggleCategory('ADMINISTRATIVOS_E_ONLINE')">
                     <div class="left">
                         <img src="/assets/icones/servicos-admin-icon.svg" alt="servicos-admin-icon">
                         <p>Serviços Administrativos</p>
@@ -356,7 +368,7 @@
             </div>
 
             <div class="final-section">
-                <p><strong>Você selecionou:</strong> <span> {{"2"}}</span> de <span>{{"8"}}</span> interesses.</p>
+                <p><strong>Você selecionou:</strong> <span> {{ selectedCategories.length }} </span> de <span>{{categoriasKeys.length}}</span> interesses.</p>
                 <button routerLink="/usuario/inicio-cliente" class="next-btn">Avançar</button>
             </div>
 

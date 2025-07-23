@@ -3,7 +3,7 @@
     <section class="titulo">
         <div class="welcome">
             <div class="bom-dia">
-                <h1> Bom dia, {{ usuario?.nome }} 👋</h1>
+                <h1> Bom dia, {{ usuario?.nome ||'usuário' }} 👋</h1>
                 <p>{{ tipoUsuarioDescricao[usuario?.tipoUsuario!]}}</p>
             </div>
 
