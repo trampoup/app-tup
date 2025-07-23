@@ -52,6 +52,9 @@ export class CadastroComponent implements OnInit {
 
   selectedCategories: CategoriaKey[] = []; //pagina de card de categorias
 
+  passwordFieldType = 'password';
+  confirmPasswordFieldType = 'password';
+
   constructor(
     private formBuilder: FormBuilder,
     private serviceLocalidade: CidadesService,
@@ -64,6 +67,15 @@ export class CadastroComponent implements OnInit {
   ngOnInit(): void {
     // this.step = 1;
     // this.selectedRole = this.roleUsuario.PROFISSIONAL; // Inicializa a role selecionada como nula
+  }
+
+  togglePasswordVisibility() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+  }
+
+  toggleConfirmPasswordVisibility() {
+    this.confirmPasswordFieldType =
+      this.confirmPasswordFieldType === 'password' ? 'text' : 'password';
   }
 
   selectRole(role: TipoUsuario) {

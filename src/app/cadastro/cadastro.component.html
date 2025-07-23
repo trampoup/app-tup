@@ -137,12 +137,18 @@
                 
                 <div class="form-group">
                     <label class="form-label required" for="senha">Senha</label>
-                    <input id="senha" type="password" formControlName="senha" placeholder="Digite sua senha.">
+                    <input id="senha" [type]="passwordFieldType" formControlName="senha" placeholder="Digite sua senha.">
+                    <button type="button" (click)="togglePasswordVisibility()" class="eye-button" tabindex="-1">
+                        <i [class]="passwordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+                    </button> 
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="confirmar-senha">Confirmar senha</label>
-                    <input id="confirmar-senha" type="password" formControlName="confirmarSenha" placeholder="Confirme sua senha.">
+                    <input id="confirmar-senha" [type]="confirmPasswordFieldType" formControlName="confirmarSenha" placeholder="Confirme sua senha.">
+                    <button type="button" (click)="toggleConfirmPasswordVisibility()" class="eye-button" tabindex="-1">
+                        <i [class]="confirmPasswordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+                    </button>               
                 </div>    
 
                 <div class="form-group terms-container">
@@ -243,12 +249,18 @@
 
                 <div class="form-group">
                     <label class="form-label required" for="senha">Senha</label>
-                    <input id="senha" type="password" formControlName="senha" placeholder="Digite sua senha.">
+                    <input id="senha" [type]="passwordFieldType" formControlName="senha" placeholder="Digite sua senha.">
+                    <button type="button" (click)="togglePasswordVisibility()" class="eye-button" tabindex="-1">
+                        <i [class]="passwordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+                    </button>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="confirmar-senha">Confirmar senha</label>
-                    <input id="confirmar-senha" type="password" formControlName="confirmarSenha" placeholder="Confirme sua senha.">
+                    <input id="confirmar-senha" [type]="confirmPasswordFieldType"formControlName="confirmarSenha" placeholder="Confirme sua senha.">
+                    <button type="button" (click)="toggleConfirmPasswordVisibility()" class="eye-button" tabindex="-1">
+                        <i [class]="confirmPasswordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+                    </button>
                 </div>
 
                 <div class="form-group terms-container">

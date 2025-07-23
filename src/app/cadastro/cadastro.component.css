@@ -443,6 +443,22 @@ label.required::after {
   background: #398EE8;
 }
 
+.eye-button {
+  position: absolute;
+  right: 50px;
+  translate: 0 18px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.eye-button:focus {
+  outline: none;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
     .image-section {

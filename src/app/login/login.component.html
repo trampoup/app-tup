@@ -13,10 +13,15 @@
            </div>
      
            <div class="form-group password-group">
-             <label for="senha">Senha</label>
-             <input type="password" id="senha" formControlName="senha"  placeholder="Digite sua senha" />
-             <i class="fa-regular fa-eye toggle-password"></i>
+
+            <label for="senha">Senha</label>
+            <input [type]="passwordFieldType" id="senha" formControlName="senha"  placeholder="Digite sua senha" />
+            
+            <button type="button" (click)="togglePasswordVisibility()" class="eye-button" tabindex="-1">
+              <i [class]="passwordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+            </button>
            </div>
+
      
            <div class="forgot">
              <a routerLink="/esqueci-minha-senha">Esqueci minha senha</a>
