@@ -219,6 +219,23 @@ body {
   font-size: 25px;
 }
 
+.eye-button {
+  position: absolute;
+  top: 55%;
+  right: 12px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.eye-button:focus {
+  outline: none;
+}
+
+
 /* ===== Responsivo ===== */
 
 @media (max-width: 768px) {

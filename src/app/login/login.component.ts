@@ -21,10 +21,16 @@ export class LoginComponent {
   submitted:boolean = false;
   isLoading:boolean = false;
   
+  passwordFieldType = 'password';
+
   loginForm = this.formBuilder.group({
     email: new FormControl('', { validators: [Validators.required]}),
     senha: new FormControl('', {validators: [Validators.required]}),
   });
+
+  togglePasswordVisibility() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+  }
 
 
   protected onFormSubmitHandler(event: SubmitEvent) {
