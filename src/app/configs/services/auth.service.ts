@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { of } from 'rxjs/internal/observable/of';
 import { TipoUsuario } from 'src/app/login/tipo-usuario.enum';
-import { Usuario } from 'src/app/login/usuario';
 import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { LoginDTO } from 'src/app/login/LoginDTO';
+import { catchError, map, tap, throwError } from 'rxjs';
+import { UsuarioPerfil } from 'src/app/sistema/Dashboards/usuario-perfil';
 
 
 @Injectable({
@@ -17,8 +17,8 @@ export class AuthService {
   clientId: string = environment.clientId;
   clientSecret: string = environment.clientSecret;
 
-  //SOMENTE PARA FINS VISUAIS DA TELA DE CUPONS, POSTERIORMENTE COM O LOGIN SERÁ MODIFICADO.
-  private tipoUsuarioAtual: TipoUsuario = TipoUsuario.ADMIN;
+  private UsuarioPerfil: UsuarioPerfil | null = null;
+  private tipoUsuarioAtual: TipoUsuario | null = null;
 
 
   constructor(private http: HttpClient) {}
@@ -31,13 +31,17 @@ export class AuthService {
     return this.tipoUsuarioAtual === TipoUsuario.PROFISSIONAL;
   }
 
+  setRoleUsuario(tipoUsuario: TipoUsuario): void {
+    this.tipoUsuarioAtual = tipoUsuario;
+  }
+
   //Função para retornar ao inicio de acordo com a Role do usuário.
 
   getRotaInicial(): string {
     if (this.isAdministrador()) {
       return '/usuario/inicio-admin';
     } else if (this.isProfissional()) {
-      return '/usuario/inicio-profissinal';
+      return '/usuario/inicio-profissional';
     } else {
       return '/usuario/inicio-cliente';
     }
@@ -57,20 +61,12 @@ export class AuthService {
     if (this.isAdministrador()) {
       return '/usuario/painel-principal-admin';
     } else if (this.isProfissional()) {
-      return '/usuario/painel-principal-profissinal';
+      return '/usuario/painel-principal-profissional';
     } else {
       return '/usuario/painel-principal-cliente';
     }
   }
 
-  obterPerfilUsuario(): Observable<Usuario> {
-    const fakeUser: Usuario = {
-      id: 1,
-      nome: 'Alex',
-      tipoUsuario: this.tipoUsuarioAtual
-    };
-    return of(fakeUser);
-  }
 
   login(loginDTO: LoginDTO) : Observable<any> {  const params = new HttpParams()
                         .set('username', loginDTO.email)
@@ -83,12 +79,42 @@ export class AuthService {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
 
-    return this.http.post( this.tokenUrl, params.toString(), { headers });
+    return this.http.post<any>(this.tokenUrl, params.toString(), { headers })
+      .pipe(tap(res => {
+        localStorage.setItem('access_token', res.access_token);
+      }));
   }
   
   encerrarSessao(){
     localStorage.removeItem('access_token')
   }
 
+
+  obterPerfilUsuario(): Observable<UsuarioPerfil> {
+    const token = localStorage.getItem('access_token');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    return this.http.get<UsuarioPerfil>(`${this.apiUrl}/token`, { headers }).pipe(
+      map(dto => ({
+        idUsuario: dto.idUsuario,
+        nome:      dto.nome,
+        email:     dto.email,
+        tipoUsuario: dto.tipoUsuario as TipoUsuario
+      })),
+      tap(u => {
+        // converte a string que veio do back para o enum
+        this.tipoUsuarioAtual = u.tipoUsuario;
+        this.UsuarioPerfil = u;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error('Erro ao obter perfil do usuário:', error);
+        return throwError(
+          'Erro ao obter perfil do usuário. Por favor, tente novamente.'
+        );
+      })
+    );
+  }
 
 }

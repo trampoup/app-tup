@@ -70,23 +70,15 @@ export class PainelProfissionalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-      this.renderChartGrafico();
-      this.getWeatherForCurrentLocation();
-      this.renderCharServicosPorMes();
+    this.renderChartGrafico();
+    this.getWeatherForCurrentLocation();
+    this.renderCharServicosPorMes();
 
-      this.usuario = {
-        nome : 'João Silva',
-        tipoUsuario:TipoUsuario.PROFISSIONAL
+    this.authService.obterPerfilUsuario().subscribe(
+      (usuario) => {
+        this.usuario = usuario;
       }
-
-
-  
-      // this.authService.obterPerfilUsuario().subscribe(
-      //   (u) => {
-      //     this.usuario = u
-      //   },
-      //   (err) => console.error(err)
-      // );
+    );
   
       this.updateDateTime();
       setInterval(() => this.updateDateTime(), 60_000);
@@ -94,140 +86,138 @@ export class PainelProfissionalComponent implements OnInit {
     }
   
   
-    renderChartGrafico() {
-      const options = {
-        chart: {
-          type: 'donut',
-          height: 350,
-          width: '100%',
-        },
-        title: {
-          text: 'Gráfico',
-          align: 'left',
-        },
-        series: [33, 22, 18, 10, 17],            // % aproximados de cada fatia
-        labels: ['Item', 'Item', 'Item', 'Item', 'Item'],
-        theme: {
-          palette: 'palette8',
-        },
-        legend: {
-          show: true,
-          position: 'bottom',          // coloca a legenda embaixo
-          horizontalAlign: 'center',   // centraliza
-        },
-        responsive: [
-          {
-            breakpoint: 980,
-            options: {
-              chart: {
-                width: 250,
-              },
-              legend: {
-                position: 'bottom',
-              },
+  renderChartGrafico() {
+    const options = {
+      chart: {
+        type: 'donut',
+        height: 350,
+        width: '100%',
+      },
+      title: {
+        text: 'Gráfico',
+        align: 'left',
+      },
+      series: [33, 22, 18, 10, 17],            // % aproximados de cada fatia
+      labels: ['Item', 'Item', 'Item', 'Item', 'Item'],
+      theme: {
+        palette: 'palette8',
+      },
+      legend: {
+        show: true,
+        position: 'bottom',          // coloca a legenda embaixo
+        horizontalAlign: 'center',   // centraliza
+      },
+      responsive: [
+        {
+          breakpoint: 980,
+          options: {
+            chart: {
+              width: 250,
+            },
+            legend: {
+              position: 'bottom',
             },
           },
-        ],
-      };
-  
-      const chart = new ApexCharts(
-        document.querySelector('#chart-grafico'),
-        options
-      )
-  
-      chart.render();
-  
-    }
-  
-    renderCharServicosPorMes() {
-      const options = {
-        series: [
-          { name: 'Serviços', data: [5, 8, 6, 10, 12, 9, 15, 11, 14, 18, 20, 16] },
-        ],
-        chart: {
-          type: 'bar',
-          height: 350,
-          width: '100%',
-          toolbar: { show: false }
         },
-        colors:['#1E944B'],
-        dataLabels: { enabled: false },
-        stroke: { curve: 'smooth' },
-        title: { text: 'Serviços por mês', align: 'left' },
-        xaxis: {
-          categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
-        },
-        legend: {
-          show: false
-        }
-      };
+      ],
+    };
   
-      const chart = new ApexCharts(
-        document.querySelector('#chart-crescimento-mensal'),
-        options
-      );
-      chart.render();
+  const chart = new ApexCharts(
+    document.querySelector('#chart-grafico'),
+    options
+    )
+    chart.render();
+  }
   
-    }
+  renderCharServicosPorMes() {
+    const options = {
+      series: [
+        { name: 'Serviços', data: [5, 8, 6, 10, 12, 9, 15, 11, 14, 18, 20, 16] },
+      ],
+      chart: {
+        type: 'bar',
+        height: 350,
+        width: '100%',
+        toolbar: { show: false }
+      },
+      colors:['#1E944B'],
+      dataLabels: { enabled: false },
+      stroke: { curve: 'smooth' },
+      title: { text: 'Serviços por mês', align: 'left' },
+      xaxis: {
+        categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+      },
+      legend: {
+        show: false
+      }
+    };
+
+    const chart = new ApexCharts(
+      document.querySelector('#chart-crescimento-mensal'),
+      options
+    );
+    chart.render();
+
+  }
+
   
+  private updateDateTime() {
+    const now = new Date();
+    // formata HH:mm em pt-BR
+    this.currentTime = now.toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+
+    // aqui geramos “segunda-feira, 27/05” já em pt-BR
+    this.currentDate = now.toLocaleDateString('pt-BR', {
+      weekday: 'long',
+      day: '2-digit',
+      month: '2-digit'
+    });
+
+    this.cdr.detectChanges();
+  }
+
+  getWeatherForRussas(): void {
+    this.apiService.fetchWeatherForRussas().subscribe((data) => {
+      this.weatherData = data;
+      console.log(this.weatherData);
+      this.updateWeatherInfo();
+    });
+  }
+
+  getWeatherForCurrentLocation(): void {
+    this.apiService.fetchWeatherForCurrentLocation().subscribe(
+      (data) => {
+        this.weatherData = data;
+        console.log(this.weatherData);
+        this.updateWeatherInfo();
+      },
+      (error) => {
+        console.error('Error getting location', error);
+        this.getWeatherForRussas();
+      }
+    );
+  }
+
+  getWeatherForLocation(lat: number, lon: number): void {
+    this.apiService.fetchWeather(lat, lon).subscribe((data) => {
+      this.weatherData = data;
+      console.log(this.weatherData);
+      this.updateWeatherInfo();
+    });
+  }
   
-    private updateDateTime() {
-      const now = new Date();
-      // formata HH:mm em pt-BR
-      this.currentTime = now.toLocaleTimeString('pt-BR', {
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-  
-  
-      // aqui geramos “segunda-feira, 27/05” já em pt-BR
-      this.currentDate = now.toLocaleDateString('pt-BR', {
-        weekday: 'long',
-        day: '2-digit',
-        month: '2-digit'
-      });
-  
+  updateWeatherInfo(): void {
+    if (this.weatherData) {
+      this.weatherDescription = this.weatherData.weather[0].description;
+      this.temperature = Math.round(this.weatherData.main.temp);
+      this.iconUrl = `http://openweathermap.org/img/wn/${this.weatherData.weather[0].icon}.png`;
+      this.windSpeed = this.weatherData.wind.speed;
       this.cdr.detectChanges();
     }
-  
-    getWeatherForRussas(): void {
-      this.apiService.fetchWeatherForRussas().subscribe((data) => {
-        this.weatherData = data;
-        console.log(this.weatherData);
-        this.updateWeatherInfo();
-      });
-    }
-  
-    getWeatherForCurrentLocation(): void {
-      this.apiService.fetchWeatherForCurrentLocation().subscribe(
-        (data) => {
-          this.weatherData = data;
-          console.log(this.weatherData);
-          this.updateWeatherInfo();
-        },
-        (error) => {
-          console.error('Error getting location', error);
-          this.getWeatherForRussas();
-        }
-      );
-    }
-  
-    getWeatherForLocation(lat: number, lon: number): void {
-      this.apiService.fetchWeather(lat, lon).subscribe((data) => {
-        this.weatherData = data;
-        console.log(this.weatherData);
-        this.updateWeatherInfo();
-      });
-    }
-  
-    updateWeatherInfo(): void {
-      if (this.weatherData) {
-        this.weatherDescription = this.weatherData.weather[0].description;
-        this.temperature = Math.round(this.weatherData.main.temp);
-        this.iconUrl = `http://openweathermap.org/img/wn/${this.weatherData.weather[0].icon}.png`;
-        this.windSpeed = this.weatherData.wind.speed;
-        this.cdr.detectChanges();
-      }
-    }
+  }
   
 }

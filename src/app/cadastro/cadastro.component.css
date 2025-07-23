@@ -99,14 +99,14 @@
 }
 
 .next-btn{
-    background-color: #89C3BF;
+    background-color: var(--primary-button);
     border-radius: 15px;
     width: 80%;
     font-size: 20px;
 }
 
 .next-btn:hover{
-    background-color: #6ec2bd;
+    background-color: var(--primary-btnHover);
 }
 
 .card-option.selected {
@@ -206,10 +206,10 @@
     justify-content: center;
     align-items: center;
     align-self: center;
-    border: 1px solid #ccc;
     border-radius: 8px;
     background-color: var(--lm-primary);
     padding: 15px;
+    box-shadow: 0px 0px 8px rgba(0,0,0,0.5);
 }
 
 .cadastro-title h1{
@@ -432,6 +432,16 @@ label.required::after {
     font-size: 20px;
 }
 
+/* borda azul quando selecionado */
+.card-categoria.selected {
+  border: 2px solid #398EE8;
+}
+
+/* assume que .right é o “círculo” */
+.card-categoria.selected .right {
+  border-color: #398EE8;
+  background: #398EE8;
+}
 
 /* Responsividade */
 @media (max-width: 768px) {

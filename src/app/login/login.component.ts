@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { LoginDTO } from './LoginDTO';
 import { AuthService } from '../configs/services/auth.service';
 import { Usuario } from './usuario';
+import { TipoUsuario } from './tipo-usuario.enum';
 
 @Component({
   selector: 'app-login',
@@ -51,17 +52,19 @@ export class LoginComponent {
         const role = response.authorities.length > 0 ? response.authorities[0] : null;  
 
         localStorage.setItem('role', role ?? '');
-
         this.isLoading = false;
         switch(role) {
           case 'ROLE_ADMIN':
             this.router.navigate(['/usuario/painel-principal-admin']);
+            this.authService.setRoleUsuario(TipoUsuario.ADMIN);
             break;
           case 'ROLE_PROFISSIONAL':
             this.router.navigate(['/usuario/painel-principal-profissional']);
+            this.authService.setRoleUsuario(TipoUsuario.PROFISSIONAL);
             break;
           case 'ROLE_CLIENTE':
             this.router.navigate(['/usuario/painel-principal-cliente']);
+            this.authService.setRoleUsuario(TipoUsuario.CLIENTE);
             break;
           default:
             this.router.navigate(['/usuario/painel-principal-cliente']); //so para testes

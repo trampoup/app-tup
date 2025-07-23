@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/configs/services/auth.service';
 import { ServicosService } from 'src/app/configs/services/servicos.service';
-import { Usuario } from 'src/app/login/usuario';
 import * as ApexCharts from 'apexcharts';
 import { TipoUsuarioDescricao } from 'src/app/login/tipo-usuario-descricao';
 
@@ -14,6 +13,7 @@ import {
   ApexTitleSubtitle,
   ApexLegend,
 } from 'ng-apexcharts';
+import { UsuarioPerfil } from '../usuario-perfil';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -32,7 +32,7 @@ export type ChartOptions = {
   styleUrls: ['./painel-admin.component.css']
 })
 export class PainelAdminComponent implements OnInit {
-  usuario: Usuario | null = null;
+  usuario: UsuarioPerfil | null = null;
   weatherDescription: string = 'Carregando...'; //nublado, etc..
   temperature: number = 0; //temperatura
   iconUrl: string = ''; //imagem de acordo com o clima.
@@ -91,12 +91,10 @@ export class PainelAdminComponent implements OnInit {
     this.getWeatherForCurrentLocation();
     this.renderCharCrescimentoMensal();
 
-
     this.authService.obterPerfilUsuario().subscribe(
-      (u) => {
-        this.usuario = u
-      },
-      (err) => console.error(err)
+      (usuario) => {
+        this.usuario = usuario;
+      }
     );
 
     this.updateDateTime();

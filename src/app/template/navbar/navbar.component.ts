@@ -30,8 +30,8 @@ export class NavbarComponent implements OnInit {
    // Mapeamento das permissões para suas descrições
    private permissaoDescricao: { [key: string]: string } = {
     'ADMIN': 'Administrador',
-    'COORDENADOR': 'Coordenador',
-    'USER': 'Colaborador'
+    'PROFISSIONAL': 'Profissional',
+    'CLIENTE': 'Cliente'
   };
 
   constructor(
@@ -41,14 +41,15 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-   // this.authService.obterPerfilUsuario().subscribe(
-   //   (response: { nome: string; permissao: string }) => {
-   //     this.nomeUsuario = response.nome;
-   //     const permissao = response.permissao;
-   //     this.permissaoUsuario = this.permissaoDescricao[permissao] || 'Permissão desconhecida';
-   //   },
-   //   (err: any) => console.error('Erro ao buscar perfil do usuário', err)
-   // );
+    this.authService.obterPerfilUsuario().subscribe({
+      next: (perfil) => {
+        this.nomeUsuario = perfil.nome;
+        this.permissaoUsuario = this.permissaoDescricao[perfil.tipoUsuario] || 'Usuário';
+      },
+      error: (error) => {
+        console.error('Erro ao obter perfil do usuário:', error);
+      }
+    });
   }
   
   rotaInicial(): string{

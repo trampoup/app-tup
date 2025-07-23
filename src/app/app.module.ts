@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { TemplateModule } from './template/template.module';
 import { LayoutComponent } from './layout/layout.component';
 import { SistemaModule } from './sistema/sistema.module';
+import { SharedModule } from './shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
@@ -32,7 +33,8 @@ import { CadastroComponent } from './cadastro/cadastro.component';
     TemplateModule,
     SistemaModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ],
   providers: [
     AuthService,
