@@ -219,10 +219,20 @@ body {
   font-size: 25px;
 }
 
+.input-icon-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input-icon-wrapper input {
+  padding-right: 40px; /* espaço pro ícone à direita */
+}
+
 .eye-button {
   position: absolute;
-  top: 55%;
+  top: 50%;
   right: 12px;
+  transform: translateY(-50%);
   background: none;
   border: none;
   padding: 0;
@@ -235,6 +245,11 @@ body {
   outline: none;
 }
 
+.danger{
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
 
 /* ===== Responsivo ===== */
 

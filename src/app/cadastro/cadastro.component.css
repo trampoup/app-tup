@@ -105,6 +105,11 @@
     font-size: 20px;
 }
 
+.next-btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .next-btn:hover{
     background-color: var(--primary-btnHover);
 }
@@ -443,10 +448,20 @@ label.required::after {
   background: #398EE8;
 }
 
+.input-icon-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.input-icon-wrapper input {
+  padding-right: 40px; /* espaço pro ícone à direita */
+}
+
 .eye-button {
   position: absolute;
-  right: 50px;
-  translate: 0 18px;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
   background: none;
   border: none;
   padding: 0;
@@ -457,6 +472,12 @@ label.required::after {
 
 .eye-button:focus {
   outline: none;
+}
+
+.danger{
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
 }
 
 /* Responsividade */

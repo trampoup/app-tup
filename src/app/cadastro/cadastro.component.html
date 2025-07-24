@@ -40,7 +40,7 @@
             
             </div>
 
-            <button (click)="next()" class="next-btn">Próximo</button>
+            <button (click)="next()" class="next-btn" [disabled]="!selectedRole">Próximo</button>
             
             <div class="separator"><span></span><small>ou</small><span></span></div>
 
@@ -77,21 +77,33 @@
                 <div class="form-group">
                     <label class="form-label required"  for="nome">Razão Social</label>
                     <input id="nome" type="text" formControlName="nome" placeholder="Digite sua razão social">
+                    <small *ngIf="submited && profissionalForm.get('nome')?.hasError('required')" class="danger">
+                        {{ "O campo Razão Social é obrigatório."}}
+                    </small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required"  for="email">Email</label>
                     <input id="email" type="email" formControlName="email" placeholder="Digite e-mail">
+                    <small *ngIf="submited && profissionalForm.get('email')?.hasError('required')" class="danger">
+                        {{ "O campo Email é obrigatório."}}
+                    </small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="cpf">CPF</label>
                     <input id="cpf" type="text" formControlName="cpf" placeholder="000.000.000-00">
+                    <small *ngIf="submited && profissionalForm.get('cpf')?.hasError('required')" class="danger">
+                        {{ "O campo CPF é obrigatório."}}
+                    </small>
                 </div>   
 
                 <div class="form-group">
                     <label class="form-label required" for="telefone">Telefone</label>
                     <input id="telefone" type="text" formControlName="telefone" placeholder="(00) 00000-0000">
+                    <small *ngIf="submited && profissionalForm.get('telefone')?.hasError('required')" class="danger">
+                        {{ "O campo Telefone é obrigatório."}}
+                    </small>
                 </div>   
 
 
@@ -118,6 +130,9 @@
                                 {{ estado.nome }}
                             </option>
                     </select>
+                    <small *ngIf="submited && profissionalForm.get('estado')?.hasError('required')" class="danger">
+                        {{ "O campo Estado é obrigatório."}}
+                    </small>
                 </div>                        
 
                 <div class="form-group">
@@ -128,6 +143,9 @@
                             {{ cidade.nome }}
                         </option>
                     </select>
+                    <small *ngIf="submited && profissionalForm.get('cidade')?.hasError('required')" class="danger">
+                        {{ "O campo Cidade é obrigatório."}}
+                    </small>
                 </div>   
 
                 <div class="form-group">
@@ -137,18 +155,28 @@
                 
                 <div class="form-group">
                     <label class="form-label required" for="senha">Senha</label>
-                    <input id="senha" [type]="passwordFieldType" formControlName="senha" placeholder="Digite sua senha.">
-                    <button type="button" (click)="togglePasswordVisibility()" class="eye-button" tabindex="-1">
-                        <i [class]="passwordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
-                    </button> 
+                    <div class="input-icon-wrapper">
+                        <input id="senha" [type]="passwordFieldType" formControlName="senha" placeholder="Digite sua senha.">
+                        <button type="button" (click)="togglePasswordVisibility()" class="eye-button" tabindex="-1">
+                            <i [class]="passwordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+                        </button> 
+                    </div>
+                    <small *ngIf="submited && profissionalForm.get('senha')?.hasError('required')" class="danger">
+                        {{ "O campo Senha é obrigatório."}}
+                    </small> 
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="confirmar-senha">Confirmar senha</label>
-                    <input id="confirmar-senha" [type]="confirmPasswordFieldType" formControlName="confirmarSenha" placeholder="Confirme sua senha.">
-                    <button type="button" (click)="toggleConfirmPasswordVisibility()" class="eye-button" tabindex="-1">
-                        <i [class]="confirmPasswordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
-                    </button>               
+                    <div class="input-icon-wrapper">
+                        <input id="confirmar-senha" [type]="confirmPasswordFieldType" formControlName="confirmarSenha" placeholder="Confirme sua senha.">
+                        <button type="button" (click)="toggleConfirmPasswordVisibility()" class="eye-button" tabindex="-1">
+                            <i [class]="confirmPasswordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+                        </button>               
+                    </div>
+                    <small *ngIf="submited && profissionalForm.get('confirmarSenha')?.hasError('required')" class="danger">
+                        {{ "O campo Confirmar Senha é obrigatório."}}
+                    </small>
                 </div>    
 
                 <div class="form-group terms-container">
@@ -200,26 +228,41 @@
                 <div class="form-group">
                     <label class="form-label required"  for="nome">Nome</label>
                     <input id="nome" type="text" formControlName="nome" placeholder="Digite seu nome">
+                    <small *ngIf="submited && clienteForm.get('nome')?.hasError('required')" class="danger">
+                        {{ "O campo Nome é obrigatório."}}
+                    </small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="sobrenome">Sobrenome</label>
                     <input id="sobrenome" type="text" formControlName="sobrenome" placeholder="Digite seu sobrenome">
+                    <small *ngIf="submited && clienteForm.get('sobrenome')?.hasError('required')" class="danger">
+                        {{ "O campo Sobrenome é obrigatório."}}
+                    </small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="email">Email</label>
                     <input id="email" type="email" formControlName="email" placeholder="Digite e-mail">
+                    <small *ngIf="submited && clienteForm.get('email')?.hasError('required')" class="danger">
+                        {{ "O campo Email é obrigatório."}}
+                    </small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="cpf">CPF</label>
                     <input id="cpf" type="text" formControlName="cpf" placeholder="000.000.000-00">
+                    <small *ngIf="submited && clienteForm.get('cpf')?.hasError('required')" class="danger">
+                        {{ "O campo CPF é obrigatório."}}
+                    </small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="telefone">Telefone</label>
                     <input id="telefone" type="text" formControlName="telefone" placeholder="(00) 00000-0000">
+                    <small *ngIf="submited && clienteForm.get('telefone')?.hasError('required')" class="danger">
+                        {{ "O campo Telefone é obrigatório."}}
+                    </small>
                 </div>  
 
                 <div class="form-group">
@@ -249,18 +292,28 @@
 
                 <div class="form-group">
                     <label class="form-label required" for="senha">Senha</label>
-                    <input id="senha" [type]="passwordFieldType" formControlName="senha" placeholder="Digite sua senha.">
-                    <button type="button" (click)="togglePasswordVisibility()" class="eye-button" tabindex="-1">
-                        <i [class]="passwordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
-                    </button>
+                    <div class="input-icon-wrapper">
+                        <input id="senha" [type]="passwordFieldType" formControlName="senha" placeholder="Digite sua senha.">
+                        <button type="button" (click)="togglePasswordVisibility()" class="eye-button" tabindex="-1">
+                            <i [class]="passwordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+                        </button>
+                    </div>
+                    <small *ngIf="submited && clienteForm.get('senha')?.hasError('required')" class="danger">
+                        {{ "O campo Senha é obrigatório."}}
+                    </small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="confirmar-senha">Confirmar senha</label>
-                    <input id="confirmar-senha" [type]="confirmPasswordFieldType"formControlName="confirmarSenha" placeholder="Confirme sua senha.">
-                    <button type="button" (click)="toggleConfirmPasswordVisibility()" class="eye-button" tabindex="-1">
-                        <i [class]="confirmPasswordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
-                    </button>
+                    <div class="input-icon-wrapper">
+                        <input id="confirmar-senha" [type]="confirmPasswordFieldType"formControlName="confirmarSenha" placeholder="Confirme sua senha.">
+                        <button type="button" (click)="toggleConfirmPasswordVisibility()" class="eye-button" tabindex="-1">
+                            <i [class]="confirmPasswordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+                        </button>
+                    </div>
+                    <small *ngIf="submited && clienteForm.get('confirmarSenha')?.hasError('required')" class="danger">
+                        {{ "O campo Confirmar Senha é obrigatório."}}
+                    </small>
                 </div>
 
                 <div class="form-group terms-container">
