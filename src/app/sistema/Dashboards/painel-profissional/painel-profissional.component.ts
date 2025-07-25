@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/configs/services/auth.service';
+import { ModalWelcomeService } from 'src/app/configs/services/modal-welcome.service';
 import { ServicosService } from 'src/app/configs/services/servicos.service';
 import { TipoUsuario } from 'src/app/login/tipo-usuario.enum';
 import { Usuario } from 'src/app/login/usuario';
@@ -66,6 +67,7 @@ export class PainelProfissionalComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private apiService: ServicosService,
+    private modalWelcomeService:ModalWelcomeService,
     private cdr: ChangeDetectorRef,
   ) { }
 
@@ -80,12 +82,23 @@ export class PainelProfissionalComponent implements OnInit {
       }
     );
   
-      this.updateDateTime();
-      setInterval(() => this.updateDateTime(), 60_000);
+    this.updateDateTime();
+    setInterval(() => this.updateDateTime(), 60_000);
+    
+    this.mostrarModalWelcome();
+  }
   
+  mostrarModalWelcome(){
+    if (this.authService.showModal) {
+      this.modalWelcomeService.openModal({
+        title: '👋 Bem-vindo!',
+        // description: 'Aqui vai a mensagem que você quiser...',
+        size: 'md'     // sm | md | lg | full  (ajuste para as classes que você definiu no CSS)
+      });
+      this.authService.showModal = false;
     }
-  
-  
+  }
+
   renderChartGrafico() {
     const options = {
       chart: {

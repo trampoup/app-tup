@@ -105,8 +105,8 @@
     font-size: 20px;
 }
 
-.next-btn[disabled] {
-  opacity: 0.6;
+.next-btn[disabled],
+#cadastrar-btn[disabled]{
   cursor: not-allowed;
 }
 
@@ -197,6 +197,7 @@
     line-height: 1.5;
     text-align: center;
     justify-content: center;
+    text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 }
 
 .text-image-cadastro p{
@@ -204,6 +205,7 @@
     text-align: center;
     width: 80%;
     margin: 0 auto;
+    text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.6);
 }
 
 .cadastro-title{
@@ -254,9 +256,48 @@ label {
     font-size: 1rem;
 }
 
-#cadastrar-btn{
-    background-color: var(--lm-sidebar-hover);
-    align-self: center;
+#cadastrar-btn {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--primary-button);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  align-self: center;
+}
+
+/*HOVER COM ANIMAÇÃO*/
+#cadastrar-btn::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 50%;
+  width: 0;
+  height: 100%;
+  background-color: var(--primary-btnHover);
+  transform: translateX(-50%);
+  transition: width 0.4s ease;
+  z-index: 0;
+}
+
+/* texto acima da animação */
+#cadastrar-btn span {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+
+/* ao hover, expande o overlay até preencher 100% do botão */
+#cadastrar-btn:hover::before {
+  width: 100%;
+}
+
+/* opcional: ajuste na cor do texto durante o hover */
+#cadastrar-btn:hover span {
+  color: #fff;
 }
 
   /* Estilo para o container do checkbox de termos de uso */
@@ -440,11 +481,12 @@ label.required::after {
 /* borda azul quando selecionado */
 .card-categoria.selected {
   border: 2px solid #398EE8;
+  color: #398EE8;
 }
 
 /* assume que .right é o “círculo” */
 .card-categoria.selected .right {
-  border-color: #398EE8;
+  border-color: #898989;
   background: #398EE8;
 }
 

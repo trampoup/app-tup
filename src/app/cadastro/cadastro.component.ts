@@ -47,7 +47,8 @@ export class CadastroComponent implements OnInit {
     cnpj: new FormControl(''),
     endereco: new FormControl(''),
     cpf: new FormControl('', { validators: [Validators.required] }),
-    setor: new FormControl('')
+    setor: new FormControl(''),
+    termos: new FormControl(false, { validators: Validators.requiredTrue })
   });
 
   selectedCategories: CategoriaKey[] = []; //pagina de card de categorias
@@ -65,8 +66,8 @@ export class CadastroComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // this.step = 1;
-    // this.selectedRole = this.roleUsuario.PROFISSIONAL; // Inicializa a role selecionada como nula
+    // this.step = 2; //TESTE DA PAGE DA CATEGORIAS
+    // this.selectedRole = this.roleUsuario.CLIENTE; 
   }
 
   togglePasswordVisibility() {
@@ -86,7 +87,7 @@ export class CadastroComponent implements OnInit {
     if (this.step < 2) {      
       this.step++;
     }else{
-      const rotaInicial = this.authService.getRotaInicial(); //ja redireciona para a rota inicial
+      const rotaInicial = this.authService.getRotaDashboard(); //ja redireciona para a rota inicial
       this.router.navigate([rotaInicial]);
     }
   }
@@ -149,6 +150,7 @@ export class CadastroComponent implements OnInit {
 
     this.usuarioService.cadastrarUsuario(profissionalCadastro)
       .pipe(switchMap((created: ApiResponse<UsuarioCadastroDTO>) => {
+        this.authService.showModal=true;
         // Após o cadastro, realiza o login do profissional
         return this.authService.login({
           email: created.response.email,
@@ -165,7 +167,7 @@ export class CadastroComponent implements OnInit {
           this.profissionalForm.reset();
 
           this.authService.setRoleUsuario(TipoUsuario.PROFISSIONAL);
-          const rotaInicial = this.authService.getRotaInicial(); //cadastra e ja redireciona para a rota inicial
+          const rotaInicial = this.authService.getRotaDashboard(); //cadastra e ja redireciona para a rota inicial
           this.router.navigate([rotaInicial]);
           
         },
@@ -191,7 +193,8 @@ export class CadastroComponent implements OnInit {
     cnpj: new FormControl(''),
     endereco: new FormControl(''),
     cpf: new FormControl('', { validators: [Validators.required] }),
-    setor: new FormControl('')
+    setor: new FormControl(''),
+    termos: new FormControl(false, { validators: Validators.requiredTrue })
   });
 
 
@@ -233,6 +236,7 @@ export class CadastroComponent implements OnInit {
     
     this.usuarioService.cadastrarUsuario(clienteCadastro)
       .pipe(switchMap((created: ApiResponse<UsuarioCadastroDTO>) => {
+        this.authService.isCadastro = true; //pra a mensagem de boa-vindas ser exibida somente na primeira vez que o cliente entrar.
         // Após o cadastro, realiza o login do profissional
         return this.authService.login({
           email: created.response.email,
