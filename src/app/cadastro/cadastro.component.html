@@ -40,7 +40,7 @@
             
             </div>
 
-            <button (click)="next()" class="next-btn">Próximo</button>
+            <button (click)="next()" class="next-btn" [disabled]="!selectedRole">Próximo</button>
             
             <div class="separator"><span></span><small>ou</small><span></span></div>
 
@@ -77,27 +77,39 @@
                 <div class="form-group">
                     <label class="form-label required"  for="nome">Razão Social</label>
                     <input id="nome" type="text" formControlName="nome" placeholder="Digite sua razão social">
+                    <small *ngIf="submited && profissionalForm.get('nome')?.hasError('required')" class="danger">
+                        {{ "O campo Razão Social é obrigatório."}}
+                    </small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required"  for="email">Email</label>
                     <input id="email" type="email" formControlName="email" placeholder="Digite e-mail">
+                    <small *ngIf="submited && profissionalForm.get('email')?.hasError('required')" class="danger">
+                        {{ "O campo Email é obrigatório."}}
+                    </small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="cpf">CPF</label>
-                    <input id="cpf" type="text" formControlName="cpf" placeholder="000.000.000-00">
+                    <input id="cpf" type="text" formControlName="cpf" mask="000.000.000-00" placeholder="000.000.000-00">
+                    <small *ngIf="submited && profissionalForm.get('cpf')?.hasError('required')" class="danger">
+                        {{ "O campo CPF é obrigatório."}}
+                    </small>
                 </div>   
 
                 <div class="form-group">
                     <label class="form-label required" for="telefone">Telefone</label>
-                    <input id="telefone" type="text" formControlName="telefone" placeholder="(00) 00000-0000">
+                    <input id="telefone" type="text" formControlName="telefone" mask="(00) 00000-0000" placeholder="(00) 00000-0000">
+                    <small *ngIf="submited && profissionalForm.get('telefone')?.hasError('required')" class="danger">
+                        {{ "O campo Telefone é obrigatório."}}
+                    </small>
                 </div>   
 
 
                 <div class="form-group">
                     <label class="form-label" for="cnpj">CNPJ</label>
-                    <input id="cnpj" type="text" formControlName="cnpj" placeholder="00.000.000/0000-0">
+                    <input id="cnpj" type="text" formControlName="cnpj" mask="00.000.000/0000-00" placeholder="00.000.000/0000-00">
                 </div>   
 
                 <div class="form-group">
@@ -118,6 +130,9 @@
                                 {{ estado.nome }}
                             </option>
                     </select>
+                    <small *ngIf="submited && profissionalForm.get('estado')?.hasError('required')" class="danger">
+                        {{ "O campo Estado é obrigatório."}}
+                    </small>
                 </div>                        
 
                 <div class="form-group">
@@ -128,6 +143,9 @@
                             {{ cidade.nome }}
                         </option>
                     </select>
+                    <small *ngIf="submited && profissionalForm.get('cidade')?.hasError('required')" class="danger">
+                        {{ "O campo Cidade é obrigatório."}}
+                    </small>
                 </div>   
 
                 <div class="form-group">
@@ -137,22 +155,32 @@
                 
                 <div class="form-group">
                     <label class="form-label required" for="senha">Senha</label>
-                    <input id="senha" [type]="passwordFieldType" formControlName="senha" placeholder="Digite sua senha.">
-                    <button type="button" (click)="togglePasswordVisibility()" class="eye-button" tabindex="-1">
-                        <i [class]="passwordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
-                    </button> 
+                    <div class="input-icon-wrapper">
+                        <input id="senha" [type]="passwordFieldType" formControlName="senha" placeholder="Digite sua senha.">
+                        <button type="button" (click)="togglePasswordVisibility()" class="eye-button" tabindex="-1">
+                            <i [class]="passwordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+                        </button> 
+                    </div>
+                    <small *ngIf="submited && profissionalForm.get('senha')?.hasError('required')" class="danger">
+                        {{ "O campo Senha é obrigatório."}}
+                    </small> 
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="confirmar-senha">Confirmar senha</label>
-                    <input id="confirmar-senha" [type]="confirmPasswordFieldType" formControlName="confirmarSenha" placeholder="Confirme sua senha.">
-                    <button type="button" (click)="toggleConfirmPasswordVisibility()" class="eye-button" tabindex="-1">
-                        <i [class]="confirmPasswordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
-                    </button>               
+                    <div class="input-icon-wrapper">
+                        <input id="confirmar-senha" [type]="confirmPasswordFieldType" formControlName="confirmarSenha" placeholder="Confirme sua senha.">
+                        <button type="button" (click)="toggleConfirmPasswordVisibility()" class="eye-button" tabindex="-1">
+                            <i [class]="confirmPasswordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+                        </button>               
+                    </div>
+                    <small *ngIf="submited && profissionalForm.get('confirmarSenha')?.hasError('required')" class="danger">
+                        {{ "O campo Confirmar Senha é obrigatório."}}
+                    </small>
                 </div>    
 
                 <div class="form-group terms-container">
-                    <input type="checkbox" id="terms">
+                    <input type="checkbox" formControlName="termos" id="terms">
                     <p for="terms">
                         Eu li e concordo com os
                         <a target="_blank">termos de uso</a>
@@ -161,8 +189,8 @@
                     </p>
                 </div>
 
-                <button type="submit" id="cadastrar-btn" class="next-btn">
-                    Cadastrar
+                <button type="submit" id="cadastrar-btn" class="next-btn" [disabled]="!profissionalForm.get('termos')?.value">
+                    <span>Cadastrar</span>
                 </button>
 
                 <div class="separator"><span></span><small>ou</small><span></span></div>
@@ -200,26 +228,41 @@
                 <div class="form-group">
                     <label class="form-label required"  for="nome">Nome</label>
                     <input id="nome" type="text" formControlName="nome" placeholder="Digite seu nome">
+                    <small *ngIf="submited && clienteForm.get('nome')?.hasError('required')" class="danger">
+                        {{ "O campo Nome é obrigatório."}}
+                    </small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="sobrenome">Sobrenome</label>
                     <input id="sobrenome" type="text" formControlName="sobrenome" placeholder="Digite seu sobrenome">
+                    <small *ngIf="submited && clienteForm.get('sobrenome')?.hasError('required')" class="danger">
+                        {{ "O campo Sobrenome é obrigatório."}}
+                    </small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="email">Email</label>
                     <input id="email" type="email" formControlName="email" placeholder="Digite e-mail">
+                    <small *ngIf="submited && clienteForm.get('email')?.hasError('required')" class="danger">
+                        {{ "O campo Email é obrigatório."}}
+                    </small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="cpf">CPF</label>
-                    <input id="cpf" type="text" formControlName="cpf" placeholder="000.000.000-00">
+                    <input id="cpf" type="text" formControlName="cpf" mask="000.000.000-00" placeholder="000.000.000-00">
+                    <small *ngIf="submited && clienteForm.get('cpf')?.hasError('required')" class="danger">
+                        {{ "O campo CPF é obrigatório."}}
+                    </small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="telefone">Telefone</label>
-                    <input id="telefone" type="text" formControlName="telefone" placeholder="(00) 00000-0000">
+                    <input id="telefone" type="text" formControlName="telefone" mask="(00) 00000-0000" placeholder="(00) 00000-0000">
+                    <small *ngIf="submited && clienteForm.get('telefone')?.hasError('required')" class="danger">
+                        {{ "O campo Telefone é obrigatório."}}
+                    </small>
                 </div>  
 
                 <div class="form-group">
@@ -249,22 +292,32 @@
 
                 <div class="form-group">
                     <label class="form-label required" for="senha">Senha</label>
-                    <input id="senha" [type]="passwordFieldType" formControlName="senha" placeholder="Digite sua senha.">
-                    <button type="button" (click)="togglePasswordVisibility()" class="eye-button" tabindex="-1">
-                        <i [class]="passwordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
-                    </button>
+                    <div class="input-icon-wrapper">
+                        <input id="senha" [type]="passwordFieldType" formControlName="senha" placeholder="Digite sua senha.">
+                        <button type="button" (click)="togglePasswordVisibility()" class="eye-button" tabindex="-1">
+                            <i [class]="passwordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+                        </button>
+                    </div>
+                    <small *ngIf="submited && clienteForm.get('senha')?.hasError('required')" class="danger">
+                        {{ "O campo Senha é obrigatório."}}
+                    </small>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label required" for="confirmar-senha">Confirmar senha</label>
-                    <input id="confirmar-senha" [type]="confirmPasswordFieldType"formControlName="confirmarSenha" placeholder="Confirme sua senha.">
-                    <button type="button" (click)="toggleConfirmPasswordVisibility()" class="eye-button" tabindex="-1">
-                        <i [class]="confirmPasswordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
-                    </button>
+                    <div class="input-icon-wrapper">
+                        <input id="confirmar-senha" [type]="confirmPasswordFieldType"formControlName="confirmarSenha" placeholder="Confirme sua senha.">
+                        <button type="button" (click)="toggleConfirmPasswordVisibility()" class="eye-button" tabindex="-1">
+                            <i [class]="confirmPasswordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+                        </button>
+                    </div>
+                    <small *ngIf="submited && clienteForm.get('confirmarSenha')?.hasError('required')" class="danger">
+                        {{ "O campo Confirmar Senha é obrigatório."}}
+                    </small>
                 </div>
 
                 <div class="form-group terms-container">
-                    <input type="checkbox" id="terms">
+                    <input type="checkbox" formControlName="termos" id="terms">
                     <p for="terms">
                         Eu li e concordo com os
                         <a target="_blank">termos de uso</a>
@@ -273,8 +326,8 @@
                     </p>
                 </div>
 
-                <button type="submit" id="cadastrar-btn" class="next-btn">
-                    Cadastrar
+                <button type="submit" id="cadastrar-btn" class="next-btn" [disabled]="!clienteForm.get('termos')?.value">
+                    <span>Cadastrar</span>
                 </button>
 
                 <div class="separator"><span></span><small>ou</small><span></span></div>
@@ -311,7 +364,7 @@
 
                 <button class="card-option card-categoria" [class.selected]="isCategorySelected('SERVICOS_TECNICOS')"(click)="toggleCategory('SERVICOS_TECNICOS')">
                     <div class="left">
-                        <img src="/assets/icones/servicos-tec-icon.svg" alt="servicos-tec-icon">
+                        <img [src]="isCategorySelected('SERVICOS_TECNICOS') ? '/assets/icones/servicos-tec-selected-icon.svg' : '/assets/icones/servicos-tec-icon.svg' " alt="servicos-tec-icon">
                         <p>Serviços Técnicos</p>
                     </div>
                     <div class="right"></div>
@@ -320,7 +373,7 @@
 
                 <button class="card-option card-categoria" [class.selected]="isCategorySelected('SERVICOS_DOMESTICOS')"(click)="toggleCategory('SERVICOS_DOMESTICOS')">
                     <div class="left">
-                        <img src="/assets/icones/servicos-domec-icon.svg" alt="servicos-domesticos-icon">
+                        <img [src]="isCategorySelected('SERVICOS_DOMESTICOS') ? '/assets/icones/servicos-domec-selected-icon.svg' : '/assets/icones/servicos-domec-icon.svg' " alt="servicos-domesticos-icon">
                         <p>Serviços Domésticos</p>
                     </div>
                     <div class="right"></div>
@@ -329,7 +382,7 @@
 
                 <button class="card-option card-categoria" [class.selected]="isCategorySelected('SERVICOS_MANUTENCAO')"(click)="toggleCategory('SERVICOS_MANUTENCAO')">
                     <div class="left">
-                        <img src="/assets/icones/servicos-manuntencao-icon.svg" alt="servicos-manuntencao-icon">
+                        <img [src]="isCategorySelected('SERVICOS_MANUTENCAO') ? '/assets/icones/servicos-manuntencao-selected-icon.svg' : '/assets/icones/servicos-manuntencao-icon.svg' " alt="servicos-manuntencao-icon">
                         <p>Serviços de Manutenção</p>
                     </div>
                     <div class="right"></div>
@@ -338,7 +391,7 @@
 
                 <button class="card-option card-categoria" [class.selected]="isCategorySelected('BELEZA_E_ESTETICA')"(click)="toggleCategory('BELEZA_E_ESTETICA')">
                     <div class="left">
-                        <img src="/assets/icones/beleza-estetica-icon.svg" alt="beleza e estética icon">
+                        <img [src]="isCategorySelected('BELEZA_E_ESTETICA') ? '/assets/icones/beleza-estetica-selected-icon.svg' : '/assets/icones/beleza-estetica-icon.svg' " alt="beleza e estética icon">
                         <p>Beleza e Estética</p>
                     </div>
                     <div class="right"></div>
@@ -346,7 +399,7 @@
 
                 <button class="card-option card-categoria" [class.selected]="isCategorySelected('SERVICOS_DE_TRANSPORTE')"(click)="toggleCategory('SERVICOS_DE_TRANSPORTE')">
                     <div class="left">
-                        <img src="/assets/icones/servicos-transporte-icon.svg" alt="servicos-transporte-icon">
+                        <img [src]="isCategorySelected('SERVICOS_DE_TRANSPORTE') ? '/assets/icones/servicos-transporte-selected-icon.svg' : '/assets/icones/servicos-transporte-icon.svg' " alt="servicos-transporte-icon">
                         <p>Serviços de Transporte</p>
                     </div>
                     <div class="right"></div>
@@ -354,7 +407,7 @@
 
                 <button class="card-option card-categoria" [class.selected]="isCategorySelected('EDUCACAO_AULAS_PARTICULARES')"(click)="toggleCategory('EDUCACAO_AULAS_PARTICULARES')">
                     <div id="educacao-left" class="left">
-                        <img id="educacao-icon" src="/assets/icones/educacao-icon.svg" alt="educacao-icon">
+                        <img id="educacao-icon" [src]="isCategorySelected('EDUCACAO_AULAS_PARTICULARES') ? '/assets/icones/educacao-selected-icon.svg' : '/assets/icones/educacao-icon.svg' " alt="educacao-icon">
                         <p>Educação</p>
                     </div>
                     <div class="right"></div>
@@ -362,7 +415,7 @@
 
                 <button class="card-option card-categoria" [class.selected]="isCategorySelected('EVENTOS')"(click)="toggleCategory('EVENTOS')">
                     <div id="eventos-left" class="left">
-                        <img id="eventos-icon" src="/assets/icones/eventos-icon.svg" alt="eventos-icon">
+                        <img id="eventos-icon" [src]="isCategorySelected('EVENTOS') ? '/assets/icones/eventos-selected-icon.svg' : '/assets/icones/eventos-icon.svg' " alt="eventos-icon">
                         <p>Eventos</p>
                     </div>
                     <div class="right"></div>
@@ -370,7 +423,7 @@
 
                 <button class="card-option card-categoria" [class.selected]="isCategorySelected('ADMINISTRATIVOS_E_ONLINE')"(click)="toggleCategory('ADMINISTRATIVOS_E_ONLINE')">
                     <div class="left">
-                        <img src="/assets/icones/servicos-admin-icon.svg" alt="servicos-admin-icon">
+                        <img [src]="isCategorySelected('ADMINISTRATIVOS_E_ONLINE') ? '/assets/icones/servicos-admin-selected-icon.svg' : '/assets/icones/servicos-admin-icon.svg' " alt="servicos-admin-icon">
                         <p>Serviços Administrativos</p>
                     </div>
                     <div class="right"></div>
@@ -381,7 +434,7 @@
 
             <div class="final-section">
                 <p><strong>Você selecionou:</strong> <span> {{ selectedCategories.length }} </span> de <span>{{categoriasKeys.length}}</span> interesses.</p>
-                <button routerLink="/usuario/inicio-cliente" class="next-btn">Avançar</button>
+                <button class="next-btn" [disabled]="selectedCategories.length < 1" (click)="next()" >Avançar</button>
             </div>
 
         </section>

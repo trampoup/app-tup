@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/configs/services/auth.service';
+import { ModalWelcomeService } from 'src/app/configs/services/modal-welcome.service';
 
 @Component({
   selector: 'app-painel-cliente',
@@ -44,9 +46,25 @@ export class PainelClienteComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(
+    private authService:AuthService,
+    private modalWelcomeService:ModalWelcomeService
+  ) { }
 
   ngOnInit(): void {
+    this.mostrarModalWelcome();
+  }
+
+  mostrarModalWelcome(){
+    if (this.authService.isCadastro) {
+      this.modalWelcomeService.openModal({
+        title: '👋 Bem-vindo!',
+        // description: 'Aqui vai a mensagem que você quiser...',
+        size: 'md'     // sm | md | lg | full  (ajuste para as classes que você definiu no CSS)
+      });
+      this.authService.showModal = false;
+      this.authService.isCadastro = false;
+    }
   }
 
 }

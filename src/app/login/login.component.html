@@ -10,16 +10,22 @@
            <div class="form-group">
              <label for="email">E-mail</label>
              <input type="email" id="email" formControlName="email" placeholder="Digite seu e-mail" />
+              <small *ngIf="submited && loginForm.get('email')?.hasError('required')" class="danger">
+              {{ "O campo Email é obrigatório."}}
+              </small>
            </div>
      
            <div class="form-group password-group">
-
             <label for="senha">Senha</label>
-            <input [type]="passwordFieldType" id="senha" formControlName="senha"  placeholder="Digite sua senha" />
-            
-            <button type="button" (click)="togglePasswordVisibility()" class="eye-button" tabindex="-1">
-              <i [class]="passwordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
-            </button>
+            <div class="input-icon-wrapper">
+              <input [type]="passwordFieldType" id="senha" formControlName="senha"  placeholder="Digite sua senha" />
+              <button type="button" (click)="togglePasswordVisibility()" class="eye-button" tabindex="-1">
+                <i [class]="passwordFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+              </button>
+            </div>
+            <small *ngIf="submited && loginForm.get('senha')?.hasError('required')" class="danger">
+              {{ "O campo Senha é obrigatório."}}
+            </small>
            </div>
 
      

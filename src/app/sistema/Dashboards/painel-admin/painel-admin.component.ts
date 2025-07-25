@@ -14,6 +14,7 @@ import {
   ApexLegend,
 } from 'ng-apexcharts';
 import { UsuarioPerfil } from '../usuario-perfil';
+import { ModalWelcomeService } from 'src/app/configs/services/modal-welcome.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -83,6 +84,7 @@ export class PainelAdminComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private apiService: ServicosService,
+    private modalWelcomeService: ModalWelcomeService,
     private cdr: ChangeDetectorRef,
   ) { }
 
@@ -99,9 +101,20 @@ export class PainelAdminComponent implements OnInit {
 
     this.updateDateTime();
     setInterval(() => this.updateDateTime(), 60_000);
-
+    
+    this.mostrarModalWelcome();
   }
 
+  mostrarModalWelcome(){
+    if (this.authService.showModal) {
+      this.modalWelcomeService.openModal({
+        title: '👋 Bem-vindo!',
+        // description: 'Aqui vai a mensagem que você quiser...',
+        size: 'md'     // sm | md | lg | full  (ajuste para as classes que você definiu no CSS)
+      });
+      this.authService.showModal = false;
+    }
+  }
 
   renderChartGrafico() {
     const options = {

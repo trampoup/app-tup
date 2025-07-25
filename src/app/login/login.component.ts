@@ -18,7 +18,7 @@ export class LoginComponent {
     private authService: AuthService
   ) {}
 
-  submitted:boolean = false;
+  submited:boolean = false;
   isLoading:boolean = false;
   
   passwordFieldType = 'password';
@@ -35,7 +35,7 @@ export class LoginComponent {
 
   protected onFormSubmitHandler(event: SubmitEvent) {
     event.preventDefault();
-    this.submitted = true;
+    this.submited = true;
 
     if(this.loginForm.invalid) return;
 

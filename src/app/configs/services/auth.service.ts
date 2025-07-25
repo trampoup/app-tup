@@ -20,6 +20,8 @@ export class AuthService {
   private UsuarioPerfil: UsuarioPerfil | null = null;
   private tipoUsuarioAtual: TipoUsuario | null = null;
 
+  showModal: boolean = true;
+  isCadastro:boolean = false;
 
   constructor(private http: HttpClient) {}
 
@@ -87,6 +89,8 @@ export class AuthService {
   
   encerrarSessao(){
     localStorage.removeItem('access_token')
+    this.showModal = true;
+    this.isCadastro = false;
   }
 
 
