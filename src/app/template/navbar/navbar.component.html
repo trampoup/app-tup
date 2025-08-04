@@ -69,7 +69,18 @@
                 <img src="assets/icones/servicos-icon.svg" alt="home icon" />
                 <span>Serviços</span>
               </a>
-  
+
+
+              <a routerLink="/usuario/comunidade" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/comunidade')}">
+                <img src="assets/icones/comunidade-icon.svg" alt="home icon" />
+                <span>Comunidade</span>
+              </a>
+
+              <a routerLink="/usuario/localizacao" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/localizacao')}">
+                <img src="assets/icones/localizacao-icon.svg" alt="home icon" />
+                <span>Localização</span>
+              </a>
+
               <a routerLink="/usuario/visualizacao-de-cupons" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/visualizacao-de-cupons')}">
                 <img src="assets/icones/cupons-icon.svg" alt="home icon" />
                 <span>Cupons</span>

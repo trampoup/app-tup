@@ -27,6 +27,8 @@
   import { InicioAdminComponent } from './inicios/inicio-admin/inicio-admin.component';
   import { InicioClienteComponent } from './inicios/inicio-cliente/inicio-cliente.component';
   import { InicioProfissionalComponent } from './inicios/inicio-profissional/inicio-profissional.component';
+import { LocalizacaoComponent } from './localizacao/localizacao.component';
+import { ComunidadeComponent } from './comunidade/comunidade.component';
 
 
   @NgModule({
@@ -53,7 +55,9 @@
       VisualizacaoDeFavoritosComponent,
       InicioAdminComponent,
       InicioClienteComponent,
-      InicioProfissionalComponent
+      InicioProfissionalComponent,
+      LocalizacaoComponent,
+      ComunidadeComponent
     ],
     imports:[
       CommonModule, 
