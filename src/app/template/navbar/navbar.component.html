@@ -18,6 +18,7 @@
         </button>
         <div class="dropdown-menu" id="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
           <button routerLink="/usuario/meu-perfil-cliente" class="dropdown-item">Meu perfil</button>
+          <button routerLink="/usuario/minhas-comunidades" class="dropdown-item">Minhas Comunidades</button>
           <button class="dropdown-item" (click)="logout()">Sair</button>
         </div>
       </div>
@@ -62,7 +63,7 @@
        
 
         <div>
-            <h3 class="sidebar-title">RECURSOS</h3>
+            <h3 class="sidebar-title">Funcionalidades</h3>
   
             <div class="sidebar-list">
               <a routerLink="/usuario/lista-de-servicos" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/lista-de-servicos')}">
@@ -73,7 +74,7 @@
 
               <a routerLink="/usuario/comunidade" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/comunidade')}">
                 <img src="assets/icones/comunidade-icon.svg" alt="home icon" />
-                <span>Comunidade</span>
+                <span>Comunidades</span>
               </a>
 
               <a routerLink="/usuario/localizacao" class="sidebar-link" [ngClass]="{'active-link': isActive('/usuario/localizacao')}">

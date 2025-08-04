@@ -23,6 +23,7 @@ import { InicioProfissionalComponent } from './inicios/inicio-profissional/inici
 import { InicioClienteComponent } from './inicios/inicio-cliente/inicio-cliente.component';
 import { LocalizacaoComponent } from './localizacao/localizacao.component';
 import { ComunidadeComponent } from './comunidade/comunidade.component';
+import { MinhasComunidadesComponent } from './minhas-comunidades/minhas-comunidades.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -42,6 +43,7 @@ const routes: Routes = [
 
       //comunidade
       {path: 'comunidade', component: ComunidadeComponent},
+      {path: 'minhas-comunidades', component: MinhasComunidadesComponent},
 
       // cupons
       { path: 'cadastro-de-cupom', component: CadastroCuponsComponent},
