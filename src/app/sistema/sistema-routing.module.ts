@@ -21,6 +21,8 @@ import { VisualizacaoDeFavoritosComponent } from './favoritos/visualizacao-de-fa
 import { InicioAdminComponent } from './inicios/inicio-admin/inicio-admin.component';
 import { InicioProfissionalComponent } from './inicios/inicio-profissional/inicio-profissional.component';
 import { InicioClienteComponent } from './inicios/inicio-cliente/inicio-cliente.component';
+import { LocalizacaoComponent } from './localizacao/localizacao.component';
+import { ComunidadeComponent } from './comunidade/comunidade.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -34,6 +36,12 @@ const routes: Routes = [
       { path: 'painel-principal-admin', component: PainelAdminComponent},
       { path: 'painel-principal-profissional', component: PainelProfissionalComponent},
       { path: 'painel-principal-cliente', component: PainelClienteComponent},
+
+      //localizacao
+      {path: 'localizacao', component: LocalizacaoComponent},
+
+      //comunidade
+      {path: 'comunidade', component: ComunidadeComponent},
 
       // cupons
       { path: 'cadastro-de-cupom', component: CadastroCuponsComponent},
