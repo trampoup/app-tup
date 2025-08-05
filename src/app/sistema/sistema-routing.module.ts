@@ -24,6 +24,7 @@ import { InicioClienteComponent } from './inicios/inicio-cliente/inicio-cliente.
 import { LocalizacaoComponent } from './localizacao/localizacao.component';
 import { ComunidadeComponent } from './comunidade/comunidade.component';
 import { MinhasComunidadesComponent } from './minhas-comunidades/minhas-comunidades.component';
+import { GameficacaoComponent } from './gameficacao/gameficacao.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -40,6 +41,9 @@ const routes: Routes = [
 
       //localizacao
       {path: 'localizacao', component: LocalizacaoComponent},
+
+      // gameficacao
+      {path:'gameficacao', component: GameficacaoComponent},
 
       //comunidade
       {path: 'comunidade', component: ComunidadeComponent},

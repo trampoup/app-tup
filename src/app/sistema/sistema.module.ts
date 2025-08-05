@@ -30,6 +30,7 @@
 import { LocalizacaoComponent } from './localizacao/localizacao.component';
 import { ComunidadeComponent } from './comunidade/comunidade.component';
 import { MinhasComunidadesComponent } from './minhas-comunidades/minhas-comunidades.component';
+import { GameficacaoComponent } from './gameficacao/gameficacao.component';
 
 
   @NgModule({
@@ -59,7 +60,8 @@ import { MinhasComunidadesComponent } from './minhas-comunidades/minhas-comunida
       InicioProfissionalComponent,
       LocalizacaoComponent,
       ComunidadeComponent,
-      MinhasComunidadesComponent
+      MinhasComunidadesComponent,
+      GameficacaoComponent
     ],
     imports:[
       CommonModule, 
