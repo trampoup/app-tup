@@ -2,52 +2,96 @@
     <div class="cadastro-titulo">
         <h1>
             <a [routerLink]="['/usuario/visualizacao-de-cupons']"><img src="/assets/icones/voltar-icon.svg"></a>
-            Cadastrar Cupom
+            {{isEditMode? "Editar Cupom" : "Cadastrar Cupom"}}
         </h1>
     </div>
 
 
-    <section class="inputs-cadastro">
+    <form [formGroup]="cupomForm" (ngSubmit)="onSubmit()" class="inputs-cadastro">
 
         <div id="campo-titulo">
             <label for="titulo">Titulo</label>
-            <input type="text" id="input-titulo" name="titulo" placeholder="Digite um titulo">
+            <input type="text" id="input-titulo" formControlName="titulo"  name="titulo" placeholder="Digite um titulo">
+            <small *ngIf="submited && cupomForm.get('titulo')?.hasError('required')" class="error">
+                {{ "O campo Título é obrigatório." }}
+            </small>
         </div>
 
 
         <section class="campos-tipo-valor">
-
-            <div id="campo-tipo">
+            <!-- <div id="campo-tipo">
                 <label for="tipo">Tipo</label>
-                <select name="tipo" id="tipo">
-                    <option value="">Selecione um tipo</option>
+                <select name="tipo" formControlName="tipo" id="tipo">
+                    <option value=null disabled hidden>Selecione um tipo</option>
                     <option value="VALOR_FIXO">Valor Fixo</option>
                 </select>
-            </div>
+                <small *ngIf="submited && cupomForm.get('tipo')?.hasError('required')" class="error">
+                    {{ "O campo Tipo é obrigatório." }}
+                </small>
+            </div> -->
     
             <div id="campo-valor">
                 <label for="valor">Valor</label>
-                <input type="text" id="input-valor" name="valor" placeholder="Digite um valor">
+                <input type="text" id="input-valor" (keypress)="allowOnlyNumbers($event)"  formControlName="valor" name="valor" placeholder="Digite o valor de desconto">
+                <small *ngIf="submited && cupomForm.get('valor')?.hasError('required')" class="error">
+                    {{ "O campo Valor é obrigatório." }}
+                </small>
+                <small *ngIf="cupomForm.get('valor')?.touched && cupomForm.get('valor')?.hasError('min')" class="error">
+                    O valor não pode ser negativo.
+                </small>
             </div>
-        </section>
 
+            <div>
+                <label for="qtdCupom">Quantidade</label>
+                <input type="text" name="qtdCupom" (keypress)="allowOnlyNumbers($event)" formControlName="qtdCupom" id="qtdCupom" placeholder="Digite a quantidade disponível do cupom">
+                <small *ngIf="submited && cupomForm.get('qtdCupom')?.hasError('required')" class="error">
+                    {{ "A quantidade de cupons é obrigatória." }}
+                </small>
+                <small *ngIf="cupomForm.get('qtdCupom')?.touched && cupomForm.get('qtdCupom')?.hasError('min')" class="error">
+                    O valor não pode ser negativo.
+                </small>
+            </div>
+
+        </section>
+            
         <div id="campo-descricao">
             <label for="descricao">Descrição</label>
-            <textarea name="descricao" id="input-descricao" placeholder="Digite uma breve descrição." rows="4"></textarea>
+            <textarea name="descricao" formControlName="descricao" id="input-descricao" placeholder="Digite uma breve descrição." rows="4"></textarea>
+            <small *ngIf="submited && cupomForm.get('descricao')?.hasError('required')" class="error">
+                {{ "A descrição é obrigatória." }}
+            </small>
         </div>
 
         <section class="campos-data">
             <div id="campo-data-inicial">
                 <label for="data-inicial">Data de inicio</label>
-                <input type="date" id="input-data-inicial" name="data-inicial">
+                <input type="date" id="input-data-inicial" formControlName="dataDeInicio" name="data-inicial">
+                <small *ngIf="submited && cupomForm.get('dataDeInicio')?.hasError('required')" class="error">
+                    {{ "Por favor, selecione uma data inicial de ativação do cupom." }}
+                </small>
             </div>
     
             <div id="campo-data-termino">
                 <label for="data-termino">Data de termino</label>
-                <input type="date" id="input-data-termino" name="data-termino">
+                <input type="date" id="input-data-termino" formControlName="dataDeTermino" name="data-termino">
+                <small *ngIf="submited && cupomForm.get('dataDeInicio')?.hasError('required')" class="error">
+                    {{ "Por favor, selecione uma data final de ativação do cupom." }}
+                </small>
             </div>
         </section>
-    </section>
-    
-    <button id="btn-cadastrar-cupom" type="submit">Cadastrar Cupom</button>
+
+        <div class="alerts">
+            <div id="sucess-message" class="alerts-container alert-success" *ngIf="successMessage">
+            {{ successMessage }}
+            </div>
+            <div class="alerts-container alert-danger" *ngIf="errorMessage">
+            {{ errorMessage }}
+            </div>
+        </div>
+
+        <!-- loading bar aparece aqui -->
+        <div *ngIf="isLoading" class="loading-bar"></div>
+
+        <button id="btn-cadastrar-cupom" type="submit">Cadastrar Cupom</button>
+    </form>
 </section>

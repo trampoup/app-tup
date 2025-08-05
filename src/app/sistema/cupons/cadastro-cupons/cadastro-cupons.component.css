@@ -89,6 +89,41 @@ label {
     max-width: 100%;        /* nunca excede 100% da largura disponível */
 }
 
+.error{
+    color: var(--danger);
+    justify-content: left;
+    font-size: 12px;
+}
+
+
+
+.alerts > div{
+    padding: 15px;
+    border-radius: 15px;
+    color: white;
+    font-size: 18px;
+}
+
+
+
+.eye-button:focus {
+  outline: none;
+}
+
+.loading-bar {
+    position: relative;
+    margin: 16px 0;      
+    height: 4px;
+    width: 100%;
+    background: var(--lm-secondary);
+    background-size: 200% 100%;
+    animation: loadingAnimation 1.2s linear infinite;
+}
+
+@keyframes loadingAnimation {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
 
 
 /* ==============================
