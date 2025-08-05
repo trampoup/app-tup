@@ -8,27 +8,76 @@
     <div class="cupons-titulo">
         <p><a [routerLink]="getRotaInicial()">Inicio</a> > <span>Cupons</span></p>
 
-        <button class="btn-cadastrar-cupom" [routerLink]="['/usuario/cadastro-de-cupom']" *ngIf="this.isCliente()">
+        <button class="btn-cadastrar-cupom" [routerLink]="['/usuario/cadastro-de-cupom']" *ngIf="this.isNotClient()">
             Cadastrar cupom 
             <img src="assets/icones/plus-icon.svg" alt="plus-icon">
         </button>
 
     </div>
-
-    <div class="lista-cupons" *ngIf="cupons.length > 0; else semCupons">
-        <ul>
-            <li *ngFor="let cupom of cupons">
-                {{ cupom.descricao }} – Validade: {{ cupom.validade | date }}
-            </li>
-        </ul>
+    
+    <div class="meus-cupons-container">
+        <div class="title">
+            <h1>{{this.isNotClient() ? "Meus cupons cadastrados" : "Meus cupons resgatados"}}</h1>
+        </div>
+        <div class="lista-cupons" *ngIf="meusCupons.length > 0; else semCupons">
+            <ul>
+                <li *ngFor="let cupom of meusCupons">
+                    {{ cupom.descricao }} – Validade: {{ cupom.dataDeTermino | date }}
+                </li>
+            </ul>
+        </div>
+        <ng-template #semCupons>
+            <div class="lista-vazia">
+                <img src="assets/icones/no-data-icon.svg" alt="Sem cupons">
+                <p>Nenhum cupom cadastrado.</p>
+            </div>
+        </ng-template>
     </div>
 
-    <ng-template #semCupons>
-        <div class="lista-vazia">
-            <img src="assets/icones/no-data-icon.svg" alt="Sem cupons">
-            <p>Nenhum cupom cadastrado.</p>
+    <div class="cupons-disponiveis-container">
+        <div class="title">
+            <h1>Cupons Disponíveis</h1>
         </div>
-    </ng-template>
+
+
+        <div class="lista-cupons" *ngIf="cuponsDisponiveis.length > 0; else semDisponiveis">
+            <div *ngFor="let cupom of cuponsDisponiveis">
+                <div class="card-cupom">
+                    <div class="title-card">
+                        <img src="/assets/icones/cupom-icon.svg" alt="icone cupom">
+                        <h2>R${{cupom.valor}} - {{cupom.titulo}}</h2>
+                    </div>
+
+                    <p>{{cupom.descricao}}</p>
+
+                    <button class="btn-resgatar" [disabled]="isNotClient()">
+                    Resgatar
+                    </button>
+
+                    <div class="grid">
+                        <a href="">Ver regras</a>
+                        <div class="datas">
+                            <!-- <p>Início: {{cupom.dataDeInicio | date}}</p> -->
+                            <p>Valido até {{cupom.dataDeTermino | date}}</p>
+                        </div>
+                    </div>
+
+                    <div class="anuncio">
+                        <p>Verifique a utilização do cupom com o provedor do serviço.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <ng-template #semDisponiveis>
+            <div class="lista-vazia">
+            <img src="assets/icones/no-data-icon.svg" alt="Sem cupons disponíveis">
+            <p>Não há cupons disponíveis no momento.</p>
+            </div>
+        </ng-template>
+    </div>
+
 
 
 </section>

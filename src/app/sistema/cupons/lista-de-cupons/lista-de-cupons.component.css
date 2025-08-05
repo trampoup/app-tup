@@ -74,6 +74,75 @@
     /*espaçamento entre a imagem e o paragrafo.*/
 }
 
+.title{
+    color: var(--lm-text02);
+}
+
+.title h1{
+    font-weight: 600;
+}
+
+.lista-cupons{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 25px;
+}
+
+.card-cupom{
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    width: 100%;
+    align-items: center;
+    box-shadow: 0 0px 11px rgba(0, 0, 0, 0.1);
+    padding: 10px 0 0 0;
+    row-gap: 15px;
+}
+
+.title-card{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-card h2{
+    margin: 0;
+}
+
+.title-card img{
+    width: 45px;
+    height: 45px;
+}
+
+.btn-resgatar{
+    border-radius: 15px;
+    background-color: white;
+    color: var(--lm-secondary);
+    border: 1px solid var(--lm-secondary);
+    width: 80%;
+}
+
+.btn-resgatar:hover{
+    background-color: var(--lm-secondary);
+    color: white;
+}
+
+.grid{
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+}
+
+.anuncio{
+    background-color: #E9E9E9;
+    color: #4B4B4B;
+    width: 100%;
+    text-align: center;
+    border-radius: 0 0 15px 15px;
+    padding: 15px 0 0 0;
+}
+
 @media screen and (min-width: 300px) and (max-width: 600px) {
     .main-container {
         padding: 15px;
