@@ -86,6 +86,8 @@
     display: grid;
     grid-template-columns: repeat(3,1fr);
     gap: 25px;
+    justify-items: center;
+    text-align: center;
 }
 
 .card-cupom{
@@ -93,6 +95,7 @@
     flex-direction: column;
     border-radius: 20px;
     width: 100%;
+    min-width: none;
     align-items: center;
     box-shadow: 0 0px 11px rgba(0, 0, 0, 0.1);
     padding: 10px 0 0 0;
@@ -104,10 +107,14 @@
     width: 100%;
     justify-content: center;
     align-items: center;
+    flex-wrap: nowrap;        /* impede wrap em telas estreitas */
 }
 
 .title-card h2{
     margin: 0;
+    font-weight: 600;
+  white-space: nowrap;      /* impede quebra do texto */
+  flex-shrink: 0;           /* não deixa o texto encolher demais */
 }
 
 .title-card img{
@@ -140,13 +147,43 @@
     width: 100%;
     text-align: center;
     border-radius: 0 0 15px 15px;
-    padding: 15px 0 0 0;
+    padding: 15px;
 }
 
 @media screen and (min-width: 300px) and (max-width: 600px) {
     .main-container {
         padding: 15px;
     }
+
+    .cupons-titulo{
+        margin-bottom: 15px;
+    }
+
+    .btn-cadastrar-cupom{
+        font-size: 14px;
+    }
+
+    .title h1{
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .lista-cupons{
+        grid-template-columns: repeat(1,1fr);
+        text-align: center;
+    }
+
+    .title-card h2{
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .title-card img{
+        height: 35px;
+        width: 35px;
+    }
+
+
 }
 
 /* De 601px até 1023px (tablets e desktops pequenos) */
@@ -154,6 +191,22 @@
     .main-container {
         padding: 25px;
     }
+
+    .lista-cupons{
+        grid-template-columns: repeat(2,1fr);
+        text-align: center;
+    }
+
+    .title-card h2{
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .title-card img{
+        height: 40px;
+        width: 40px;
+    }
+
 }
 
 /* A partir de 1024px (desktop médio/alto) */

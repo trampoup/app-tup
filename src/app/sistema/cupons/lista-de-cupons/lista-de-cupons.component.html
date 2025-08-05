@@ -17,7 +17,7 @@
     
     <div class="meus-cupons-container">
         <div class="title">
-            <h1>{{this.isNotClient() ? "Meus cupons cadastrados" : "Meus cupons resgatados"}}</h1>
+            <h1>{{this.isNotClient() ? "Meus cupons cadastrados" : "Meus Cupons"}}</h1>
         </div>
         <div class="lista-cupons" *ngIf="meusCupons.length > 0; else semCupons">
             <ul>
@@ -50,8 +50,8 @@
 
                     <p>{{cupom.descricao}}</p>
 
-                    <button class="btn-resgatar" [disabled]="isNotClient()">
-                    Resgatar
+                    <button *ngIf="!isNotClient()" class="btn-resgatar">
+                        Resgatar
                     </button>
 
                     <div class="grid">
