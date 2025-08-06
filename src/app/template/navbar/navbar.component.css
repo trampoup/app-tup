@@ -340,10 +340,45 @@ mat-drawer-content.shifted {
   margin-left: 90px !important;
 }
 
+@media screen and (min-width:300px) and (max-width: 399px) {
+  .sidebar-open .location-user {
+    display: none;
+  }
+
+  .location-user{
+    margin-right: 20px;
+  }
+
+  .location-user h2{
+    font-size: 7.5px;
+    font-weight: 600;
+  }
+
+  .location-user img{
+    height: 20px;
+    width: 20px;
+  }
+}
+
+@media screen and (min-width:400px) and (max-width: 500px) {
+  .sidebar-open .location-user {
+    display: none;
+
+  }
+
+  .location-user{
+    margin-right: 20px;
+    padding: 2px;
+  }
+
+  .location-user h2{
+    font-size: 9px;
+    font-weight: 600;
+  }
+}
+
 /* BREAKPOINTS */
 @media screen and (max-width: 899px) {
-
-
   .header {
     margin: 0;
     padding-left: 0;

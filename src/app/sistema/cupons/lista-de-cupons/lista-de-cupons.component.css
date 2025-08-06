@@ -116,8 +116,9 @@
 .title-card h2{
     margin: 0;
     font-weight: 600;
-  white-space: nowrap;      /* impede quebra do texto */
-  flex-shrink: 0;           /* não deixa o texto encolher demais */
+    white-space: nowrap;      /* impede quebra do texto */
+    flex-shrink: 0;           /* não deixa o texto encolher demais */
+    padding-inline: 5px;
 }
 
 .title-card img{
@@ -127,6 +128,10 @@
 
 .descricao{
     max-width: 80%;
+}
+
+.criador{
+    margin: 0;
 }
 
 .btn-resgatar{
