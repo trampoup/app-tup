@@ -5,4 +5,5 @@ export interface UsuarioPerfil {
     nome: string;
     email: string;
     tipoUsuario: TipoUsuario;
+    endereco: string;
 }

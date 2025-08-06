@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/configs/services/auth.service';
 import { CuponsService } from 'src/app/configs/services/cupons.service';
 import { Cupom } from '../cupom';
-import { error } from 'console';
 
 @Component({
   selector: 'app-lista-de-cupons',
@@ -13,6 +12,8 @@ import { error } from 'console';
 export class ListaDeCuponsComponent implements OnInit {
   meusCupons: Cupom[] = [];
   cuponsDisponiveis : Cupom[] = [];
+  selectedCupom : Cupom  | null = null;
+  showModal:boolean = false;
   
   constructor(private router: Router,
     private authService:AuthService,
@@ -34,11 +35,21 @@ export class ListaDeCuponsComponent implements OnInit {
   listarTodosOsCupons(): void {
     this.cuponsService.getTodosCupons().subscribe(
       res => {
-        this.cuponsDisponiveis = res;
+        this.cuponsDisponiveis = res ?? [];
       },
       error => {
         console.error('Erro ao carregar cupons', error);
       }
     );
+  }
+
+  openModalRegras(cupom: Cupom): void{
+    this.showModal = true;
+    this.selectedCupom = cupom;
+  }
+
+  fecharModal(): void {
+    this.showModal = false;
+    this.selectedCupom = null;
   }
 }

@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { LoginDTO } from 'src/app/login/LoginDTO';
 import { catchError, map, tap, throwError } from 'rxjs';
 import { UsuarioPerfil } from 'src/app/sistema/Dashboards/usuario-perfil';
+import { UsuarioDadosDTO } from 'src/app/sistema/cupons/UsuarioDadosDTO';
 
 
 @Injectable({
@@ -17,7 +18,7 @@ export class AuthService {
   clientId: string = environment.clientId;
   clientSecret: string = environment.clientSecret;
 
-  private UsuarioPerfil: UsuarioPerfil | null = null;
+  private UsuarioPerfil: UsuarioDadosDTO | null = null;
   private tipoUsuarioAtual: TipoUsuario | null = null;
 
   showModal: boolean = true;
@@ -94,18 +95,21 @@ export class AuthService {
   }
 
 
-  obterPerfilUsuario(): Observable<UsuarioPerfil> {
+  obterPerfilUsuario(): Observable<UsuarioDadosDTO> {
     const token = localStorage.getItem('access_token');
     const headers = {
       Authorization: `Bearer ${token}`,
     };
 
-    return this.http.get<UsuarioPerfil>(`${this.apiUrl}/token`, { headers }).pipe(
+    return this.http.get<UsuarioDadosDTO>(`${this.apiUrl}/token`, { headers }).pipe(
       map(dto => ({
-        idUsuario: dto.idUsuario,
+        idUsuario: dto.id,
         nome:      dto.nome,
         email:     dto.email,
-        tipoUsuario: dto.tipoUsuario as TipoUsuario
+        tipoUsuario: dto.tipoUsuario as TipoUsuario,
+        endereco:dto.endereco,
+        cidade: dto.cidade,
+        estado: dto.estado
       })),
       tap(u => {
         // converte a string que veio do back para o enum
