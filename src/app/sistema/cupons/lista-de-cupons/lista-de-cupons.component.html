@@ -19,12 +19,33 @@
         <div class="title">
             <h1>{{this.isNotClient() ? "Meus cupons cadastrados" : "Meus Cupons"}}</h1>
         </div>
-        <div class="lista-cupons" *ngIf="meusCupons.length > 0; else semCupons">
-            <ul>
-                <li *ngFor="let cupom of meusCupons">
-                    {{ cupom.descricao }} – Validade: {{ cupom.dataDeTermino | date }}
-                </li>
-            </ul>
+        <div class="lista-cupons" *ngIf="meusCupons.length > 0; else semDisponiveis">
+            <div *ngFor="let cupom of meusCupons">
+                <div class="card-cupom">
+                    <div class="title-card">
+                        <img src="/assets/icones/cupom-icon.svg" alt="icone cupom">
+                        <h2>R${{cupom.valor}} - {{cupom.titulo}}</h2>
+                    </div>
+
+                    <p class="descricao">{{cupom.descricao}}</p>
+
+                    <button *ngIf="!isNotClient()" class="btn-resgatar">
+                        Resgatar
+                    </button>
+
+                    <div class="grid">
+                        <a (click)="openModalRegras(cupom)">Ver regras</a>
+                        <div class="datas">
+                            <!-- <p>Início: {{cupom.dataDeInicio | date}}</p> -->
+                            <p>Valido até {{cupom.dataDeTermino | date:'dd/MM'}}</p>
+                        </div>
+                    </div>
+
+                    <div class="anuncio">
+                        <p>Verifique a utilização do cupom com o provedor do serviço.</p>
+                    </div>
+                </div>
+            </div>
         </div>
         <ng-template #semCupons>
             <div class="lista-vazia">
@@ -48,7 +69,7 @@
                         <h2>R${{cupom.valor}} - {{cupom.titulo}}</h2>
                     </div>
 
-                    <p>{{cupom.descricao}}</p>
+                    <p class="descricao">{{cupom.descricao}}</p>
 
                     <button *ngIf="!isNotClient()" class="btn-resgatar">
                         Resgatar

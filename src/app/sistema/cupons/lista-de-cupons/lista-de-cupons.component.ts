@@ -21,6 +21,7 @@ export class ListaDeCuponsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.listarMeusCupons();
     this.listarTodosOsCupons();
   }
 
@@ -31,6 +32,21 @@ export class ListaDeCuponsComponent implements OnInit {
   isNotClient():boolean{
     return (this.authService.isAdministrador()) || (this.authService.isProfissional());
   }
+
+  listarMeusCupons(){
+    if (this.isNotClient()) {
+      this.cuponsService.getMeusCuponsCadastrados().subscribe(
+        res => { 
+          this.meusCupons = res ?? [];
+          console.log(this.meusCupons)
+        },
+        error => {
+          console.error('Erro ao carregar meus cupons', error);
+        }
+      );
+    }
+  }
+
 
   listarTodosOsCupons(): void {
     this.cuponsService.getTodosCupons().subscribe(

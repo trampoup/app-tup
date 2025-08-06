@@ -26,4 +26,7 @@ export class CuponsService {
     return this.http.get<Cupom[]>(this.apiUrlLink);
   }
 
+  getMeusCuponsCadastrados():Observable<Cupom[]>{
+    return this.http.get<Cupom[]>(this.apiUrlLink + "/meus-cupons-cadastrados");
+  }
 }
