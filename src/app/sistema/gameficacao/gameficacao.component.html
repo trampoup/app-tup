@@ -1,20 +1,65 @@
 <section class="main-container">
     <div class="banner">
-        <h1>Gameficação</h1>
+        <h1>TrampoUp Score</h1>
         <p> Compartilhe, indique e conquiste elogios enquanto acumula tempo de uso!</p>
     </div>
 
     <div class="cupons-titulo">
-        <p><a [routerLink]="getRotaInicial()">Inicio</a> > <span> Gamefficação </span></p>
+        <p><a [routerLink]="getRotaInicial()">Inicio</a> > <span> TrampoUp Score </span></p>
 
     </div>
-    
-    <div class="meus-cupons-container">
-
-    </div>
-
-    <div class="cupons-disponiveis-container">
-    
-    </div>
+        <!-- Cabeçalho -->
+        <div class="progress-header">
+          <p>Poder de Destaque: {{ userScore }} / {{ maxScore }} pts</p>
+        </div>
+      
+        <!-- Barra de Progresso -->
+        <div class="progress-bar">
+          <div
+            class="progress-fill"
+            [style.width.%]="(userScore / maxScore) * 100"
+          ></div>
+        </div>
+      
+        <!-- Ações que preenchem a barrinha -->
+        <div class="actions-container">
+          <h2>Ações Disponíveis</h2>
+          <div class="actions-list">
+            <button
+              *ngFor="let action of actions"
+              (click)="performAction(action)"
+              [disabled]="action.done"
+            >
+              {{ action.label }} (+{{ action.points }} pts)
+            </button>
+          </div>
+        </div>
+      
+        <!-- Recompensas -->
+        <div class="rewards-container">
+          <h2>Recompensas</h2>
+          <ul>
+            <li
+              *ngFor="let reward of rewards"
+              [class.unlocked]="userScore >= reward.points"
+            >
+              {{ reward.points }} pts:
+              <strong>{{ reward.description }}</strong>
+            </li>
+          </ul>
+      
+          <div class="boost-buttons">
+            <button
+              class="btn-boost-free"
+              (click)="boostFree()"
+              [disabled]="userScore < maxScore"
+            >
+              Impulsionar Grátis
+            </button>
+            <button class="btn-boost-paid" (click)="purchaseBoost()">
+              Impulsionamento Imediato (PAGO)
+            </button>
+          </div>
+        </div>      
 
 </section>
