@@ -44,6 +44,11 @@ export class ListaDeCuponsComponent implements OnInit {
           console.error('Erro ao carregar meus cupons', error);
         }
       );
+    }else{
+      this.cuponsService.getMeusCuponsResgatados().subscribe(
+        res => this.meusCupons = res ?? [],
+        err => console.error('Erro ao carregar meus cupons resgatados', err)
+      );
     }
   }
 
@@ -58,6 +63,17 @@ export class ListaDeCuponsComponent implements OnInit {
       }
     );
   }
+
+
+  resgatarCupom(cupom: Cupom): void {
+    this.cuponsService.resgatarCupom(cupom.id!).subscribe({
+      next: () => {
+        this.listarMeusCupons();
+      },
+      error: err => console.error('Falha ao resgatar cupom', err)
+    });
+  }
+
 
   openModalRegras(cupom: Cupom): void{
     this.showModal = true;

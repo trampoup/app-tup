@@ -29,10 +29,6 @@
 
                     <p class="descricao">{{cupom.descricao}}</p>
 
-                    <button *ngIf="!isNotClient()" class="btn-resgatar">
-                        Resgatar
-                    </button>
-
                     <div class="grid">
                         <a (click)="openModalRegras(cupom)">Ver regras</a>
                         <div class="datas">
@@ -71,7 +67,7 @@
 
                     <p class="descricao">{{cupom.descricao}}</p>
 
-                    <button *ngIf="!isNotClient()" class="btn-resgatar">
+                    <button *ngIf="!isNotClient()" (click)="resgatarCupom(cupom)" class="btn-resgatar">
                         Resgatar
                     </button>
 
@@ -105,43 +101,43 @@
 
 
 </section>
-        
-                        <!-- OVERLAY/MODAL -->
-                        <div class="modal-overlay" *ngIf="showModal">
-                            <div class="modal-content">
-                                <div class="modal-title">
-                                    <h2>Regras de uso do cupom</h2>
-                                    <button class="modal-close-btn" (click)="fecharModal()" aria-label="Fechar">
-                                        &times;
-                                    </button>
-                                </div>
-        
-                                <section>
-                                <h3>📅 Validade</h3>
-                                <ul>
-                                    <li>Válido até {{selectedCupom!.dataDeTermino | date:'dd/MM/yyyy'}}.</li>
-                                    <li>Não pode ser usado antes de {{selectedCupom!.dataDeInicio | date:'dd/MM/yyyy'}} nem após a data de término.</li>
-                                </ul>
-                                </section>
-        
-                                <section>
-                                <h3>👤 Elegibilidade</h3>
-                                <ul>
-                                    <li>Uso único por usuário cadastrado.</li>
-                                    <li>Válido apenas para clientes com ao menos 1 compra anterior.</li>
-                                </ul>
-                                </section>
-        
-                                <section>
-                                <h3>🚫 Restrições</h3>
-                                <ul>
-                                    <li>Não cumulativo com outras promoções.</li>
-                                    <li>Aplicável somente em serviços de {{selectedCupom?.criador?.setor ?? "modos gerais"}}</li>
-                                    <li>Agendamento mínimo de 48 h antes da execução.</li>
-                                    <li>Região de atendimento: <strong>{{selectedCupom?.criador?.cidade}}/{{selectedCupom?.criador?.estado}}</strong>.</li>
-                                </ul>
-                                </section>
-        
-                                <button class="btn-close-modal" (click)="fecharModal()">Fechar</button>
-                            </div>
-                        </div>
+
+<!-- OVERLAY/MODAL -->
+<div class="modal-overlay" *ngIf="showModal">
+    <div class="modal-content">
+        <div class="modal-title">
+            <h2>Regras de uso do cupom</h2>
+            <button class="modal-close-btn" (click)="fecharModal()" aria-label="Fechar">
+                &times;
+            </button>
+        </div>
+
+        <section>
+        <h3>📅 Validade</h3>
+        <ul>
+            <li>Válido até {{selectedCupom!.dataDeTermino | date:'dd/MM/yyyy'}}.</li>
+            <li>Não pode ser usado antes de {{selectedCupom!.dataDeInicio | date:'dd/MM/yyyy'}} nem após a data de término.</li>
+        </ul>
+        </section>
+
+        <section>
+        <h3>👤 Elegibilidade</h3>
+        <ul>
+            <li>Uso único por usuário cadastrado.</li>
+            <li>Válido apenas para clientes com ao menos 1 compra anterior.</li>
+        </ul>
+        </section>
+
+        <section>
+        <h3>🚫 Restrições</h3>
+        <ul>
+            <li>Não cumulativo com outras promoções.</li>
+            <li>Aplicável somente em serviços de {{selectedCupom?.criador?.setor ?? "modos gerais"}}</li>
+            <li>Agendamento mínimo de 48 h antes da execução.</li>
+            <li>Região de atendimento: <strong>{{selectedCupom?.criador?.cidade}}/{{selectedCupom?.criador?.estado}}</strong>.</li>
+        </ul>
+        </section>
+
+        <button class="btn-close-modal" (click)="fecharModal()">Fechar</button>
+    </div>
+</div>
