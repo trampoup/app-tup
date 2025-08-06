@@ -26,4 +26,15 @@ export class CuponsService {
     return this.http.get<Cupom[]>(this.apiUrlLink);
   }
 
+  getMeusCuponsCadastrados():Observable<Cupom[]>{
+    return this.http.get<Cupom[]>(this.apiUrlLink + "/meus-cupons-cadastrados");
+  }
+
+  resgatarCupom(id: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrlLink}/${id}/resgatar`, null);
+  }
+
+  getMeusCuponsResgatados(): Observable<Cupom[]> {
+    return this.http.get<Cupom[]>(`${this.apiUrlLink}/meus-cupons-resgatados`);
+  }
 }

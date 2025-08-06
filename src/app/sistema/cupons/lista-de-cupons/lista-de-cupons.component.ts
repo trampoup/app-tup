@@ -21,6 +21,7 @@ export class ListaDeCuponsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.listarMeusCupons();
     this.listarTodosOsCupons();
   }
 
@@ -32,6 +33,26 @@ export class ListaDeCuponsComponent implements OnInit {
     return (this.authService.isAdministrador()) || (this.authService.isProfissional());
   }
 
+  listarMeusCupons(){
+    if (this.isNotClient()) {
+      this.cuponsService.getMeusCuponsCadastrados().subscribe(
+        res => { 
+          this.meusCupons = res ?? [];
+          console.log(this.meusCupons)
+        },
+        error => {
+          console.error('Erro ao carregar meus cupons', error);
+        }
+      );
+    }else{
+      this.cuponsService.getMeusCuponsResgatados().subscribe(
+        res => this.meusCupons = res ?? [],
+        err => console.error('Erro ao carregar meus cupons resgatados', err)
+      );
+    }
+  }
+
+
   listarTodosOsCupons(): void {
     this.cuponsService.getTodosCupons().subscribe(
       res => {
@@ -42,6 +63,17 @@ export class ListaDeCuponsComponent implements OnInit {
       }
     );
   }
+
+
+  resgatarCupom(cupom: Cupom): void {
+    this.cuponsService.resgatarCupom(cupom.id!).subscribe({
+      next: () => {
+        this.listarMeusCupons();
+      },
+      error: err => console.error('Falha ao resgatar cupom', err)
+    });
+  }
+
 
   openModalRegras(cupom: Cupom): void{
     this.showModal = true;

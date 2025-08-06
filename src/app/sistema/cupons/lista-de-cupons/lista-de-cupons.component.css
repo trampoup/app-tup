@@ -54,6 +54,9 @@
     gap: 0.5rem;
 }
 
+.meus-cupons-container{
+    margin-bottom: 35px;
+}
 
 .lista-vazia {
     display: flex;
@@ -120,6 +123,10 @@
 .title-card img{
     width: 45px;
     height: 45px;
+}
+
+.descricao{
+    max-width: 80%;
 }
 
 .btn-resgatar{

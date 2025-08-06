@@ -13,7 +13,6 @@ import {
   ApexTitleSubtitle,
   ApexLegend,
 } from 'ng-apexcharts';
-import { UsuarioPerfil } from '../usuario-perfil';
 import { ModalWelcomeService } from 'src/app/configs/services/modal-welcome.service';
 import { UsuarioDadosDTO } from '../../cupons/UsuarioDadosDTO';
 

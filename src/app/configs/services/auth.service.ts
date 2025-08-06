@@ -5,7 +5,6 @@ import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angula
 import { environment } from 'src/environments/environment';
 import { LoginDTO } from 'src/app/login/LoginDTO';
 import { catchError, map, tap, throwError } from 'rxjs';
-import { UsuarioPerfil } from 'src/app/sistema/Dashboards/usuario-perfil';
 import { UsuarioDadosDTO } from 'src/app/sistema/cupons/UsuarioDadosDTO';
 
 
