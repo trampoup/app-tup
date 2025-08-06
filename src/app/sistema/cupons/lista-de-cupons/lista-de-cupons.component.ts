@@ -14,7 +14,13 @@ export class ListaDeCuponsComponent implements OnInit {
   cuponsDisponiveis : Cupom[] = [];
   selectedCupom : Cupom  | null = null;
   showModal:boolean = false;
-  
+  showModalResgatar:boolean = false;
+
+  successMessage:string | null = null;
+  errorMessage:string | null = null;
+
+  isLoading:boolean = false;
+
   constructor(private router: Router,
     private authService:AuthService,
     private cuponsService:CuponsService
@@ -34,20 +40,29 @@ export class ListaDeCuponsComponent implements OnInit {
   }
 
   listarMeusCupons(){
+    this.isLoading = true;
     if (this.isNotClient()) {
       this.cuponsService.getMeusCuponsCadastrados().subscribe(
         res => { 
           this.meusCupons = res ?? [];
           console.log(this.meusCupons)
+          this.isLoading = false;
         },
         error => {
-          console.error('Erro ao carregar meus cupons', error);
+          console.error('Erro ao carregar meus cupons', error);          
+          this.isLoading = false;
         }
       );
     }else{
       this.cuponsService.getMeusCuponsResgatados().subscribe(
-        res => this.meusCupons = res ?? [],
-        err => console.error('Erro ao carregar meus cupons resgatados', err)
+        res => {
+          this.meusCupons = res ?? [];
+          this.isLoading = false;
+        },
+        err => {
+          console.error('Erro ao carregar meus cupons resgatados', err);
+          this.isLoading = false;
+        }
       );
     }
   }
@@ -68,9 +83,18 @@ export class ListaDeCuponsComponent implements OnInit {
   resgatarCupom(cupom: Cupom): void {
     this.cuponsService.resgatarCupom(cupom.id!).subscribe({
       next: () => {
+        this.showModalResgatar = false;
+        this.successMessage = "Cupom resgatado com sucesso!"
+        setTimeout(() => this.successMessage = null, 2000);
+        this.errorMessage = null;
         this.listarMeusCupons();
       },
-      error: err => console.error('Falha ao resgatar cupom', err)
+      error: err => {
+        console.error('Falha ao resgatar cupom', err);
+        this.errorMessage = "Erro ao resgatar cupom!"
+        setTimeout(() => this.errorMessage = null, 2000);
+      }
+      
     });
   }
 
@@ -83,5 +107,11 @@ export class ListaDeCuponsComponent implements OnInit {
   fecharModal(): void {
     this.showModal = false;
     this.selectedCupom = null;
+    this.showModalResgatar = false;
+  }
+
+  openModalResgatar(cupom:Cupom){
+    this.showModalResgatar = true;
+    this.selectedCupom = cupom;
   }
 }

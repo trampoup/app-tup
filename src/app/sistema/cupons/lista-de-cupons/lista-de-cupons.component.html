@@ -16,6 +16,20 @@
     </div>
     
     <div class="meus-cupons-container">
+        <div class="alerts">
+            <div id="sucess-message" class="alerts-container alert-success" *ngIf="successMessage">
+            {{ successMessage }}
+            </div>
+            <div class="alerts-container alert-danger" *ngIf="errorMessage">
+            {{ errorMessage }}
+            </div>
+        </div>
+
+        <!-- loading bar aparece aqui -->
+        <div class="progress-bar-container" *ngIf="isLoading">
+            <div class="progress-bar"></div>
+        </div>
+        
         <div class="title">
             <h1>{{this.isNotClient() ? "Meus cupons cadastrados" : "Meus Cupons"}}</h1>
         </div>
@@ -67,7 +81,7 @@
 
                     <p class="descricao">{{cupom.descricao}}</p>
 
-                    <button *ngIf="!isNotClient()" (click)="resgatarCupom(cupom)" class="btn-resgatar">
+                    <button *ngIf="!isNotClient()" (click)="openModalResgatar(cupom)" class="btn-resgatar">
                         Resgatar
                     </button>
 
@@ -102,7 +116,7 @@
 
 </section>
 
-<!-- OVERLAY/MODAL -->
+<!-- MODAL DE VER REGRAS DO CUPOM -->
 <div class="modal-overlay" *ngIf="showModal">
     <div class="modal-content">
         <div class="modal-title">
@@ -138,6 +152,32 @@
         </ul>
         </section>
 
-        <button class="btn-close-modal" (click)="fecharModal()">Fechar</button>
+        <button class="btn-modal" (click)="fecharModal()">Fechar</button>
+    </div>
+</div>
+
+<!-- MODAL DE RESGATAR -->
+ <div class="modal-overlay resgatar" *ngIf="showModalResgatar">
+    <div class="modal-content">
+        <div class="modal-title resgatar">
+            <h2>Resgate do Cupom</h2>
+            <button class="modal-close-btn" (click)="fecharModal()" aria-label="Fechar">
+                &times;
+            </button>
+        </div>
+
+        <div class="modal-icone">
+        <img src="/assets/icones/logo-trampoup.png" alt="TrampoUP" />
+        </div>
+
+        <hr class="modal-divider" />
+        <section>
+        <p>Tem certeza que deseja resgatar o cupom <strong>{{selectedCupom?.titulo}}</strong>?</p>
+        </section>
+
+        <div class="btn-acao">
+            <button class="btn-modal cancel" (click)="fecharModal()">Cancelar</button>
+            <button class="btn-modal" (click)="resgatarCupom(selectedCupom!)">Resgatar</button>
+        </div>
     </div>
 </div>
