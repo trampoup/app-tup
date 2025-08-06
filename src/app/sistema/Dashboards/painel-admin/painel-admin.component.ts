@@ -13,8 +13,8 @@ import {
   ApexTitleSubtitle,
   ApexLegend,
 } from 'ng-apexcharts';
-import { UsuarioPerfil } from '../usuario-perfil';
 import { ModalWelcomeService } from 'src/app/configs/services/modal-welcome.service';
+import { UsuarioDadosDTO } from '../../cupons/UsuarioDadosDTO';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -33,7 +33,7 @@ export type ChartOptions = {
   styleUrls: ['./painel-admin.component.css']
 })
 export class PainelAdminComponent implements OnInit {
-  usuario: UsuarioPerfil | null = null;
+  usuario: UsuarioDadosDTO | null = null;
   weatherDescription: string = 'Carregando...'; //nublado, etc..
   temperature: number = 0; //temperatura
   iconUrl: string = ''; //imagem de acordo com o clima.

@@ -54,6 +54,9 @@
     gap: 0.5rem;
 }
 
+.meus-cupons-container{
+    margin-bottom: 35px;
+}
 
 .lista-vazia {
     display: flex;
@@ -86,6 +89,8 @@
     display: grid;
     grid-template-columns: repeat(3,1fr);
     gap: 25px;
+    justify-items: center;
+    text-align: center;
 }
 
 .card-cupom{
@@ -93,6 +98,7 @@
     flex-direction: column;
     border-radius: 20px;
     width: 100%;
+    min-width: none;
     align-items: center;
     box-shadow: 0 0px 11px rgba(0, 0, 0, 0.1);
     padding: 10px 0 0 0;
@@ -104,15 +110,23 @@
     width: 100%;
     justify-content: center;
     align-items: center;
+    flex-wrap: nowrap;        /* impede wrap em telas estreitas */
 }
 
 .title-card h2{
     margin: 0;
+    font-weight: 600;
+  white-space: nowrap;      /* impede quebra do texto */
+  flex-shrink: 0;           /* não deixa o texto encolher demais */
 }
 
 .title-card img{
     width: 45px;
     height: 45px;
+}
+
+.descricao{
+    max-width: 80%;
 }
 
 .btn-resgatar{
@@ -134,19 +148,156 @@
     justify-content: space-between;
 }
 
+.grid a{
+    color: var(--lm-primary);
+}
+
+.grid a:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.grid p {
+    color: #585858;
+}
+
 .anuncio{
     background-color: #E9E9E9;
     color: #4B4B4B;
     width: 100%;
     text-align: center;
     border-radius: 0 0 15px 15px;
-    padding: 15px 0 0 0;
+    padding: 15px;
 }
+
+/* BACKDROP */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* CAIXA DO MODAL */
+.modal-content {
+  background: var(--lm-branco);
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* Ajustes de tipografia */
+.modal-content h2 {
+  margin-top: 0;
+}
+
+.modal-content section + section {
+  margin-top: 16px;
+}
+
+.modal-content h3 {
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.modal-content ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.modal-title h2 {
+  margin: 0;                    /* remove margem padrão */
+  font-size: 1.5rem;            /* ajuste se quiser */
+  white-space: nowrap;          /* evita quebra de linha */
+  color: var(--lm-primary);
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.118);
+}
+
+.modal-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #888888;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s, color 0.2s;
+  margin: 0;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  box-sizing: border-box;
+  padding: 0;
+  outline: none;
+}
+
+.modal-close-btn:hover {
+  color: #333;
+}
+
+.btn-close-modal{
+    border-radius: 10px;
+    margin-top: 15px;
+    align-self: center;
+}
+
+
 
 @media screen and (min-width: 300px) and (max-width: 600px) {
     .main-container {
         padding: 15px;
     }
+
+    .cupons-titulo{
+        margin-bottom: 15px;
+    }
+
+    .btn-cadastrar-cupom{
+        font-size: 14px;
+    }
+
+    .title h1{
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .lista-cupons{
+        grid-template-columns: repeat(1,1fr);
+        text-align: center;
+    }
+
+    .title-card h2{
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .title-card img{
+        height: 35px;
+        width: 35px;
+    }
+
+
 }
 
 /* De 601px até 1023px (tablets e desktops pequenos) */
@@ -154,6 +305,22 @@
     .main-container {
         padding: 25px;
     }
+
+    .lista-cupons{
+        grid-template-columns: repeat(2,1fr);
+        text-align: center;
+    }
+
+    .title-card h2{
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .title-card img{
+        height: 40px;
+        width: 40px;
+    }
+
 }
 
 /* A partir de 1024px (desktop médio/alto) */

@@ -4,10 +4,25 @@
       <button (click)="toggleSidebar()" class="header-toggle" id="header-toggle">
         <img src="assets/icones/menu-icon.svg" alt="image" />
       </button>
-
+      
       <div class="header-user">
+        <div class="location-user">
+          <h2>{{enderecoUsuario}} - {{cidadeUsuario}}/{{estadoUsuario}}</h2>
+          <img src="/assets/icones/localizacao-headersidebar-icon.svg" alt="location">
+        </div>
         <div class="usuario">
-          <img src="assets/imagens/user-photo.png" alt="User Photo" class="user-photo" />
+          <img src="assets/imagens/user-photo.png" *ngIf="fotoUsuario; else fallbackPhoto" alt="User Photo" class="user-photo" />
+
+          <ng-template #fallbackPhoto>
+            <div
+              class="user-initial"
+              [style.background-color]="getRandomColor(nomeUsuario)"
+            >
+              {{ getInitial(nomeUsuario) }}
+            </div>
+          </ng-template>
+          
+          
           <div class="user-info">
             <h3 class="user-name">{{ nomeUsuario }}</h3>
             <span class="user-cargo">{{ permissaoUsuario }}</span>

@@ -20,6 +20,25 @@
   background-color: var(--lm-sidebar-header)
 }
 
+.location-user{
+  background-color: rgba(255, 255, 255, 0.22);
+  border-radius: 20px;
+  color: white;
+  display: flex;
+  padding: 7px;
+}
+
+.location-user h2{
+  margin: 0;
+  font-size: 15px;
+}
+
+.location-user img{
+  height: 25px;
+  width: 25px;
+  align-self: center;
+}
+
 .header-toggle {
   cursor: pointer;
   background: none;
@@ -32,6 +51,19 @@
   position: relative;
   gap: 1rem;
 }
+
+.user-initial {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 .usuario {
   display: flex;

@@ -85,7 +85,9 @@ export class PainelProfissionalComponent implements OnInit {
     this.updateDateTime();
     setInterval(() => this.updateDateTime(), 60_000);
     
-    this.mostrarModalWelcome();
+    if (this.authService.showModal) {
+      setTimeout(() => this.mostrarModalWelcome(), 0);
+    }
   }
   
   mostrarModalWelcome(){
