@@ -45,8 +45,7 @@ export class GameficacaoComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    // Aqui você poderia buscar o score inicial do usuário via API
-    // this.userScore = ...
+   
   }
 
   performAction(action: Action): void {
