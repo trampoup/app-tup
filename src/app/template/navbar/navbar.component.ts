@@ -26,6 +26,10 @@ export class NavbarComponent implements OnInit {
 
   nomeUsuario: string = '';
   permissaoUsuario: string = '';
+  fotoUsuario:string | null = null;
+  enderecoUsuario: string = '';
+  cidadeUsuario: string = '';
+  estadoUsuario: string = '';
 
    // Mapeamento das permissões para suas descrições
    private permissaoDescricao: { [key: string]: string } = {
@@ -45,6 +49,10 @@ export class NavbarComponent implements OnInit {
       next: (perfil) => {
         this.nomeUsuario = perfil.nome;
         this.permissaoUsuario = this.permissaoDescricao[perfil.tipoUsuario] || 'Usuário';
+        this.enderecoUsuario = perfil.endereco ?? "Endereço do Usuário";
+        this.cidadeUsuario = perfil.cidade,
+        this.estadoUsuario = perfil.estado
+
       },
       error: (error) => {
         console.error('Erro ao obter perfil do usuário:', error);
@@ -123,5 +131,21 @@ export class NavbarComponent implements OnInit {
   logout() {
   this.authService.encerrarSessao();
   this.router.navigate(['/login']);
+  }
+
+  getInitial(name: string): string {
+    return name ? name.charAt(0).toUpperCase() : '?';
+  }
+
+  getRandomColor(seed: string): string {
+    const colors = [
+      '#FFB3BA', // rosa pastel
+      '#FFDFBA', // laranja pastel
+      '#BAFFC9', // verde pastel
+      '#BAE1FF', // azul pastel
+      '#D5BAFF'  // roxo pastel
+    ];
+    const index = seed ? seed.charCodeAt(0) % colors.length : 0;
+    return colors[index];
   }
 }

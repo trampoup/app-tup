@@ -1,4 +1,4 @@
-import { TipoCupom } from './tipo-cupom.enum';
+import { UsuarioDadosDTO } from './UsuarioDadosDTO';
 
 export class Cupom {
   id?: number;
@@ -8,5 +8,5 @@ export class Cupom {
   dataDeTermino!: string;
   valor!: number;
   qtdCupom!:number;
-  criadorId?:number;
+  criador?:UsuarioDadosDTO;
 }
