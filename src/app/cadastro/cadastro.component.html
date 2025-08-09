@@ -88,6 +88,12 @@
                     <small *ngIf="submited && profissionalForm.get('email')?.hasError('required')" class="danger">
                         {{ "O campo Email é obrigatório."}}
                     </small>
+                    <small *ngIf="profissionalForm.get('email')?.hasError('email')" class="danger">
+                        Informe um e-mail válido.
+                    </small>
+                    <small *ngIf="profissionalForm.get('email')?.hasError('emailTaken')" class="danger">
+                        Este e-mail já está cadastrado.
+                    </small>
                 </div>
 
                 <div class="form-group">
@@ -188,9 +194,11 @@
                         <a target="_blank">política de privacidade</a>
                     </p>
                 </div>
-
-                <button type="submit" id="cadastrar-btn" class="next-btn" [disabled]="!profissionalForm.get('termos')?.value">
-                    <span>Cadastrar</span>
+                <div *ngIf="errorMessage" class="alert alert-danger" >
+                {{ errorMessage }}
+                </div>
+                <button type="submit" id="cadastrar-btn" class="next-btn" [class.loading]="isLoading"  [disabled]="!profissionalForm.get('termos')?.value || isLoading">
+                    <span>{{isLoading ? "Cadastrando..." : "Cadastrar"}}</span>
                 </button>
 
                 <div class="separator"><span></span><small>ou</small><span></span></div>
@@ -246,6 +254,12 @@
                     <input id="email" type="email" formControlName="email" placeholder="Digite e-mail">
                     <small *ngIf="submited && clienteForm.get('email')?.hasError('required')" class="danger">
                         {{ "O campo Email é obrigatório."}}
+                    </small>
+                    <small *ngIf="clienteForm.get('email')?.hasError('email')" class="danger">
+                        Informe um e-mail válido.
+                    </small>
+                    <small *ngIf="clienteForm.get('email')?.hasError('emailTaken')" class="danger">
+                        Este e-mail já está cadastrado.
                     </small>
                 </div>
 
@@ -325,9 +339,11 @@
                         <a target="_blank">política de privacidade</a>
                     </p>
                 </div>
-
-                <button type="submit" id="cadastrar-btn" class="next-btn" [disabled]="!clienteForm.get('termos')?.value">
-                    <span>Cadastrar</span>
+                <div *ngIf="errorMessage" class="alert alert-danger" >
+                {{ errorMessage }}
+                </div>
+                <button type="submit" id="cadastrar-btn" class="next-btn" [class.loading]="isLoading"  [disabled]="!clienteForm.get('termos')?.value || isLoading">
+                    <span>{{isLoading ? "Cadastrando..." : "Cadastrar"}}</span>
                 </button>
 
                 <div class="separator"><span></span><small>ou</small><span></span></div>

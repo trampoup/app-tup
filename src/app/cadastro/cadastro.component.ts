@@ -38,7 +38,7 @@ export class CadastroComponent implements OnInit {
   profissionalForm = this.formBuilder.group({
     id: new FormControl<string | null>(null),
     nome: new FormControl('', { validators: [Validators.required] }),
-    email: new FormControl('', { validators: [Validators.required] }),
+    email: new FormControl('', { validators: [Validators.required, Validators.email] }),
     senha: new FormControl('', { validators: [Validators.required] }),
     confirmarSenha: new FormControl('', { validators: [Validators.required] }),
     telefone: new FormControl('', { validators: [Validators.required] }),
@@ -120,17 +120,22 @@ export class CadastroComponent implements OnInit {
     this.successMessage = null;
     this.isLoading = true;
 
-    if (this.profissionalForm.invalid) {
-      this.isLoading = false;
-      this.errorMessage = 'Por favor, preencha todos os campos obrigatórios.';
-      return;
-    }
-
     if (this.profissionalForm.value.senha !== this.profissionalForm.value.confirmarSenha) {
       this.isLoading = false;
       this.errorMessage = 'As senhas não coincidem.';
       return;
     }
+
+    if (this.profissionalForm.invalid) {
+      this.isLoading = false;
+      this.errorMessage = 'Por favor, preencha todos os campos corretamente.';
+      return;
+    }
+
+    // normaliza espaços
+    const emailCtrl = this.profissionalForm.get('email');
+    emailCtrl?.setValue((emailCtrl?.value || '').trim());
+
 
     const profissionalCadastro: UsuarioCadastroDTO = {
       id: this.profissionalForm.value.id ?? '',
@@ -173,7 +178,13 @@ export class CadastroComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
-          this.errorMessage = 'Erro ao cadastrar profissional. Por favor, tente novamente.';
+          if (error.status === 409) {
+            // marca erro no campo email
+            this.profissionalForm.get('email')?.setErrors({ emailTaken: true });
+            this.errorMessage = error?.error?.message || 'E-mail já cadastrado.';
+          } else {
+            this.errorMessage = 'Erro ao cadastrar profissional. Por favor, tente novamente.';
+          }
           console.error('Erro ao cadastrar profissional:', error);
         }
       });
@@ -184,7 +195,7 @@ export class CadastroComponent implements OnInit {
     id: new FormControl<string | null>(null),
     nome: new FormControl('', { validators: [Validators.required] }),
     sobrenome: new FormControl('', { validators: [Validators.required] }),
-    email: new FormControl('', { validators: [Validators.required] }),
+    email: new FormControl('', { validators: [Validators.required, Validators.email] }),
     senha: new FormControl('', { validators: [Validators.required] }),
     confirmarSenha: new FormControl('', { validators: [Validators.required] }),
     telefone: new FormControl('', { validators: [Validators.required] }),
@@ -204,17 +215,22 @@ export class CadastroComponent implements OnInit {
     this.successMessage = null;
     this.isLoading = true;
 
-    if (this.clienteForm.invalid) {
-      this.isLoading = false;
-      this.errorMessage = 'Por favor, preencha todos os campos obrigatórios.';
-      return;
-    }
-
     if (this.clienteForm.value.senha !== this.clienteForm.value.confirmarSenha) {
       this.isLoading = false;
       this.errorMessage = 'As senhas não coincidem.';
       return;
     }
+
+    if (this.clienteForm.invalid) {
+      this.isLoading = false;
+      this.errorMessage = 'Por favor, preencha todos os campos corretamente.';
+      return;
+    }
+
+    // normaliza espaços
+    const emailCtrl = this.clienteForm.get('email');
+    emailCtrl?.setValue((emailCtrl?.value || '').trim());
+
 
     const clienteCadastro: UsuarioCadastroDTO = {
       id: this.clienteForm.value.id ?? '',
@@ -256,7 +272,12 @@ export class CadastroComponent implements OnInit {
         },
         error: (error) => {
           this.isLoading = false;
-          this.errorMessage = 'Erro ao cadastrar cliente. Por favor, tente novamente.';
+          if (error.status === 409) {
+            this.clienteForm.get('email')?.setErrors({ emailTaken: true });
+            this.errorMessage = error?.error?.message || 'E-mail já cadastrado.';
+          } else {
+            this.errorMessage = 'Erro ao cadastrar cliente. Por favor, tente novamente.';
+          }
           console.error('Erro ao cadastrar cliente:', error);
         }
     });

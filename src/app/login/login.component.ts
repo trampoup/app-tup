@@ -17,7 +17,7 @@ export class LoginComponent {
     private formBuilder: FormBuilder,
     private authService: AuthService
   ) {}
-
+  errorMessage: string | null = null;
   submited:boolean = false;
   isLoading:boolean = false;
   
@@ -51,6 +51,7 @@ export class LoginComponent {
 
     this.authService.login(dadosLogin).subscribe({
       next: (response: any) => {
+        if (this.errorMessage) this.errorMessage = null;
         console.log('Login:', response);
         const access_token = response.access_token; //so para ver o token
         localStorage.setItem('access_token', access_token);
@@ -80,7 +81,17 @@ export class LoginComponent {
       },
       error: (error) => {
         this.isLoading = false;
-        console.error('Login failed', error);
+        const errorDesc = error?.error?.error_description || error?.error?.message;
+
+        if (error.status === 400 && error?.error?.error === 'invalid_grant') {
+          this.errorMessage = 'E-mail e/ou senha inválidos.';
+        } else if (error.status === 401) {
+          this.errorMessage = 'Não autorizado. Verifique suas credenciais.';
+        } else {
+          this.errorMessage = errorDesc || 'Não foi possível entrar. Tente novamente.';
+        }
+
+
       }
     });
 
