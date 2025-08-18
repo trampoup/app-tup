@@ -93,6 +93,10 @@
   }
 }
 
+.destaques-card,
+.servicos-card{
+  cursor: pointer;
+}
 
 .anuncio-card,
 .destaques-card,
