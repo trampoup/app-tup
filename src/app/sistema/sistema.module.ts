@@ -31,6 +31,7 @@ import { LocalizacaoComponent } from './localizacao/localizacao.component';
 import { ComunidadeComponent } from './comunidade/comunidade.component';
 import { MinhasComunidadesComponent } from './minhas-comunidades/minhas-comunidades.component';
 import { GameficacaoComponent } from './gameficacao/gameficacao.component';
+import { SharedModule } from '../shared/shared.module';
 
 
   @NgModule({
@@ -68,7 +69,8 @@ import { GameficacaoComponent } from './gameficacao/gameficacao.component';
       SistemaRoutingModule, 
       FormsModule, 
       ReactiveFormsModule,
-      NgApexchartsModule
+      NgApexchartsModule,
+      SharedModule
       //NgxMaskModule.forRoot(),
       //DragDropModule
     ],

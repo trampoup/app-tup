@@ -120,7 +120,7 @@ button {
   color: var(--lm-branco);
   background-color: var(--primary-button);
   border: none;
-  border-radius: 50%;
+  border-radius: 15px;
   cursor: pointer;
   text-align: center;
   transition: background-color 0.3s, border-color 0.3s;

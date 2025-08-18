@@ -95,16 +95,13 @@ label {
     font-size: 12px;
 }
 
-
-
 .alerts > div{
     padding: 15px;
     border-radius: 15px;
     color: white;
     font-size: 18px;
+
 }
-
-
 
 .eye-button:focus {
   outline: none;

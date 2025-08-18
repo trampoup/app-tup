@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormControlDirective, FormsModule, Validators } from '@angular/forms';
 import { CuponsService } from 'src/app/configs/services/cupons.service';
 import { Cupom } from '../cupom';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -19,11 +20,36 @@ export class CadastroCuponsComponent implements OnInit {
 
   constructor(
     private cuponsService:CuponsService,
-    private form:FormBuilder
+    private form:FormBuilder,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    this.verificarModoEdicao();
   }
+
+  verificarModoEdicao(): void{
+    this.cupomId = this.route.snapshot.paramMap.get('id');
+    if (!this.cupomId) { return; }
+    this.isEditMode = true;
+
+    this.cuponsService.obterCupomPorId(this.cupomId).subscribe({
+      next: (cupom: Cupom) => {
+        this.cupomForm.patchValue({
+          titulo: cupom.titulo,
+          qtdCupom: cupom.qtdCupom ?? null,
+          valor: cupom.valor ?? null,
+          descricao: cupom.descricao,
+          dataDeInicio: cupom.dataDeInicio,
+          dataDeTermino: cupom.dataDeTermino
+        });
+      },
+      error: (err) => {
+        this.errorMessage = err?.error?.message || 'Erro ao carregar cupom';
+      }
+    });
+  }
+
 
   allowOnlyNumbers(event: KeyboardEvent) {
     const tecla = event.key;
@@ -34,9 +60,9 @@ export class CadastroCuponsComponent implements OnInit {
 
 
   cupomForm = this.form.group({
-    titulo: new FormControl('', {validators : [Validators.required]}),
-    qtdCupom: new FormControl(null, {validators:[Validators.required, Validators.min(0)]}),
-    valor: new FormControl(null, {validators:[Validators.required, Validators.min(0)]}),
+    titulo: new FormControl<string>('', {validators : [Validators.required]}),
+    qtdCupom: new FormControl<number | null>(null, {validators:[Validators.required, Validators.min(0)]}),
+    valor: new FormControl<number | null>(null, {validators:[Validators.required, Validators.min(0)]}),
     descricao: new FormControl('', {validators:[Validators.required]}),
     dataDeInicio: new FormControl('', {validators:[Validators.required]}),
     dataDeTermino: new FormControl('', {validators:[Validators.required]})

@@ -51,6 +51,7 @@ const routes: Routes = [
 
       // cupons
       { path: 'cadastro-de-cupom', component: CadastroCuponsComponent},
+      { path: 'cadastro-de-cupom/:id', component: CadastroCuponsComponent },
       { path: 'visualizacao-de-cupons', component: ListaDeCuponsComponent},
       
       // servicos

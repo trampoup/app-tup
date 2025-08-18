@@ -33,8 +33,8 @@
         <div class="title">
             <h1>{{this.isNotClient() ? "Meus cupons cadastrados" : "Meus Cupons"}}</h1>
         </div>
-        <div class="lista-cupons" *ngIf="meusCupons.length > 0; else semDisponiveis">
-            <div *ngFor="let cupom of meusCupons">
+        <div class="lista-cupons" *ngIf="meusCupons.length > 0; else semCupons">
+            <div *ngFor="let cupom of meusCuponsPaginados">
                 <div class="card-cupom">
                     <div class="title-card">
                         <img src="/assets/icones/cupom-icon.svg" alt="icone cupom">
@@ -51,6 +51,15 @@
                         </div>
                     </div>
 
+                    <div class="btn-acao-card">
+                        <button *ngIf="this.isNotClient()" class="btn-deletar" (click)="openModalDeletar(cupom)">
+                            Deletar
+                        </button>
+                        <button *ngIf="this.isNotClient()"  class="btn-editar" (click)="editarCupom(cupom.id!)">
+                            Editar
+                        </button>
+                    </div>
+
                     <div class="anuncio">
                         <p>Verifique a utilização do cupom com o provedor do serviço.</p>
                     </div>
@@ -60,9 +69,18 @@
         <ng-template #semCupons>
             <div class="lista-vazia">
                 <img src="assets/icones/no-data-icon.svg" alt="Sem cupons">
-                <p>Nenhum cupom cadastrado.</p>
+                <p>{{this.isNotClient() ? "Nenhum cupom cadastrado." : "Nenhum cupom resgatado."}}</p>
             </div>
         </ng-template>
+
+        <div class="paginacao">
+            <app-pagination
+                [paginaAtual]="paginaAtual"
+                [totalItens]="totalItens"
+                [itensPorPagina]="itensPorPagina"
+                (paginaMudou)="onPaginaMudou($event)">
+            </app-pagination>
+        </div>
     </div>
 
     <div class="cupons-disponiveis-container">
@@ -72,7 +90,7 @@
 
 
         <div class="lista-cupons" *ngIf="cuponsDisponiveis.length > 0; else semDisponiveis">
-            <div *ngFor="let cupom of cuponsDisponiveis">
+            <div *ngFor="let cupom of cuponsDisponiveisPaginados">
                 <div class="card-cupom">
                     <div class="title-card">
                         <img src="/assets/icones/cupom-icon.svg" alt="icone cupom">
@@ -101,9 +119,6 @@
                         <p>Verifique a utilização do cupom com o provedor do serviço.</p>
                     </div>
                 </div>
-                
-                
-                
             </div>
         </div>
         
@@ -114,6 +129,15 @@
             <p>Não há cupons disponíveis no momento.</p>
             </div>
         </ng-template>
+
+        <div class="paginacao">
+            <app-pagination
+                [paginaAtual]="paginaAtualDisponiveis"
+                [totalItens]="totalItens"
+                [itensPorPagina]="itensPorPagina"
+                (paginaMudou)="onPaginaMudouDisponiveis($event)">
+            </app-pagination>
+        </div>
     </div>
 
 
