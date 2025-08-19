@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-inicio-admin',
@@ -71,11 +71,37 @@ export class InicioAdminComponent implements OnInit {
   totalPaginasServicos: number = Math.ceil(this.anuncios.length / this.itensPorPagina);
   servicosPaginados : any[] = [];
 
+
+  // 👇 Estado de expansão (índice dentro da página atual)
+  expandedDestaqueIndex: number | null = null;
+
+
   constructor() { }
 
   ngOnInit(): void {
     this.atualizarPaginacaoDestaques();
     this.atualizarPaginacaoServicos();
+  }
+
+  // Toggle do card
+  toggleDestaque(i: number) {
+    this.expandedDestaqueIndex = this.expandedDestaqueIndex === i ? null : i;
+  }
+
+  // Acessibilidade: ESC para fechar expansão
+  @HostListener('document:keydown.escape')
+  onEsc() {
+    this.expandedDestaqueIndex = null;
+  }
+
+  // Exemplo de ação dentro do card expandido
+  verPerfil(d: any, $event: MouseEvent) {
+    $event.stopPropagation(); // evita fechar/alternar o card ao clicar no botão
+    // ...navegar ou abrir modal
+  }
+
+  trackByIndex(index: number, _item: any): number {
+    return index;
   }
 
   atualizarPaginacaoDestaques(): void {
@@ -90,6 +116,7 @@ export class InicioAdminComponent implements OnInit {
 
   onPaginaMudou(novaPagina: number) {
     this.paginaAtual = novaPagina;
+    this.expandedDestaqueIndex = null; // fecha ao mudar de página
     this.atualizarPaginacaoDestaques();
   }
 

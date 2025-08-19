@@ -161,3 +161,134 @@
     background-color: var(--lm-branco);
     border: 2px solid var(--primary-button);
 }
+
+
+/* Quando expandido, muda ocupação no grid e revela conteúdo extra */
+.destaques-card.expanded {
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+  transform: none;
+  grid-column: 1 / -1; /* ocupa a linha inteira no mobile/tablet */
+}
+
+@media (min-width: 1200px) {
+  .destaques-card.expanded {
+    grid-column: span 1; /* em desktop amplo ocupa 2 colunas */
+  }
+  .destaques-card.expanded img {
+    aspect-ratio: 16 / 9; /* imagem mais "wide" quando expandido */
+  }
+}
+
+/*CARD DO PROFISSIONAL EM DESTAQUE*/
+.banner-user{
+  width: 100%;
+  padding: 0;
+}
+
+.banner-user img{
+  height: 125px;
+  width: 100%;
+}
+
+.card-expandido{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 16px;
+}
+
+.avatar-user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -60px;
+  margin-bottom: 5px;
+  border: none;
+}
+
+.avatar-user img{
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.name-user{
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--lm-preto);
+}
+
+.name-user h2{
+  font-weight: 600;
+  margin: 0;
+}
+
+.rating { display:flex; align-items:center; gap:6px; }
+.rating .star { color:#F5A623; font-size:22px; line-height:1;  }
+.rating .score { color:#F5A623; font-weight:700; font-size:.95rem; }
+
+.profissao-user{
+  color: #585858;
+}
+
+.bio-user{
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding-inline: 16px;
+}
+
+#descricao{
+  display: flex;
+  justify-content: justify;
+}
+
+.btn-card{
+  padding-inline: 16px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: nowrap; 
+  width: 100%;
+}
+
+.btn-ver-perfil{
+  padding: 16px 20px 16px 20px;
+}
+
+.btn-salvar{
+  background: rgba(40, 191, 182, 0.19);
+  border-radius: 20px;
+  padding: 15px;
+}
+
+.btn-salvar:hover{
+  background: rgba(40, 191, 182, 0.39);
+}
+
+.btn-salvar img,
+.btn-share img{
+  width: 24px;
+  height: 24px;
+  display: flex;
+  margin: 0;
+}
+
+.btn-share{
+  background: #7B1C8C;
+  border-radius: 20px;
+  padding: 15px;
+}
+
+.btn-share:hover{
+  background: #9B2ABF;
+}
+
