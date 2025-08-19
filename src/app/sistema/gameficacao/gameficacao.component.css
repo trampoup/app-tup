@@ -164,34 +164,117 @@
 }
 
 
-.progress-header h1 {
-    margin: 0;
-    font-size: 2rem;
-  }
-  
-  .progress-header p {
-    margin: 8px 0 24px;
-    font-size: 1.1rem;
-    color: #555;
-  }
-  
-  .progress-bar {
-    width: 100%;
-    height: 24px;
-    background: #eee;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 32px;
-  }
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(
-      to right,
-      #7d0192 0%,
-      #dc0aff 100%
+/* estrutura base já existe, só reforçando posicionamentos */
+.progress-bar {
+  position: relative;
+  width: 100%;
+  height: 24px;
+  background: #eee;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+.progress-fill {
+  position: relative;
+  height: 100%;
+  background: linear-gradient(to right, #7d0192 0%, #dc0aff 100%); /* mesma cor */
+  transition: width 0.5s ease;
+}
+
+/* Linhas de velocidade (“warp speed”) por cima da fill, sem mudar a cor */
+.progress-fill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* linhas translúcidas se movendo para a direita */
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,0.18) 0 6px,
+      rgba(255,255,255,0) 6px 16px
     );
-    transition: width 0.5s ease;
+  /* máscara para concentrar as linhas no lado direito (perto do foguete) */
+  -webkit-mask: linear-gradient(to right, transparent 0%, black 30%, black 100%);
+  mask: linear-gradient(to right, transparent 0%, black 30%, black 100%);
+  animation: speed-lines 0.6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes speed-lines {
+  from { background-position: 0 0; }
+  to   { background-position: 100px 0; }
+}
+
+/* Foguete na ponta da barra (acompanha a largura da fill) */
+.rocket {
+  position: absolute;
+  top: 50%;
+  right: -16px;              /* sai um pouco para fora para dar destaque */
+  transform: translateY(-50%) rotate(12deg);
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 0 8px #dc0aff);
+}
+
+/* Chama do foguete */
+.rocket .flame {
+  position: absolute;
+  left: -6px;                /* fica atrás do foguete */
+  top: 50%;
+  transform: translateY(-50%) rotate(-12deg);
+  width: 22px;
+  height: 10px;
+  /* mesma paleta (violeta/rosa) para “combinar” com a barra */
+  background:
+    radial-gradient(circle at 20% 50%, rgba(255,255,255,0.9) 0 4px, transparent 5px),
+    radial-gradient(circle at 60% 50%, rgba(255,255,255,0.6) 0 6px, transparent 7px),
+    linear-gradient(90deg, rgba(220,10,255,0.9), rgba(125,1,146,0.7));
+  border-radius: 50px;
+  filter: blur(0.5px);
+  animation: flame-flicker 0.18s infinite alternate ease-in-out;
+}
+
+/* Faíscas/trail “saindo” do foguete dentro da barra */
+.progress-fill::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 18px;               /* quase no foguete */
+  transform: translateY(-50%);
+  width: 180px;
+  height: 14px;
+  /* bolhas/partículas que se repetem para a esquerda */
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.75) 0 3px, transparent 4px) 0 50%/22px 14px repeat-x,
+    radial-gradient(circle, rgba(255,255,255,0.35) 0 2px, transparent 3px) 0 60%/18px 14px repeat-x;
+  animation: trail-move 0.8s linear infinite;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+@keyframes flame-flicker {
+  from {
+    transform: translateY(-50%) rotate(-12deg) scaleX(0.9);
+    opacity: 0.9;
   }
+  to {
+    transform: translateY(-50%) rotate(-6deg) scaleX(1.1);
+    opacity: 1;
+  }
+}
+
+@keyframes trail-move {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: -60px 0, -40px 0; }
+}
+
+/* Responsividade opcional (reduz foguete/chama em telas menores) */
+@media (max-width: 600px) {
+  .rocket { width: 22px; height: 22px; right: -12px; }
+  .rocket .flame { width: 18px; height: 8px; }
+  .progress-fill::after { width: 120px; }
+}
+
   
   .actions-container, .rewards-container {
     margin-bottom: 32px;
