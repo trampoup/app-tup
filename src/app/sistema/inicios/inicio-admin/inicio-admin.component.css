@@ -162,18 +162,27 @@
     border: 2px solid var(--primary-button);
 }
 
+/* Cada célula do grid serve de âncora para o overlay */
+.destaques-card {
+  position: relative;
+  min-height: 140px;          /* altura do card “fechado” para manter o grid estável */
+  overflow: hidden;            /* padrão */
+  min-height: 120px;      /* altura do card fechado */
+}
+
+/* quando expandido, deixe transbordar e suba na pilha */
+.destaques-card.expanded {
+  overflow: visible;           /* permite o overlay sair da célula */
+  z-index: 30;                 /* sobrepõe os vizinhos */
+}
 
 /* Quando expandido, muda ocupação no grid e revela conteúdo extra */
 .destaques-card.expanded {
   box-shadow: 0 8px 24px rgba(0,0,0,.12);
   transform: none;
-  grid-column: 1 / -1; /* ocupa a linha inteira no mobile/tablet */
 }
 
 @media (min-width: 1200px) {
-  .destaques-card.expanded {
-    grid-column: span 1; /* em desktop amplo ocupa 2 colunas */
-  }
   .destaques-card.expanded img {
     aspect-ratio: 16 / 9; /* imagem mais "wide" quando expandido */
   }
@@ -191,6 +200,10 @@
 }
 
 .card-expandido{
+  position: absolute;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(0,0,0,.18);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -246,8 +259,7 @@
 }
 
 #descricao{
-  display: flex;
-  justify-content: justify;
+  text-align: justify;
 }
 
 .btn-card{
@@ -292,3 +304,38 @@
   background: #9B2ABF;
 }
 
+/* 1366px e abaixo */
+@media (max-width: 1366px) {
+  .card-expandido{
+    width: min(300px, 30vw);
+  }
+  .banner-user img{ height: 110px; }
+  .avatar-user img{ width: 100px; height: 100px; }
+  .name-user{ font-size: 1.05rem; gap: 10px; }
+  .btn-ver-perfil{ padding: 12px 16px; }
+  .btn-salvar, .btn-share{ padding: 12px; }
+}
+
+/* tablets (≤1024px) */
+@media (max-width: 1024px) {
+  .card-expandido{
+    width: min(300px, 30vw);
+    max-height: calc(100vh - 24px);
+  }
+  .banner-user img{ height: 100px; }
+}
+
+/* mobile (≤768px) */
+@media (max-width: 768px) {
+  .card-expandido{
+    top: 12px;
+    width: calc(85vw - 32px);      /* margem de 16px de cada lado */
+    max-height: calc(100vh - 24px);
+    border-radius: 12px;
+  }
+  .avatar-user img{ width: 84px; height: 84px; }
+  .name-user{ font-size: 1rem; }
+  .btn-card{ gap: 8px; flex-wrap: wrap; } /* se faltar espaço, quebra */
+  .btn-ver-perfil{ height: 40px; padding: 0 14px; }
+  .btn-salvar, .btn-share{ width: 40px; height: 40px; padding: 0; }
+}
