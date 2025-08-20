@@ -13,8 +13,6 @@
   import { MeuPerfilAdminComponent } from './meu-perfil/meu-perfil-admin/meu-perfil-admin.component';
   import { MeuPerfilProfissionalComponent } from './meu-perfil/meu-perfil-profissional/meu-perfil-profissional.component';
   import { MeuPerfilClienteComponent } from './meu-perfil/meu-perfil-cliente/meu-perfil-cliente.component';
-  import { CadastroSiteComponent } from './mini-site/cadastro-site/cadastro-site.component';
-  import { VisualizarSiteComponent } from './mini-site/visualizar-site/visualizar-site.component';
   import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   import { ListaDeConversaComOsProfissionaisComponent } from './bate-papo/cliente/lista-de-conversa-com-os-profissionais/lista-de-conversa-com-os-profissionais.component';
   import { ListaDeConversaComOsClientesComponent } from './bate-papo/profissional/lista-de-conversa-com-os-clientes/lista-de-conversa-com-os-clientes.component';
@@ -32,6 +30,9 @@ import { ComunidadeComponent } from './comunidade/comunidade.component';
 import { MinhasComunidadesComponent } from './minhas-comunidades/minhas-comunidades.component';
 import { GameficacaoComponent } from './gameficacao/gameficacao.component';
 import { SharedModule } from '../shared/shared.module';
+import { MiniSiteComponent } from './mini-site/mini-site.component';
+import { MatMenuModule } from "@angular/material/menu";
+import { CadastrarSiteComponent } from './mini-site/cadastrar-site/cadastrar-site.component';
 
 
   @NgModule({
@@ -46,8 +47,6 @@ import { SharedModule } from '../shared/shared.module';
       MeuPerfilAdminComponent,
       MeuPerfilProfissionalComponent,
       MeuPerfilClienteComponent,
-      CadastroSiteComponent,
-      VisualizarSiteComponent,
       ListaDeConversaComOsProfissionaisComponent,
       ListaDeConversaComOsClientesComponent,
       ConversaComClienteComponent,
@@ -62,17 +61,21 @@ import { SharedModule } from '../shared/shared.module';
       LocalizacaoComponent,
       ComunidadeComponent,
       MinhasComunidadesComponent,
-      GameficacaoComponent
+      GameficacaoComponent,
+      MiniSiteComponent,
+      CadastrarSiteComponent
     ],
-    imports:[
-      CommonModule, 
-      SistemaRoutingModule, 
-      FormsModule, 
-      ReactiveFormsModule,
-      NgApexchartsModule,
-      SharedModule
-      //NgxMaskModule.forRoot(),
-      //DragDropModule
-    ],
+    imports: [
+    CommonModule,
+    SistemaRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgApexchartsModule,
+    SharedModule
+    //NgxMaskModule.forRoot(),
+    //DragDropModule
+    ,
+    MatMenuModule
+],
   })
   export class SistemaModule { }

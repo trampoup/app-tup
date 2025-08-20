@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CadastroSiteComponent } from './cadastro-site.component';
+import { MiniSiteComponent } from './mini-site.component';
 
-describe('CadastroSiteComponent', () => {
-  let component: CadastroSiteComponent;
-  let fixture: ComponentFixture<CadastroSiteComponent>;
+describe('MiniSiteComponent', () => {
+  let component: MiniSiteComponent;
+  let fixture: ComponentFixture<MiniSiteComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CadastroSiteComponent ]
+      declarations: [ MiniSiteComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CadastroSiteComponent);
+    fixture = TestBed.createComponent(MiniSiteComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

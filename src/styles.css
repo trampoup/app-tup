@@ -43,6 +43,7 @@ html {
   --lm-text: #37383C;
   --lm-text02: #156578;
   --lm-text03: #F5A002;
+  --lm-text04: #585858;
   /* sistema */
   --success: #5ea828;
   --sucess2: #49941E;
@@ -56,11 +57,14 @@ html {
   --lm-border: #e0e0e0;
   --lm-border02: #ced4da;
   --lm-border03: #bfc4de;
+  --lm-border04: #A4A4A4;
   /* Buttons */
   --primary-button: #28BFB6;
   --primary-btnHover: #156578;
   --secondary-button: #1C9212;
   --tertiary-button: #002035;
+  --quaternary-button: #B900DE;
+  --quinary-button: #398EE8;
   /* container background */
   --form-background: #ffffff;
   --container-background: #ffffff;

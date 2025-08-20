@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-inicio-admin',
@@ -76,7 +77,9 @@ export class InicioAdminComponent implements OnInit {
   expandedDestaqueIndex: number | null = null;
 
 
-  constructor() { }
+  constructor(
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
     this.atualizarPaginacaoDestaques();
@@ -97,7 +100,7 @@ export class InicioAdminComponent implements OnInit {
   // Exemplo de ação dentro do card expandido
   verPerfil(d: any, $event: MouseEvent) {
     $event.stopPropagation(); // evita fechar/alternar o card ao clicar no botão
-    // ...navegar ou abrir modal
+    this.router.navigate(['/usuario/perfil-profissional']); // Navega para o perfil do profissional
   }
 
   trackByIndex(index: number, _item: any): number {
