@@ -26,24 +26,62 @@
         </div>
 
         <div class="destaques-lista">
-            <div class="destaques-card" *ngFor="let destaque of destaques">
-                <img [src]="destaque.imagem" [alt]="destaque.titulo" />
+            <div
+                class="destaques-card"
+                *ngFor="let d of destaquesPaginados; let i = index; trackBy: trackByIndex"
+                (click)="toggleDestaque(i)"
+                [class.expanded]="expandedDestaqueIndex === i"
+                tabindex="0"
+                role="button"
+                [attr.aria-expanded]="expandedDestaqueIndex === i ? 'true' : 'false'"
+            >
+                <!-- Se expandido, mostra o NOVO CARD; senão, mostra o card compacto -->
+                <ng-container *ngIf="expandedDestaqueIndex === i; else collapsedCard">
+                    <!-- ===== CARD EXPANDIDO (substitui totalmente o conteúdo) ===== -->
+                    <div class="card-expandido" (click)="$event.stopPropagation()">
+                        <div class="banner-user">
+                            <img src="/assets/imagens/imagens-de-exemplo/banner-profissional.png" [alt]="d.titulo" />
+                        </div>
+                        <div class="avatar-user">
+                            <img src="/assets/imagens/imagens-de-exemplo/foto-profissional.png" [alt]="d.titulo" />
+                        </div>
+
+                        <div class="name-user">
+                            <h2>{{ "Paulo Clima LTDA" }}</h2>
+                            <div class="rating">
+                                <span class="score"> <span class="star">★</span> {{ (d.nota ?? 4.0) | number:'1.1-1' }}/5</span>
+                            </div>
+                        </div>
+                        <p class="profissao-user">Técnico em Ar Condicionado</p>
+                        <div class="bio-user">
+                            <p style="margin: 0"><strong>Profissional bio</strong></p>
+                            <p id="descricao" style="color: #585858;">Técnico especializado em instalação, manutenção e limpeza de ar-condicionado split, janela e central.
+                                Há mais de 8 anos no mercado, prezando sempre pela agilidade, segurança e um atendimento...</p>
+                        </div>
+                        <div class="btn-card">
+                            <button class="btn-ver-perfil" (click)="verPerfil(d, $event)">Acessar Perfil</button>
+                            <button class="btn-salvar"><img src="/assets/icones/save-icon.svg" alt="save icon"></button>
+                            <button class="btn-share"><img src="/assets/icones/share-icon.svg" alt="save icon"></button>
+                         </div>
+                    </div>
+                </ng-container>
+
+                <ng-template #collapsedCard>
+                    <div class="card-colapsado">
+                        <img [src]="d.imagem" [alt]="d.titulo" />
+                    </div>
+                </ng-template>
             </div>
         </div>
 
         
         <div class="paginacao">
-            <button disabled class="button-paginacao">
-                <img src="assets/icones/seta-left-icon.svg" alt="Página anterior">
-            </button>
-
-            <button class="indices">1</button>
-            <button class="indices" id="botao2">2</button>
-
-
-            <button class="button-paginacao">
-                <img src="assets/icones/seta-right-icon.svg" alt="Próxima página">
-            </button>
+            <app-pagination
+                [paginaAtual]="paginaAtual"
+                [totalItens]="totalItens"
+                [itensPorPagina]="itensPorPagina"
+                (paginaMudou)="onPaginaMudou($event)">
+            </app-pagination>
         </div>
 
     </section>
@@ -54,23 +92,18 @@
         </div>
 
         <div class="servicos-lista">
-            <div class="servicos-card" *ngFor="let servico of destaques">
+            <div class="servicos-card" *ngFor="let servico of servicosPaginados">
                 <img [src]="servico.imagem" [alt]="servico.titulo" />
             </div>
         </div>
 
         <div class="paginacao">
-            <button disabled class="button-paginacao">
-                <img src="assets/icones/seta-left-icon.svg" alt="Página anterior">
-            </button>
-
-            <button class="indices">1</button>
-            <button class="indices" id="botao2">2</button>
-
-
-            <button class="button-paginacao">
-                <img src="assets/icones/seta-right-icon.svg" alt="Próxima página">
-            </button>
+            <app-pagination
+                [paginaAtual]="paginaAtualServicos"
+                [totalItens]="totalItensServicos"
+                [itensPorPagina]="itensPorPaginaServicos"
+                (paginaMudou)="onPaginaMudouServicos($event)">
+            </app-pagination>
         </div>
 
     </section>

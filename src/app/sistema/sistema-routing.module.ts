@@ -9,8 +9,6 @@ import { ListaDeCuponsComponent } from './cupons/lista-de-cupons/lista-de-cupons
 import { MeuPerfilAdminComponent } from './meu-perfil/meu-perfil-admin/meu-perfil-admin.component';
 import { MeuPerfilProfissionalComponent } from './meu-perfil/meu-perfil-profissional/meu-perfil-profissional.component';
 import { MeuPerfilClienteComponent } from './meu-perfil/meu-perfil-cliente/meu-perfil-cliente.component';
-import { VisualizarSiteComponent } from './mini-site/visualizar-site/visualizar-site.component';
-import { CadastroSiteComponent } from './mini-site/cadastro-site/cadastro-site.component';
 import { CadastroDeServicoComponent } from './servicos/cadastro-de-servico/cadastro-de-servico.component';
 import { ListaDeServicosComponent } from './servicos/lista-de-servicos/lista-de-servicos.component';
 import { ConversaComClienteComponent } from './bate-papo/profissional/conversa-com-cliente/conversa-com-cliente.component';
@@ -25,6 +23,8 @@ import { LocalizacaoComponent } from './localizacao/localizacao.component';
 import { ComunidadeComponent } from './comunidade/comunidade.component';
 import { MinhasComunidadesComponent } from './minhas-comunidades/minhas-comunidades.component';
 import { GameficacaoComponent } from './gameficacao/gameficacao.component';
+import { MiniSiteComponent } from './mini-site/mini-site.component';
+import { CadastrarSiteComponent } from './mini-site/cadastrar-site/cadastrar-site.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -59,8 +59,8 @@ const routes: Routes = [
       { path: 'lista-de-servicos', component: ListaDeServicosComponent},
 
       // mini site
-      { path: 'cadastro-de-site', component: CadastroSiteComponent},
-      { path: 'visualizacao-do-site', component: VisualizarSiteComponent},
+      { path: 'perfil-profissional', component: MiniSiteComponent},
+      { path: 'cadastro-de-site', component: CadastrarSiteComponent},
 
        // Bate Papo com o Cliente
        { path: 'conversa-com-o-profissional', component: ConversaComProfissionalComponent},

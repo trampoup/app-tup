@@ -1,0 +1,154 @@
+<div class="main-container">
+    <div class="banner-user">
+        <img src="/assets/imagens/imagens-de-exemplo/banner-user.png" alt="banner usuario">
+    </div>
+    <div class="header-container">
+        <div class="user-info">
+            <div class="user-photo">
+                <img src="/assets/imagens/imagens-de-exemplo/foto-profissional.png" alt="foto do usuario">
+            </div>
+            <div class="user-details">
+                <h2>{{ "Paulo Clima LTDA" }}</h2>
+                <p class="cargo">Técnico em Ar Condicionado</p>
+                <div class="rating">
+                    <span class="score"> <span class="star">★</span> {{ (4.0) | number:'1.1-1' }}/5</span>
+                </div>
+            </div>
+        </div>
+        <div class="actions-user" *ngIf="getRoleUsuario() !== TipoUsuario.PROFISSIONAL; else profissionalActions">
+            <button class="btn-share" *ngIf="getRoleUsuario() === TipoUsuario.ADMIN">Compartilhar <img src="/assets/icones/share-icon.svg" alt="save icon"></button>
+            <button class="btn-salvar"><img src="/assets/icones/save-icon.svg" alt="save icon"></button>
+            <button class="btn-contato">Contato</button>
+            <button class="btn-orcamento">Solicitar Orçamento</button>
+        </div>
+        <ng-template #profissionalActions>
+            <div class="actions-user-col">
+                <div class="mini-progress" aria-label="Progresso de destaque">
+                    <div class="mini-progress-header">
+                        <span>Poder de Destaque </span>
+                        <span>{{ userScore }} / {{ maxScore }} pts</span>
+                    </div>
+                    <div class="mini-progress-bar">
+                        <div class="mini-progress-fill" [style.width.%]="progressPercent"></div>
+                    </div>
+                </div>
+                <div class="actions-user profissional">
+                    <button class="btn-impulsionar" (click)="redirectToGameficacao()">Impulsionar Perfil <img src="/assets/icones/foguete-icon.svg" alt="icone foguete"></button>
+                    <button class="btn-editar-perfil" (click)="redirectToEditarSite()">Editar Perfil</button>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+    <div class="estatisticas-container">
+        <div class="dual-grid-estatisticas">
+            <img src="/assets/icones/servicos-realizados-icon.svg" alt="Serviços Realizados">
+            <h3>{{"36"}} Serviços realizados</h3>
+        </div>
+        <div class="dual-grid-estatisticas">
+            <img src="/assets/icones/tempo-medio-icon.svg" alt="Tempo Médio">
+            <h3>Tempo médio de resposta: {{"1"}}h</h3>
+        </div>
+        <div class="dual-grid-estatisticas">
+            <img src="/assets/icones/experiencia-icon.svg" alt="Experiência">
+            <h3>{{"8"}} anos de experiência</h3>
+        </div>
+    </div>
+    <div class="descricao-user">
+        <div class="bio-user">
+            <div class="desc-header">
+                <h3>Profissional Bio</h3>
+                <p>8 anos de experiência</p>
+            </div>
+            <p>
+                Técnico especializado em instalação, manutenção e limpeza de ar-condicionado split, janela e central. 
+                Há mais de 8 anos no mercado, prezando sempre pela agilidade, segurança e um atendimento transparente.
+                Atendo residências, comércios e empresas.
+            </p>
+        </div>
+        <div class="skills-user">
+            <div class="desc-header">
+                <h3>Skills</h3>
+            </div>
+            <div class="skills-list">
+                <p>Instalação de Ar Condicionado Split e Janela</p>
+                <p>Elétrica básica</p>
+                <p>Higienização e infecção</p>
+                <p>Experiência com sistemas multi split</p>
+                <p>Atendimento emergencial em até 24h</p>
+            </div>
+        </div>  
+    </div>
+    <div class="servicos-container">
+        <h1 class="titulo">Serviços</h1>
+        <div class="servicos-list">
+            <div class="servico-item" *ngFor="let servico of servicosPaginados">
+                <div class="servico-item-header">
+                    <img src="/assets/imagens/imagens-de-exemplo/retangulo-cinza.png" alt="Serviço Icon">
+                    <div class="item-details">
+                        <h3>{{ servico.titulo }}</h3>
+                        <p>{{ servico.descricao }}</p>
+                        <span class="preco">R${{ servico.valor | number:'1.2-2' }}</span>
+                    </div>
+                </div>
+                <button id="btn-solicitar-orcamento" class="btn-contato">Solicitar Orçamento</button>
+            </div>
+        </div>
+        <div class="paginacao">
+            <app-pagination
+                [paginaAtual]="paginaAtualServicos"
+                [totalItens]="totalItensServicos"
+                [itensPorPagina]="itensPorPaginaServicos"
+                (paginaMudou)="onPaginaMudouServicos($event)">
+            </app-pagination>
+        </div>
+    </div>
+    <div class="avaliacoes-container">
+        <h1 class="titulo">Avaliações de clientes</h1>
+        <section class="dual-flex">
+            <section class="avaliacoes-media-e-barra">
+                <div class="media-avaliacoes">
+                    <h3>4 de 5</h3>
+                    <img src="/assets/imagens/imagens-de-exemplo/avaliacao-estrelas.png" alt="avaliação do usuário">
+                    <p>500 avaliações</p>
+                </div>
+                <div class="barra-avaliacoes">
+                    <p>5 estrelas <img src="/assets/imagens/imagens-de-exemplo/barra-vazia.png" alt="barra de avaliações"> {{"0%"}}</p>
+                    <p>4 estrelas <img src="/assets/imagens/imagens-de-exemplo/barra-completa.png" alt="barra de avaliações"> {{"100%"}}</p>
+                    <p>3 estrelas <img src="/assets/imagens/imagens-de-exemplo/barra-vazia.png" alt="barra de avaliações"> {{"0%"}}</p>
+                    <p>2 estrelas <img src="/assets/imagens/imagens-de-exemplo/barra-vazia.png" alt="barra de avaliações"> {{"0%"}}</p>
+                    <p>1 estrelas <img src="/assets/imagens/imagens-de-exemplo/barra-vazia.png" alt="barra de avaliações"> {{"0%"}}</p>
+                </div>
+            </section>
+            <div class="avalie-container">
+                <h2>Avalie este profissional</h2>
+                <button class="btn-orcamento" id="btn-avaliar">Escreva uma avaliação</button>
+                <p>Compartilhe seus pensamentos com outros clientes</p>
+            </div>
+        </section>
+    </div>
+
+    <div class="principais-avaliacoes">
+        <h1 class="titulo">Principais Avaliações</h1>
+        <div class="avaliacoes-list">
+            <div class="avaliacao-item" *ngFor="let avaliacao of avaliacoesPaginadas">
+                <div class="avaliacao-header">
+                    <img [src]="avaliacao.foto" alt="Foto do usuário">
+                    <h3>{{ avaliacao.nome }}</h3>
+                </div>
+                <img src="/assets/imagens/imagens-de-exemplo/avaliacao-estrelas.png" alt="avaliação do usuário">
+                <p>Avaliado no Brasil em 22 de maio de 2025</p>
+                <h3 id="avaliacao-titulo">{{avaliacao.titulo}}</h3>
+                <h3 id="avaliacao-descricao">{{avaliacao.descricao}}</h3>
+            </div>
+        </div>
+        <div class="paginacao">
+            <app-pagination
+                [paginaAtual]="paginaAtualAvaliacoes"
+                [totalItens]="totalItensAvaliacoes"
+                [itensPorPagina]="itensPorPaginaAvaliacoes"
+                (paginaMudou)="onPaginaMudouAvaliacoes($event)">
+            </app-pagination>
+        </div>
+    </div>
+
+</div>
