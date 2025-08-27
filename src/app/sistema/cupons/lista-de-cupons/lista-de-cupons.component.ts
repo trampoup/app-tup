@@ -14,6 +14,8 @@ export class ListaDeCuponsComponent implements OnInit {
   meusCupons: Cupom[] = [];
   cuponsDisponiveis : Cupom[] = [];
 
+  cuponsResgatadosIds = new Set<number>(); //complexidade de tempo O(1)
+
   paginaAtual: number = 1;
   itensPorPagina: number = 6;
   totalPaginas: number = Math.ceil(this.meusCupons.length / this.itensPorPagina);
@@ -112,6 +114,13 @@ export class ListaDeCuponsComponent implements OnInit {
     return (this.authService.isAdministrador()) || (this.authService.isProfissional());
   }
 
+  private marcarResgatados(lista: Cupom[]) {
+    const ids = (lista ?? [])
+      .filter(c => c.id != null)
+      .map(c => c.id!);
+    this.cuponsResgatadosIds = new Set(ids);
+  }
+
   listarMeusCupons(){
     this.isLoading = true;
     if (this.isNotClient()) {
@@ -133,6 +142,7 @@ export class ListaDeCuponsComponent implements OnInit {
       this.cuponsService.getMeusCuponsResgatados().subscribe(
         res => {
           this.meusCupons = res ?? [];
+          this.marcarResgatados(this.meusCupons); // <<— preenche o Set
           this.totalPaginas = Math.ceil(this.meusCupons.length / this.itensPorPagina);
           this.atualizarPaginacao();
           this.isLoading = false;
@@ -178,6 +188,9 @@ export class ListaDeCuponsComponent implements OnInit {
     });
   }
 
+  isCupomResgatado(cupom:Cupom){
+    return cupom.id != null && this.cuponsResgatadosIds.has(cupom.id!);
+  }
 
   openModalRegras(cupom: Cupom): void{
     this.showModal = true;

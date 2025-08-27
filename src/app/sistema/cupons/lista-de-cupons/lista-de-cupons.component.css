@@ -165,6 +165,9 @@
     color: white;
 }
 
+.btn-resgatar:disabled{
+    cursor:not-allowed;
+}
 
 
 .grid{

@@ -99,7 +99,7 @@
 
                     <p class="descricao">{{cupom.descricao}}</p>
 
-                    <button *ngIf="!isNotClient()" (click)="openModalResgatar(cupom)" class="btn-resgatar">
+                    <button [disabled]="isCupomResgatado(cupom)" *ngIf="!isNotClient()" (click)="openModalResgatar(cupom)" class="btn-resgatar">
                         Resgatar
                     </button>
 
