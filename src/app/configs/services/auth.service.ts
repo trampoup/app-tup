@@ -33,6 +33,11 @@ export class AuthService {
     return this.tipoUsuarioAtual === TipoUsuario.PROFISSIONAL;
   }
 
+  isCliente(): boolean {
+    return this.tipoUsuarioAtual === TipoUsuario.CLIENTE;
+  }
+
+
   setRoleUsuario(tipoUsuario: TipoUsuario): void {
     this.tipoUsuarioAtual = tipoUsuario;
   }

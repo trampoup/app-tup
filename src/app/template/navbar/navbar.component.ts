@@ -32,7 +32,7 @@ export class NavbarComponent implements OnInit {
   estadoUsuario: string = '';
 
    // Mapeamento das permissões para suas descrições
-   private permissaoDescricao: { [key: string]: string } = {
+  private permissaoDescricao: { [key: string]: string } = {
     'ADMIN': 'Administrador',
     'PROFISSIONAL': 'Profissional',
     'CLIENTE': 'Cliente'
@@ -59,7 +59,11 @@ export class NavbarComponent implements OnInit {
       }
     });
   }
-  
+
+  isCliente(): boolean{
+    return this.authService.isCliente();
+  }
+
   rotaInicial(): string{
     return this.authService.getRotaInicial();
   }
@@ -129,8 +133,8 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
-  this.authService.encerrarSessao();
-  this.router.navigate(['/login']);
+    this.authService.encerrarSessao();
+    this.router.navigate(['/login']);
   }
 
   getInitial(name: string): string {
