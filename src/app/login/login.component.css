@@ -304,7 +304,7 @@ body {
     display: none;
   }
 }
-@media screen and (min-width: 769px) and (max-width: 1279px) {
+@media screen and (min-width: 769px) and (max-width: 1280px) {
   .text-image {
     margin-left: 10%;          /* desloca em % pra manter centralização */
   }
