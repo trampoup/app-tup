@@ -6,6 +6,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { PainelAdminComponent } from './sistema/Dashboards/painel-admin/painel-admin.component';
 import { CadastroComponent } from './cadastro/cadastro.component';
 import { AuthGuard } from './configs/security/auth.guard';
+import { MiniSitePublicoComponent } from './sistema/mini-site/mini-site-publico/mini-site-publico.component';
 
 const routes: Routes = [
   //públicas
@@ -13,6 +14,9 @@ const routes: Routes = [
   { path: 'cadastro', component: CadastroComponent},
   { path: 'recuperacao-de-senha', component: EsqueciSenhaComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
+
+  { path: 'perfil-publico', component: MiniSitePublicoComponent},
+  
 
   //privadas
   { path: '', component: LayoutComponent, canActivate:[AuthGuard], children: [

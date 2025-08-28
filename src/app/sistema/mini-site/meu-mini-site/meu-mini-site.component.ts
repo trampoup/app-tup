@@ -155,4 +155,8 @@ export class MeuMiniSiteComponent implements OnInit {
     this.router.navigate(['/usuario/cadastro-de-site']);
   }
 
+  redirectToSitePublico(){
+    this.router.navigate(['/perfil-publico']);
+  }
+
 }

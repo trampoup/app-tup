@@ -16,10 +16,10 @@
             </div>
         </div>
         <div class="actions-user">
-            <button class="btn-share">Compartilhar <img src="/assets/icones/share-icon.svg" alt="save icon"></button>
-            <button class="btn-salvar"><img src="/assets/icones/save-icon.svg" alt="save icon"></button>
-            <button class="btn-contato">Contato</button>
-            <button class="btn-orcamento">Solicitar Orçamento</button>
+            <button class="btn-share" (click)="goLogin()">Compartilhar <img src="/assets/icones/share-icon.svg" alt="save icon"></button>
+            <button class="btn-salvar" (click)="goLogin()"><img src="/assets/icones/save-icon.svg" alt="save icon"></button>
+            <button class="btn-contato" (click)="goLogin()">Contato</button>
+            <button class="btn-orcamento" (click)="goLogin()">Solicitar Orçamento</button>
         </div>
     </div>
     <div class="estatisticas-container">
@@ -73,7 +73,7 @@
                         <span class="preco">R${{ servico.valor | number:'1.2-2' }}</span>
                     </div>
                 </div>
-                <button id="btn-solicitar-orcamento" class="btn-contato">Solicitar Orçamento</button>
+                <button (click)="goLogin()" id="btn-solicitar-orcamento" class="btn-contato">Solicitar Orçamento</button>
             </div>
         </div>
         <div class="paginacao">
@@ -104,7 +104,7 @@
             </section>
             <div class="avalie-container">
                 <h2>Avalie este profissional</h2>
-                <button class="btn-orcamento" id="btn-avaliar">Escreva uma avaliação</button>
+                <button (click)="goLogin()" class="btn-orcamento" id="btn-avaliar">Escreva uma avaliação</button>
                 <p>Compartilhe seus pensamentos com outros clientes</p>
             </div>
         </section>

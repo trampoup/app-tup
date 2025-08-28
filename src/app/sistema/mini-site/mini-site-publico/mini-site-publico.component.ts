@@ -153,4 +153,8 @@ export class MiniSitePublicoComponent implements OnInit {
   redirectToEditarSite(){
     this.router.navigate(['/usuario/cadastro-de-site']);
   }
+
+  goLogin() {
+    this.router.navigate(['/login']);
+  }
 }
