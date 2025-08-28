@@ -25,10 +25,14 @@ import { MinhasComunidadesComponent } from './minhas-comunidades/minhas-comunida
 import { GameficacaoComponent } from './gameficacao/gameficacao.component';
 import { MiniSiteComponent } from './mini-site/mini-site.component';
 import { CadastrarSiteComponent } from './mini-site/cadastrar-site/cadastrar-site.component';
+import { MeuMiniSiteComponent } from './mini-site/meu-mini-site/meu-mini-site.component';
+import { MiniSitePublicoComponent } from './mini-site/mini-site-publico/mini-site-publico.component';
+import { AuthGuard } from '../configs/security/auth.guard';
 
 const routes: Routes = [
   {  path: 'usuario', 
     component: LayoutComponent,
+    canActivate: [AuthGuard],        // <<<<< protege TODOS os filhos
     children: [
        //inicios
        { path: 'inicio-admin', component: InicioAdminComponent},
@@ -60,6 +64,7 @@ const routes: Routes = [
 
       // mini site
       { path: 'perfil-profissional', component: MiniSiteComponent},
+      { path: 'meu-perfil-profissional', component: MeuMiniSiteComponent},
       { path: 'cadastro-de-site', component: CadastrarSiteComponent},
 
        // Bate Papo com o Cliente

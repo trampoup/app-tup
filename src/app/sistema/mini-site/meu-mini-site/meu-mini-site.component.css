@@ -459,4 +459,166 @@
     margin: 0;
     margin-bottom: 16px;
 }
+/* mantém a coluna com os botões à direita, mas com largura do conteúdo */
+.actions-user-col{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;     /* permite a barra ocupar 100% da coluna */
+  width: fit-content;       /* encolhe para a largura dos botões */
+  margin-left: auto;        /* encosta à direita */
+  gap: 8px;
+}
+
+/* garante os botões em linha (sem quebra) para a largura ser previsível */
+.actions-user.profissional{
+  display: flex;
+  gap: 16px;
+  flex-wrap: nowrap;        /* não quebrar linha */
+}
+
+/* barra com mesma largura do grupo de botões */
+.mini-progress{
+  width: 100%;              /* ocupa a largura da coluna (dos botões) */
+  max-width: none;          /* remove limite antigo */
+  margin: 0;                /* remove “puxadas” para a esquerda */
+  align-self: stretch;      /* assegura 100% da coluna */
+}
+
+/* só para título + pontuação ficarem alinhados nas extremidades */
+.mini-progress-header{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: var(--lm-text02);
+}
+
+/* barra visual */
+.mini-progress-bar{
+  height: 12px;
+  background: #eee;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.mini-progress-fill{
+  height: 100%;
+  background: linear-gradient(to right, #7d0192 0%, #dc0aff 100%);
+  transition: width .35s ease;
+}
+
+/* (opcional) no mobile, se os botões precisarem quebrar,
+   você pode deixar a coluna ocupar a largura máxima */
+@media (max-width: 640px){
+  .actions-user-col{
+    width: 100%;
+  }
+}
+
+/* --- Progress bar compacta com animação de foguete --- */
+.mini-progress-bar{
+  position: relative;
+  height: 18px;                 /* um pouco mais alta p/ o foguete aparecer */
+  background: #eee;
+  border-radius: 999px;
+  overflow: hidden;             /* mantém o “pílula” arredondado */
+}
+
+.mini-progress-fill{
+  position: relative;
+  height: 100%;
+  background: linear-gradient(to right, #7d0192 0%, #dc0aff 100%);
+  transition: width 0.5s ease;  /* anima a largura */
+}
+
+/* Linhas de velocidade (mesmo efeito do outro componente) */
+.progress-fill::before,
+.mini-progress-fill::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,0.18) 0 6px,
+      rgba(255,255,255,0) 6px 16px
+    );
+  -webkit-mask: linear-gradient(to right, transparent 0%, black 30%, black 100%);
+  mask: linear-gradient(to right, transparent 0%, black 30%, black 100%);
+  animation: speed-lines 0.6s linear infinite;
+  pointer-events: none;
+}
+
+/* Faíscas/trail */
+.progress-fill::after,
+.mini-progress-fill::after{
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 18px; /* próximo ao foguete */
+  transform: translateY(-50%);
+  width: 180px;
+  height: 14px;
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.75) 0 3px, transparent 4px) 0 50%/22px 14px repeat-x,
+    radial-gradient(circle, rgba(255,255,255,0.35) 0 2px, transparent 3px) 0 60%/18px 14px repeat-x;
+  animation: trail-move 0.8s linear infinite;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+/* Foguete (reutilizável) */
+.rocket{
+  position: absolute;
+  top: 50%;
+  right: -16px;                /* sai um pouco p/ fora na direita */
+  transform: translateY(-50%) rotate(12deg);
+  width: 24px;                 /* levemente menor na barra compacta */
+  height: 24px;
+  filter: drop-shadow(0 0 8px #dc0aff);
+}
+
+/* Chama do foguete */
+.rocket .flame{
+  position: absolute;
+  left: -6px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-12deg);
+  width: 20px;
+  height: 9px;
+  background:
+    radial-gradient(circle at 20% 50%, rgba(255,255,255,0.9) 0 4px, transparent 5px),
+    radial-gradient(circle at 60% 50%, rgba(255,255,255,0.6) 0 6px, transparent 7px),
+    linear-gradient(90deg, rgba(220,10,255,0.9), rgba(125,1,146,0.7));
+  border-radius: 50px;
+  filter: blur(0.5px);
+  animation: flame-flicker 0.18s infinite alternate ease-in-out;
+}
+
+/* Animações (compartilhadas) */
+@keyframes speed-lines {
+  from { background-position: 0 0; }
+  to   { background-position: 100px 0; }
+}
+@keyframes flame-flicker {
+  from {
+    transform: translateY(-50%) rotate(-12deg) scaleX(0.9);
+    opacity: 0.9;
+  }
+  to {
+    transform: translateY(-50%) rotate(-6deg) scaleX(1.1);
+    opacity: 1;
+  }
+}
+@keyframes trail-move {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: -60px 0, -40px 0; }
+}
+
+/* Responsividade: reduz foguete/chama em telas menores */
+@media (max-width: 600px){
+  .rocket { width: 20px; height: 20px; right: -12px; }
+  .rocket .flame { width: 16px; height: 7px; }
+  .mini-progress-fill::after { width: 120px; }
+}
 

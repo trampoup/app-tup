@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/internal/Observable';
+import { Observable, of } from 'rxjs';
 import { TipoUsuario } from 'src/app/login/tipo-usuario.enum';
 import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -128,5 +128,24 @@ export class AuthService {
       })
     );
   }
+
+  getUsuarioAutenticado(): UsuarioDadosDTO | null {
+    return this.UsuarioPerfil;
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('access_token');
+  }
+
+  /** Retorna o usuário do cache; se não houver e tiver token, busca na API; se falhar, devolve null */
+  getUsuarioComCache$(): Observable<UsuarioDadosDTO | null> {
+    if (this.UsuarioPerfil) return of(this.UsuarioPerfil);
+    if (!this.isLoggedIn()) return of(null);
+    return this.obterPerfilUsuario().pipe(
+      // já faz set do cache no tap() dentro de obterPerfilUsuario
+      catchError(() => of(null))
+    );
+  }
+
 
 }

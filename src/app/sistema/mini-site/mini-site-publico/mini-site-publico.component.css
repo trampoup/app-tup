@@ -1,5 +1,11 @@
+:host {
+  display: block;          /* garante que o host ocupe a largura toda */
+  min-height: 100dvh;      /* cobre toda a altura da viewport */
+  background: #afd7f3af;     /* cinza do fundo fora do .main-container */
+}
+
 .main-container {
-    margin: 120px 32px 24px;
+    margin: 0px 32px 24px;
     max-width: 100%;
     background: var(--lm-branco);
     border-radius: 24px;

@@ -33,6 +33,8 @@ import { SharedModule } from '../shared/shared.module';
 import { MiniSiteComponent } from './mini-site/mini-site.component';
 import { MatMenuModule } from "@angular/material/menu";
 import { CadastrarSiteComponent } from './mini-site/cadastrar-site/cadastrar-site.component';
+import { MeuMiniSiteComponent } from './mini-site/meu-mini-site/meu-mini-site.component';
+import { MiniSitePublicoComponent } from './mini-site/mini-site-publico/mini-site-publico.component';
 
 
   @NgModule({
@@ -63,7 +65,9 @@ import { CadastrarSiteComponent } from './mini-site/cadastrar-site/cadastrar-sit
       MinhasComunidadesComponent,
       GameficacaoComponent,
       MiniSiteComponent,
-      CadastrarSiteComponent
+      CadastrarSiteComponent,
+      MeuMiniSiteComponent,
+      MiniSitePublicoComponent
     ],
     imports: [
     CommonModule,
