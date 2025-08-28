@@ -15,11 +15,32 @@
                 </div>
             </div>
         </div>
-        <div class="actions-user">
-            <button class="btn-share">Compartilhar <img src="/assets/icones/share-icon.svg" alt="save icon"></button>
-            <button class="btn-salvar"><img src="/assets/icones/save-icon.svg" alt="save icon"></button>
-            <button class="btn-contato">Contato</button>
-            <button class="btn-orcamento">Solicitar Orçamento</button>
+        <div class="actions-user-col">
+            <div class="mini-progress" aria-label="Progresso de destaque">
+                <div class="mini-progress-header">
+                    <span>Poder de Destaque </span>
+                    <span>{{ userScore }} / {{ maxScore }} pts</span>
+                </div>
+                <div class="mini-progress-bar">
+                    <div class="mini-progress-fill" [style.width.%]="progressPercent">
+                        <!-- foguete ancorado no fim da barra -->
+                        <div class="rocket" aria-hidden="true">
+                            <svg viewBox="0 0 64 64" width="28" height="28">
+                            <path d="M46 2c-7 2-15 9-20 15l-7 1-7 9 9-2 2 2-2 9 9-7 1-7C37 18 44 9 46 2z" fill="#ffffff"/>
+                            <circle cx="40" cy="16" r="5" fill="#d6bfff"/>
+                            <path d="M22 35l-8 8 9-2z" fill="#ffffff"/>
+                            <path d="M35 22l-2 9 8-8z" fill="#ffffff"/>
+                            </svg>
+                            <span class="flame"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="actions-user profissional">
+                <button class="btn-compartilhar">Compartilhar Meu Mini-Site <img src="/assets/icones/share-mini-site-icon.svg" alt=""></button>
+                <button class="btn-impulsionar" (click)="redirectToGameficacao()">Impulsionar Perfil <img src="/assets/icones/foguete-icon.svg" alt="icone foguete"></button>
+                <button class="btn-editar-perfil" (click)="redirectToEditarSite()">Editar Perfil</button>
+            </div>
         </div>
     </div>
     <div class="estatisticas-container">

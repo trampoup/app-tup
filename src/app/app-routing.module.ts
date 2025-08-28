@@ -5,13 +5,17 @@ import { EsqueciSenhaComponent } from './esqueci-senha/esqueci-senha.component';
 import { LayoutComponent } from './layout/layout.component';
 import { PainelAdminComponent } from './sistema/Dashboards/painel-admin/painel-admin.component';
 import { CadastroComponent } from './cadastro/cadastro.component';
+import { AuthGuard } from './configs/security/auth.guard';
 
 const routes: Routes = [
+  //públicas
   { path: 'login', component: LoginComponent },
   { path: 'cadastro', component: CadastroComponent},
   { path: 'recuperacao-de-senha', component: EsqueciSenhaComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '', component: LayoutComponent, children: [
+
+  //privadas
+  { path: '', component: LayoutComponent, canActivate:[AuthGuard], children: [
     { path : 'usuario/painel-principal-admin', component: PainelAdminComponent },
     { path: '', redirectTo: 'usuario/painel-principal-admin', pathMatch: 'full' }
   ]}
