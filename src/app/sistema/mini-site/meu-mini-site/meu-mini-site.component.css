@@ -16,7 +16,8 @@
 .banner-user{
   height: 235px;           
   border-radius: 20px;
-  overflow: hidden;         
+  overflow: hidden;     
+  border: 0.5px solid gray;    
 }
 
 .banner-user img{
@@ -172,6 +173,17 @@
 .btn-compartilhar img{
     margin: 0;
     height: 20px;
+}
+
+.video-view {
+  margin: 24px 0 24px;
+}
+.video-view video {
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  border-radius: 12px;
+  display: block;
 }
 
 .estatisticas-container{
@@ -635,4 +647,117 @@
   .rocket .flame { width: 16px; height: 7px; }
   .mini-progress-fill::after { width: 120px; }
 }
+
+.comentarios-container {
+  margin-top: 24px;
+}
+
+.comentarios-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.comentario-card {
+  border: 1px solid var(--lm-border04);
+  background: var(--lm-branco);
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.comentario-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.comentario-header img {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  object-fit: cover;
+  flex: 0 0 48px;
+}
+
+.comentario-meta h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--lm-preto);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0a6b2d;
+  background: #d0f5df;
+  border: 1px solid #b5eac9;
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+
+.stars-e-data {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.stars {
+  display: inline-flex;
+  gap: 2px;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.stars span { color: #d0d0d0; }
+.stars span.filled { color: #F5A623; } /* mesma cor das estrelas que vc já usa */
+
+.data {
+  color: var(--lm-text04);
+  font-size: 12px;
+}
+
+.comentario-titulo {
+  margin: 4px 0 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--lm-preto);
+}
+
+.comentario-texto {
+  margin: 0;
+  color: var(--lm-text);
+  font-size: 14px;
+}
+
+.comentario-footer {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.btn-link {
+  background: transparent;
+  border: none;
+  color: var(--lm-primary);
+  font-weight: 600;
+  padding: 0;
+  cursor: pointer;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .comentarios-list { grid-template-columns: 1fr; }
+}
+
 

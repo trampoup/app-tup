@@ -24,6 +24,12 @@ export class CadastrarSiteComponent implements OnInit {
   selectedBanner: { [key: string]: File | null } = {};
   bannerPreview: string | ArrayBuffer | null = null;
 
+  videoPreview: string | ArrayBuffer | null = null;
+  selectedVideos: { [key: string]: File | null } = {};
+
+  fotoPerfil: File | null = null;
+  selectedFotoPerfil: { [key: string]: File | null } = {};
+  fotoPerfilPreview: string | ArrayBuffer | null = null;
 
   skillsCtrl = new FormControl<string>('', { nonNullable: true });
   skills: string[] = [];
@@ -35,16 +41,20 @@ export class CadastrarSiteComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.loadFotoPerfilFromServer();
     this.loadBannerFromServer();
+    this.loadVideoFromServer();
     this.usuarioService.obterMeuSite().subscribe({
       next: (dto) => {
         if (dto) {
           this.isEditMode = true;
           this.siteForm.patchValue({
             bio: dto.bio ?? '',
-            skills: dto.skills ?? '',
             tempoExperiencia: dto.tempoExperiencia ?? null
           });
+
+          this.skills = this.parseSkills(dto.skills);
+          this.syncSkillsToForm();       // mantém o formControl "skills" coerente
         }
       },
       error: () => { /* se 401/404, mantém em modo cadastro */ }
@@ -53,13 +63,21 @@ export class CadastrarSiteComponent implements OnInit {
 
   siteForm = this.formBuilder.group(
     {
-      banner: [''],
-      video: [''],
+      fotoPerfil: new FormControl<File | null>(null),
+      banner: new FormControl<File | null>(null),
+      video:  new FormControl<File | null>(null),
       bio: new FormControl('', [Validators.required]),
       skills: new FormControl('', [Validators.required]),
       tempoExperiencia: new FormControl<number | null>(null, [Validators.required]),
     }
   );
+
+  private parseSkills(raw?: string | null): string[] {
+    return (raw || '')
+      .split(/[;,]/)        // aceita vírgula e ponto-e-vírgula
+      .map(s => s.trim())
+      .filter(Boolean);
+  }
 
 
   private syncSkillsToForm() {
@@ -81,18 +99,18 @@ export class CadastrarSiteComponent implements OnInit {
     this.skillsCtrl.setValue('');
   }
 
-onSkillKeydown(e: Event) {
-  const ev = e as KeyboardEvent;
-  if (ev.key === ',' || ev.key === ';') {
-    ev.preventDefault();
-    this.addSkill();
-    return;
+  onSkillKeydown(e: Event) {
+    const ev = e as KeyboardEvent;
+    if (ev.key === ',' || ev.key === ';') {
+      ev.preventDefault();
+      this.addSkill();
+      return;
+    }
+    if (ev.key === 'Backspace' && !this.skillsCtrl.value) {
+      this.skills.pop();
+      this.syncSkillsToForm();
+    }
   }
-  if (ev.key === 'Backspace' && !this.skillsCtrl.value) {
-    this.skills.pop();
-    this.syncSkillsToForm();
-  }
-}
 
   commitSkill() {
     // adiciona o que ficou no input ao sair do foco
@@ -130,6 +148,44 @@ onSkillKeydown(e: Event) {
 
   }
 
+  private loadVideoFromServer() {
+    this.usuarioMidiaService.getMinhaMidia('video').subscribe({
+      next: (blob) => {
+        if (!blob || blob.size === 0) return;
+
+        const typed = blob.type?.startsWith('video/')
+          ? blob
+          : new Blob([blob], { type: 'video/mp4' });
+
+        const reader = new FileReader();
+        reader.onload = () => this.videoPreview = reader.result as string; // "data:video/..."
+        reader.readAsDataURL(typed);
+      }
+    });
+  }
+
+  private loadFotoPerfilFromServer() {
+    this.usuarioMidiaService.getMinhaMidia('foto_perfil').subscribe({
+      next: (blob) => {
+        if (!blob || blob.size === 0) return;
+
+        const typedBlob = blob.type?.startsWith('image/')
+          ? blob
+          : new Blob([blob], { type: 'image/jpeg' }); // fallback
+
+        const reader = new FileReader();
+        reader.onload = () => this.fotoPerfilPreview = reader.result as string; // data:image/...
+        reader.readAsDataURL(typedBlob);
+      }
+    });
+  }
+
+  onVideoSelected(video: File | null, tipo: string) {
+    this.selectedVideos[tipo] = video;
+    this.siteForm.get('video')?.setValue(video); // opcional (mantém o form coerente)
+    console.log(`video de ${tipo} selecionada:`, video);
+  }
+
 
   onImageSelected(image: File | null, tipo: string) {
     this.selectedImages[tipo] = image;
@@ -156,7 +212,9 @@ onSkillKeydown(e: Event) {
     this.usuarioService.atualizarMeuSite(dto).subscribe({
       next: () => {
         const bannerFile = this.selectedImages['banner'] ?? null;
-        const temArquivos = !!bannerFile; //|| !!this.selectedVideo;
+        const fotoPerfilFIle = this.selectedImages['fotoPerfil'] ?? null;;
+        const videoFile  = this.selectedVideos['video'] ?? null;
+        const temArquivos = !!bannerFile || !!videoFile || !!fotoPerfilFIle;
 
         if (!temArquivos) {
           this.successMessage = this.isEditMode ? 'Alterações salvas!' : 'Cadastro realizado!';
@@ -167,7 +225,8 @@ onSkillKeydown(e: Event) {
         // Upload das mídias via service de mídias
         this.usuarioMidiaService.upload({
           banner: bannerFile || undefined,
-          //video: this.selectedVideo || undefined só quando implementar midias
+          video:  videoFile  || undefined,
+          fotoPerfil: fotoPerfilFIle || undefined
         }).subscribe({
           next: () => {},
           error: (err) => {

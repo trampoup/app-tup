@@ -17,6 +17,19 @@
       (keydown.enter)="$event.preventDefault()"
     >
 
+      <!-- CAMPO UPLOAD DA FOTO DE PERFIL -->
+      <div id="campo-valor">
+        <label class="form-label">
+          Foto do Perfil
+        </label>
+        <app-input-img label="Clique ou arraste a foto para fazer upload" 
+        inputId="fotoPerfil" 
+        (imageSelected)="onImageSelected($event, 'fotoPerfil')" 
+        [fotoPreview]="fotoPerfilPreview">
+        </app-input-img>
+      </div>
+
+
       <!-- CAMPO UPLOAD DO BANNER -->
       <div id="campo-valor">
         <label class="form-label">
@@ -44,10 +57,7 @@
         <label class="form-label">
           Vídeo de Apresentação <span>(opcional)</span>
         </label>
-        <div class="upload-arquivos">
-            <img src="/assets/icones/upload-video.svg" alt="upload imagem">
-            <h2>Clique ou Arraste um vídeo para fazer upload.</h2>
-        </div>
+        <app-input-video label="Clique ou arraste o video para fazer upload" inputId="video" (videoSelected)="onVideoSelected($event, 'video')" [videoPreview]="videoPreview"></app-input-video>
     </div>
 
     <div id="campo-valor">

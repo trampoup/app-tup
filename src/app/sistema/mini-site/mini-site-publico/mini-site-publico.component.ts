@@ -5,6 +5,7 @@ import { TipoUsuario } from 'src/app/login/tipo-usuario.enum';
 import { UsuarioSiteDTO } from '../cadastrar-site/usuario-site-dto';
 import { UsuarioService } from 'src/app/configs/services/usuario.service';
 import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-mini-site-publico',
@@ -84,6 +85,49 @@ export class MiniSitePublicoComponent implements OnInit {
       descricao: 'Serviço rápido e bem feito. Muito atencioso!'
     }
   ];
+
+
+  comentarios = [
+    {
+      nome: 'Ana Paula',
+      foto: '/assets/imagens/imagens-de-exemplo/a-userphoto-exemplo.png',
+      data: 'há 2 dias',
+      titulo: 'Excelente atendimento',
+      texto: 'Chegou no horário, explicou o serviço e entregou melhor que o combinado.',
+      estrelas: 5,
+      verificado: true
+    },
+    {
+      nome: 'Rafael N.',
+      foto: '/assets/imagens/imagens-de-exemplo/r-userphoto-exemplo.png',
+      data: 'há 1 semana',
+      titulo: 'Preço justo e serviço rápido',
+      texto: 'Instalação sem sujeira e com testes. Recomendo.',
+      estrelas: 4,
+      verificado: false
+    },
+    {
+      nome: 'Juliana F.',
+      foto: '/assets/imagens/imagens-de-exemplo/j-userphoto-exemplo.png',
+      data: 'há 3 semanas',
+      titulo: 'Resolveu meu problema',
+      texto: 'Meu ar não gelava, ele identificou na hora e consertou. Voltarei a contratar.',
+      estrelas: 5,
+      verificado: true
+    },
+    {
+      nome: 'Carlos M.',
+      foto: '/assets/imagens/imagens-de-exemplo/c-userphoto-exemplo.png',
+      data: 'há 1 mês',
+      titulo: 'Bom, mas poderia ser mais rápido',
+      texto: 'Trabalho bem feito, só achei que demorou um pouco na chegada.',
+      estrelas: 4,
+      verificado: false
+    }
+  ];
+
+
+
   // Paginacao de servicos
   paginaAtualServicos = 1;
   itensPorPaginaServicos = 6;
@@ -104,13 +148,16 @@ export class MiniSitePublicoComponent implements OnInit {
   // URLs de mídia (blob:)
   bannerUrl: string | null = null;
   fotoUrl: string | null = null;
+  videoUrl: SafeUrl | null = null;
+  private videoObjectUrl: string | null = null; // para revogar depois
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,  
     private usuarioService:UsuarioService,
-    private usuarioMidiasService:UsuarioMidiasService
+    private usuarioMidiasService:UsuarioMidiasService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -143,7 +190,6 @@ export class MiniSitePublicoComponent implements OnInit {
     });
   }
 
-  // ----- Mídias
   private carregarMidiasPublicas(id: number) {
     // banner
     this.usuarioMidiasService.getMidiaDoUsuario('banner', id).subscribe({
@@ -166,10 +212,32 @@ export class MiniSitePublicoComponent implements OnInit {
         reader.readAsDataURL(typed);
       }
     });
+
+
+    this.usuarioMidiasService.getMidiaDoUsuario('video', id).subscribe({
+      next: (blob) => {
+        if (!blob || blob.size === 0) return;
+
+        const typed = blob.type?.startsWith('video/')
+          ? blob
+          : new Blob([blob], { type: 'video/mp4' });
+
+        // revoga o anterior (evita vazamento de memória)
+        if (this.videoObjectUrl) URL.revokeObjectURL(this.videoObjectUrl);
+
+        // cria o Object URL e sanitiza
+        this.videoObjectUrl = URL.createObjectURL(typed);
+        this.videoUrl = this.sanitizer.bypassSecurityTrustUrl(this.videoObjectUrl); // <-- AQUI
+      }
+    });
+
   }
 
-
-
+  ngOnDestroy(): void {
+    if (this.videoObjectUrl) {
+      URL.revokeObjectURL(this.videoObjectUrl);
+      this.videoObjectUrl = null;
+  }}
 
   // valores mockados só para visual
   userScore = 120;
