@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Form, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.service';
+import { UsuarioService } from 'src/app/configs/services/usuario.service';
+import { UsuarioSiteDTO } from './usuario-site-dto';
 
 @Component({
   selector: 'app-cadastrar-site',
@@ -15,24 +18,174 @@ export class CadastrarSiteComponent implements OnInit {
   successMessage: string | null = null;
   errorMessage: string | null = null;
 
+  selectedImages: { [key: string]: File | null } = {};
+
+  banner: File | null = null;
+  selectedBanner: { [key: string]: File | null } = {};
+  bannerPreview: string | ArrayBuffer | null = null;
+
+
+  skillsCtrl = new FormControl<string>('', { nonNullable: true });
+  skills: string[] = [];
+  
   constructor(
-    private formBuilder : FormBuilder
+    private formBuilder : FormBuilder,
+    private usuarioService:UsuarioService,
+    private usuarioMidiaService: UsuarioMidiasService
   ) { }
 
   ngOnInit(): void {
+    this.loadBannerFromServer();
+    this.usuarioService.obterMeuSite().subscribe({
+      next: (dto) => {
+        if (dto) {
+          this.isEditMode = true;
+          this.siteForm.patchValue({
+            bio: dto.bio ?? '',
+            skills: dto.skills ?? '',
+            tempoExperiencia: dto.tempoExperiencia ?? null
+          });
+        }
+      },
+      error: () => { /* se 401/404, mantém em modo cadastro */ }
+    });
   }
 
   siteForm = this.formBuilder.group(
     {
+      banner: [''],
+      video: [''],
       bio: new FormControl('', [Validators.required]),
       skills: new FormControl('', [Validators.required]),
-      experiencia:new FormControl('', [Validators.required]),
-      
+      tempoExperiencia: new FormControl<number | null>(null, [Validators.required]),
     }
   );
 
-  onSubmit(){
 
+  private syncSkillsToForm() {
+    this.siteForm.get('skills')?.setValue(this.skills.join(', '));
+    this.siteForm.get('skills')?.updateValueAndValidity({ onlySelf: true });
+  }
+
+  addSkill(e?: Event) {
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    const value = (this.skillsCtrl.value || '').trim();
+    if (!value) return;
+
+    // evita duplicadas (case-insensitive)
+    const exists = this.skills.some(s => s.toLowerCase() === value.toLowerCase());
+    if (!exists) {
+      this.skills.push(value);
+      this.syncSkillsToForm();
+    }
+    this.skillsCtrl.setValue('');
+  }
+
+onSkillKeydown(e: Event) {
+  const ev = e as KeyboardEvent;
+  if (ev.key === ',' || ev.key === ';') {
+    ev.preventDefault();
+    this.addSkill();
+    return;
+  }
+  if (ev.key === 'Backspace' && !this.skillsCtrl.value) {
+    this.skills.pop();
+    this.syncSkillsToForm();
+  }
+}
+
+  commitSkill() {
+    // adiciona o que ficou no input ao sair do foco
+    this.addSkill();
+  }
+
+  removeSkill(i: number) {
+    this.skills.splice(i, 1);
+    this.syncSkillsToForm();
+  }
+
+
+  private loadBannerFromServer() {
+    this.usuarioMidiaService.getMinhaMidia('banner').subscribe({
+      next: (blob) => {
+        console.log('Banner blob:', blob);
+        if (!blob || blob.size === 0) return;
+
+        // Se o back vier sem content-type de imagem, força um tipo image/*
+        const typedBlob = blob.type && blob.type.startsWith('image/')
+          ? blob
+          : new Blob([blob], { type: 'image/jpeg' }); // fallback
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          console.log('Banner preview loaded');
+          this.bannerPreview = reader.result as string; // "data:image/..." OK
+        };
+        reader.readAsDataURL(typedBlob);
+      },
+      error: (error) => {      
+        console.error('Error loading banner:', error);
+      }
+    });
+
+  }
+
+
+  onImageSelected(image: File | null, tipo: string) {
+    this.selectedImages[tipo] = image;
+    this.siteForm.get(tipo)?.setValue(image);
+    console.log(`Imagem de ${tipo} selecionada:`, image);
+  }
+
+  onSubmit(){
+    if (this.siteForm.invalid) {
+      this.errorMessage = 'Preencha os campos obrigatórios.';
+      return;
+    }
+    this.isLoading = true;
+    this.successMessage = null;
+    this.errorMessage = null;
+
+    const dto: UsuarioSiteDTO = {
+      bio: this.siteForm.value.bio || '',
+      skills: this.skills.join(', '),
+      tempoExperiencia: Number(this.siteForm.value.tempoExperiencia) || 0,
+    };
+
+
+    this.usuarioService.atualizarMeuSite(dto).subscribe({
+      next: () => {
+        const bannerFile = this.selectedImages['banner'] ?? null;
+        const temArquivos = !!bannerFile; //|| !!this.selectedVideo;
+
+        if (!temArquivos) {
+          this.successMessage = this.isEditMode ? 'Alterações salvas!' : 'Cadastro realizado!';
+          this.isLoading = false;
+          return;
+        }
+
+        // Upload das mídias via service de mídias
+        this.usuarioMidiaService.upload({
+          banner: bannerFile || undefined,
+          //video: this.selectedVideo || undefined só quando implementar midias
+        }).subscribe({
+          next: () => {},
+          error: (err) => {
+            this.errorMessage = err?.error?.message || 'Erro ao enviar mídias.';
+            this.isLoading = false;
+          },
+          complete: () => {
+            this.successMessage = this.isEditMode ? 'Perfil e mídias atualizados!' : 'Cadastro concluído com mídias!';
+            this.isLoading = false;
+          }
+        });
+      },
+      error: (err) => {
+        this.errorMessage = err?.error?.message || 'Erro ao salvar dados do site.';
+        this.isLoading = false;
+      }
+    });    
+  
   }
 
   allowOnlyNumbers(event: KeyboardEvent) {

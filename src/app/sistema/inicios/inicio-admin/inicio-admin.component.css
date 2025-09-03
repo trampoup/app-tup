@@ -192,11 +192,14 @@
 .banner-user{
   width: 100%;
   padding: 0;
+
 }
 
 .banner-user img{
   height: 125px;
   width: 100%;
+  object-fit: cover;
+  border-radius: 15px 15px 0 0;
 }
 
 .card-expandido{

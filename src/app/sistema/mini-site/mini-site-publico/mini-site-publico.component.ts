@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/configs/services/auth.service';
 import { TipoUsuario } from 'src/app/login/tipo-usuario.enum';
+import { UsuarioSiteDTO } from '../cadastrar-site/usuario-site-dto';
+import { UsuarioService } from 'src/app/configs/services/usuario.service';
+import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.service';
 
 @Component({
   selector: 'app-mini-site-publico',
@@ -93,15 +96,80 @@ export class MiniSitePublicoComponent implements OnInit {
   totalPaginasAvaliacoes = Math.ceil(this.avaliacoes.length / this.itensPorPaginaAvaliacoes);
   avaliacoesPaginadas: typeof this.avaliacoes = [];
 
+  isLoading : boolean = false;
+
+  perfil: UsuarioSiteDTO | null = null;
+  skillsLista: string[] = [];
+
+  // URLs de mídia (blob:)
+  bannerUrl: string | null = null;
+  fotoUrl: string | null = null;
+
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,  
+    private usuarioService:UsuarioService,
+    private usuarioMidiasService:UsuarioMidiasService
   ) { }
 
   ngOnInit(): void {
     this.atualizarPaginacaoServicos();
     this.atualizarPaginacaoAvaliacoes();
+
+
+    const idParam = this.route.snapshot.paramMap.get('id');
+    const id = Number(idParam);
+    if (!id || Number.isNaN(id)) {
+      console.log("URL INVALIDA ID AUSENTE");
+      this.isLoading = false;
+      return;
+    }
+
+    this.carregarPerfilPublico(id);
+    this.carregarMidiasPublicas(id);
   }
+
+  // ----- Perfil (dados)
+  private carregarPerfilPublico(id: number) {
+    this.usuarioService.obterSitePorIdUsuario(id).subscribe({
+      next: (dto) => {
+        this.perfil = dto;
+        const raw = dto?.skills ?? '';
+        this.skillsLista = raw.split(/[;,]/).map(s => s.trim()).filter(Boolean);
+      },
+      error: () => {},
+      complete: () => this.isLoading = false
+    });
+  }
+
+  // ----- Mídias
+  private carregarMidiasPublicas(id: number) {
+    // banner
+    this.usuarioMidiasService.getMidiaDoUsuario('banner', id).subscribe({
+      next: (blob) => {
+        if (!blob || blob.size === 0) return;
+        const typed = blob.type?.startsWith('image/') ? blob : new Blob([blob], { type: 'image/jpeg' });
+        const reader = new FileReader();
+        reader.onload = () => this.bannerUrl = reader.result as string;
+        reader.readAsDataURL(typed);
+      }
+    });
+
+    // foto perfil
+    this.usuarioMidiasService.getMidiaDoUsuario('foto_perfil', id).subscribe({
+      next: (blob) => {
+        if (!blob || blob.size === 0) return;
+        const typed = blob.type?.startsWith('image/') ? blob : new Blob([blob], { type: 'image/jpeg' });
+        const reader = new FileReader();
+        reader.onload = () => this.fotoUrl = reader.result as string;
+        reader.readAsDataURL(typed);
+      }
+    });
+  }
+
+
+
 
   // valores mockados só para visual
   userScore = 120;

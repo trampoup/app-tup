@@ -21,27 +21,43 @@ export class InicioClienteComponent implements OnInit {
   destaques = [
     {
       titulo: 'destaque1',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo.png'
+      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
     },
     {
       titulo: 'destaque2',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo.png'
+      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
     },
     {
       titulo: 'destaque3',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo.png'
+      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
     },
     {
       titulo: 'destaque4',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo.png'
+      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
     },
     {
       titulo: 'destaque5',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo.png'
+      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
     },
     {
       titulo: 'destaque6',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo.png'
+      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
+    },
+    {
+      titulo: 'destaque7',
+      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
+    },
+    {
+      titulo: 'destaque8',
+      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
+    },
+    {
+      titulo: 'destaque9',
+      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
+    },
+    {
+      titulo: 'destaque10',
+      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
     }
   ];
 

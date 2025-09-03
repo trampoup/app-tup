@@ -16,10 +16,12 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
   { path: 'perfil-publico', component: MiniSitePublicoComponent},
-  
+  { path: 'perfil-publico/:id', component: MiniSitePublicoComponent },
 
   //privadas
-  { path: '', component: LayoutComponent, canActivate:[AuthGuard], children: [
+  { path: '', component: LayoutComponent,
+    //  canActivate:[AuthGuard], 
+     children: [
     { path : 'usuario/painel-principal-admin', component: PainelAdminComponent },
     { path: '', redirectTo: 'usuario/painel-principal-admin', pathMatch: 'full' }
   ]}

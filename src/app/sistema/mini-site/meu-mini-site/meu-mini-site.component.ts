@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/configs/services/auth.service';
 import { TipoUsuario } from 'src/app/login/tipo-usuario.enum';
+import { UsuarioSiteDTO } from '../cadastrar-site/usuario-site-dto';
+import { UsuarioService } from 'src/app/configs/services/usuario.service';
+import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.service';
 
 @Component({
   selector: 'app-meu-mini-site',
@@ -93,16 +96,27 @@ export class MeuMiniSiteComponent implements OnInit {
   totalPaginasAvaliacoes = Math.ceil(this.avaliacoes.length / this.itensPorPaginaAvaliacoes);
   avaliacoesPaginadas: typeof this.avaliacoes = [];
 
+  perfil: UsuarioSiteDTO | null = null;
+  skillsLista: string[] = [];
+
+  // URLs de mídia (blob:)
+  bannerUrl: string | null = null;
+  fotoUrl: string | null = null;
+
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private usuarioService : UsuarioService,
+    private usuarioMidiasService: UsuarioMidiasService
   ) { }
 
   ngOnInit(): void {
     this.atualizarPaginacaoServicos();
     this.atualizarPaginacaoAvaliacoes();
-  }
 
+    this.carregarMeuSite();
+    this.carregarMidias();
+  }
 
   // valores mockados só para visual
   userScore = 120;
@@ -112,6 +126,61 @@ export class MeuMiniSiteComponent implements OnInit {
     return Math.min(100, Math.round((this.userScore / this.maxScore) * 100));
   }
 
+
+  private carregarMeuSite() {
+    this.usuarioService.obterMeuSite().subscribe({
+      next: (dto) => {
+        this.perfil = dto;
+        console.log("meu id", this.perfil.id);
+        // monta lista de skills (se vier string "a, b; c")
+        const raw = dto?.skills ?? '';
+        this.skillsLista = raw
+          .split(/[;,]/)
+          .map(s => s.trim())
+          .filter(Boolean);
+      },
+      error: () => {
+        // se 401 ou erro, mantém mocks/estado padrão
+      }
+    });
+  }  
+
+  private carregarMidias() {
+    this.usuarioMidiasService.getMinhaMidia('banner').subscribe({
+      next: (blob) => {
+        if (!blob || blob.size === 0) return;
+
+        const typed = blob.type?.startsWith('image/')
+          ? blob
+          : new Blob([blob], { type: 'image/jpeg' }); // fallback
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          // vira "data:image/..;base64,..." — super confiável no <img [src]>
+          this.bannerUrl = reader.result as string;
+        };
+        reader.readAsDataURL(typed);
+      },
+      error: () => {}
+    });
+
+    this.usuarioMidiasService.getMinhaMidia('foto_perfil').subscribe({
+      next: (blob) => {
+        if (!blob || blob.size === 0) return;
+
+        const typed = blob.type?.startsWith('image/')
+          ? blob
+          : new Blob([blob], { type: 'image/jpeg' });
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.fotoUrl = reader.result as string;
+        };
+        reader.readAsDataURL(typed);
+      },
+      error: () => {}
+    });
+  }
 
   getRoleUsuario(): TipoUsuario {
     return this.authService.getRoleUsuario();
@@ -157,7 +226,7 @@ export class MeuMiniSiteComponent implements OnInit {
 
   redirectToSitePublico(): void {
     const url = this.router.serializeUrl(
-      this.router.createUrlTree(['/perfil-publico'])
+      this.router.createUrlTree(['/perfil-publico', this.perfil?.id])
     );
     window.open(url, '_blank', 'noopener,noreferrer');
   }
