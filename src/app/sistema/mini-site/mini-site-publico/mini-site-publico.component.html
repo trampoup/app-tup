@@ -1,15 +1,22 @@
 <div class="main-container">
     <div class="banner-user">
-        <img src="/assets/imagens/banner-trampo-generico.png" alt="banner usuario">
+        <img [src]="bannerUrl || '/assets/imagens/banner-trampo-generico.png'" alt="banner usuario">
     </div>
     <div class="header-container">
         <div class="user-info">
             <div class="user-photo">
-                <img src="/assets/imagens/foto-perfil-generico.png" alt="foto do usuario">
+                <img [src]="fotoUrl || '/assets/imagens/foto-perfil-generico.png'" alt="foto do usuario">  
             </div>
             <div class="user-details">
-                <h2>{{ "Paulo Clima LTDA" }}</h2>
-                <p class="cargo">Técnico em Ar Condicionado</p>
+                <h2>{{ perfil?.nome || '—' }}</h2>
+
+                <p class="cargo" *ngIf="perfil?.setor; else cargoPadrao">
+                {{ perfil?.setor | titlecase }}
+                </p>
+                <ng-template #cargoPadrao>
+                    <p class="cargo">{{getRoleUsuario() !== TipoUsuario.ADMIN ? "Profissional" : "Administrador"}}</p>
+                </ng-template>
+
                 <div class="rating">
                     <span class="score"> <span class="star">★</span> {{ (4.0) | number:'1.1-1' }}/5</span>
                 </div>
@@ -33,32 +40,32 @@
         </div>
         <div class="dual-grid-estatisticas">
             <img src="/assets/icones/experiencia-icon.svg" alt="Experiência">
-            <h3>{{"8"}} anos de experiência</h3>
+            <h3>{{perfil?.tempoExperiencia || "--"}} anos de experiência</h3>
         </div>
     </div>
     <div class="descricao-user">
         <div class="bio-user">
             <div class="desc-header">
                 <h3>Profissional Bio</h3>
-                <p>8 anos de experiência</p>
+                <p *ngIf="perfil?.tempoExperiencia != null">
+                {{ perfil?.tempoExperiencia }} anos de experiência
+                </p>
             </div>
             <p>
-                Técnico especializado em instalação, manutenção e limpeza de ar-condicionado split, janela e central. 
-                Há mais de 8 anos no mercado, prezando sempre pela agilidade, segurança e um atendimento transparente.
-                Atendo residências, comércios e empresas.
+                {{ perfil?.bio || 'Este profissional ainda não preencheu a bio.' }}
             </p>
         </div>
         <div class="skills-user">
             <div class="desc-header">
                 <h3>Skills</h3>
             </div>
-            <div class="skills-list">
-                <p>Instalação de Ar Condicionado Split e Janela</p>
-                <p>Elétrica básica</p>
-                <p>Higienização e infecção</p>
-                <p>Experiência com sistemas multi split</p>
-                <p>Atendimento emergencial em até 24h</p>
+            <div class="skills-list" *ngIf="skillsLista.length; else semSkills">
+                <p *ngFor="let s of skillsLista">{{ s }}</p>
             </div>
+
+            <ng-template #semSkills>
+                <div class="skills-list"><p>Sem skills cadastradas</p></div>
+            </ng-template>
         </div>  
     </div>
     <div class="servicos-container">

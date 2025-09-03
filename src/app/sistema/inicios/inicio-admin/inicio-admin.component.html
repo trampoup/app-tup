@@ -40,23 +40,22 @@
                     <!-- ===== CARD EXPANDIDO (substitui totalmente o conteúdo) ===== -->
                     <div class="card-expandido" (click)="$event.stopPropagation()">
                         <div class="banner-user">
-                            <img src="/assets/imagens/imagens-de-exemplo/banner-profissional.png" [alt]="d.titulo" />
+                            <img src="/assets/imagens/banner-trampo-generico.png" [alt]="d.titulo" />
                         </div>
                         <div class="avatar-user">
-                            <img src="/assets/imagens/imagens-de-exemplo/foto-profissional.png" [alt]="d.titulo" />
+                            <img src="/assets/imagens/foto-perfil-generico.png" [alt]="d.titulo" />
                         </div>
 
                         <div class="name-user">
-                            <h2>{{ "Paulo Clima LTDA" }}</h2>
+                            <h2>{{ "Usuário" }}</h2>
                             <div class="rating">
                                 <span class="score"> <span class="star">★</span> {{ (d.nota ?? 4.0) | number:'1.1-1' }}/5</span>
                             </div>
                         </div>
-                        <p class="profissao-user">Técnico em Ar Condicionado</p>
+                        <p class="profissao-user">Profissão</p>
                         <div class="bio-user">
                             <p style="margin: 0"><strong>Profissional bio</strong></p>
-                            <p id="descricao" style="color: #585858;">Técnico especializado em instalação, manutenção e limpeza de ar-condicionado split, janela e central.
-                                Há mais de 8 anos no mercado, prezando sempre pela agilidade, segurança e um atendimento...</p>
+                            <p id="descricao" style="color: #585858;">Este usuário ainda não cadastrou a bio.</p>
                         </div>
                         <div class="btn-card">
                             <button class="btn-ver-perfil" (click)="verPerfil(d, $event)">Acessar Perfil</button>

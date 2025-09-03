@@ -254,3 +254,42 @@ label.required::after {
     color: #707070;
     opacity: 0.6;
 }
+
+.skills-input {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  min-height: 48px;
+  align-items: center;
+}
+
+.skills-input input {
+  border: none;
+  outline: none;
+  min-width: 160px;
+  flex: 1;
+  padding: 6px 4px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #eef6ff;
+  border: 1px solid #cde2ff;
+  font-size: 0.9rem;
+}
+
+.chip-remove {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0 2px;
+}
