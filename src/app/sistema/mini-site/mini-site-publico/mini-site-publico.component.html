@@ -29,6 +29,17 @@
             <button class="btn-orcamento" (click)="goLogin()">Solicitar Orçamento</button>
         </div>
     </div>
+    <div class="video-view">
+        <video
+            *ngIf="videoUrl"
+            [src]="videoUrl"
+            controls
+            playsinline
+            preload="metadata"
+            style="width:100%; height:auto; border-radius:12px; max-height:70vh;">
+            Seu navegador não suporta vídeo HTML5.
+        </video>
+    </div>
     <div class="estatisticas-container">
         <div class="dual-grid-estatisticas">
             <img src="/assets/icones/servicos-realizados-icon.svg" alt="Serviços Realizados">
@@ -68,6 +79,36 @@
             </ng-template>
         </div>  
     </div>
+
+    <div class="comentarios-container">
+        <h1 class="titulo">Comentários</h1>
+
+        <div class="comentarios-list">
+            <article class="comentario-card" *ngFor="let c of comentarios">
+            <header class="comentario-header">
+                <img [src]="c.foto" [alt]="'Foto de ' + c.nome">
+                <div class="comentario-meta">
+                <h4>
+                    {{ c.nome }}
+                    <span class="badge" *ngIf="c.verificado">Cliente verificado</span>
+                </h4>
+                <div class="stars-e-data">
+                    <div class="stars">
+                    <span *ngFor="let s of [1,2,3,4,5]; let i = index"
+                            [class.filled]="i < c.estrelas">★</span>
+                    </div>
+                    <small class="data">{{ c.data }}</small>
+                </div>
+                </div>
+            </header>
+
+            <h3 class="comentario-titulo">{{ c.titulo }}</h3>
+            <p class="comentario-texto">{{ c.texto }}</p>
+
+            </article>
+        </div>
+    </div>
+
     <div class="servicos-container">
         <h1 class="titulo">Serviços</h1>
         <div class="servicos-list">
