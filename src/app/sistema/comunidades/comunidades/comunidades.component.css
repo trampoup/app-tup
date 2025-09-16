@@ -1,0 +1,235 @@
+.main-container {
+    margin: 120px 32px 24px;
+    max-width: 100%;
+    background: var(--lm-branco);
+    border-radius: 24px;
+    padding: 40px 48px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.banner {
+    background-image: url("/assets/imagens/capa-comunidades.png");
+    background-size: cover;
+    background-position: center;
+    padding: 48px 24px;
+    color: var(--lm-branco);
+    border-radius: 24px;
+}
+
+.banner h1 {
+    margin: 0;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--lm-branco);
+}
+
+.banner p {
+    margin: 10px 0 0;
+    font-size: 1.3rem;
+    width: 40%;
+}
+
+.comunidades-titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 30px;
+    gap: 16px;
+    font-size: 1rem;
+}
+
+.comunidades-titulo span {
+    color: var(--lm-text02);
+    font-weight: bold;
+}
+
+.comunidades-titulo a {
+    color: black;
+}
+
+.btn-cadastrar-comunidade {
+    display: inline-flex;
+    background-color: var(--secondary-button);
+    border-radius: 10px;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.btn-cadastrar-comunidade:hover {
+    background-color: var(--secondary-button-hover);
+    cursor: pointer;
+}
+
+.search-container {
+  width: 600px;
+}
+
+.categorias-carrossel {
+  margin: 32px 0;
+  width: 100%;
+}
+
+.categorias-carrossel h1 {
+  margin: 0 0 12px 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+/* Layout básico do carrossel: botões nas pontas + viewport no centro */
+.carousel-root {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+/* Botões sobrepostos às bordas da VIEWPORT (fixos) */
+.carousel-btn{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 54px; height: 54px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  backdrop-filter: saturate(120%) blur(2px);
+}
+.carousel-btn.left  { left: 10px; }
+.carousel-btn.right { right: 10px; }
+.carousel-btn:hover { background: rgba(0,0,0,0.65); }
+.carousel-btn:active{ transform: translateY(-50%) scale(0.96); }
+.carousel-btn:focus-visible{ outline: 2px solid rgba(255,255,255,0.7); outline-offset: 2px; }
+
+/* Responsivo: ajuste de colunas */
+@media (max-width: 1024px){ .carousel-scroller{ --cols: 3; } }
+@media (max-width: 768px){  .carousel-scroller{ --cols: 2; } }
+@media (max-width: 480px){  .carousel-scroller{ --cols: 1; } }
+
+/* Viewport com rolagem suave */
+.carousel-viewport {
+  --gap: 16px;
+  --cols: 4;               /* 4 itens visíveis no desktop */
+  overflow: hidden;        /* recorta o excesso */
+  scroll-behavior: smooth; /* animação suave */
+  position: relative;
+
+}
+
+.carousel-scroller{
+  --gap: 16px;
+  --cols: 4;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;            /* animação suave */
+  -webkit-overflow-scrolling: touch;  /* iOS */
+}
+
+/* Faixa de itens */
+.carousel-track {
+  display: flex;
+  gap: var(--gap);
+  padding: 8px 2px;
+}
+
+/* Cada item ocupa 1/4 do viewport, já contando os gaps */
+.carousel-item {
+  flex: 0 0 calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
+  background: var(--lm-branco);
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow .2s, transform .2s;
+  outline: none;
+}
+.carousel-item:hover,
+.carousel-item:focus-visible {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+}
+
+.item-image{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #f2f2f2;
+}
+
+/* a pill da label no canto inferior direito */
+.item-label{
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  max-width: calc(100% - 20px);
+  padding: 6px 10px;
+  border-radius: 999px;
+
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.1;
+
+  color: #fff;                        
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  pointer-events: none;               /* não bloqueia o clique no card */
+  backdrop-filter: saturate(120%) blur(2px); /* leve efeito, opcional */
+}
+
+.item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+
+/* Responsivo: reduz o nº de colunas */
+@media (max-width: 1024px){
+  .carousel-viewport { --cols: 3; }
+}
+@media (max-width: 768px){
+  .carousel-viewport { --cols: 2; }
+}
+@media (max-width: 480px){
+  .carousel-viewport { --cols: 1; }
+}
+
+/* Esconde scrollbar horizontal (opcional) */
+.carousel-viewport::-webkit-scrollbar { display: none; }
+.carousel-viewport { -ms-overflow-style: none; scrollbar-width: none; }
+
+
+.lista-vazia {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* centraliza horizontalmente */
+    justify-content: center;
+    /* centraliza verticalmente */
+    text-align: center;
+    padding: 1rem;
+    /* espaçamento interno*/
+    height: 100%;
+    /* ocupa toda a altura disponível do pai */
+}
+
+.lista-vazia img {
+    margin-bottom: 1rem;
+    /*espaçamento entre a imagem e o paragrafo.*/
+}
+
+.lista-vazia p {
+    font-size: 1.3rem;
+}

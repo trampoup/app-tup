@@ -26,8 +26,6 @@
   import { InicioClienteComponent } from './inicios/inicio-cliente/inicio-cliente.component';
   import { InicioProfissionalComponent } from './inicios/inicio-profissional/inicio-profissional.component';
 import { LocalizacaoComponent } from './localizacao/localizacao.component';
-import { ComunidadeComponent } from './comunidade/comunidade.component';
-import { MinhasComunidadesComponent } from './minhas-comunidades/minhas-comunidades.component';
 import { GameficacaoComponent } from './gameficacao/gameficacao.component';
 import { SharedModule } from '../shared/shared.module';
 import { MiniSiteComponent } from './mini-site/mini-site.component';
@@ -35,6 +33,10 @@ import { MatMenuModule } from "@angular/material/menu";
 import { CadastrarSiteComponent } from './mini-site/cadastrar-site/cadastrar-site.component';
 import { MeuMiniSiteComponent } from './mini-site/meu-mini-site/meu-mini-site.component';
 import { MiniSitePublicoComponent } from './mini-site/mini-site-publico/mini-site-publico.component';
+import { ComunidadesComponent } from './comunidades/comunidades/comunidades.component';
+import { MinhasComunidadesComponent } from './comunidades/minhas-comunidades/minhas-comunidades.component';
+import { CadastroComunidadeComponent } from './comunidades/cadastro-comunidade/cadastro-comunidade.component';
+import { VisualizarComunidadeComponent } from './comunidades/visualizar-comunidade/visualizar-comunidade.component';
 
 
   @NgModule({
@@ -61,13 +63,15 @@ import { MiniSitePublicoComponent } from './mini-site/mini-site-publico/mini-sit
       InicioClienteComponent,
       InicioProfissionalComponent,
       LocalizacaoComponent,
-      ComunidadeComponent,
-      MinhasComunidadesComponent,
       GameficacaoComponent,
       MiniSiteComponent,
       CadastrarSiteComponent,
       MeuMiniSiteComponent,
-      MiniSitePublicoComponent
+      MiniSitePublicoComponent,
+      ComunidadesComponent,
+      MinhasComunidadesComponent,
+      CadastroComunidadeComponent,
+      VisualizarComunidadeComponent
     ],
     imports: [
     CommonModule,

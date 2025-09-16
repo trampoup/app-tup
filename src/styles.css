@@ -44,6 +44,7 @@ html {
   --lm-text02: #156578;
   --lm-text03: #F5A002;
   --lm-text04: #585858;
+  --lm-text05: #525252
   /* sistema */
   --success: #5ea828;
   --sucess2: #49941E;
@@ -62,6 +63,7 @@ html {
   --primary-button: #28BFB6;
   --primary-btnHover: #156578;
   --secondary-button: #1C9212;
+  --secondary-button-hover: #15780A;
   --tertiary-button: #002035;
   --quaternary-button: #B900DE;
   --quinary-button: #398EE8;

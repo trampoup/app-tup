@@ -1,0 +1,184 @@
+.main-container {
+    margin: 120px 32px 24px;
+    max-width: 100%;
+    background: var(--lm-branco);
+    border-radius: 24px;
+    padding: 40px 48px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.banner-user,
+.banner-user img {
+    width: 100%;
+}
+
+.banner-user{
+  height: 295px;           
+  border-radius: 20px;
+  overflow: hidden;     
+  border: 0.5px solid gray;    
+}
+
+.banner-user img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;        
+  object-position: center;  
+  display: block;           
+}
+
+.header-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title{
+    margin: 16px 0 0 0;
+    line-height: 0;
+}
+
+.title h1{
+    font-weight: 600;
+    margin: 0;
+}
+
+.btn-criar{
+    display: flex;
+    gap: 8px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+}
+
+.subMain-container {
+  margin: 24px 32px 24px;
+  max-width: 100%;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.lista-vazia {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* centraliza horizontalmente */
+    justify-content: center;
+    /* centraliza verticalmente */
+    text-align: center;
+    padding: 1rem;
+    /* espaçamento interno*/
+    height: 100%;
+    /* ocupa toda a altura disponível do pai */
+}
+
+.lista-vazia img {
+    margin-bottom: 1rem;
+    width: 300px;
+    /*espaçamento entre a imagem e o paragrafo.*/
+}
+
+.lista-vazia p {
+    font-size: 1.3rem;
+}
+
+.publicacoes-lista{
+    display: grid;
+    gap: 16px;          /* espaço entre cards */
+}
+
+.card-publicacao{
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.328);
+}
+
+.user-info{
+    display: flex;
+    gap: 16px;
+}
+
+.user-details{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.user-details h2 {
+    font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--lm-preto);
+    margin: 0;
+}
+
+
+.user-photo{
+    flex-grow: 0;
+    z-index: 1;
+}
+
+.user-photo img{
+    margin: 0;
+    width: 85px;
+    height: 85px;
+    border-radius: 100px;
+}
+
+.publicacao-content img{
+    width: 100%;
+    border-radius: 16px;
+    margin: 0;
+    max-height: 300px;
+    object-fit: cover;
+}
+
+.conteudo{
+    white-space: pre-line; 
+}
+
+.publicacao-footer{
+  border-top: 1px solid #DDDDDD; 
+  margin-top: 12px;
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.publicacao-footer span{
+    font-size: 1rem;
+    color: var(--lm-text05);
+}
+
+.acao-curtidas{
+  display: inline-grid;
+  place-items: center;
+  width: 24px; height: 24px;
+  border: 0; border-radius: 999px;
+  background: transparent;          /* sem pílula */
+  cursor: pointer;
+  transition: transform .06s;
+}
+.acao-curtidas:active{ transform: scale(0.96); }
+
+.icon-heart{ width: 22px; height: 22px; display: block; }
+
+/* estado padrão: coração branco com borda preta */
+.icon-heart path{
+  fill: #ffffff;                    /* branco dentro */
+  stroke: #111111;                  /* borda preta */
+  stroke-width: 2px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  transition: fill .2s, stroke .2s;
+}
+
+/* clicado: fica totalmente vermelho */
+.acao-curtidas.liked .icon-heart path{
+  fill: #ef4444;                    /* vermelho */
+  stroke: #ef4444;                  /* borda combinando (pode manter preta se preferir) */
+}

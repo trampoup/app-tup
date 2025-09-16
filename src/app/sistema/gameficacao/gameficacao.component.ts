@@ -31,7 +31,7 @@ export class GameficacaoComponent implements OnInit {
     { type: 'updateProfile', label: 'Atualizar foto e descrição', points: 10, done: false },
     { type: 'referral', label: 'Indicar outro profissional', points: 25, done: false },
     { type: 'closeJob', label: 'Fechar um trampo', points: 30, done: false },
-    { type: 'praise', label: 'Receber elogio do cliente', points: 10, done: false },
+    { type: 'praise', label: 'Receber um comentário do cliente', points: 10, done: false },
     { type: 'publishPost',     label: 'Publicar 1 conteúdo na Comunidade',       points: 15, done: false },
     { type: 'getFavorited',    label: 'Ser adicionado aos favoritos de um cliente', points: 15, done: false },
     { type: 'socialProof',     label: 'Receber 3 avaliações (qualquer nota)',    points: 25, done: false },

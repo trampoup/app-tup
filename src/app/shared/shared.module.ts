@@ -5,7 +5,9 @@ import { ModalWelcomeComponent } from './modal-welcome/modal-welcome.component';
 import { PaginationComponent } from './pagination/pagination.component';
 import { ModalDeleteComponent } from './modal-delete/modal-delete.component';
 import { InputImgComponent } from './input-img/input-img.component';
-import { InputVideoComponent } from './input-video/input-video.component'; 
+import { InputVideoComponent } from './input-video/input-video.component';
+import { SearchComponent } from './search/search.component'; 
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -15,17 +17,20 @@ import { InputVideoComponent } from './input-video/input-video.component';
     PaginationComponent,
     ModalDeleteComponent,
     InputImgComponent,
-    InputVideoComponent
+    InputVideoComponent,
+    SearchComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   exports: [
     KeyToLabelPipe,
     CommonModule,
     PaginationComponent,
     InputImgComponent,
-    InputVideoComponent
+    InputVideoComponent,
+    SearchComponent
   ]
 })
 export class SharedModule { }

@@ -147,14 +147,14 @@
 }
 
 .btn-impulsionar{
-    background-color: var(--quaternary-button);
+    background-color: var(--secondary-button);
     color: var(--lm-branco);
     display: flex;
     gap: 8px;
 }
 
 .btn-impulsionar:hover{
-    background-color: #8500a0;
+    background-color: #1cb00f;
 }
 
 .btn-editar-perfil{
@@ -379,7 +379,7 @@
 }
 
 .avaliacoes-container{
-    margin-bottom: 24px;
+    margin-top: 24px;
 }
 
 .avaliacoes-media-e-barra{
@@ -492,10 +492,6 @@
     margin-bottom: 16px;
 }
 
-
-.comentarios-container {
-  margin-top: 24px;
-}
 
 .comentarios-list {
   display: grid;
