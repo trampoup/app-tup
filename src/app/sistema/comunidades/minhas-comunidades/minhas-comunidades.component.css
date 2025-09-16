@@ -1,0 +1,82 @@
+.main-container {
+    margin: 120px 32px 24px;
+    max-width: 100%;
+    background: var(--lm-branco);
+    border-radius: 24px;
+    padding: 40px 48px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.banner {
+    background-image: url("/assets/imagens/capa-comunidades.png");
+    background-size: cover;
+    background-position: center;
+    padding: 48px 24px;
+    color: var(--lm-branco);
+    border-radius: 24px;
+}
+
+.banner h1 {
+    margin: 0;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--lm-branco);
+}
+
+.banner p {
+    margin: 10px 0 0;
+    font-size: 1.3rem;
+    width: 50%;
+}
+
+.minhas-comunidades-titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 30px;
+    gap: 0;
+    font-size: 1rem;
+}
+
+.minhas-comunidades-titulo span {
+    color: var(--lm-text02);
+    font-weight: bold;
+}
+
+.minhas-comunidades-titulo a {
+    color: black;
+}
+
+.search-container {
+  width: 600px;
+}
+
+.minhas-comunidades-container{
+    margin-top: 30px;
+}
+
+.lista-vazia {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* centraliza horizontalmente */
+    justify-content: center;
+    /* centraliza verticalmente */
+    text-align: center;
+    padding: 1rem;
+    /* espaçamento interno*/
+    height: 100%;
+    /* ocupa toda a altura disponível do pai */
+}
+
+.lista-vazia img {
+    margin-bottom: 1rem;
+    width: 300px;
+    /*espaçamento entre a imagem e o paragrafo.*/
+}
+
+.lista-vazia p {
+    font-size: 1.3rem;
+}

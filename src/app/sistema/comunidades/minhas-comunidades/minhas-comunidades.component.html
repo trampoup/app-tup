@@ -1,0 +1,38 @@
+<section class="main-container">
+    <div class="banner">
+        <h1>Minhas Comunidades</h1>
+        <p>Encontre e acompanhe comunidades que você participa alinhadas ao seus interesses
+            profissionais.
+        </p>
+    </div>
+
+    <div class="minhas-comunidades-titulo">
+        <p><a [routerLink]="getRotaInicial()">Inicio</a> > <span>Comunidades</span></p>
+
+
+        <div class="search-container">
+            <app-search (searchChange)="onSearch($event)"></app-search>
+        </div>
+    </div>
+
+
+    <div class="minhas-comunidades-container">
+
+        <div class="minhas-comunidades-lista" *ngIf="comunidades.length > 0; else semComunidades">
+            <div *ngFor="let comunidade of comunidades">
+                <div class="card-comunidade">
+                </div>
+            </div>
+
+
+        </div>
+
+        <ng-template #semComunidades>
+            <div class="lista-vazia">
+                <img src="assets/imagens/sem-comunidades-image.jpg" alt="Sem comunidades">
+                <p>Você ainda não participa de nenhuma comunidade.</p>
+            </div>
+        </ng-template>
+
+    </div>
+</section>

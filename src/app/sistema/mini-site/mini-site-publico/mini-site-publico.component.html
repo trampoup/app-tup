@@ -80,6 +80,32 @@
         </div>  
     </div>
 
+    <div class="servicos-container">
+        <h1 class="titulo">Serviços</h1>
+        <div class="servicos-list">
+            <div class="servico-item" *ngFor="let servico of servicosPaginados">
+                <div class="servico-item-header">
+                    <img src="/assets/imagens/imagens-de-exemplo/retangulo-cinza.png" alt="Serviço Icon">
+                    <div class="item-details">
+                        <h3>{{ servico.titulo }}</h3>
+                        <p>{{ servico.descricao }}</p>
+                        <span class="preco">R${{ servico.valor | number:'1.2-2' }}</span>
+                    </div>
+                </div>
+                <button (click)="goLogin()" id="btn-solicitar-orcamento" class="btn-contato">Solicitar Orçamento</button>
+            </div>
+        </div>
+        <div class="paginacao">
+            <app-pagination
+                [paginaAtual]="paginaAtualServicos"
+                [totalItens]="totalItensServicos"
+                [itensPorPagina]="itensPorPaginaServicos"
+                (paginaMudou)="onPaginaMudouServicos($event)">
+            </app-pagination>
+        </div>
+    </div>
+
+
     <div class="comentarios-container">
         <h1 class="titulo">Comentários</h1>
 
@@ -109,30 +135,6 @@
         </div>
     </div>
 
-    <div class="servicos-container">
-        <h1 class="titulo">Serviços</h1>
-        <div class="servicos-list">
-            <div class="servico-item" *ngFor="let servico of servicosPaginados">
-                <div class="servico-item-header">
-                    <img src="/assets/imagens/imagens-de-exemplo/retangulo-cinza.png" alt="Serviço Icon">
-                    <div class="item-details">
-                        <h3>{{ servico.titulo }}</h3>
-                        <p>{{ servico.descricao }}</p>
-                        <span class="preco">R${{ servico.valor | number:'1.2-2' }}</span>
-                    </div>
-                </div>
-                <button (click)="goLogin()" id="btn-solicitar-orcamento" class="btn-contato">Solicitar Orçamento</button>
-            </div>
-        </div>
-        <div class="paginacao">
-            <app-pagination
-                [paginaAtual]="paginaAtualServicos"
-                [totalItens]="totalItensServicos"
-                [itensPorPagina]="itensPorPaginaServicos"
-                (paginaMudou)="onPaginaMudouServicos($event)">
-            </app-pagination>
-        </div>
-    </div>
     <div class="avaliacoes-container">
         <h1 class="titulo">Avaliações de clientes</h1>
         <section class="dual-flex">
@@ -158,7 +160,7 @@
         </section>
     </div>
 
-    <div class="principais-avaliacoes">
+    <!-- <div class="principais-avaliacoes">
         <h1 class="titulo">Principais Avaliações</h1>
         <div class="avaliacoes-list">
             <div class="avaliacao-item" *ngFor="let avaliacao of avaliacoesPaginadas">
@@ -180,6 +182,6 @@
                 (paginaMudou)="onPaginaMudouAvaliacoes($event)">
             </app-pagination>
         </div>
-    </div>
+    </div> -->
 
 </div>

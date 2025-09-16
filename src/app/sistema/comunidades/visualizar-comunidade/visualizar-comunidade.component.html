@@ -1,0 +1,67 @@
+<section class="main-container">
+    <div class="banner-user">
+        <img [src]="bannerUrl || '/assets/imagens/banner-trampo-generico.png'" alt="banner usuario">
+    </div>
+    <div class="header-container">
+        <div class="title">
+            <h1>Nome da Comunidade</h1>
+            <h3>Criado por <strong>Usuário Profissional</strong> - 40,2 mil participantes</h3>
+        </div>
+        <div class="acoes">
+            <button class="btn-criar">
+                Criar
+                <img src="/assets/icones/plus-icon.svg" alt="icone de seguir">
+            </button>
+        </div>
+    </div>
+</section>
+
+<section class="subMain-container">
+    <div *ngIf="publicacoes.length > 0; else semPublicacoes">
+        <div class="publicacoes-lista">
+            <div *ngFor="let publicacao of publicacoes">
+                <div class="card-publicacao">
+                    <div class="user-info">
+                        <div class="user-photo">
+                            <img [src]="fotoUrl || '/assets/imagens/foto-perfil-generico.png'" alt="foto do usuario">            
+                        </div>
+                        <div class="user-details">
+                            <h2>{{ publicacao?.nome || 'Usuário' }}</h2>
+                            <p class="cargo" *ngIf="publicacao?.setor; else cargoPadrao">
+                            {{ publicacao?.setor | titlecase }}
+                            </p>
+                            <ng-template #cargoPadrao>
+                                <p class="cargo">Profissional</p>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="publicacao-content">
+                        <h2>{{ publicacao.titulo }}</h2>
+                        <img *ngIf="publicacao.temBanner" [src]="publicacao.bannerUrl || '/assets/imagens/banner-trampo-generico.png'" alt="">
+                        <p class="conteudo">{{ publicacao.conteudo }}</p>
+                    </div>
+                    <div class="publicacao-footer">
+                        <button
+                            class="acao-curtidas"
+                            type="button"
+                            [class.liked]="publicacao.liked"
+                            (click)="publicacao.liked = !publicacao.liked">
+                            <svg class="icon-heart" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4c1.74 0 3.41 1.01 4.22 2.53C11.09 5.01 12.76 4 14.5 4 17 4 19 6 19 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                        </button>
+                        <span>180 curtidas</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <ng-template #semPublicacoes>
+        <div class="lista-vazia">
+            <img src="assets/imagens/sem-comunidades-image.jpg" alt="Sem comunidades">
+            <p>Opa! Essa comunidade ainda não contém Posts.</p>
+        </div>
+    </ng-template>
+
+</section>

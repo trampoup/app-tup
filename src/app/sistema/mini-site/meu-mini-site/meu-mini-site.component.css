@@ -141,14 +141,14 @@
 }
 
 .btn-impulsionar{
-    background-color: var(--quaternary-button);
+    background-color: var(--secondary-button);
     color: var(--lm-branco);
     display: flex;
     gap: 8px;
 }
 
 .btn-impulsionar:hover{
-    background-color: #8500a0;
+    background-color: #1cb00f;
 }
 
 .btn-editar-perfil{
@@ -177,13 +177,17 @@
 
 .video-view {
   margin: 24px 0 24px;
+  
 }
 .video-view video {
-  width: 100%;
+  width: auto;
+  max-width: 80%;
   height: auto;
-  max-height: 70vh;
+  max-height: 60vh;
   border-radius: 12px;
+  margin: 0 auto;
   display: block;
+  border: 1px solid var(--lm-border04);
 }
 
 .estatisticas-container{
@@ -373,7 +377,7 @@
 }
 
 .avaliacoes-container{
-    margin-bottom: 24px;
+    margin-top: 24px;
 }
 
 .avaliacoes-media-e-barra{
@@ -648,9 +652,6 @@
   .mini-progress-fill::after { width: 120px; }
 }
 
-.comentarios-container {
-  margin-top: 24px;
-}
 
 .comentarios-list {
   display: grid;

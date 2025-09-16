@@ -1,6 +1,7 @@
 <div class="main-container">
     <div class="banner-user">
-        <img [src]="bannerUrl || '/assets/imagens/banner-trampo-generico.png'" alt="banner usuario">    </div>
+        <img [src]="bannerUrl || '/assets/imagens/banner-trampo-generico.png'" alt="banner usuario">
+    </div>
     <div class="header-container">
         <div class="user-info">
             <div class="user-photo">
@@ -56,7 +57,7 @@
             controls
             playsinline
             preload="metadata"
-            style="width:100%; height:auto; border-radius:12px; max-height:70vh;">
+>
             Seu navegador não suporta vídeo HTML5.
         </video>
     </div>
@@ -100,6 +101,32 @@
         </div>  
     </div>
 
+    <div class="servicos-container">
+        <h1 class="titulo">Serviços</h1>
+        <div class="servicos-list">
+            <div class="servico-item" *ngFor="let servico of servicosPaginados">
+                <div class="servico-item-header">
+                    <img src="/assets/imagens/imagens-de-exemplo/retangulo-cinza.png" alt="Serviço Icon">
+                    <div class="item-details">
+                        <h3>{{ servico.titulo }}</h3>
+                        <p>{{ servico.descricao }}</p>
+                        <span class="preco">R${{ servico.valor | number:'1.2-2' }}</span>
+                    </div>
+                </div>
+                <button id="btn-solicitar-orcamento" class="btn-contato">Solicitar Orçamento</button>
+            </div>
+        </div>
+        <div class="paginacao">
+            <app-pagination
+                [paginaAtual]="paginaAtualServicos"
+                [totalItens]="totalItensServicos"
+                [itensPorPagina]="itensPorPaginaServicos"
+                (paginaMudou)="onPaginaMudouServicos($event)">
+            </app-pagination>
+        </div>
+    </div>
+
+
     <div class="comentarios-container">
         <h1 class="titulo">Comentários</h1>
 
@@ -130,31 +157,6 @@
     </div>
 
 
-
-    <div class="servicos-container">
-        <h1 class="titulo">Serviços</h1>
-        <div class="servicos-list">
-            <div class="servico-item" *ngFor="let servico of servicosPaginados">
-                <div class="servico-item-header">
-                    <img src="/assets/imagens/imagens-de-exemplo/retangulo-cinza.png" alt="Serviço Icon">
-                    <div class="item-details">
-                        <h3>{{ servico.titulo }}</h3>
-                        <p>{{ servico.descricao }}</p>
-                        <span class="preco">R${{ servico.valor | number:'1.2-2' }}</span>
-                    </div>
-                </div>
-                <button id="btn-solicitar-orcamento" class="btn-contato">Solicitar Orçamento</button>
-            </div>
-        </div>
-        <div class="paginacao">
-            <app-pagination
-                [paginaAtual]="paginaAtualServicos"
-                [totalItens]="totalItensServicos"
-                [itensPorPagina]="itensPorPaginaServicos"
-                (paginaMudou)="onPaginaMudouServicos($event)">
-            </app-pagination>
-        </div>
-    </div>
     <div class="avaliacoes-container">
         <h1 class="titulo">Avaliações de clientes</h1>
         <section class="dual-flex">
@@ -180,7 +182,7 @@
         </section>
     </div>
 
-    <div class="principais-avaliacoes">
+    <!-- <div class="principais-avaliacoes">
         <h1 class="titulo">Principais Avaliações</h1>
         <div class="avaliacoes-list">
             <div class="avaliacao-item" *ngFor="let avaliacao of avaliacoesPaginadas">
@@ -202,6 +204,6 @@
                 (paginaMudou)="onPaginaMudouAvaliacoes($event)">
             </app-pagination>
         </div>
-    </div>
+    </div> -->
 
 </div>

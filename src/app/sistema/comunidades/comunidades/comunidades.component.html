@@ -1,0 +1,86 @@
+<section class="main-container">
+    <div class="banner">
+        <h1>Comunidades</h1>
+        <p>Encontre e acompanhe comunidades alinhadas ao seus interesses
+            profissionais.
+        </p>
+    </div>
+
+    <div class="comunidades-titulo">
+        <p><a [routerLink]="getRotaInicial()">Inicio</a> > <span>Comunidades</span></p>
+
+        <button class="btn-cadastrar-comunidade" [routerLink]="['/usuario/cadastro-de-comunidade']">
+            Cadastrar Comunidade 
+            <img src="assets/icones/plus-icon.svg" alt="plus-icon">
+        </button>
+
+        <div class="search-container">
+            <app-search (searchChange)="onSearch($event)"></app-search>
+        </div>
+    </div>
+
+    <div class="categorias-carrossel">
+        <h1>Categorias</h1>
+
+        <div class="carousel-root">
+            <div class="carousel-viewport">
+                <button
+                class="carousel-btn left"
+                type="button"
+                aria-label="Anterior"
+                (click)="scroll('left')">
+                <img src="/assets/icones/seta-left-branco-icon.svg" alt="seta direita">
+                </button>
+
+                <div class="carousel-scroller" #scroller>
+                    <div class="carousel-track">
+                        <div
+                            class="carousel-item"
+                            *ngFor="let cat of categorias"
+                            (click)="onCategoriaClick(cat.key)"
+                            tabindex="0"
+                            role="button"
+                            [attr.aria-label]="cat.label">
+                            <div class="item-image">
+                                <img [src]="cat.image" [alt]="cat.label">
+                                <span class="item-label">{{ cat.label }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button
+                class="carousel-btn right"
+                type="button"
+                aria-label="Próximo"
+                (click)="scroll('right')">
+                <img src="/assets/icones/seta-right-branco-icon.svg" alt="seta direita">
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="comunidades-container">
+
+        <div class="comunidades-lista" *ngIf="comunidades.length > 0; else semComunidades">
+            <div *ngFor="let comunidade of comunidades">
+                <div class="card-comunidade">
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+        <ng-template #semComunidades>
+            <div class="lista-vazia">
+                <img src="assets/icones/no-data-icon.svg" alt="Sem cupons">
+                <p>Não há comunidades cadastradas.</p>
+            </div>
+        </ng-template>
+
+    </div>
+
+</section>

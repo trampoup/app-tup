@@ -20,14 +20,15 @@ import { InicioAdminComponent } from './inicios/inicio-admin/inicio-admin.compon
 import { InicioProfissionalComponent } from './inicios/inicio-profissional/inicio-profissional.component';
 import { InicioClienteComponent } from './inicios/inicio-cliente/inicio-cliente.component';
 import { LocalizacaoComponent } from './localizacao/localizacao.component';
-import { ComunidadeComponent } from './comunidade/comunidade.component';
-import { MinhasComunidadesComponent } from './minhas-comunidades/minhas-comunidades.component';
 import { GameficacaoComponent } from './gameficacao/gameficacao.component';
 import { MiniSiteComponent } from './mini-site/mini-site.component';
 import { CadastrarSiteComponent } from './mini-site/cadastrar-site/cadastrar-site.component';
 import { MeuMiniSiteComponent } from './mini-site/meu-mini-site/meu-mini-site.component';
-import { MiniSitePublicoComponent } from './mini-site/mini-site-publico/mini-site-publico.component';
+import { ComunidadesComponent } from './comunidades/comunidades/comunidades.component';
+import { MinhasComunidadesComponent } from './comunidades/minhas-comunidades/minhas-comunidades.component';
 import { AuthGuard } from '../configs/security/auth.guard';
+import { CadastroComunidadeComponent } from './comunidades/cadastro-comunidade/cadastro-comunidade.component';
+import { VisualizarComunidadeComponent } from './comunidades/visualizar-comunidade/visualizar-comunidade.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -50,8 +51,12 @@ const routes: Routes = [
       {path:'gameficacao', component: GameficacaoComponent},
 
       //comunidade
-      {path: 'comunidade', component: ComunidadeComponent},
+      {path: 'comunidades', component: ComunidadesComponent},
+      {path: 'cadastro-de-comunidade', component: CadastroComunidadeComponent},
       {path: 'minhas-comunidades', component: MinhasComunidadesComponent},
+      {path: 'visualizar-comunidade', component: VisualizarComunidadeComponent},
+      {path: 'visualizar-comunidade/:id', component: VisualizarComunidadeComponent},
+
 
       // cupons
       { path: 'cadastro-de-cupom', component: CadastroCuponsComponent},
