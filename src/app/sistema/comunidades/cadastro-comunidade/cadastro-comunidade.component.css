@@ -105,6 +105,10 @@ label.required::after {
     cursor: pointer;
 }
 
+#btn-cadastrar-projeto:hover {
+    background: var(--secondary-button-hover);
+}
+
 .input-arquivo p{
     font-size: 14px;
 }
@@ -124,12 +128,19 @@ label.required::after {
   white-space: nowrap;
 }
 
+.error{
+    color: var(--danger);
+    justify-content: left;
+    font-size: 12px;
+}
+
+
 .alerts > div{
     padding: 15px;
     border-radius: 15px;
-    color: white;
     font-size: 18px;
 }
+
 
 .container-form small{
     font-size: 13px;

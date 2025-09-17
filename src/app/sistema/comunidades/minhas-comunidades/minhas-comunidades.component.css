@@ -80,3 +80,66 @@
 .lista-vazia p {
     font-size: 1.3rem;
 }
+
+.comunidades-lista{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card-comunidade{
+  background: #28bfb53e;
+  padding: 16px;
+  display: flex;
+  gap: 24px;
+  border-radius: 16px;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.184);
+}
+
+.banner-comunidade,
+.banner-comunidade img {
+  width: 500px;
+  height: 250px;
+  border-radius: 12px;
+}
+
+.banner-comunidade img{
+  object-fit: cover;
+}
+
+.comunidade-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.comunidade-info p{
+  margin-bottom: auto;
+}
+
+.comunidade-info-footer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+}
+
+.comunidade-info-footer p, button{
+  margin: 0;
+}
+
+.comunidade-info-footer p{
+  font-size: 1rem;
+}
+
+.comunidade-info-footer span{
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.btn-participar{
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}

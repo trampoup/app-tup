@@ -8,5 +8,5 @@ export const categoriaImagens : Record<CategoriaKey, string>= {
   SERVICOS_DE_TRANSPORTE: '/assets/imagens/servicos-tecnicos-image.png',
   EDUCACAO_AULAS_PARTICULARES: '/assets/imagens/servicos-tecnicos-image.png',
   EVENTOS: '/assets/imagens/servicos-tecnicos-image.png',
-  ADMINISTRATIVOS_E_ONLINE: '/assets/imagens/servicos-tecnicos-image.png',
+  SERVICOS_ADMINISTRATIVOS_E_ONLINE: '/assets/imagens/servicos-tecnicos-image.png',
 };
