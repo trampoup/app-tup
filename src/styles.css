@@ -44,11 +44,13 @@ html {
   --lm-text02: #156578;
   --lm-text03: #F5A002;
   --lm-text04: #585858;
-  --lm-text05: #525252
+  --lm-text05: #525252;
+  --lm-text06: #065F46;
   /* sistema */
-  --success: #5ea828;
-  --sucess2: #49941E;
-  --sucess3: #ABFD7C;
+  --success: #5EA828;
+  --success2: #49941E;
+  --success3: #ABFD7C;
+  --success4: #D1FAE5;   
   --info: #177ab8;
   --warning: #ffc107;
   --danger: #b72130;
@@ -504,8 +506,9 @@ select:focus {
 }
 
 .alert-success {
-  background-color: var(--success);
-  color: var(--lm-branco);
+  background-color: var(--success4);
+  color: #065F46;
+  border: 1px solid #34D399;
 }
 
 .alert-warning {

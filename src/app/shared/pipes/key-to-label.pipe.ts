@@ -9,7 +9,7 @@ const CATEGORIA_LABELS: Record<CategoriaKey,string> = {
   SERVICOS_DE_TRANSPORTE:        'Serviços de Transporte',
   EDUCACAO_AULAS_PARTICULARES:   'Educação e Aulas Particulares',
   EVENTOS:                       'Eventos',
-  ADMINISTRATIVOS_E_ONLINE:      'Serviços Administrativos e Online'
+  SERVICOS_ADMINISTRATIVOS_E_ONLINE:      'Serviços Administrativos e Online'
 };
 
 //pipe para converter a chave da categoria em um rótulo legível

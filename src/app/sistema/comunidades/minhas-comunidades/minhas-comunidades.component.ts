@@ -1,5 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/configs/services/auth.service';
+import { ComunidadeService } from 'src/app/configs/services/comunidade.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-minhas-comunidades',
@@ -11,14 +15,38 @@ export class MinhasComunidadesComponent implements OnInit {
   comunidades : any[] = [];
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
+    private comunidadeService:ComunidadeService,
+    private http: HttpClient,
   ) { }
 
   ngOnInit(): void {
+    this.obterComunidades();
   }
 
   getRotaInicial():string{
     return this.authService.getRotaInicial();
+  }
+
+  visualizarComunidade(comunidadeId: number) {
+     this.router.navigate(['/usuario/visualizar-comunidade', comunidadeId]);
+  }
+
+
+  obterComunidades() {
+    this.isLoading = true;
+    this.comunidadeService.obterComunidadesComBanners().subscribe({
+      next: (lista) => {
+        this.comunidades = lista;
+        this.isLoading = false;
+        console.log('Comunidades obtidas:', this.comunidades);
+      },
+      error: (err) => {
+        console.error('Erro ao obter comunidades:', err);
+        this.isLoading = false;
+      }
+    });
   }
 
   onSearch(searchTerm: string) {

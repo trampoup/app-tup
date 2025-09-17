@@ -18,13 +18,24 @@
 
     <div class="minhas-comunidades-container">
 
-        <div class="minhas-comunidades-lista" *ngIf="comunidades.length > 0; else semComunidades">
+        <div class="comunidades-lista" *ngIf="comunidades.length > 0; else semComunidades">
             <div *ngFor="let comunidade of comunidades">
                 <div class="card-comunidade">
+                    <div class="banner-comunidade">
+                        <img [src]="comunidade.bannerUrl ||'assets/imagens/banner-trampo-generico.png'" alt="Banner da comunidade">
+                    </div>
+                    <div class="comunidade-info">
+                        <div>
+                            <h1>{{comunidade.nome}}</h1>
+                            <p>{{comunidade.descricao}}</p>
+                        </div>
+                        <div class="comunidade-info-footer">
+                            <p>Criado por <span>{{comunidade.criador?.nome}}</span></p>
+                            <button (click)="visualizarComunidade(comunidade.id)" class="btn-participar">Participar <img src="assets/icones/plus-icon.svg" alt="plus-icon"></button>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-
         </div>
 
         <ng-template #semComunidades>

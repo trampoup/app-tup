@@ -35,42 +35,59 @@
           <label class="form-label required" for="experiencia">Nome</label>
           <input type="text" id="input-valor"   formControlName="nome" name="nome" placeholder="Digite um nome">
         </div>
+        <small *ngIf="submited && comunidadeForm.get('nome')?.hasError('required')" class="error">
+            {{ "O campo Nome é obrigatório." }}
+        </small>
+        <small *ngIf="submited && comunidadeForm.get('nome')?.hasError('minlength')" class="error">
+          O Nome precisa ter pelo menos 3 caracteres.
+        </small>
+        <small *ngIf="submited && comunidadeForm.get('nome')?.hasError('maxlength')" class="error">
+          O Nome pode ter no máximo 50 caracteres.
+        </small>
+
 
         <div class="form-group">
-            <label class="form-label" for="setor">Setor</label>
+            <label class="form-label required" for="setor">Setor</label>
             <select class="form-select" formControlName="setor" name="setor" id="setor">
-                <option [value]="null" disabled hidden selected>Selecione seu setor</option>
+                <option value="" disabled selected hidden>Selecione seu setor</option>
                 <option *ngFor="let cat of categoriasKeys" [value]="cat">
                 {{ cat | keyToLabel }}
                 </option>
             </select>
         </div>   
-        
+        <small *ngIf="submited && comunidadeForm.get('setor')?.hasError('required')" class="error">
+            {{ "O campo Setor é obrigatório." }}
+        </small>
         
         <div id="campo-descricao">
-            <label for="descricao">Descrição</label>
+            <label class="form-label required" for="descricao">Descrição</label>
             <textarea 
             name="descricao" 
             formControlName="descricao" 
             id="input-descricao" 
             placeholder="Digite uma breve descrição." rows="4"
+            maxlength="250"
             (keydown.enter)="$event.stopPropagation()" ></textarea>
         </div>
+        <small *ngIf="submited && comunidadeForm.get('descricao')?.hasError('required')" class="error">
+            {{ "O campo Descrição é obrigatório." }}
+        </small>
+
+        <small *ngIf="submited && comunidadeForm.get('descricao')?.hasError('minlength')" class="error">
+          A Descrição precisa ter pelo menos 10 caracteres.
+        </small>
+        <small *ngIf="submited && comunidadeForm.get('descricao')?.hasError('maxlength')" class="error">
+          A Descrição pode ter no máximo 250 caracteres.
+        </small>
 
       <!-- MENSAGENS -->
       <div class="alerts">
-        <div
-          class="alerts-container alert-success"
-          *ngIf="successMessage"
-        >
+          <div class="alerts-container alert-success" *ngIf="successMessage">
           {{ successMessage }}
-        </div>
-        <div
-          class="alerts-container alert-danger"
-          *ngIf="errorMessage"
-        >
+          </div>
+          <div class="alerts-container alert-danger" *ngIf="errorMessage">
           {{ errorMessage }}
-        </div>
+          </div>
       </div>
       
       <div class="progress-bar-container" *ngIf="isLoading">
@@ -78,7 +95,7 @@
       </div>
 
       <!-- BOTÃO DE SUBMIT -->
-      <button id="btn-cadastrar-projeto" type="submit">
+      <button [disabled]="isLoading" id="btn-cadastrar-projeto" type="submit">
         {{ isEditMode ? 'Salvar Comunidade' : 'Cadastrar Comunidade' }}
       </button>
     </form>

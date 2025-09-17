@@ -4,8 +4,8 @@
     </div>
     <div class="header-container">
         <div class="title">
-            <h1>Nome da Comunidade</h1>
-            <h3>Criado por <strong>Usuário Profissional</strong> - 40,2 mil participantes</h3>
+            <h1>{{comunidade?.nome ?? "Nome da Comunidade"}}</h1>
+            <h3>Criado por <strong>{{comunidade?.criador?.nome ?? "Usuário Profissional"}}</strong> - 40,2 mil participantes</h3>
         </div>
         <div class="acoes">
             <button class="btn-criar">

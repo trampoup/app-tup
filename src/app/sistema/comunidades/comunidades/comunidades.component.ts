@@ -3,6 +3,11 @@ import { AuthService } from 'src/app/configs/services/auth.service';
 import { CategoriaKey, CATEGORIAS } from 'src/app/cadastro/categorias-enum';
 import { categoriasDescricoes } from 'src/app/cadastro/categorias-descricoes-enum';
 import { categoriaImagens } from './categoriasImagens-enum';
+import { ComunidadeService } from 'src/app/configs/services/comunidade.service';
+import { ComunidadeResponseDTO } from '../ComunidadeResponseDTO';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-comunidades',
@@ -15,11 +20,14 @@ export class ComunidadesComponent implements OnInit {
   @ViewChild('scroller', { static: true }) scroller!: ElementRef<HTMLDivElement>;
   readonly cols = 4;
   categorias: Array<{ key: CategoriaKey; label: string; image: string; }> = [];
-
-  comunidades : any[] = [];
+  isLoading: boolean = false;
+  comunidades : ComunidadeResponseDTO[] = [];
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private comunidadeService:ComunidadeService,
+    private router: Router,
+    private http: HttpClient,
   ) {
   }
 
@@ -30,6 +38,8 @@ export class ComunidadesComponent implements OnInit {
       label: categoriasDescricoes[k],
       image: categoriaImagens[k],
     }));
+
+    this.obterComunidades();
   }
   
   /** Scroll por “página” (viewport width) com animação suave */
@@ -47,6 +57,25 @@ export class ComunidadesComponent implements OnInit {
 
   getRotaInicial():string{
     return this.authService.getRotaInicial();
+  }
+
+  obterComunidades() {
+    this.isLoading = true;
+    this.comunidadeService.obterComunidadesComBanners().subscribe({
+      next: (lista) => {
+        this.comunidades = lista;
+        this.isLoading = false;
+        console.log('Comunidades obtidas:', this.comunidades);
+      },
+      error: (err) => {
+        console.error('Erro ao obter comunidades:', err);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  visualizarComunidade(comunidadeId: number) {
+     this.router.navigate(['/usuario/visualizar-comunidade', comunidadeId]);
   }
 
   onSearch(searchTerm: string) {

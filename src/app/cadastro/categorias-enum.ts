@@ -62,7 +62,7 @@ export const CATEGORIAS = {
     'Cerimonialista',
     'Fotógrafo / Videomaker'
   ],
-  ADMINISTRATIVOS_E_ONLINE: [
+  SERVICOS_ADMINISTRATIVOS_E_ONLINE: [
     'Assistente Virtual',
     'Social Media',
     'Designer Gráfico',
