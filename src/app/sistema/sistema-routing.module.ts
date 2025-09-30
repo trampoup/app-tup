@@ -19,7 +19,6 @@ import { VisualizacaoDeFavoritosComponent } from './favoritos/visualizacao-de-fa
 import { InicioAdminComponent } from './inicios/inicio-admin/inicio-admin.component';
 import { InicioProfissionalComponent } from './inicios/inicio-profissional/inicio-profissional.component';
 import { InicioClienteComponent } from './inicios/inicio-cliente/inicio-cliente.component';
-import { LocalizacaoComponent } from './localizacao/localizacao.component';
 import { GameficacaoComponent } from './gameficacao/gameficacao.component';
 import { MiniSiteComponent } from './mini-site/mini-site.component';
 import { CadastrarSiteComponent } from './mini-site/cadastrar-site/cadastrar-site.component';
@@ -29,6 +28,9 @@ import { MinhasComunidadesComponent } from './comunidades/minhas-comunidades/min
 import { AuthGuard } from '../configs/security/auth.guard';
 import { CadastroComunidadeComponent } from './comunidades/cadastro-comunidade/cadastro-comunidade.component';
 import { VisualizarComunidadeComponent } from './comunidades/visualizar-comunidade/visualizar-comunidade.component';
+import { VisualizarLocalizacoesComponent } from './localizacao/visualizar-localizacoes/visualizar-localizacoes.component';
+import { VisualizarLocalizacaoComponent } from './localizacao/visualizar-localizacao/visualizar-localizacao.component';
+import { CadastrarLocalizacaoComponent } from './localizacao/cadastrar-localizacao/cadastrar-localizacao.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -45,7 +47,9 @@ const routes: Routes = [
       { path: 'painel-principal-cliente', component: PainelClienteComponent},
 
       //localizacao
-      {path: 'localizacao', component: LocalizacaoComponent},
+      {path: 'localizacao', component: VisualizarLocalizacoesComponent},
+      {path: 'visualizar-localizacao', component: VisualizarLocalizacaoComponent},
+      {path: 'cadastro-de-localizacao', component: CadastrarLocalizacaoComponent},
 
       // gameficacao
       {path:'gameficacao', component: GameficacaoComponent},

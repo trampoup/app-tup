@@ -761,4 +761,12 @@
   .comentarios-list { grid-template-columns: 1fr; }
 }
 
+@media screen and (min-width: 901px) and (max-width: 1280px) {
+    .actions-user.profissional > button {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+
+}
+
 

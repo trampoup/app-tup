@@ -474,3 +474,11 @@
     margin-bottom: 16px;
 }
 
+@media screen and (min-width: 901px) and (max-width: 1280px) {
+    .actions-user > button {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+
+}
+
