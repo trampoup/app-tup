@@ -42,15 +42,15 @@
             <tr *ngFor="let localizacao of localizacoesPaginados">
             <td>{{ localizacao.cidade || '-' }}</td>
             <td>{{ localizacao.estado || '-' }}</td>
-            <td>{{ localizacao.cep || '-' }}</td>
-            <td>{{ localizacao.rua || '-' }},{{ localizacao.numero || '-' }}, {{ localizacao.bairro || '-' }}, {{ localizacao.complemento || '-' }}</td>
+            <td>{{ (localizacao.cep! | mask: '00000-000') || '-' }}</td>
+            <td>{{ localizacao.rua || '-' }}, {{ localizacao.numero || '-' }}, {{ localizacao.bairro || '-' }} - {{ localizacao.complemento || '-' }}</td>
             <td>
                 <div class="acoes">
                 <button class="btn-acao visualizar">
-                    <img src="assets/icones/See.png" (click)="visualizarLocalizacao(localizacao.id)" alt="Visualizar" />
+                    <img src="assets/icones/See.png" (click)="visualizarLocalizacao(localizacao.id!)" alt="Visualizar" />
                 </button>
                 <button class="btn-acao edit">
-                    <img src="assets/icones/Edit.png" (click)="editarLocalizacao(localizacao.id)" alt="Editar" />
+                    <img src="assets/icones/Edit.png" (click)="editarLocalizacao(localizacao.id!)" alt="Editar" />
                 </button>
                 <button class="btn-acao delete">
                     <img src="assets/icones/Delete.png" (click)="openModalDeletar()" alt="Excluir" />
@@ -76,5 +76,11 @@
             <p>Não há endereços cadastrados.</p>
         </div>
         </ng-template>
+    </div>
+
+    <div class="pagination">
+        <app-pagination [paginaAtual]="paginaAtual" [totalItens]="totalItens" [itensPorPagina]="itensPorPagina"
+        (paginaMudou)="onPaginaMudou($event)">
+        </app-pagination>
     </div>
 </section>

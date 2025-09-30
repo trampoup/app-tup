@@ -1,1 +1,43 @@
-<p>visualizar-localizacao works!</p>
+<section class="main-container">
+    <div class="localizacao-titulo">
+        <h1>
+            <a class="voltar-link" [routerLink]="['/usuario/localizacao']"><img src="/assets/icones/voltar-icon.svg"></a>
+            Maps
+        </h1>
+    </div>
+    <section class="localizacao-container">
+        <section class="localizacao-content">
+
+        </section>
+        <section class="localizacao-info">
+            <div class="card-info">
+                <h1>Estado</h1>
+                <p>{{selectedLocalizacao?.estado || '-'}}</p>
+            </div>
+            <div class="card-info">
+                <h1>Cidade</h1>
+                <p>{{selectedLocalizacao?.cidade || '-'}}</p>
+            </div>
+            <div class="card-info">
+                <h1>CEP</h1>
+                <p>{{(selectedLocalizacao?.cep! | mask: '00000-000') || '-'}}</p>
+            </div>
+            <div class="card-info">
+                <h1>Bairro</h1>
+                <p>{{ selectedLocalizacao?.bairro || '-'}}</p>
+            </div>
+            <div class="card-info">
+                <h1>Rua</h1>
+                <p>{{ selectedLocalizacao?.rua || '-'}}</p>
+            </div>
+            <div class="card-info">
+                <h1>Número</h1>
+                <p>{{ selectedLocalizacao?.numero || '-'}}</p>
+            </div>
+            <div class="card-info">
+                <h1>Complemento</h1>
+                <p>{{ selectedLocalizacao?.complemento || '-'}}</p>
+            </div>
+        </section>
+    </section>
+</section>

@@ -1,7 +1,7 @@
 export enum TipoComplemento {
-  Casa = 'Casa',
-  Apartamento = 'Apartamento',
-  Comercial = 'Comercial',
-  Condominio = 'Condomínio',
-  Outro = 'Outro'
+  CASA = 'CASA',
+  APARTAMENTO = 'APARTAMENTO',
+  COMERCIAL = 'COMERCIAL',
+  CONDOMINIO = 'CONDOMINIO',
+  OUTROS = 'OUTROS'
 }
