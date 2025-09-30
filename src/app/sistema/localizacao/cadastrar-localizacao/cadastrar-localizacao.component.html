@@ -1,0 +1,102 @@
+<section class="main-container">
+    <div class="cadastro-titulo">
+        <h1>
+            <a class="voltar-link" [routerLink]="['/usuario/localizacao']"><img src="/assets/icones/voltar-icon.svg"></a>
+            {{isEditMode? "Editar Localização" : "Cadastrar Localização"}}
+        </h1>
+    </div>
+
+
+    <form [formGroup]="localizacaoForm" (ngSubmit)="onSubmit()" class="inputs-cadastro">
+
+        <section class="campos-tipo-valor">
+    
+            <div id="campo-valor">
+                <label for="estado">Estado</label>
+                <select name="estado" formControlName="estado" id="estado" (change)="onEstadoChange($event)">
+                    <option value='' disabled hidden>Selecione um estado</option>
+                    <option *ngFor="let estado of listaEstados" [value]="estado.sigla">{{estado.nome}}</option>
+                </select>
+                <small *ngIf="submited && localizacaoForm.get('estado')?.hasError('required')" class="error">
+                    {{ "O campo Estado é obrigatório." }}
+                </small>
+            </div>
+
+            <div>
+                <label for="cidade">Cidade</label>
+                <select name="cidade" formControlName="cidade" id="cidade">
+                    <option value='' disabled hidden>Selecione uma cidade</option>
+                    <option *ngFor="let cidade of listaCidades" [value]="cidade.nome">{{cidade.nome}}</option>
+                </select>
+                <small *ngIf="submited && localizacaoForm.get('cidade')?.hasError('required')" class="error">
+                    {{ "O campo Cidade é obrigatório." }}
+                </small>
+            </div>
+
+        </section>
+        <div id="campo-titulo">
+            <label for="rua">Rua</label>
+            <input type="text" id="input-titulo" formControlName="rua" name="rua" placeholder="Digite o nome da rua">
+            <small *ngIf="submited && localizacaoForm.get('rua')?.hasError('required')" class="error">
+                {{ "O campo Rua é obrigatório." }}
+            </small>
+        </div>
+
+
+        <section class="campos-tipo-valor">
+            <div id="campo-titulo">
+                <label for="cep">CEP</label>
+                <input type="text" id="input-titulo" formControlName="cep" (keypress)="allowOnlyNumbers($event)" name="cep" placeholder="Digite um CEP">
+                <small *ngIf="submited && localizacaoForm.get('cep')?.hasError('required')" class="error">
+                    {{ "O campo CEP é obrigatório." }}
+                </small>
+            </div>
+    
+            <div id="campo-titulo">
+                <label for="bairro">Bairro</label>
+                <input type="text" id="input-titulo" formControlName="bairro"  name="bairro" placeholder="Digite um bairro">
+                <small *ngIf="submited && localizacaoForm.get('bairro')?.hasError('required')" class="error">
+                    {{ "O campo Bairro é obrigatório." }}
+                </small>
+            </div>
+        </section>
+
+        <section class="campos-tipo-valor">
+            <div id="campo-titulo">
+                <label for="numero">Número</label>
+                <input type="text" id="input-titulo" formControlName="numero" (keypress)="allowOnlyNumbers($event)" name="numero" placeholder="Digite um número">
+                <small *ngIf="submited && localizacaoForm.get('numero')?.hasError('required')" class="error">
+                    {{ "O campo Número é obrigatório." }}
+                </small>
+            </div>
+
+            <div id="campo-titulo">
+                <label for="complemento">Complemento</label>
+                <select name="complemento" formControlName="complemento" id="complemento">
+                    <option value='null' disabled hidden>Selecione um complemento</option>
+                    <option *ngFor="let tipo of tipoComplemento" [value]="tipo">{{tipo}}</option>
+                </select>
+                <small *ngIf="submited && localizacaoForm.get('complemento')?.hasError('required')" class="error">
+                    {{ "O campo Complemento é obrigatório." }}
+                </small>
+            </div>
+        </section>
+            
+
+        <div class="alerts">
+            <div id="sucess-message" class="alerts-container alert-success" *ngIf="successMessage">
+            {{ successMessage }}
+            </div>
+            <div class="alerts-container alert-danger" *ngIf="errorMessage">
+            {{ errorMessage }}
+            </div>
+        </div>
+
+        <!-- loading bar aparece aqui -->
+        <div class="progress-bar-container" *ngIf="isLoading">
+            <div class="progress-bar"></div>
+        </div>
+
+        <button id="btn-cadastrar-localizacao" type="submit">{{isEditMode ? "Atualizar Localização" : "Cadastrar Localização"}}</button>
+    </form>
+</section>

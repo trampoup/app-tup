@@ -1,0 +1,80 @@
+<section class="main-container">
+    <div class="banner">
+        <h1>Localização</h1>
+        <p>Encontre profissionais que atendem na sua região com mais facilidade.
+        </p>
+    </div>
+
+    <div class="localizacao-titulo">
+        <p><a [routerLink]="getRotaInicial()">Inicio</a> > <span>Localização</span></p>
+
+        <button class="btn-cadastrar-endereco" [routerLink]="['/usuario/cadastro-de-localizacao']">
+            Cadastrar Endereço 
+            <img src="assets/icones/plus-icon.svg" alt="plus-icon">
+        </button>
+    </div>
+
+    <div class="alerts">
+        <div id="sucess-message" class="alerts-container alert-success" *ngIf="successMessage">
+        {{ successMessage }}
+        </div>
+        <div class="alerts-container alert-danger" *ngIf="errorMessage">
+        {{ errorMessage }}
+        </div>
+    </div>
+
+    <div class="progress-bar-container" *ngIf="isLoading">
+        <div class="progress-bar"></div>
+    </div>
+
+    <div class="tabela-container">
+        <table>
+        <thead>
+            <tr>
+            <th>Cidade</th>
+            <th>Estado</th>
+            <th>CEP</th>
+            <th>Endereço</th>
+            <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let localizacao of localizacoesPaginados">
+            <td>{{ localizacao.cidade || '-' }}</td>
+            <td>{{ localizacao.estado || '-' }}</td>
+            <td>{{ localizacao.cep || '-' }}</td>
+            <td>{{ localizacao.rua || '-' }},{{ localizacao.numero || '-' }}, {{ localizacao.bairro || '-' }}, {{ localizacao.complemento || '-' }}</td>
+            <td>
+                <div class="acoes">
+                <button class="btn-acao visualizar">
+                    <img src="assets/icones/See.png" (click)="visualizarLocalizacao(localizacao.id)" alt="Visualizar" />
+                </button>
+                <button class="btn-acao edit">
+                    <img src="assets/icones/Edit.png" (click)="editarLocalizacao(localizacao.id)" alt="Editar" />
+                </button>
+                <button class="btn-acao delete">
+                    <img src="assets/icones/Delete.png" (click)="openModalDeletar()" alt="Excluir" />
+                </button>
+                </div>
+            </td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="localizacoesPaginados.length === 0">
+        <ng-container *ngIf="mensagemBusca; else semlocalizacaos">
+        <div>
+            <div class="alert alert-warning text-center">
+            {{ mensagemBusca }}
+            </div>
+        </div>
+        </ng-container>
+        <ng-template #semlocalizacaos>
+        <div class="no-data-message">
+            <img src="assets/imagens/no-location-image.jpg" alt="Sem dados" />
+            <p>Não há endereços cadastrados.</p>
+        </div>
+        </ng-template>
+    </div>
+</section>

@@ -25,7 +25,6 @@
   import { InicioAdminComponent } from './inicios/inicio-admin/inicio-admin.component';
   import { InicioClienteComponent } from './inicios/inicio-cliente/inicio-cliente.component';
   import { InicioProfissionalComponent } from './inicios/inicio-profissional/inicio-profissional.component';
-import { LocalizacaoComponent } from './localizacao/localizacao.component';
 import { GameficacaoComponent } from './gameficacao/gameficacao.component';
 import { SharedModule } from '../shared/shared.module';
 import { MiniSiteComponent } from './mini-site/mini-site.component';
@@ -37,6 +36,9 @@ import { ComunidadesComponent } from './comunidades/comunidades/comunidades.comp
 import { MinhasComunidadesComponent } from './comunidades/minhas-comunidades/minhas-comunidades.component';
 import { CadastroComunidadeComponent } from './comunidades/cadastro-comunidade/cadastro-comunidade.component';
 import { VisualizarComunidadeComponent } from './comunidades/visualizar-comunidade/visualizar-comunidade.component';
+import { VisualizarLocalizacoesComponent } from './localizacao/visualizar-localizacoes/visualizar-localizacoes.component';
+import { VisualizarLocalizacaoComponent } from './localizacao/visualizar-localizacao/visualizar-localizacao.component';
+import { CadastrarLocalizacaoComponent } from './localizacao/cadastrar-localizacao/cadastrar-localizacao.component';
 
 
   @NgModule({
@@ -62,7 +64,6 @@ import { VisualizarComunidadeComponent } from './comunidades/visualizar-comunida
       InicioAdminComponent,
       InicioClienteComponent,
       InicioProfissionalComponent,
-      LocalizacaoComponent,
       GameficacaoComponent,
       MiniSiteComponent,
       CadastrarSiteComponent,
@@ -71,7 +72,10 @@ import { VisualizarComunidadeComponent } from './comunidades/visualizar-comunida
       ComunidadesComponent,
       MinhasComunidadesComponent,
       CadastroComunidadeComponent,
-      VisualizarComunidadeComponent
+      VisualizarComunidadeComponent,
+      VisualizarLocalizacoesComponent,
+      VisualizarLocalizacaoComponent,
+      CadastrarLocalizacaoComponent
     ],
     imports: [
     CommonModule,
