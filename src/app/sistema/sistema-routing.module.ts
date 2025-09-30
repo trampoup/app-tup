@@ -48,8 +48,11 @@ const routes: Routes = [
 
       //localizacao
       {path: 'localizacao', component: VisualizarLocalizacoesComponent},
-      {path: 'visualizar-localizacao', component: VisualizarLocalizacaoComponent},
+      {path: 'visualizar-localizacao', component: VisualizarLocalizacaoComponent},  
+      {path: 'visualizar-localizacao/:id', component: VisualizarLocalizacaoComponent},
       {path: 'cadastro-de-localizacao', component: CadastrarLocalizacaoComponent},
+      {path: 'cadastro-de-localizacao/:id', component: CadastrarLocalizacaoComponent},
+
 
       // gameficacao
       {path:'gameficacao', component: GameficacaoComponent},

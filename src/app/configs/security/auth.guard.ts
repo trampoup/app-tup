@@ -31,7 +31,8 @@ export class AuthGuard implements CanActivate {
           return permissoesValidas.has(usuario.tipoUsuario)
             ? true
             : this.router.createUrlTree(['/forbidden']);
-        })
+        }),
+        catchError(() => of(this.router.createUrlTree(['/login']))) // <- evita crash em 500
       );
   }
   

@@ -509,6 +509,7 @@ select:focus {
   background-color: var(--success4);
   color: #065F46;
   border: 1px solid #34D399;
+  color: var(--lm-text);
 }
 
 .alert-warning {

@@ -39,6 +39,7 @@ import { VisualizarComunidadeComponent } from './comunidades/visualizar-comunida
 import { VisualizarLocalizacoesComponent } from './localizacao/visualizar-localizacoes/visualizar-localizacoes.component';
 import { VisualizarLocalizacaoComponent } from './localizacao/visualizar-localizacao/visualizar-localizacao.component';
 import { CadastrarLocalizacaoComponent } from './localizacao/cadastrar-localizacao/cadastrar-localizacao.component';
+import { NgxMaskModule } from 'ngx-mask';
 
 
   @NgModule({
@@ -83,10 +84,9 @@ import { CadastrarLocalizacaoComponent } from './localizacao/cadastrar-localizac
     FormsModule,
     ReactiveFormsModule,
     NgApexchartsModule,
-    SharedModule
-    //NgxMaskModule.forRoot(),
+    SharedModule,
+    NgxMaskModule.forRoot(),
     //DragDropModule
-    ,
     MatMenuModule
 ],
   })

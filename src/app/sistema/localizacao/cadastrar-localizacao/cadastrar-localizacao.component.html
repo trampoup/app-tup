@@ -46,7 +46,7 @@
         <section class="campos-tipo-valor">
             <div id="campo-titulo">
                 <label for="cep">CEP</label>
-                <input type="text" id="input-titulo" formControlName="cep" (keypress)="allowOnlyNumbers($event)" name="cep" placeholder="Digite um CEP">
+                <input type="text" id="input-titulo" formControlName="cep" (keypress)="allowOnlyNumbers($event)" mask="00000-000" name="cep" placeholder="Digite um CEP">
                 <small *ngIf="submited && localizacaoForm.get('cep')?.hasError('required')" class="error">
                     {{ "O campo CEP é obrigatório." }}
                 </small>
@@ -64,7 +64,7 @@
         <section class="campos-tipo-valor">
             <div id="campo-titulo">
                 <label for="numero">Número</label>
-                <input type="text" id="input-titulo" formControlName="numero" (keypress)="allowOnlyNumbers($event)" name="numero" placeholder="Digite um número">
+                <input type="text" id="input-titulo" formControlName="numero" name="numero" placeholder="Digite um número">
                 <small *ngIf="submited && localizacaoForm.get('numero')?.hasError('required')" class="error">
                     {{ "O campo Número é obrigatório." }}
                 </small>
@@ -74,7 +74,7 @@
                 <label for="complemento">Complemento</label>
                 <select name="complemento" formControlName="complemento" id="complemento">
                     <option value='null' disabled hidden>Selecione um complemento</option>
-                    <option *ngFor="let tipo of tipoComplemento" [value]="tipo">{{tipo}}</option>
+                    <option *ngFor="let tipo of tipoComplemento" [value]="tipo">{{TipoComplementoDescricoes[tipo]}}</option>
                 </select>
                 <small *ngIf="submited && localizacaoForm.get('complemento')?.hasError('required')" class="error">
                     {{ "O campo Complemento é obrigatório." }}
