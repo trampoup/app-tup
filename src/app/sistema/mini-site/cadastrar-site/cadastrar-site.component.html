@@ -22,11 +22,12 @@
         <label class="form-label">
           Foto do Perfil
         </label>
-        <app-input-img label="Clique ou arraste a foto para fazer upload" 
+        <app-input-img label="Clique ou arraste a foto para fazer upload. " 
         inputId="fotoPerfil" 
         (imageSelected)="onImageSelected($event, 'fotoPerfil')" 
         [fotoPreview]="fotoPerfilPreview">
         </app-input-img>
+        <p class="upload-info">Tamanho recomendado: 400x400 pixels.</p>
       </div>
 
 
@@ -40,6 +41,7 @@
         (imageSelected)="onImageSelected($event, 'banner')" 
         [fotoPreview]="bannerPreview">
         </app-input-img>
+        <p class="upload-info">Tamanho recomendado: 1390x233 pixels.</p>
       </div>
     
 
