@@ -255,6 +255,13 @@ label.required::after {
     opacity: 0.6;
 }
 
+.upload-info {
+  font-size: 0.9rem;
+  color: #a0a0a0; /* cinza claro */
+  margin-top: 5px;
+}
+
+
 .skills-input {
   display: flex;
   flex-wrap: wrap;
