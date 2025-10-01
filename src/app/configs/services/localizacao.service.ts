@@ -13,7 +13,7 @@ export class LocalizacaoService {
     private http:HttpClient
   ) { }
 
-  cadaastrarLocalizacao(localizacao:Localizacao){
+  cadastrarLocalizacao(localizacao:Localizacao){
     return this.http.post(this.apiUrlLink,localizacao);
   }
 

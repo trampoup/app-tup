@@ -37,6 +37,7 @@ export class CadastrarLocalizacaoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.verificarModoEdição();
   }
 
   allowOnlyNumbers(event: KeyboardEvent) {
@@ -60,6 +61,32 @@ export class CadastrarLocalizacaoComponent implements OnInit {
       this.listaCidades = [];
     }
   }
+
+  verificarModoEdição() {
+    this.localizacaoId = this.route.snapshot.paramMap.get('id');
+    this.isEditMode = !!this.localizacaoId;
+    if(this.isEditMode){
+      this.localizacaoService.obterPorId(this.localizacaoId!).subscribe({
+        next: (localizacao: Localizacao) => {
+          this.localizacaoForm.patchValue({
+            estado: localizacao.estado,
+            cidade: localizacao.cidade,
+            bairro: localizacao.bairro,
+            rua: localizacao.rua,
+            numero: localizacao.numero,
+            complemento: localizacao.complemento,
+            cep: localizacao.cep
+          });
+          this.obterCidadePorEstado(localizacao.estado!);
+        },
+        error: (err) => {
+          console.error('Erro ao carregar localizacao:', err);
+        }
+      });
+    }
+  }
+
+  
 
   localizacaoForm = this.form.group({
     estado: new FormControl<string | null>('', Validators.required),
@@ -96,7 +123,7 @@ export class CadastrarLocalizacaoComponent implements OnInit {
 
     const request$ = this.isEditMode && this.localizacaoId
     ? this.localizacaoService.atualizar(this.localizacaoId,localizacao)
-    : this.localizacaoService.cadaastrarLocalizacao(localizacao);
+    : this.localizacaoService.cadastrarLocalizacao(localizacao);
 
     request$.subscribe({
       next:() =>{
@@ -104,10 +131,20 @@ export class CadastrarLocalizacaoComponent implements OnInit {
         this.isLoading = false;
         this.successMessage = this.isEditMode && this.localizacaoId ? "Localização atualizada com sucesso!" : "Localização cadastrada com sucesso!"
         this.errorMessage = null;
-        this.localizacaoForm.reset();
+        this.localizacaoForm.reset({
+          estado: '',
+          cidade: '',
+          bairro: '',
+          rua: '',
+          numero: '',
+          complemento: null,
+          cep: ''
+        });
+        this.listaCidades = [];
       },
       error: err =>{
         this.isLoading = false;
+        console.log(err);
         this.errorMessage = err?.error?.message || 'Erro ao salvar localização';
         this.successMessage = null;
       }
