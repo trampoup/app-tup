@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LocalizacaoService } from 'src/app/configs/services/localizacao.service';
 import { Localizacao } from '../localizacao';
 import { ActivatedRoute } from '@angular/router';
+import { MapboxService } from 'src/app/configs/services/mapbox.service';
 
 @Component({
   selector: 'app-visualizar-localizacao',
@@ -14,12 +15,13 @@ export class VisualizarLocalizacaoComponent implements OnInit {
 
   selectedLocalizacao: Localizacao | null = null;
 
-  
+  mapImageUrl: string | null = null;
 
 
   constructor(
     private localizacaoService: LocalizacaoService,
-    private router: ActivatedRoute
+    private router: ActivatedRoute,
+    private mapboxService: MapboxService
   ) { }
 
   ngOnInit(): void {
@@ -36,6 +38,10 @@ export class VisualizarLocalizacaoComponent implements OnInit {
         this.selectedLocalizacao = localizacao;
         console.log(this.selectedLocalizacao);
         this.isLoading = false;
+
+                
+        // Gera o mapa estático baseado na localização
+        this.generateStaticMap();
       },
       error: (err) => {
         this.isLoading = false;
@@ -44,7 +50,45 @@ export class VisualizarLocalizacaoComponent implements OnInit {
     });
   }
 
+  private generateStaticMap(): void {
+    if (!this.selectedLocalizacao?.estado || !this.selectedLocalizacao?.cidade) {
+      // Mapa padrão do Brasil se não tiver estado/cidade
+      this.mapImageUrl = this.mapboxService.generateStaticMapUrl(-47.9292, -15.7801, {
+        width: 600,
+        height: 400,
+        zoom: 4
+      });
+      return;
+    }
 
+    // Gera mapa baseado no estado e cidade
+    this.mapImageUrl = this.mapboxService.generateMapFromLocalizacao(
+      this.selectedLocalizacao.estado,
+      this.selectedLocalizacao.cidade,
+      {
+        width: 600,
+        height: 400,
+        zoom: 10,
+        style: 'streets-v11'
+      }
+    );
+  }
+
+  // Método para recarregar o mapa com estilo diferente (opcional)
+  changeMapStyle(style: string): void {
+    if (!this.selectedLocalizacao?.estado || !this.selectedLocalizacao?.cidade) return;
+
+    this.mapImageUrl = this.mapboxService.generateMapFromLocalizacao(
+      this.selectedLocalizacao.estado,
+      this.selectedLocalizacao.cidade,
+      {
+        width: 600,
+        height: 400,
+        zoom: 10,
+        style: style
+      }
+    );
+  }
 
 
 }
