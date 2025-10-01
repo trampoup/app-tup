@@ -29,4 +29,8 @@ export class LocalizacaoService {
     return this.http.put<Localizacao>(`${this.apiUrlLink}/${id}`, localizacao);
   }
 
+  deletar(id: number | string) {
+    return this.http.delete(`${this.apiUrlLink}/${id}`);
+  }
+
 }

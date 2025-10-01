@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/configs/services/auth.service';
 import { Localizacao } from '../localizacao';
 import { LocalizacaoService } from 'src/app/configs/services/localizacao.service';
 import { Router } from '@angular/router';
+import { ModalDeleteService } from 'src/app/configs/services/modal-delete.service';
 
 @Component({
   selector: 'app-visualizar-localizacoes',
@@ -25,10 +26,13 @@ export class VisualizarLocalizacoesComponent implements OnInit {
   totalItens: number = 0;
   totalPaginas: number = 0;
 
+  selectedLocalizacao: Localizacao | null = null;
+
   constructor(
     private authService : AuthService,
     private router:Router,
-    private localizacaoService: LocalizacaoService
+    private localizacaoService: LocalizacaoService,
+    private modalDeleteService: ModalDeleteService
   ) { }
 
   ngOnInit(): void {
@@ -67,11 +71,36 @@ export class VisualizarLocalizacoesComponent implements OnInit {
     this.router.navigate(['/usuario/cadastro-de-localizacao', id]);
   }
 
-  openModalDeletar(){
-
+  openModalDeletar(localizacao: Localizacao){
+    this.selectedLocalizacao = localizacao;
+    this.modalDeleteService.openModal({
+      title: 'Deletar Localização',
+      description: `Você tem certeza que deseja deletar a localização <strong>${localizacao.estado} - ${localizacao.cidade}</strong>?`,
+      item: localizacao,
+      deletarTextoBotao: 'Deletar',
+    }, () => {
+      this.deletarLocalizacao(localizacao);
+    });
   }
 
+  deletarLocalizacao(localizacao: Localizacao){
+    this.localizacaoService.deletar(localizacao.id!).subscribe({
+      next: () => {
+        this.successMessage = "Localização deletada com sucesso!";
+        setTimeout(() => this.successMessage = null, 2000);
+        this.errorMessage = null;
+        this.localizacoes = this.localizacoes.filter(loc => loc.id !== localizacao.id);
 
+        this.totalItens = this.localizacoes.length; 
+        this.totalPaginas = Math.ceil(this.localizacoes.length / this.itensPorPagina);
+        this.atualizarPaginacao();
+      },
+      error: err => {
+        console.error('Erro ao deletar localização', err);
+        this.errorMessage = "Erro ao deletar localização!";
+        setTimeout(() => this.errorMessage = null, 2000);
+      }});
+  }
 
   onPaginaMudou(novaPagina: number) {
       this.paginaAtual = novaPagina;

@@ -72,9 +72,12 @@ export class VisualizarLocalizacaoComponent implements OnInit, AfterViewInit, On
   }
 
   carregarLocalizacao() {
-    this.localizacaoId = this.router.snapshot.paramMap.get('id');
-    if (!this.localizacaoId) { return; }
     this.isLoading = true;
+    this.localizacaoId = this.router.snapshot.paramMap.get('id');
+    if (!this.localizacaoId) { 
+      this.isLoading = false;
+      return;
+     }
 
     this.localizacaoService.obterPorId(this.localizacaoId).subscribe({
       next: (localizacao: Localizacao) => {
@@ -104,6 +107,7 @@ export class VisualizarLocalizacaoComponent implements OnInit, AfterViewInit, On
     }
 
     // Gera mapa baseado no estado e cidade com geocoding preciso
+    this.isLoading = true;
     this.mapboxService.generateMapFromLocalizacao(
       this.selectedLocalizacao.estado,
       this.selectedLocalizacao.cidade,
@@ -116,8 +120,10 @@ export class VisualizarLocalizacaoComponent implements OnInit, AfterViewInit, On
     ).subscribe({
       next: (url: string) => {
         this.mapImageUrl = url;
+        this.isLoading = false;
       },
       error: (err) => {
+        this.isLoading = false;
         console.error('Erro ao gerar mapa:', err);
         // Fallback para coordenadas do estado
         this.mapImageUrl = this.mapboxService.generateStaticMapUrl(
