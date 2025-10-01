@@ -6,9 +6,51 @@
         </h1>
     </div>
     <section class="localizacao-container">
-        <section class="localizacao-content">
 
+        <section class="localizacao-content">
+            <div class="map-container">
+                <div *ngIf="mapImageUrl" class="static-map">
+                    <img [src]="mapImageUrl" [alt]="'Mapa de ' + (selectedLocalizacao?.cidade || 'Localização')" class="map-image">
+                    <div class="map-overlay">
+                        <div class="location-pin">
+                            <span class="pin-icon">📍</span>
+                        </div>
+                        <div class="map-info">
+                            <strong>{{ selectedLocalizacao?.cidade || 'Cidade' }}</strong>, 
+                            {{ selectedLocalizacao?.estado || 'Estado' }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div *ngIf="isLoading" class="map-loading">
+                    <div class="spinner"></div>
+                    <p>Carregando localização...</p>
+                </div>
+                
+                <div *ngIf="!mapImageUrl && !isLoading" class="map-placeholder">
+                    <div class="placeholder-icon">🗺️</div>
+                    <p>Localização não disponível</p>
+                </div>
+
+                <!-- Controles de estilo do mapa (opcional) -->
+                <div class="map-controls" *ngIf="mapImageUrl && !isLoading">
+                    <button class="style-btn" (click)="changeMapStyle('streets-v11')" title="Mapa de Ruas">
+                        🗺️
+                    </button>
+                    <button class="style-btn" (click)="changeMapStyle('satellite-v9')" title="Satélite">
+                        🛰️
+                    </button>
+                    <button class="style-btn" (click)="changeMapStyle('light-v10')" title="Claro">
+                        ☀️
+                    </button>
+                    <button class="style-btn" (click)="changeMapStyle('dark-v10')" title="Escuro">
+                        🌙
+                    </button>
+                </div>
+            </div>
         </section>
+
+        
         <section class="localizacao-info">
             <div class="card-info">
                 <h1>Estado</h1>
