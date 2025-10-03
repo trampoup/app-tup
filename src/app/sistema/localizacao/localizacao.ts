@@ -9,4 +9,5 @@ export class Localizacao{
     complemento?:TipoComplemento
     bairro?:string
     cep?:string
+    atual?:boolean;
 }

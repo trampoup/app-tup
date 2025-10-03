@@ -8,6 +8,7 @@ import { InputImgComponent } from './input-img/input-img.component';
 import { InputVideoComponent } from './input-video/input-video.component';
 import { SearchComponent } from './search/search.component'; 
 import { FormsModule } from '@angular/forms';
+import { ModalGenericoComponent } from './modal-generico/modal-generico.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { FormsModule } from '@angular/forms';
     ModalDeleteComponent,
     InputImgComponent,
     InputVideoComponent,
-    SearchComponent
+    SearchComponent,
+    ModalGenericoComponent
   ],
   imports: [
     CommonModule,

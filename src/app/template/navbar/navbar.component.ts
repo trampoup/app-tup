@@ -4,9 +4,13 @@ import {
   OnInit,
   ViewChild,
   Renderer2,
+  TemplateRef,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/configs/services/auth.service';
+import { LocalizacaoService } from 'src/app/configs/services/localizacao.service';
+import { ModalGenericoService } from 'src/app/configs/services/modal-generico.service';
+import { Localizacao } from 'src/app/sistema/localizacao/localizacao';
 
 
 @Component({
@@ -21,15 +25,24 @@ export class NavbarComponent implements OnInit {
   @ViewChild('dropdownMenu') dropdownMenu!: ElementRef;
   @ViewChild('dropdownToggle') dropdownToggle!: ElementRef;
 
+  @ViewChild('templateConteudoModal') templateConteudoModal!: TemplateRef<any>;
+
   isSidebarOpen = false;
   isDropdownOpen = false;
 
   nomeUsuario: string = '';
   permissaoUsuario: string = '';
   fotoUsuario:string | null = null;
+
+  localizacaoUsuario: Localizacao | null = null;
   enderecoUsuario: string = '';
   cidadeUsuario: string = '';
   estadoUsuario: string = '';
+
+  isLoading: boolean = false;
+  isSavingSelection:boolean = false;
+  localizacoes: Localizacao[] = [];
+  selectedLocalizacaoId: number | string | null = null;
 
    // Mapeamento das permissões para suas descrições
   private permissaoDescricao: { [key: string]: string } = {
@@ -41,7 +54,9 @@ export class NavbarComponent implements OnInit {
   constructor(
     private router: Router,
     private renderer: Renderer2,
-    private authService: AuthService
+    private authService: AuthService,
+    private modalGenericoService: ModalGenericoService,
+    private localizacaoService: LocalizacaoService
   ) {}
 
   ngOnInit(): void {
@@ -52,12 +67,98 @@ export class NavbarComponent implements OnInit {
         this.enderecoUsuario = perfil.endereco ?? "Endereço do Usuário";
         this.cidadeUsuario = perfil.cidade,
         this.estadoUsuario = perfil.estado
-
+        this.localizacaoUsuario = perfil.localizacaoAtual ?? null;
       },
       error: (error) => {
         console.error('Erro ao obter perfil do usuário:', error);
       }
     });
+  }
+
+  carregarLocalizacoes():void{
+    this.isLoading = true;
+    this.localizacaoService.obterLocalizacoesLogado().subscribe({
+      next: (localizacoes) => {
+        this.localizacoes = localizacoes;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar localizações:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  abrirModalSelecionarLocalizacao():void{
+    this.carregarLocalizacoes();
+    this.modalGenericoService.openModal(
+      {
+        title:'Escolher localização',
+        size: 'md:max-w-3xl',
+        showFooter:false
+      },
+      undefined,
+      this.templateConteudoModal
+    );
+  }
+
+  selecionarLocalizacao(localizacao:Localizacao):void{
+    if (this.isSavingSelection) return;
+    this.isSavingSelection = true;
+
+    this.localizacaoService.definirLocalizacaoAtual(localizacao.id!).subscribe({
+      next: () => {
+        // atualizar header imediatamente
+        this.enderecoUsuario = `${localizacao.rua}, ${localizacao.numero}`;
+        this.cidadeUsuario = localizacao.cidade!;
+        this.estadoUsuario = localizacao.estado!;
+
+        this.isSavingSelection = false;
+      },
+      error: () => { this.isSavingSelection = false; }
+    });
+  }
+
+  isSelected(loc: Localizacao): boolean {
+    const id = (loc as Localizacao).id ?? (loc as Localizacao).id;
+    return this.selectedLocalizacaoId === id;
+  }
+
+  onSelectLocalizacao(loc: Localizacao): void {
+    if (this.isSavingSelection) return;
+
+    const id = (loc as any).id ?? (loc as any).idLocalizacao;
+    this.selectedLocalizacaoId = id;
+    this.isSavingSelection = true;
+
+    const aplicarNoHeader = () => {
+      this.localizacaoUsuario = loc; // <-- seta a atual para o header usar
+      this.enderecoUsuario = `${loc.rua}, ${loc.numero}`;
+      this.cidadeUsuario = loc.cidade!;
+      this.estadoUsuario = loc.estado!;
+    };
+
+    // Se existir um endpoint para definir a localização atual/padrão, chame-o.
+    // Ajuste o nome do método conforme seu service.
+    const temPersistencia = (this.localizacaoService as any).definirLocalizacaoAtual;
+
+    if (temPersistencia) {
+      (this.localizacaoService as any).definirLocalizacaoAtual(id).subscribe({
+        next: () => {
+          aplicarNoHeader();
+          this.isSavingSelection = false;
+          this.modalGenericoService.closeModal();
+        },
+        error: (err: any) => {
+          console.error('Erro ao definir localização atual:', err);
+          this.isSavingSelection = false;
+        }
+      });
+    } else {
+      // Sem persistência: aplica localmente e fecha
+      aplicarNoHeader();
+      this.isSavingSelection = false;
+    }
   }
 
   isCliente(): boolean{

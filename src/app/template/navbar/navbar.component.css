@@ -26,6 +26,7 @@
   color: white;
   display: flex;
   padding: 7px;
+  cursor: pointer;
 }
 
 .location-user h2{
@@ -37,6 +38,121 @@
   height: 25px;
   width: 25px;
   align-self: center;
+}
+
+.loading{
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--lm-primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.location-list{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.location-item{
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  border: 1px solid var(--lm-accent-02);
+  border-radius: 8px;
+  padding: 5px 8px;
+  width: 100%;
+  background: transparent;
+  text-align: left;
+  
+}
+
+.location-item:hover{
+  border: 2pt solid var(--info-hover);
+  cursor: pointer;
+}
+
+.location-item.selected{
+  border: 2pt solid var(--info-hover);
+  outline: none;
+}
+
+.location-item:disabled{
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.location-item img{
+  margin: 0;
+}
+
+.location-info{
+  display: flex;
+  margin: 0;
+  flex-direction: column;
+}
+
+.location-info h3{
+  font-weight: 600;
+}
+
+.location-info h3, p{
+  margin: 0;
+}
+
+.check{
+  display: inline-flex; 
+  box-sizing: border-box;            
+  align-items: center;
+  justify-content: center;
+  margin: 0 8px 0 8px;
+  color: white;
+  border-radius: 50%;
+  padding: 2px;
+  background-color: var(--info);
+  width: 15px;
+  height: 15px;
+}
+
+.no-data-message{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+.no-data-message img {
+  width: 150px;
+  height: auto;
+  margin: 0;
+}
+
+.no-data-message p {
+  font-size: 1rem;
+  margin-bottom: 0;
 }
 
 .header-toggle {
