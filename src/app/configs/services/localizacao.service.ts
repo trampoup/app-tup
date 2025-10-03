@@ -33,4 +33,8 @@ export class LocalizacaoService {
     return this.http.delete(`${this.apiUrlLink}/${id}`);
   }
 
+  definirLocalizacaoAtual(id: number | string) {
+    return this.http.put<void>(`${this.apiUrlLink}/atual/${id}`, {});
+  }
+
 }

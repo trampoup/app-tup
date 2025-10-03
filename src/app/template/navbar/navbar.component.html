@@ -6,8 +6,9 @@
       </button>
       
       <div class="header-user">
-        <div class="location-user">
-          <h2>{{enderecoUsuario}} - {{cidadeUsuario}}/{{estadoUsuario}}</h2>
+        <div class="location-user" (click)="abrirModalSelecionarLocalizacao()">
+          <h2 *ngIf="localizacaoUsuario">{{localizacaoUsuario.rua ?? ''}} - {{localizacaoUsuario.cidade}}/{{localizacaoUsuario.estado}}</h2>
+          <h2 *ngIf="!localizacaoUsuario">Você não tem localização cadastrada!</h2>
           <img src="/assets/icones/localizacao-headersidebar-icon.svg" alt="location">
         </div>
         <div class="usuario">
@@ -133,3 +134,46 @@
     </div>
   </mat-drawer-content>
 </mat-drawer-container>
+
+<ng-template #templateConteudoModal>
+  <div class="loading" *ngIf="isLoading;">
+    <div class="spinner"></div>
+    <p>Carregando suas localizações...</p>
+  </div>
+  <div *ngIf="!isLoading" class="modal-container">
+
+    <div class="location-list" *ngIf="localizacoes.length > 0; else semLocalizacao">
+
+      <div *ngFor="let localizacao of localizacoes">
+        <button class="location-item"
+        [class.selected]="isSelected(localizacao)"
+        [disabled]="isSavingSelection"
+        (click)="onSelectLocalizacao(localizacao)"
+        role="option"
+        [attr.aria-selected]="isSelected(localizacao)">
+
+          <img [src]="isSelected(localizacao) ? 'assets/icones/localizacao-padrao.svg' : 'assets/icones/localizacao2-icon.svg'" alt="localizacao-icone">
+
+          <div class="location-info">  
+            <h3>
+              {{localizacao.rua}}, {{localizacao.numero}}
+            </h3>
+            <p>{{localizacao.complemento}}, {{localizacao.bairro}}, {{localizacao.cidade}} - {{localizacao.estado}}</p>
+          </div>
+
+          <div class="check" *ngIf="isSelected(localizacao)" aria-hidden="true">✓</div>
+
+        </button>
+
+      </div>
+    </div>
+
+    <ng-template #semLocalizacao>
+      <div class="no-data-message">
+        <img src="assets/imagens/no-location-image.jpg" alt="Sem dados" />
+        <p>Não há endereços cadastrados.</p>
+      </div>
+    </ng-template>
+
+  </div>
+</ng-template>
