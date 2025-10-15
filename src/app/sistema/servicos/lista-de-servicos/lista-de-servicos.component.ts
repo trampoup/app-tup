@@ -9,6 +9,7 @@ import { UsuarioService } from 'src/app/configs/services/usuario.service';
 import { UsuarioDadosDTO } from '../../cupons/UsuarioDadosDTO';
 import { UsuarioSiteDTO } from '../../mini-site/cadastrar-site/usuario-site-dto';
 import { categoriasDescricoes } from 'src/app/cadastro/categorias-descricoes-enum';
+import { Setor } from 'src/app/cadastro/categorias-enum';
 
 @Component({
   selector: 'app-lista-de-servicos',
@@ -43,6 +44,11 @@ export class ListaDeServicosComponent implements OnInit {
 
   categoriasDescricoes = categoriasDescricoes;
 
+    // Filtro por setor (visão do cliente)
+  setores: Setor[] = [];
+  selectedSetor: Setor | 'TODOS' = 'TODOS';
+  profissionaisFiltrados: UsuarioSiteDTO[] = [];
+
   constructor(private authService : AuthService,
     private router:Router,
     private modalDeleteService : ModalDeleteService,
@@ -55,6 +61,9 @@ export class ListaDeServicosComponent implements OnInit {
     if (this.obterRoleUsuario() === TipoUsuario.CLIENTE) {
       this.carregarTodosProfissionais();
     } 
+
+      // Lista de setores a partir do mapa de descrições já usado na tabela
+    this.setores = Object.keys(this.categoriasDescricoes) as Setor[];
     
   }
 
@@ -110,6 +119,7 @@ export class ListaDeServicosComponent implements OnInit {
     this.usuarioService.obterTodosProfissionais().subscribe({
       next: (profissionais) => {
         this.profissionais = profissionais ?? [];
+        this.profissionaisFiltrados = [...this.profissionais]; // base para paginação
         this.isLoading = false;
         this.totalItensProfissionais = this.profissionais.length; 
         this.totalPaginasProfissionais = Math.ceil(
@@ -144,6 +154,34 @@ export class ListaDeServicosComponent implements OnInit {
     })
   }
 
+  onSetorChange(valor: string) {
+    if (valor === 'TODOS') {
+      this.selectedSetor = 'TODOS';
+      this.profissionaisFiltrados = [...this.profissionais];
+    } else {
+      this.selectedSetor = valor as Setor;
+      this.profissionaisFiltrados = this.profissionais.filter(
+        p => p.setor === this.selectedSetor
+      );
+    }
+
+    // Mensagem quando não houver resultados com o filtro
+    if (this.profissionaisFiltrados.length === 0 && this.selectedSetor !== 'TODOS') {
+      this.mensagemBusca = `Nenhum profissional encontrado para o setor "${this.categoriasDescricoes[this.selectedSetor]}".`;
+    } else {
+      this.mensagemBusca = null;
+    }
+
+    this.totalItensProfissionais = this.profissionaisFiltrados.length;
+    this.totalPaginasProfissionais = Math.ceil(
+      this.totalItensProfissionais / this.itensPorPaginaProfissionais
+    );
+    this.paginaAtualProfissionais = 1;
+    this.atualizarPaginacaoProfissionais();
+  }
+
+
+
   onPaginaMudou(novaPagina: number) {
       this.paginaAtual = novaPagina;
       this.atualizarPaginacao();
@@ -164,7 +202,7 @@ export class ListaDeServicosComponent implements OnInit {
   atualizarPaginacaoProfissionais(): void {
     const inicio = (this.paginaAtualProfissionais - 1) * this.itensPorPaginaProfissionais;
     const fim = inicio + this.itensPorPaginaProfissionais;
-    this.profissionaisPaginados = this.profissionais.slice(inicio, fim);
+    this.profissionaisPaginados = this.profissionaisFiltrados.slice(inicio, fim);
   }
 
 

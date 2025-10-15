@@ -72,6 +72,11 @@
     font-size: 18px;
 }
 
+.alert-filter{
+  display: flex;
+  margin-top: 8px;
+}
+
 /* tabela */
 .tabela-container {
     width: 100%;
@@ -303,3 +308,33 @@ tr:hover {
   padding: 20px;
   gap: 15px;
 }
+
+.filtro-setor {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+}
+
+.filtro-setor-select {
+
+  background-color: var(--primary-btnHover);
+  border: none;
+  border-radius: 10px;
+  padding: 10px 5px;
+  font-size: 1rem;
+  cursor: pointer;
+
+  /* espaço pra futura setinha personalizada, se quiser */
+  background-image: none;
+  color: #fafafa; /* ajuste se preferir contraste diferente */
+}
+
+.filtro-setor-select:hover {
+  background-color: #177a93;
+}
+
+.filtro-setor-select:focus {
+  outline: 2px solid rgba(0,0,0,0.15);
+  outline-offset: 2px;
+}
+

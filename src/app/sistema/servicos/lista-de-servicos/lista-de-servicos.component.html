@@ -17,10 +17,31 @@
     <div class="localizacao-titulo">
         <p><a [routerLink]="getRotaInicial()">Inicio</a> > <span>Serviços</span></p>
 
-        <button *ngIf="obterRoleUsuario() !== TipoUsuario.CLIENTE" class="btn-cadastrar-endereco" [routerLink]="['/usuario/cadastro-de-servico']">
+        <button *ngIf="obterRoleUsuario() !== TipoUsuario.CLIENTE; else filtroCliente" class="btn-cadastrar-endereco" [routerLink]="['/usuario/cadastro-de-servico']">
             Cadastrar Serviço 
             <img src="assets/icones/plus-icon.svg" alt="plus-icon">
         </button>
+
+
+
+        <ng-template #filtroCliente>
+            <div class="filtro-setor">
+            <select
+            #setorSel
+            id="selectSetor"
+            class="filtro-setor-select"
+            [value]="selectedSetor"
+            (change)="onSetorChange(setorSel.value)"
+            aria-label="Filtrar profissionais por setor"
+            >
+            <option value="TODOS">Todos os setores</option>
+            <option *ngFor="let setor of setores" [value]="setor">
+                {{ categoriasDescricoes[setor] }}
+            </option>
+            </select>
+
+            </div>
+        </ng-template>
     </div>
 
     <div class="alerts">
@@ -73,7 +94,7 @@
     
         <div *ngIf="servicosPaginados.length === 0">
             <ng-container *ngIf="mensagemBusca; else semlocalizacaos">
-            <div>
+            <div class="alert-filter">
                 <div class="alert alert-warning text-center">
                 {{ mensagemBusca }}
                 </div>
