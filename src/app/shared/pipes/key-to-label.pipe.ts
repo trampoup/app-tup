@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { CategoriaKey } from 'src/app/cadastro/categorias-enum';
+import { Setor } from 'src/app/cadastro/categorias-enum';
 
-const CATEGORIA_LABELS: Record<CategoriaKey,string> = {
+const CATEGORIA_LABELS: Record<Setor,string> = {
   SERVICOS_TECNICOS:             'Serviços Técnicos',
   SERVICOS_DOMESTICOS:           'Serviços Domésticos',
   SERVICOS_MANUTENCAO:           'Serviços de Manutenção',
@@ -15,7 +15,7 @@ const CATEGORIA_LABELS: Record<CategoriaKey,string> = {
 //pipe para converter a chave da categoria em um rótulo legível
 @Pipe({name: 'keyToLabel'})
 export class KeyToLabelPipe implements PipeTransform {
-  transform(value: CategoriaKey): string {
+  transform(value: Setor): string {
     return CATEGORIA_LABELS[value] || value;
   }
 

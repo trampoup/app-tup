@@ -9,7 +9,7 @@ import { switchMap } from 'rxjs';
 import { Router } from '@angular/router';
 import { LoginDTO } from '../login/LoginDTO';
 import { ApiResponse } from '../configs/services/api-response-dto';
-import { CATEGORIAS, CategoriaKey, Subcategoria } from './categorias-enum';
+import { CATEGORIAS, Setor, SubSetor } from './categorias-enum';
 
 @Component({
   selector: 'app-cadastro',
@@ -31,7 +31,7 @@ export class CadastroComponent implements OnInit {
 
   protected readonly listaEstados = listaEstados;
 
-  categoriasKeys: CategoriaKey[] = Object.keys(CATEGORIAS) as CategoriaKey[];
+  categoriasKeys: Setor[] = Object.keys(CATEGORIAS) as Setor[];
   //subCategoriasSelecionadas: Subcategoria[] = [];
   
 
@@ -51,7 +51,7 @@ export class CadastroComponent implements OnInit {
     termos: new FormControl(false, { validators: Validators.requiredTrue })
   });
 
-  selectedCategories: CategoriaKey[] = []; //pagina de card de categorias
+  selectedCategories: Setor[] = []; //pagina de card de categorias
 
   passwordFieldType = 'password';
   confirmPasswordFieldType = 'password';
@@ -286,7 +286,7 @@ export class CadastroComponent implements OnInit {
 
 
   /** alterna seleção/deseleção */
-  toggleCategory(cat: CategoriaKey) {
+  toggleCategory(cat: Setor) {
     const idx = this.selectedCategories.indexOf(cat);
     if (idx >= 0) {
       this.selectedCategories.splice(idx, 1);
@@ -297,7 +297,7 @@ export class CadastroComponent implements OnInit {
 
 
   /** helper para template */
-  isCategorySelected(cat: CategoriaKey): boolean {
+  isCategorySelected(cat: Setor): boolean {
     return this.selectedCategories.includes(cat);
   }
 

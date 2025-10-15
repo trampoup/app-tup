@@ -12,7 +12,6 @@ import { ModalDeleteService } from 'src/app/configs/services/modal-delete.servic
 })
 export class VisualizarLocalizacoesComponent implements OnInit {
   isLoading: boolean = false;
-  isEdit: boolean = false;
 
   successMessage: string | null = '';
   errorMessage: string | null = '';

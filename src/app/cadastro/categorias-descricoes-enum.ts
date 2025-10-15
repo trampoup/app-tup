@@ -1,6 +1,6 @@
-import { CategoriaKey } from "./categorias-enum";
+import { Setor } from "./categorias-enum";
 
-export const categoriasDescricoes : Record<CategoriaKey, string> = {
+export const categoriasDescricoes : Record<Setor, string> = {
     SERVICOS_TECNICOS: 'Serviços Técnicos',
     SERVICOS_DOMESTICOS: 'Serviços Domésticos',
     SERVICOS_MANUTENCAO: 'Serviços de Manutenção',

@@ -1,1 +1,153 @@
-<p>lista-de-servicos works!</p>
+<section class="main-container">
+    <!-- VISÃO DO ADMIN E PROFISSIONAL -->
+    <div class="banner" *ngIf="obterRoleUsuario() !== TipoUsuario.CLIENTE">
+        <h1>Serviços</h1>
+        <p>Acompanhe de forma organizada todos os serviços que você oferece e gerencie
+            suas atividades com facilidade.
+        </p>
+    </div>
+
+    <!-- VISÃO DO CLIENTE -->
+    <div class="banner" *ngIf="obterRoleUsuario() == TipoUsuario.CLIENTE">
+        <h1>Serviços</h1>
+        <p>Acompanhe de forma organizada todos os serviços e profissionais que oferecem suas atividades com facilidade.
+        </p>
+    </div>
+
+    <div class="localizacao-titulo">
+        <p><a [routerLink]="getRotaInicial()">Inicio</a> > <span>Serviços</span></p>
+
+        <button *ngIf="obterRoleUsuario() !== TipoUsuario.CLIENTE" class="btn-cadastrar-endereco" [routerLink]="['/usuario/cadastro-de-servico']">
+            Cadastrar Serviço 
+            <img src="assets/icones/plus-icon.svg" alt="plus-icon">
+        </button>
+    </div>
+
+    <div class="alerts">
+        <div id="sucess-message" class="alerts-container alert-success" *ngIf="successMessage">
+        {{ successMessage }}
+        </div>
+        <div class="alerts-container alert-danger" *ngIf="errorMessage">
+        {{ errorMessage }}
+        </div>
+    </div>
+
+    <div class="progress-bar-container" *ngIf="isLoading">
+        <div class="progress-bar"></div>
+    </div>
+
+
+
+    <ng-container *ngIf="obterRoleUsuario() !== TipoUsuario.CLIENTE; else viewCliente">
+        <div class="tabela-container">
+            <table>
+            <thead>
+                <tr>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Data de Criação</th>
+                <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let servico of servicosPaginados">
+                <td>{{ servico.nome || '-' }}</td>
+                <td>{{ servico.descricao || '-' }}</td>
+                <td>{{ servico.valor || 'Sem valor definido.'}}</td>
+                <td>{{ servico.createdAt | date:'dd/MM/yyyy HH:mm'}}</td>
+                <td>
+                    <div class="acoes">
+                    <button class="btn-acao edit">
+                        <img src="assets/icones/Edit.png" (click)="editarServico(servico.id!)" alt="Editar" />
+                    </button>
+                    <button class="btn-acao delete">
+                        <img src="assets/icones/Delete.png" (click)="openModalDeletar(servico)" alt="Excluir" />
+                    </button>
+                    </div>
+                </td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+    
+        <div *ngIf="servicosPaginados.length === 0">
+            <ng-container *ngIf="mensagemBusca; else semlocalizacaos">
+            <div>
+                <div class="alert alert-warning text-center">
+                {{ mensagemBusca }}
+                </div>
+            </div>
+            </ng-container>
+            <ng-template #semlocalizacaos>
+            <div class="no-data-message">
+                <img src="assets/icones/no-data-icon.svg" alt="Sem dados" />
+                <p>Você não tem serviços cadastrados.</p>
+            </div>
+            </ng-template>
+        </div>
+    
+        <div class="pagination">
+            <app-pagination [paginaAtual]="paginaAtual" [totalItens]="totalItens" [itensPorPagina]="itensPorPagina"
+            (paginaMudou)="onPaginaMudou($event)">
+            </app-pagination>
+        </div>
+    </ng-container>
+
+
+
+    <ng-template #viewCliente> 
+
+        <!-- VISÃO DO CLIENTE -->
+        <div class="tabela-container">
+            <table>
+            <thead>
+                <tr>
+                <th>Nome</th>
+                <th>Bio</th>
+                <th>Setor</th>
+                <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let profissional of profissionaisPaginados">
+                <td>{{ profissional.nome || '-' }}</td>
+                <td>{{ profissional.bio || 'Sem bio cadastrada ainda.' }}</td>
+                <td>{{ categoriasDescricoes[profissional.setor!] || 'Sem valor definido.'}}</td>
+                <td>
+                    <div class="acoes">
+                    <button class="btn-acao visualizar">
+                        <img src="assets/icones/See.png" (click)="visualizarProfissional(profissional.id!)" alt="Visualizar" />
+                    </button>
+                    </div>
+                </td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+    
+        <div *ngIf="profissionaisPaginados.length === 0">
+            <ng-container *ngIf="mensagemBusca; else semlocalizacaos">
+            <div>
+                <div class="alert alert-warning text-center">
+                {{ mensagemBusca }}
+                </div>
+            </div>
+            </ng-container>
+            <ng-template #semlocalizacaos>
+            <div class="no-data-message">
+                <img src="assets/icones/no-data-icon.svg" alt="Sem dados" />
+                <p>Não há profissionais cadastrados.</p>
+            </div>
+            </ng-template>
+        </div>
+    
+        <div class="pagination">
+            <app-pagination [paginaAtual]="paginaAtualProfissionais" [totalItens]="totalItensProfissionais" [itensPorPagina]="itensPorPaginaProfissionais"
+            (paginaMudou)="onPaginaMudouProfissionais($event)">
+            </app-pagination>
+        </div>
+    </ng-template>
+
+
+</section>

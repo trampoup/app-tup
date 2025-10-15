@@ -1,6 +1,6 @@
-import type { CategoriaKey } from "src/app/cadastro/categorias-enum";
+import type { Setor } from "src/app/cadastro/categorias-enum";
 
-export const categoriaImagens : Record<CategoriaKey, string>= {
+export const categoriaImagens : Record<Setor, string>= {
   SERVICOS_TECNICOS: '/assets/imagens/servicos-tecnicos-image.png',
   SERVICOS_DOMESTICOS: '/assets/imagens/servicos-tecnicos-image.png',
   SERVICOS_MANUTENCAO: '/assets/imagens/servicos-tecnicos-image.png',

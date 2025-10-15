@@ -11,8 +11,9 @@
                 <h2>{{ perfil?.nome || '—' }}</h2>
 
                 <p class="cargo" *ngIf="perfil?.setor; else cargoPadrao">
-                {{ perfil?.setor | titlecase }}
+                {{ categoriasDescricoes[perfil?.setor!] | titlecase }}
                 </p>
+
                 <ng-template #cargoPadrao>
                     <p class="cargo">{{getRoleUsuario() !== TipoUsuario.ADMIN ? "Profissional" : "Administrador"}}</p>
                 </ng-template>
@@ -103,19 +104,29 @@
 
     <div class="servicos-container">
         <h1 class="titulo">Serviços</h1>
-        <div class="servicos-list">
+        <div class="servicos-list" *ngIf="servicos.length > 0; else semServicos">
             <div class="servico-item" *ngFor="let servico of servicosPaginados">
                 <div class="servico-item-header">
-                    <img src="/assets/imagens/imagens-de-exemplo/retangulo-cinza.png" alt="Serviço Icon">
+                    <img [src]="servico.bannerUrl || '/assets/imagens/imagens-de-exemplo/retangulo-cinza.png'"
+                        alt="Serviço Icon">
                     <div class="item-details">
-                        <h3>{{ servico.titulo }}</h3>
+                        <h3>{{ servico.nome }}</h3>
                         <p>{{ servico.descricao }}</p>
-                        <span class="preco">R${{ servico.valor | number:'1.2-2' }}</span>
+                        <span class="preco">R$ {{ (servico.valor | number:'1.2-2') || 'Não definido.' }}</span>
                     </div>
                 </div>
                 <button id="btn-solicitar-orcamento" class="btn-contato">Solicitar Orçamento</button>
             </div>
         </div>
+
+        <ng-template #semServicos>
+            <div class="no-data-message">
+                <img src="assets/icones/no-data-icon.svg" alt="Sem dados" />
+                <p>Sem serviços cadastrados.</p>
+            </div>
+        </ng-template>
+
+
         <div class="paginacao">
             <app-pagination
                 [paginaAtual]="paginaAtualServicos"

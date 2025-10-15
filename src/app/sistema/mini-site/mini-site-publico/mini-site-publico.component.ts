@@ -6,6 +6,9 @@ import { UsuarioSiteDTO } from '../cadastrar-site/usuario-site-dto';
 import { UsuarioService } from 'src/app/configs/services/usuario.service';
 import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { categoriasDescricoes } from 'src/app/cadastro/categorias-descricoes-enum';
+import { Servico } from '../../servicos/Servico';
+import { ServicosService } from 'src/app/configs/services/servicos.service';
 
 @Component({
   selector: 'app-mini-site-publico',
@@ -15,43 +18,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 export class MiniSitePublicoComponent implements OnInit {
   TipoUsuario = TipoUsuario;
 
-  servicos = [ /*LISTA DE SERVICOS(TEMPORÁRIO, SOMENTE PARA MOSTRAR A INTERFACE AO ALEX)*/
-    {
-      titulo: 'Instalação de Ar-Condicionado Split',
-      descricao: 'Instalação completa de unidades split com avaliação do local, fixação segura e testes.',
-      valor: 250.00,
-    },
-    {
-      titulo: 'Instalação de Ar-Condicionado Split',
-      descricao: 'Instalação completa de unidades split com avaliação do local, fixação segura e testes.',
-      valor: 250.00,
-    },
-    {
-      titulo: 'Instalação de Ar-Condicionado Split',
-      descricao: 'Instalação completa de unidades split com avaliação do local, fixação segura e testes.',
-      valor: 250.00,
-    },
-    {
-      titulo: 'Instalação de Ar-Condicionado Split',
-      descricao: 'Instalação completa de unidades split com avaliação do local, fixação segura e testes.',
-      valor: 250.00,
-    },
-    {
-      titulo: 'Instalação de Ar-Condicionado Split',
-      descricao: 'Instalação completa de unidades split com avaliação do local, fixação segura e testes.',
-      valor: 250.00,
-    },
-    {
-      titulo: 'Instalação de Ar-Condicionado Split',
-      descricao: 'Instalação completa de unidades split com avaliação do local, fixação segura e testes.',
-      valor: 250.00,
-    },
-    {
-      titulo: 'Instalação de Ar-Condicionado Split',
-      descricao: 'Instalação completa de unidades split com avaliação do local, fixação segura e testes.',
-      valor: 250.00,
-    }
-  ];
+
 
   avaliacoes = [ /*LISTA DE AVALIAÇÕES(TEMPORÁRIO, SOMENTE PARA MOSTRAR A INTERFACE AO ALEX)*/
     {
@@ -127,12 +94,12 @@ export class MiniSitePublicoComponent implements OnInit {
   ];
 
 
-
+  servicos: Servico[] = [];
   // Paginacao de servicos
   paginaAtualServicos = 1;
   itensPorPaginaServicos = 6;
   totalPaginasServicos = Math.ceil(this.servicos.length / this.itensPorPaginaServicos);
-  servicosPaginados: typeof this.servicos = [];
+  servicosPaginados: Servico[] = [];
 
   // Paginacao de avaliacoes
   paginaAtualAvaliacoes = 1;
@@ -144,6 +111,8 @@ export class MiniSitePublicoComponent implements OnInit {
 
   perfil: UsuarioSiteDTO | null = null;
   skillsLista: string[] = [];
+
+  categoriasDescricoes = categoriasDescricoes;
 
   // URLs de mídia (blob:)
   bannerUrl: string | null = null;
@@ -157,7 +126,8 @@ export class MiniSitePublicoComponent implements OnInit {
     private route: ActivatedRoute,  
     private usuarioService:UsuarioService,
     private usuarioMidiasService:UsuarioMidiasService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private servicosService : ServicosService
   ) { }
 
   ngOnInit(): void {
@@ -174,6 +144,7 @@ export class MiniSitePublicoComponent implements OnInit {
     }
 
     this.carregarPerfilPublico(id);
+    this.carregarServicosComBannner(id);
     this.carregarMidiasPublicas(id);
   }
 
@@ -187,6 +158,16 @@ export class MiniSitePublicoComponent implements OnInit {
       },
       error: () => {},
       complete: () => this.isLoading = false
+    });
+  }
+
+  private carregarServicosComBannner(id : number | string) {
+    this.servicosService.obterServicosPorProfissionalComBanners(id).subscribe({
+      next: (servicos) => {
+        this.servicos = servicos ?? [];
+        this.atualizarPaginacaoServicos();
+      },
+      error: (err) => console.error('Erro ao obter serviços', err),
     });
   }
 
