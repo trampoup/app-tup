@@ -71,8 +71,10 @@ const routes: Routes = [
       { path: 'visualizacao-de-cupons', component: ListaDeCuponsComponent},
       
       // servicos
+      { path: 'servicos', component: ListaDeServicosComponent},
       { path: 'cadastro-de-servico', component: CadastroDeServicoComponent},
-      { path: 'lista-de-servicos', component: ListaDeServicosComponent},
+      { path: 'cadastro-de-servico/:id', component: CadastroDeServicoComponent},
+
 
       // mini site
       { path: 'perfil-profissional', component: MiniSiteComponent},

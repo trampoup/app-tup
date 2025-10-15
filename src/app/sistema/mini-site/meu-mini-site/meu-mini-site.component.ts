@@ -6,6 +6,9 @@ import { UsuarioSiteDTO } from '../cadastrar-site/usuario-site-dto';
 import { UsuarioService } from 'src/app/configs/services/usuario.service';
 import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Servico } from '../../servicos/Servico';
+import { categoriasDescricoes } from 'src/app/cadastro/categorias-descricoes-enum';
+import { ServicosService } from 'src/app/configs/services/servicos.service';
 
 @Component({
   selector: 'app-meu-mini-site',
@@ -15,43 +18,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 export class MeuMiniSiteComponent implements OnInit {
   TipoUsuario = TipoUsuario;
 
-  servicos = [ /*LISTA DE SERVICOS(TEMPORÁRIO, SOMENTE PARA MOSTRAR A INTERFACE AO ALEX)*/
-    {
-      titulo: 'Instalação de Ar-Condicionado Split',
-      descricao: 'Instalação completa de unidades split com avaliação do local, fixação segura e testes.',
-      valor: 250.00,
-    },
-    {
-      titulo: 'Instalação de Ar-Condicionado Split',
-      descricao: 'Instalação completa de unidades split com avaliação do local, fixação segura e testes.',
-      valor: 250.00,
-    },
-    {
-      titulo: 'Instalação de Ar-Condicionado Split',
-      descricao: 'Instalação completa de unidades split com avaliação do local, fixação segura e testes.',
-      valor: 250.00,
-    },
-    {
-      titulo: 'Instalação de Ar-Condicionado Split',
-      descricao: 'Instalação completa de unidades split com avaliação do local, fixação segura e testes.',
-      valor: 250.00,
-    },
-    {
-      titulo: 'Instalação de Ar-Condicionado Split',
-      descricao: 'Instalação completa de unidades split com avaliação do local, fixação segura e testes.',
-      valor: 250.00,
-    },
-    {
-      titulo: 'Instalação de Ar-Condicionado Split',
-      descricao: 'Instalação completa de unidades split com avaliação do local, fixação segura e testes.',
-      valor: 250.00,
-    },
-    {
-      titulo: 'Instalação de Ar-Condicionado Split',
-      descricao: 'Instalação completa de unidades split com avaliação do local, fixação segura e testes.',
-      valor: 250.00,
-    }
-  ];
+  servicos: Servico[] = [];
 
   avaliacoes = [ /*LISTA DE AVALIAÇÕES(TEMPORÁRIO, SOMENTE PARA MOSTRAR A INTERFACE AO ALEX)*/
     {
@@ -132,7 +99,7 @@ export class MeuMiniSiteComponent implements OnInit {
   paginaAtualServicos = 1;
   itensPorPaginaServicos = 6;
   totalPaginasServicos = Math.ceil(this.servicos.length / this.itensPorPaginaServicos);
-  servicosPaginados: typeof this.servicos = [];
+  servicosPaginados: Servico[] = [];
 
   // Paginacao de avaliacoes
   paginaAtualAvaliacoes = 1;
@@ -141,6 +108,7 @@ export class MeuMiniSiteComponent implements OnInit {
   avaliacoesPaginadas: typeof this.avaliacoes = [];
 
   perfil: UsuarioSiteDTO | null = null;
+  categoriasDescricoes = categoriasDescricoes;
   skillsLista: string[] = [];
 
   // URLs de mídia (blob:)
@@ -154,7 +122,8 @@ export class MeuMiniSiteComponent implements OnInit {
     private router: Router,
     private usuarioService : UsuarioService,
     private usuarioMidiasService: UsuarioMidiasService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private servicosService : ServicosService
   ) { }
 
   ngOnInit(): void {
@@ -162,6 +131,7 @@ export class MeuMiniSiteComponent implements OnInit {
     this.atualizarPaginacaoAvaliacoes();
 
     this.carregarMeuSite();
+    this.carregarMeusServicosComBanners();
     this.carregarMidias();
   }
 
@@ -173,13 +143,12 @@ export class MeuMiniSiteComponent implements OnInit {
     return Math.min(100, Math.round((this.userScore / this.maxScore) * 100));
   }
 
-
   private carregarMeuSite() {
     this.usuarioService.obterMeuSite().subscribe({
       next: (dto) => {
         this.perfil = dto;
+
         console.log("meu id", this.perfil.id);
-        // monta lista de skills (se vier string "a, b; c")
         const raw = dto?.skills ?? '';
         this.skillsLista = raw
           .split(/[;,]/)
@@ -187,10 +156,19 @@ export class MeuMiniSiteComponent implements OnInit {
           .filter(Boolean);
       },
       error: () => {
-        // se 401 ou erro, mantém mocks/estado padrão
       }
     });
   }  
+
+  private carregarMeusServicosComBanners() {
+    this.servicosService.obterMeusServicosComBanners().subscribe({
+      next: (servicos) => {
+        this.servicos = servicos ?? [];
+        this.atualizarPaginacaoServicos();
+      },
+      error: (err) => console.error('Erro ao obter serviços', err),
+    });
+  }
 
   private carregarMidias() {
     this.usuarioMidiasService.getMinhaMidia('banner').subscribe({

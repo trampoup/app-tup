@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CategoriaKey, CATEGORIAS } from 'src/app/cadastro/categorias-enum';
+import { Setor, CATEGORIAS } from 'src/app/cadastro/categorias-enum';
 import { ComunidadeCadastroDTO } from '../ComunidadeCadastroDTO';
 import { ComunidadeService } from 'src/app/configs/services/comunidade.service';
 
@@ -23,7 +23,7 @@ export class CadastroComunidadeComponent implements OnInit {
   selectedBanner: { [key: string]: File | null } = {};
   bannerPreview: string | ArrayBuffer | null = null;
 
-  categoriasKeys: CategoriaKey[] = Object.keys(CATEGORIAS) as CategoriaKey[];
+  categoriasKeys: Setor[] = Object.keys(CATEGORIAS) as Setor[];
   
 
   constructor(
@@ -35,7 +35,7 @@ export class CadastroComunidadeComponent implements OnInit {
 
   comunidadeForm = new FormGroup({
     nome: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(3), Validators.maxLength(50)] }),
-    setor: new FormControl<CategoriaKey | ''>('', { validators: [Validators.required] }),
+    setor: new FormControl<Setor | ''>('', { validators: [Validators.required] }),
     descricao: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.minLength(10), Validators.maxLength(250)] }),
     banner: new FormControl<File | null>(null)
   });

@@ -1,1 +1,95 @@
-<p>cadastro-de-servico works!</p>
+<section class="main-container">
+  <div class="cadastro-titulo">
+    <h1>
+      <a [routerLink]="['/usuario/servicos']">
+        <img src="/assets/icones/voltar-icon.svg" />
+      </a>
+      {{ isEditMode ? 'Editar Serviço' : 'Cadastrar Serviço' }}
+    </h1>
+  </div>
+
+  <section class="inputs-cadastro">
+    <form
+      [formGroup]="servicoForm"
+      (ngSubmit)="onSubmit()"
+      class="container-form"
+      autocomplete="off"
+      (keydown.enter)="$event.preventDefault()"
+    >
+
+
+        <!-- CAMPO UPLOAD DO BANNER -->
+        <div id="campo-valor">
+            <label class="form-label">
+            Banner
+            </label>
+            <app-input-img label="Clique ou arraste a foto para fazer upload" 
+            inputId="banner" 
+            (imageSelected)="onImageSelected($event, 'banner')" 
+            [fotoPreview]="bannerPreview">
+            </app-input-img>
+            <p class="upload-info">Tamanho recomendado: 1390x233 pixels.</p>
+        </div>
+    
+
+        <div id="campo-valor">
+          <label class="form-label required" for="experiencia">Nome</label>
+          <input type="text" id="input-valor"   formControlName="nome" name="nome" placeholder="Digite um nome">
+        </div>
+        <small *ngIf="submited && servicoForm.get('nome')?.hasError('required')" class="error">
+            {{ "O campo Nome é obrigatório." }}
+        </small>
+        <small *ngIf="submited && servicoForm.get('nome')?.hasError('minlength')" class="error">
+          O Nome precisa ter pelo menos 3 caracteres.
+        </small>
+        <small *ngIf="submited && servicoForm.get('nome')?.hasError('maxlength')" class="error">
+          O Nome pode ter no máximo 50 caracteres.
+        </small>
+
+        
+        <div id="campo-descricao">
+            <label class="form-label" for="descricao">Descrição</label>
+            <textarea 
+            name="descricao" 
+            formControlName="descricao" 
+            id="input-descricao" 
+            placeholder="Digite uma breve descrição." rows="4"
+            maxlength="250"
+            (keydown.enter)="$event.stopPropagation()" ></textarea>
+        </div>
+        <small *ngIf="submited && servicoForm.get('descricao')?.hasError('maxlength')" class="error">
+          A Descrição pode ter no máximo 250 caracteres.
+        </small>
+
+        <div id="campo-valor">
+          <label class="form-label" for="valor">Valor <span>(Opcional)</span></label>
+          <input type="text" id="input-valor" min="0" step="0.01"
+           formControlName="valor" name="valor" placeholder="Digite um valor"
+          mask="separator.2" 
+          thousandSeparator="." 
+          decimalMarker="," 
+          [dropSpecialCharacters]="true"
+           >
+        </div>
+
+      <!-- MENSAGENS -->
+      <div class="alerts">
+          <div class="alerts-container alert-success" *ngIf="successMessage">
+          {{ successMessage }}
+          </div>
+          <div class="alerts-container alert-danger" *ngIf="errorMessage">
+          {{ errorMessage }}
+          </div>
+      </div>
+      
+      <div class="progress-bar-container" *ngIf="isLoading">
+        <div class="progress-bar"></div>
+      </div>
+
+      <!-- BOTÃO DE SUBMIT -->
+      <button [disabled]="isLoading" id="btn-cadastrar-projeto" type="submit">
+        {{ isEditMode ? 'Salvar Serviço' : 'Cadastrar Serviço' }}
+      </button>
+    </form>
+  </section>
+</section>

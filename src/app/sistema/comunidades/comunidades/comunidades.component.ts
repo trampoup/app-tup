@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/configs/services/auth.service';
-import { CategoriaKey, CATEGORIAS } from 'src/app/cadastro/categorias-enum';
+import { Setor, CATEGORIAS } from 'src/app/cadastro/categorias-enum';
 import { categoriasDescricoes } from 'src/app/cadastro/categorias-descricoes-enum';
 import { categoriaImagens } from './categoriasImagens-enum';
 import { ComunidadeService } from 'src/app/configs/services/comunidade.service';
@@ -19,7 +19,7 @@ import { environment } from 'src/environments/environment';
 export class ComunidadesComponent implements OnInit {
   @ViewChild('scroller', { static: true }) scroller!: ElementRef<HTMLDivElement>;
   readonly cols = 4;
-  categorias: Array<{ key: CategoriaKey; label: string; image: string; }> = [];
+  categorias: Array<{ key: Setor; label: string; image: string; }> = [];
   isLoading: boolean = false;
   comunidades : ComunidadeResponseDTO[] = [];
 
@@ -32,7 +32,7 @@ export class ComunidadesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const keys = Object.keys(CATEGORIAS) as CategoriaKey[];
+    const keys = Object.keys(CATEGORIAS) as Setor[];
     this.categorias = keys.map((k) => ({
       key: k,
       label: categoriasDescricoes[k],
@@ -50,7 +50,7 @@ export class ComunidadesComponent implements OnInit {
     el.scrollBy({ left: direction === 'right' ? amount : -amount, behavior: 'smooth' });
   }
 
-  onCategoriaClick(key: CategoriaKey) {
+  onCategoriaClick(key: Setor) {
     // Faça aqui o que precisar (navegação/filtro)
     // this.router.navigate(['/comunidades', key]);
   }

@@ -5,6 +5,7 @@ import { UsuarioCadastroDTO } from 'src/app/cadastro/usuario-cadastro-dto';
 import { environment } from 'src/environments/environment';
 import { ApiResponse } from './api-response-dto';
 import { UsuarioSiteDTO } from 'src/app/sistema/mini-site/cadastrar-site/usuario-site-dto';
+import { UsuarioDadosDTO } from 'src/app/sistema/cupons/UsuarioDadosDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,10 @@ export class UsuarioService {
 
   atualizarMeuSite(dto: UsuarioSiteDTO): Observable<void> {
     return this.http.put<void>(`${this.apiUrlLink}/atualizar-meu-site`, dto);
+  }
+
+  obterTodosProfissionais(){
+    return this.http.get<UsuarioSiteDTO[]>(`${this.apiUrlLink}/obter-todos-profissionais`);
   }
 
 }

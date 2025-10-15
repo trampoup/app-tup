@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/configs/services/auth.service';
-import { ServicosService } from 'src/app/configs/services/servicos.service';
 import * as ApexCharts from 'apexcharts';
 import { TipoUsuarioDescricao } from 'src/app/login/tipo-usuario-descricao';
+import { ClimaService } from 'src/app/configs/services/clima.service';
 
 import {
   ApexAxisChartSeries,
@@ -83,7 +83,7 @@ export class PainelAdminComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private apiService: ServicosService,
+    private climaService: ClimaService,
     private modalWelcomeService: ModalWelcomeService,
     private cdr: ChangeDetectorRef,
   ) { }
@@ -213,7 +213,7 @@ export class PainelAdminComponent implements OnInit {
   }
 
   getWeatherForRussas(): void {
-    this.apiService.fetchWeatherForRussas().subscribe((data) => {
+    this.climaService.fetchWeatherForRussas().subscribe((data) => {
       this.weatherData = data;
       console.log(this.weatherData);
       this.updateWeatherInfo();
@@ -221,7 +221,7 @@ export class PainelAdminComponent implements OnInit {
   }
 
   getWeatherForCurrentLocation(): void {
-    this.apiService.fetchWeatherForCurrentLocation().subscribe(
+    this.climaService.fetchWeatherForCurrentLocation().subscribe(
       (data) => {
         this.weatherData = data;
         console.log(this.weatherData);
@@ -235,7 +235,7 @@ export class PainelAdminComponent implements OnInit {
   }
 
   getWeatherForLocation(lat: number, lon: number): void {
-    this.apiService.fetchWeather(lat, lon).subscribe((data) => {
+    this.climaService.fetchWeather(lat, lon).subscribe((data) => {
       this.weatherData = data;
       console.log(this.weatherData);
       this.updateWeatherInfo();

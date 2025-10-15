@@ -73,5 +73,5 @@ export const CATEGORIAS = {
   ]
 } as const;
 
-export type CategoriaKey = keyof typeof CATEGORIAS;
-export type Subcategoria = typeof CATEGORIAS[CategoriaKey][number];
+export type Setor = keyof typeof CATEGORIAS;
+export type SubSetor = typeof CATEGORIAS[Setor][number];
