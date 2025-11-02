@@ -114,6 +114,26 @@ export class ComunidadeService {
   }
 
 
+  editarComunidade(id: number | string, formData: FormData, removeBanner = false) {
+    return this.http.put<ComunidadeResponseDTO>(
+      `${this.apiUrlLink}/${id}?removeBanner=${removeBanner}`,
+      formData
+    );
+  }
+
+  // Torna público um helper para obter por id + banner dataURL
+  obterComunidadePorIdComBanner(id: number | string): Observable<ComunidadeResponseDTO & { bannerUrl?: string | null }> {
+    return this.obterComunidadePorId(id).pipe(
+      switchMap((c) => {
+        if (!c.temBanner) return of(c as any);
+        return this.obterBannerDataUrl(Number(c.id)).pipe(
+          map((url) => ({ ...(c as any), bannerUrl: url })),
+          catchError(() => of({ ...(c as any), bannerUrl: null }))
+        );
+      })
+    );
+  }
+
 
 
 }

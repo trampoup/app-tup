@@ -343,9 +343,9 @@
 }
 
 .loading{
-  margin-top: 24px;
+  margin: 40px auto;
 }
 
 .loading p{
-  font-size: 20px;
+  font-size: 22px;
 }

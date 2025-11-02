@@ -15,7 +15,8 @@ import { categoriasDescricoes } from 'src/app/cadastro/categorias-descricoes-enu
   styleUrls: ['./central-comunidades.component.css']
 })
 export class CentralComunidadesComponent implements OnInit {
-  isLoading: boolean = false;
+  isLoadingCriadas: boolean = false;
+  isLoadingParticipando: boolean = false;
 
   comunidadesParticipando : ComunidadeResponseDTO[] = [];
   comunidadesParticipandoPaginados: ComunidadeResponseDTO[] = [];
@@ -60,12 +61,12 @@ export class CentralComunidadesComponent implements OnInit {
   }
 
   obterComudadesCriadas(){
-    this.isLoading = true;
+    this.isLoadingCriadas = true;
     this.comunidadeService.obterComunidadesCriadasComBanners().subscribe({
       next: (lista) => {
         this.comunidadesCriadas = lista;
         this.comunidadesCriadasPaginados = this.comunidadesCriadas;
-        this.isLoading = false;
+        this.isLoadingCriadas = false;
 
         this.totalItensCCriadas = this.comunidadesCriadas.length;
         this.totalPaginasCCriadas = Math.ceil(this.totalItensCCriadas / this.itensPorPaginaCCriadas);
@@ -75,19 +76,19 @@ export class CentralComunidadesComponent implements OnInit {
       },
       error: (err) => {
         console.error('Erro ao obter comunidades criadas:', err);
-        this.isLoading = false;
+        this.isLoadingCriadas = false;
       }
     });
   }
 
 
   obterComunidadesParticipando() {
-    this.isLoading = true;
+    this.isLoadingParticipando = true;
     this.comunidadeService.obterComunidadesParticipandoComBanners().subscribe({
       next: (lista) => {
         this.comunidadesParticipando = lista;
         this.comunidadesParticipandoPaginados = this.comunidadesParticipando;
-        this.isLoading = false;
+        this.isLoadingParticipando = false;
         
         this.totalItensCParticipo = this.comunidadesParticipando.length;
         this.totalPaginasCParticipo = Math.ceil(this.totalItensCParticipo / this.itensPorPaginaCParticipo);
@@ -97,13 +98,13 @@ export class CentralComunidadesComponent implements OnInit {
       },
       error: (err) => {
         console.error('Erro ao obter comunidades:', err);
-        this.isLoading = false;
+        this.isLoadingParticipando = false;
       }
     });
   }
 
   onFiltroSetorChange(e: Event){
-    this.isLoading = true;
+    this.isLoadingParticipando = true;
     const valor = (e.target as HTMLSelectElement).value as Setor | '';
     
     if (valor === '') {
@@ -117,11 +118,11 @@ export class CentralComunidadesComponent implements OnInit {
           this.paginaAtualCParticipo = 1;
           this.atualizarPaginacaoParticipando();
           console.log('Comunidades filtradas:', lista);
-          this.isLoading = false;
+          this.isLoadingParticipando = false;
         },
         error: (err) => {
           console.error('Erro ao obter comunidades:', err);
-          this.isLoading = false;
+          this.isLoadingParticipando = false;
         }
       });
     }

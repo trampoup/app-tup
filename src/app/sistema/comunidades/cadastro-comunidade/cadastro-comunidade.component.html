@@ -26,6 +26,7 @@
             <app-input-img label="Clique ou arraste a foto para fazer upload" 
             inputId="banner" 
             (imageSelected)="onImageSelected($event, 'banner')" 
+            (fileRemoved)="onFileRemoved()"
             [fotoPreview]="bannerPreview">
             </app-input-img>
             <p class="upload-info">Tamanho recomendado: 1390x233 pixels.</p>

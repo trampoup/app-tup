@@ -43,7 +43,7 @@
             <h1>Comunidades criadas</h1>
         </div>
 
-        <div class="loading" *ngIf="isLoading; else conteudoMinhasCriadas">
+        <div class="loading" *ngIf="isLoadingCriadas; else conteudoMinhasCriadas">
             <div class="spinner"></div>
             <p>Carregando suas comunidades...</p>
         </div>
@@ -99,7 +99,7 @@
                 </option>
             </select>
         </div>  
-        <div class="loading" *ngIf="isLoading; else Conteudo">
+        <div class="loading" *ngIf="isLoadingParticipando; else Conteudo">
             <div class="spinner"></div>
             <p>Carregando suas comunidades...</p>
         </div>

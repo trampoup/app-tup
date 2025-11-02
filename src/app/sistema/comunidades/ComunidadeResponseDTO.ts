@@ -1,4 +1,4 @@
-import { Setor } from "src/app/login/setor.enum";
+import { Setor } from "src/app/cadastro/categorias-enum";
 import { UsuarioDadosDTO } from "../cupons/UsuarioDadosDTO";
 
 export class ComunidadeResponseDTO{
