@@ -78,6 +78,16 @@ export class ComunidadeService {
     );
   }
 
+  obterComunidadesCriadas():Observable<ComunidadeResponseDTO[]>{
+    return this.http.get<ComunidadeResponseDTO[]>(`${this.apiUrlLink}/minhas-comunidades-criadas`);
+  }
+
+  obterComunidadesCriadasComBanners(){
+    return this.obterComunidadesCriadas().pipe(
+      switchMap((lista) => this.aplicarBanners(lista))
+    );
+  }
+
   participarDaComunidade(id: number | string) {
     return this.http.post(`${this.apiUrlLink}/participar-da-comunidade/${id}`, null);
   }
@@ -97,6 +107,10 @@ export class ComunidadeService {
         switchMap((lista) => this.aplicarBanners(lista)),
         catchError(() => of([]))
       );
+  }
+
+  deletarComunidade(id: number | string) {
+    return this.http.delete(`${this.apiUrlLink}`, { params: { id: String(id) } });
   }
 
 

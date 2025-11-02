@@ -40,6 +40,57 @@
 
     <div class="minhas-comunidades-container">
         <div class="minhas-comunidades-titulo">
+            <h1>Comunidades criadas</h1>
+        </div>
+
+        <div class="loading" *ngIf="isLoading; else conteudoMinhasCriadas">
+            <div class="spinner"></div>
+            <p>Carregando suas comunidades...</p>
+        </div>
+
+        <ng-template #conteudoMinhasCriadas>
+            <div class="comunidades-criadas-lista" *ngIf="comunidadesCriadasPaginados.length > 0; else semComunidadesCriadas">
+                <div *ngFor="let comunidade of comunidadesCriadasPaginados">
+                    <div class="card-comunidade-criada">
+                        <div class="banner-comunidade-criada">
+                            <img [src]="comunidade.bannerUrl ||'assets/imagens/banner-trampo-generico.png'" alt="Banner da comunidade">
+                        </div>
+                        <div class="comunidade-criada-info">
+                            <div>
+                                <h1>{{comunidade.nome}}</h1>
+                                <p>{{"40,2 mil participantes"}}</p>
+                            </div>
+                            <div class="comunidade-criada-info-footer">
+                                <div class="botoes-acao">
+                                    <button (click)="editarComunidade(comunidade.id)" class="btn-acao edit"><img src="assets/icones/Edit.png" alt="Editar" /></button>
+                                    <button class="btn-acao delete" (click)="openModalDelete(comunidade)"><img src="assets/icones/delete-icon.svg" alt="Editar" /></button>
+                                    <button (click)="visualizarComunidade(comunidade.id)" class="btn-participar">Acessar <img src="assets/icones/acessar-icon.svg" alt="plus-icon"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #semComunidadesCriadas>
+                <div class="lista-vazia">
+                    <img src="assets/imagens/sem-comunidades-image.jpg" alt="Sem comunidades">
+                    <p>Você ainda não criou nenhuma comunidade.</p>
+                </div>
+            </ng-template>
+            <div class="paginacao">
+                <app-pagination
+                    [paginaAtual]="paginaAtualCCriadas"
+                    [totalItens]="totalItensCCriadas"
+                    [itensPorPagina]="itensPorPaginaCCriadas"
+                    (paginaMudou)="onPaginaMudouCriadas($event)">
+                </app-pagination>
+            </div>
+        </ng-template>
+    </div>
+
+    <div class="minhas-comunidades-container">
+        <div class="minhas-comunidades-titulo">
             <h1>Comunidades que participo</h1>
             <select name="setores" id="setores" (change)="onFiltroSetorChange($event)">
                 <option value="">Todos os serviços</option>
@@ -53,8 +104,8 @@
             <p>Carregando suas comunidades...</p>
         </div>
         <ng-template #Conteudo>
-            <div #Conteudo class="comunidades-lista" *ngIf="comunidadesPaginados.length > 0; else semComunidades">
-                <div *ngFor="let comunidade of comunidadesPaginados">
+            <div class="comunidades-lista" *ngIf="comunidadesParticipandoPaginados.length > 0; else semComunidades">
+                <div *ngFor="let comunidade of comunidadesParticipandoPaginados">
                     <div class="card-comunidade">
                         <div class="banner-comunidade">
                             <img [src]="comunidade.bannerUrl ||'assets/imagens/banner-trampo-generico.png'" alt="Banner da comunidade">
@@ -67,7 +118,7 @@
                             <div class="comunidade-info-footer">
                                 <p>Criado por <span>{{comunidade.criador?.nome}}</span></p>
                                 <div class="botoes">
-                                    <button class="btn-sair" (click)="openModalDelete(comunidade)">Sair</button>
+                                    <button class="btn-sair" (click)="openModalSair(comunidade)">Sair</button>
                                     <button (click)="visualizarComunidade(comunidade.id)" class="btn-participar">Acessar <img src="assets/icones/acessar-icon.svg" alt="plus-icon"></button>
                                 </div>
                             </div>
@@ -87,7 +138,7 @@
                     [paginaAtual]="paginaAtualCParticipo"
                     [totalItens]="totalItensCParticipo"
                     [itensPorPagina]="itensPorPaginaCParticipo"
-                    (paginaMudou)="onPaginaMudou($event)">
+                    (paginaMudou)="onPaginaMudouParticipando($event)">
                 </app-pagination>
             </div>
         </ng-template>

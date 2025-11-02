@@ -16,13 +16,23 @@ import { categoriasDescricoes } from 'src/app/cadastro/categorias-descricoes-enu
 })
 export class CentralComunidadesComponent implements OnInit {
   isLoading: boolean = false;
-  comunidades : ComunidadeResponseDTO[] = [];
-  comunidadesPaginados: ComunidadeResponseDTO[] = [];
+
+  comunidadesParticipando : ComunidadeResponseDTO[] = [];
+  comunidadesParticipandoPaginados: ComunidadeResponseDTO[] = [];
+  comunidadesCriadas : ComunidadeResponseDTO[] = [];
+  comunidadesCriadasPaginados: ComunidadeResponseDTO[] = [];
 
   paginaAtualCParticipo: number = 1;
   itensPorPaginaCParticipo: number = 3;
-  totalItensCParticipo: number = this.comunidades.length;
+  totalItensCParticipo: number = this.comunidadesParticipando.length;
   totalPaginasCParticipo: number = Math.ceil(this.totalItensCParticipo / this.itensPorPaginaCParticipo);
+
+  paginaAtualCCriadas: number = 1;
+  itensPorPaginaCCriadas: number = 3;
+  totalItensCCriadas: number = this.comunidadesCriadas.length;
+  totalPaginasCCriadas: number = Math.ceil(this.totalItensCCriadas / this.itensPorPaginaCCriadas);
+
+
 
   categorias: Setor[] = Object.keys(categoriasDescricoes) as Setor[];
   categoriasDescricoes = categoriasDescricoes;
@@ -33,12 +43,11 @@ export class CentralComunidadesComponent implements OnInit {
     private authService: AuthService,
     private comunidadeService:ComunidadeService,
     private router: Router,
-    private http: HttpClient,
-    private modalConfirmationService: ModalConfirmationService,
     private modalDeleteService: ModalDeleteService
   ) { }
 
   ngOnInit(): void {
+    this.obterComudadesCriadas();
     this.obterComunidadesParticipando();
   }
 
@@ -50,20 +59,41 @@ export class CentralComunidadesComponent implements OnInit {
      this.router.navigate(['/usuario/visualizar-comunidade', comunidadeId]);
   }
 
+  obterComudadesCriadas(){
+    this.isLoading = true;
+    this.comunidadeService.obterComunidadesCriadasComBanners().subscribe({
+      next: (lista) => {
+        this.comunidadesCriadas = lista;
+        this.comunidadesCriadasPaginados = this.comunidadesCriadas;
+        this.isLoading = false;
+
+        this.totalItensCCriadas = this.comunidadesCriadas.length;
+        this.totalPaginasCCriadas = Math.ceil(this.totalItensCCriadas / this.itensPorPaginaCCriadas);
+        this.paginaAtualCCriadas = 1;
+        this.atualizarPaginacaoCriadas();
+        console.log('Comunidades criadas obtidas:', this.comunidadesCriadas);
+      },
+      error: (err) => {
+        console.error('Erro ao obter comunidades criadas:', err);
+        this.isLoading = false;
+      }
+    });
+  }
+
 
   obterComunidadesParticipando() {
     this.isLoading = true;
     this.comunidadeService.obterComunidadesParticipandoComBanners().subscribe({
       next: (lista) => {
-        this.comunidades = lista;
-        this.comunidadesPaginados = this.comunidades;
+        this.comunidadesParticipando = lista;
+        this.comunidadesParticipandoPaginados = this.comunidadesParticipando;
         this.isLoading = false;
         
-        this.totalItensCParticipo = this.comunidades.length;
+        this.totalItensCParticipo = this.comunidadesParticipando.length;
         this.totalPaginasCParticipo = Math.ceil(this.totalItensCParticipo / this.itensPorPaginaCParticipo);
         this.paginaAtualCParticipo = 1;
-        this.atualizarPaginacao();
-        console.log('Comunidades obtidas:', this.comunidades);
+        this.atualizarPaginacaoParticipando();
+        console.log('Comunidades obtidas:', this.comunidadesParticipando);
       },
       error: (err) => {
         console.error('Erro ao obter comunidades:', err);
@@ -81,11 +111,11 @@ export class CentralComunidadesComponent implements OnInit {
     } else {
       this.comunidadeService.filtrarComunidadesPorSetor(valor).subscribe({
         next: (lista) => {
-          this.comunidades = lista;
+          this.comunidadesParticipando = lista;
           this.totalItensCParticipo = lista.length;
           this.totalPaginasCParticipo = Math.ceil(this.totalItensCParticipo / this.itensPorPaginaCParticipo);
           this.paginaAtualCParticipo = 1;
-          this.atualizarPaginacao();
+          this.atualizarPaginacaoParticipando();
           console.log('Comunidades filtradas:', lista);
           this.isLoading = false;
         },
@@ -97,26 +127,66 @@ export class CentralComunidadesComponent implements OnInit {
     }
   }
 
-  atualizarPaginacao(): void {
+  atualizarPaginacaoCriadas(): void {
+    const inicio = (this.paginaAtualCCriadas - 1) * this.itensPorPaginaCCriadas;
+    const fim = inicio + this.itensPorPaginaCCriadas;
+    this.comunidadesCriadasPaginados = this.comunidadesCriadas.slice(inicio, fim);
+  }
+
+  onPaginaMudouCriadas(novaPagina: number) {
+    this.paginaAtualCCriadas = novaPagina;
+    this.atualizarPaginacaoCriadas();
+  }
+
+  atualizarPaginacaoParticipando(): void {
     const inicio = (this.paginaAtualCParticipo - 1) * this.itensPorPaginaCParticipo;
     const fim = inicio + this.itensPorPaginaCParticipo;
-    this.comunidadesPaginados = this.comunidades.slice(inicio, fim);
+    this.comunidadesParticipandoPaginados = this.comunidadesParticipando.slice(inicio, fim);
   }
 
-  onPaginaMudou(novaPagina: number) {
+  onPaginaMudouParticipando(novaPagina: number) {
     this.paginaAtualCParticipo = novaPagina;
-    this.atualizarPaginacao();
+    this.atualizarPaginacaoParticipando();
   }
 
-  openModalDelete(comunidade:ComunidadeResponseDTO) {
+  editarComunidade(comunidadeId: number) {
+    this.router.navigate(['/usuario/cadastro-de-comunidade', comunidadeId]);
+  }
+
+
+  openModalSair(comunidade:ComunidadeResponseDTO) {
     this.modalDeleteService.openModal({
       title:'Sair da Comunidade',
-      description : `Deseja sair da comunidade <strong>${comunidade.nome}</strong>}<strong>?`,
+      description : `Deseja sair da comunidade <strong>${comunidade.nome}</strong>}?`,
       item:comunidade,
       deletarTextoBotao:'Sair'
     },
     () => {
       this.sairDaComunidade(comunidade.id);
+    });
+  }
+
+  openModalDelete(comunidade:ComunidadeResponseDTO) {
+    this.modalDeleteService.openModal({
+      title:'Deletar Comunidade',
+      description : `Deseja deletar a sua comunidade <strong>${comunidade.nome}</strong>?`,
+      item:comunidade,
+      deletarTextoBotao:'Deletar'
+    },
+    () => {
+      this.deletarComunidade(comunidade.id);
+    });
+  }
+
+  deletarComunidade(comunidadeId: number) {
+    this.comunidadeService.deletarComunidade(comunidadeId).subscribe({
+      next: () => {
+        this.obterComudadesCriadas();
+        this.obterComunidadesParticipando();
+      },
+      error: (err) => {
+        console.error('Erro ao deletar comunidade:', err);
+      }
     });
   }
 

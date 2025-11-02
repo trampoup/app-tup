@@ -61,6 +61,7 @@ const routes: Routes = [
       //comunidade
       {path: 'comunidades', component: ComunidadesComponent},
       {path: 'cadastro-de-comunidade', component: CadastroComunidadeComponent},
+      {path: 'cadastro-de-comunidade/:id', component: CadastroComunidadeComponent},
       {path: 'central-de-comunidades', component: CentralComunidadesComponent},
       {path: 'minhas-comunidades', component: MinhasComunidadesComponent},
       {path: 'visualizar-comunidade', component: VisualizarComunidadeComponent},
