@@ -1,0 +1,96 @@
+<section class="main-container">
+    <div class="banner">
+        <h1>Minhas Comunidades</h1>
+        <p>Encontre e acompanhe as suas comunidades criadas e que você participa alinhadas ao seus interesses
+            profissionais.
+        </p>
+    </div>
+    <div class="minhas-comunidades-titulo">
+        <p><a [routerLink]="['/usuario/comunidades']">Comunidades</a> > <span>Central de Comunidades</span></p>
+
+        <button class="btn-cadastrar-comunidade" *ngIf="!isCliente()" [routerLink]="['/usuario/cadastro-de-comunidade']">
+            Cadastrar Comunidade 
+            <img src="assets/icones/plus-icon.svg" alt="plus-icon">
+        </button>
+    </div>
+
+    <section class="cards-dados-servicos-profissionais">
+        <div id="card-total-de-servicos">
+            <span>{{"12.340"}}</span>
+            <h2><img src="/assets/icones/total-servicos-icon.svg">Visualização Por Mês</h2>
+        </div>
+
+        <div id="card-quantidade-profissionas-ativos">
+            <span>{{80}}</span>
+            <h2><img src="/assets/icones/profissionais-ativos-icon.svg">Total de posts</h2>
+        </div>
+
+        <div id="card-quantidade-servicos">
+            <span>{{1000}}</span>
+            <h2><img src="/assets/icones/novos-membros-icon.svg">Novos membros (30 dias)</h2>
+        </div>
+
+        <div id="card-quantidade-servicos">
+            <div class="card-info">
+                <span>{{215}}</span> <p>interações</p>
+            </div>
+            <h2><img src="/assets/icones/quantidade-servicos-icon.svg">Engajamento</h2>
+        </div>
+    </section>
+
+    <div class="minhas-comunidades-container">
+        <div class="minhas-comunidades-titulo">
+            <h1>Comunidades que participo</h1>
+            <select name="setores" id="setores" (change)="onFiltroSetorChange($event)">
+                <option value="">Todos os serviços</option>
+                <option *ngFor="let cat of categorias" [value]="cat">
+                    {{categoriasDescricoes[cat]}}
+                </option>
+            </select>
+        </div>  
+        <div class="loading" *ngIf="isLoading; else Conteudo">
+            <div class="spinner"></div>
+            <p>Carregando suas comunidades...</p>
+        </div>
+        <ng-template #Conteudo>
+            <div #Conteudo class="comunidades-lista" *ngIf="comunidadesPaginados.length > 0; else semComunidades">
+                <div *ngFor="let comunidade of comunidadesPaginados">
+                    <div class="card-comunidade">
+                        <div class="banner-comunidade">
+                            <img [src]="comunidade.bannerUrl ||'assets/imagens/banner-trampo-generico.png'" alt="Banner da comunidade">
+                        </div>
+                        <div class="comunidade-info">
+                            <div>
+                                <h1>{{comunidade.nome}}</h1>
+                                <p>{{comunidade.descricao}}</p>
+                            </div>
+                            <div class="comunidade-info-footer">
+                                <p>Criado por <span>{{comunidade.criador?.nome}}</span></p>
+                                <div class="botoes">
+                                    <button class="btn-sair" (click)="openModalDelete(comunidade)">Sair</button>
+                                    <button (click)="visualizarComunidade(comunidade.id)" class="btn-participar">Acessar <img src="assets/icones/acessar-icon.svg" alt="plus-icon"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <ng-template #semComunidades>
+                <div class="lista-vazia">
+                    <img src="assets/imagens/sem-comunidades-image.jpg" alt="Sem comunidades">
+                    <p>Você ainda não participa de nenhuma comunidade.</p>
+                </div>
+            </ng-template>
+            <div class="paginacao">
+                <app-pagination
+                    [paginaAtual]="paginaAtualCParticipo"
+                    [totalItens]="totalItensCParticipo"
+                    [itensPorPagina]="itensPorPaginaCParticipo"
+                    (paginaMudou)="onPaginaMudou($event)">
+                </app-pagination>
+            </div>
+        </ng-template>
+    </div>
+
+</section>

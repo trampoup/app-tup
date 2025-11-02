@@ -31,6 +31,7 @@ import { VisualizarComunidadeComponent } from './comunidades/visualizar-comunida
 import { VisualizarLocalizacoesComponent } from './localizacao/visualizar-localizacoes/visualizar-localizacoes.component';
 import { VisualizarLocalizacaoComponent } from './localizacao/visualizar-localizacao/visualizar-localizacao.component';
 import { CadastrarLocalizacaoComponent } from './localizacao/cadastrar-localizacao/cadastrar-localizacao.component';
+import { CentralComunidadesComponent } from './comunidades/central-comunidades/central-comunidades.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -60,6 +61,7 @@ const routes: Routes = [
       //comunidade
       {path: 'comunidades', component: ComunidadesComponent},
       {path: 'cadastro-de-comunidade', component: CadastroComunidadeComponent},
+      {path: 'central-de-comunidades', component: CentralComunidadesComponent},
       {path: 'minhas-comunidades', component: MinhasComunidadesComponent},
       {path: 'visualizar-comunidade', component: VisualizarComunidadeComponent},
       {path: 'visualizar-comunidade/:id', component: VisualizarComunidadeComponent},

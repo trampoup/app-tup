@@ -8,6 +8,7 @@ import { ComunidadeResponseDTO } from '../ComunidadeResponseDTO';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { ModalConfirmationService } from 'src/app/configs/services/modal-confirmation.service';
 
 @Component({
   selector: 'app-comunidades',
@@ -21,13 +22,26 @@ export class ComunidadesComponent implements OnInit {
   readonly cols = 4;
   categorias: Array<{ key: Setor; label: string; image: string; }> = [];
   isLoading: boolean = false;
+
   comunidades : ComunidadeResponseDTO[] = [];
+  comunidadesPaginados: ComunidadeResponseDTO[] = [];
+
+  paginaAtual: number = 1;
+  itensPorPagina: number = 6;
+  totalItens: number = this.comunidades.length;
+  totalPaginas: number = Math.ceil(this.totalItens / this.itensPorPagina);
+
+
+  errorMessage: string | null = null;
+  mensagemBusca: string | null = null;
+
 
   constructor(
     private authService: AuthService,
     private comunidadeService:ComunidadeService,
     private router: Router,
     private http: HttpClient,
+    private modalConfirmationService: ModalConfirmationService
   ) {
   }
 
@@ -40,6 +54,10 @@ export class ComunidadesComponent implements OnInit {
     }));
 
     this.obterComunidades();
+  }
+
+  isCliente():boolean{
+    return this.authService.isCliente();
   }
   
   /** Scroll por “página” (viewport width) com animação suave */
@@ -59,12 +77,32 @@ export class ComunidadesComponent implements OnInit {
     return this.authService.getRotaInicial();
   }
 
+  abrirModalConfirmacao(comunidade: ComunidadeResponseDTO) {
+    this.modalConfirmationService.open({
+      title:'Participar da Comunidade',
+      description : `Deseja participar da comunidade <strong>${comunidade.nome}</strong>?`,
+      iconSrc: '/assets/icones/logo-trampoup.png',
+      confirmButtonClass:'btn-acao.confirmar',
+      confirmButtonText: 'Participar +',
+    },
+    () => {
+      this.participarDaComunidade(comunidade.id);
+    }
+  )
+  }
+
   obterComunidades() {
     this.isLoading = true;
     this.comunidadeService.obterComunidadesComBanners().subscribe({
       next: (lista) => {
         this.comunidades = lista;
+        this.comunidadesPaginados = this.comunidades;
         this.isLoading = false;
+        
+        this.totalItens = this.comunidades.length;
+        this.totalPaginas = Math.ceil(this.totalItens / this.itensPorPagina);
+        this.atualizarPaginacao();
+        
         console.log('Comunidades obtidas:', this.comunidades);
       },
       error: (err) => {
@@ -74,8 +112,26 @@ export class ComunidadesComponent implements OnInit {
     });
   }
 
-  visualizarComunidade(comunidadeId: number) {
-     this.router.navigate(['/usuario/visualizar-comunidade', comunidadeId]);
+  participarDaComunidade(comunidadeId: number) {
+    this.comunidadeService.participarDaComunidade(comunidadeId).subscribe({
+      next: () => {
+        this.router.navigate(['/usuario/visualizar-comunidade', comunidadeId]);
+      },
+      error: (err) => {
+        console.error('Erro ao participar da comunidade:', err);7
+      }
+    });
+  }
+
+  atualizarPaginacao(): void {
+    const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
+    const fim = inicio + this.itensPorPagina;
+    this.comunidadesPaginados = this.comunidades.slice(inicio, fim);
+  }
+
+  onPaginaMudou(novaPagina: number) {
+    this.paginaAtual = novaPagina;
+    this.atualizarPaginacao();
   }
 
   onSearch(searchTerm: string) {

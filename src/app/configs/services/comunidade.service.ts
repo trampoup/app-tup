@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, forkJoin, map, Observable, of, switchMap } from 'rxjs';
+import { Setor } from 'src/app/cadastro/categorias-enum';
 import { ComunidadeCadastroDTO } from 'src/app/sistema/comunidades/ComunidadeCadastroDTO';
 import { ComunidadeResponseDTO } from 'src/app/sistema/comunidades/ComunidadeResponseDTO';
 import { environment } from 'src/environments/environment';
@@ -49,25 +50,56 @@ export class ComunidadeService {
       );
   }
 
-
+  private aplicarBanners(lista: ComunidadeResponseDTO[]): Observable<ComunidadeResponseDTO[]> {
+    if (!lista?.length) return of([]);
+    const tarefas = lista.map((c) => {
+      if (!c.temBanner) return of(c);
+      return this.obterBannerDataUrl(c.id).pipe(
+        map((url) => ({ ...c, bannerUrl: url })),
+        catchError(() => of({ ...c, bannerUrl: null as string | null }))
+      );
+    });
+    return forkJoin(tarefas);
+  }
 
   obterComunidadesComBanners(): Observable<ComunidadeResponseDTO[]> {
     return this.obterComunidades().pipe(
-      switchMap((lista) => {
-        if (!lista?.length) return of([]);
-
-        const tarefas = lista.map((c) => {
-          if (!c.temBanner) return of(c);
-          return this.obterBannerDataUrl(c.id).pipe(
-            map((url) => ({ ...c, bannerUrl: url })),
-            catchError(() => of({ ...c, bannerUrl: null as string | null }))
-          );
-        });
-
-        return forkJoin(tarefas);
-      })
+      switchMap((lista) => this.aplicarBanners(lista))
     );
   }
+
+  obterComunidadesParticipando():Observable<ComunidadeResponseDTO[]>{
+    return this.http.get<ComunidadeResponseDTO[]>(`${this.apiUrlLink}/minhas-comunidades-participando`);
+  }
+
+  obterComunidadesParticipandoComBanners(){
+    return this.obterComunidadesParticipando().pipe(
+      switchMap((lista) => this.aplicarBanners(lista))
+    );
+  }
+
+  participarDaComunidade(id: number | string) {
+    return this.http.post(`${this.apiUrlLink}/participar-da-comunidade/${id}`, null);
+  }
+
+  sairDaComunidade(id: number | string) {
+    return this.http.delete(`${this.apiUrlLink}/sair-da-comunidade/${id}`);
+  }
+
+
+  filtrarComunidadesPorSetor(setor: Setor): Observable<ComunidadeResponseDTO[]> {
+    return this.http
+      .get<ComunidadeResponseDTO[]>(
+        `${this.apiUrlLink}/minhas-comunidades-participando/por-setor`,
+        { params: { setor } }
+      )
+      .pipe(
+        switchMap((lista) => this.aplicarBanners(lista)),
+        catchError(() => of([]))
+      );
+  }
+
+
 
 
 }
