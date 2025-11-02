@@ -14,6 +14,7 @@
 }
 
 .banner-user{
+    position: relative; 
   height: 295px;           
   border-radius: 20px;
   overflow: hidden;     
@@ -26,6 +27,73 @@
   object-fit: cover;        
   object-position: center;  
   display: block;           
+}
+
+
+.banner-menu-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 30px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+}
+
+.banner-menu-btn:hover {
+    background: rgba(0, 0, 0, 0.23);
+}
+
+/* Estilos para o conteúdo do modal de menu */
+.menu-modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 0;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    padding: 12px 64px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-radius: 8px;
+    font-size: 16px;
+    color: white;
+    background-color: #787878;
+}
+
+.menu-item:hover {
+    background-color: #5b5b5b;
+}
+
+.btn-denunciar {
+    background-color: #dc2626 !important;
+    font-weight: 500;
+}
+
+.btn-denunciar:hover {
+    background-color: #6c0606  !important;
+}
+
+.btn-cancelar {
+    margin-top: 8px;
+    border-top: 1px solid #e5e5e5;
+    padding-top: 16px;
+    font-weight: 500;
 }
 
 .header-container{

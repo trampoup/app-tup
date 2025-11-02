@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ComunidadeService } from 'src/app/configs/services/comunidade.service';
 import { ComunidadeResponseDTO } from '../ComunidadeResponseDTO';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { ModalGenericoService } from 'src/app/configs/services/modal-generico.service';
 
 @Component({
   selector: 'app-visualizar-comunidade',
@@ -11,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./visualizar-comunidade.component.css']
 })
 export class VisualizarComunidadeComponent implements OnInit {
+  @ViewChild('templateMenuModal') templateMenuModal!: TemplateRef<any>;
   bannerUrl: string | null = null;
   fotoUrl: string | null = null;
 
@@ -56,6 +58,8 @@ export class VisualizarComunidadeComponent implements OnInit {
     private route: ActivatedRoute,
     private comunidadeService:ComunidadeService,
     private http: HttpClient,
+    private modalGenericoService: ModalGenericoService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -91,6 +95,42 @@ export class VisualizarComunidadeComponent implements OnInit {
         console.error('Erro ao carregar comunidade:', err);
       }
     });
+  }
+
+    // Método para abrir o modal de menu
+  abrirModalMenu(): void {
+    this.modalGenericoService.openModal(
+      {
+        title: 'Opções da Comunidade',
+        size: 'md:max-w-md',
+        showFooter: false,
+        cancelTextoBotao: 'Fechar'
+      },
+      undefined,
+      this.templateMenuModal
+    );
+  }
+
+  // Método para fechar o modal
+  fecharModalMenu(): void {
+    this.modalGenericoService.closeModal();
+  }
+
+    sairDaComunidade(): void {
+    if (this.comunidade?.id) {
+      this.comunidadeService.sairDaComunidade(this.comunidade.id).subscribe({
+        next: () => {
+          console.log('Saiu da comunidade com sucesso');
+          this.fecharModalMenu();
+          // Aqui você pode redirecionar ou mostrar uma mensagem
+           this.router.navigate(['/usuario/comunidades']);
+        },
+        error: (err) => {
+          console.error('Erro ao sair da comunidade:', err);
+          this.fecharModalMenu();
+        }
+      });
+    }
   }
 
 }
