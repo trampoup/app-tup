@@ -134,6 +134,26 @@ export class ComunidadeService {
     );
   }
 
+  buscarComunidadesPorNome(nome: string) {
+    const termo = encodeURIComponent((nome ?? '').trim());
+    if (!termo) return of([] as ComunidadeResponseDTO[]);
+
+    return this.http
+      .get<ComunidadeResponseDTO[]>(`${this.apiUrlLink}/search/${termo}`)
+      .pipe(
+        // Se vier 204 (body null) ou algo estranho, converte pra []
+        map((lista) => (lista ?? [])),
+        catchError(() => of([]))
+      );
+  }
+
+  buscarComunidadesPorNomeComBanners(nome: string) {
+    return this.buscarComunidadesPorNome(nome).pipe(
+      switchMap((lista) => this.aplicarBanners(lista)),
+      catchError(() => of([]))
+    );
+  }
+
 
 
 }
