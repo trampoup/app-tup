@@ -18,42 +18,52 @@
 
     <div class="minhas-comunidades-container">
 
-        <div class="comunidades-lista" *ngIf="comunidadesPaginados.length > 0; else semComunidades">
-            <div *ngFor="let comunidade of comunidadesPaginados">
-                <div class="card-comunidade">
-                    <div class="banner-comunidade">
-                        <img [src]="comunidade.bannerUrl ||'assets/imagens/banner-trampo-generico.png'" alt="Banner da comunidade">
-                    </div>
-                    <div class="comunidade-info">
-                        <div>
-                            <h1>{{comunidade.nome}}</h1>
-                            <p>{{comunidade.descricao}}</p>
+        <div *ngIf="isLoading; else conteudoCarregado">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Carregando comunidades...</p>
+            </div>
+        </div>
+
+        <ng-template #conteudoCarregado>
+            <div class="comunidades-lista" *ngIf="comunidadesPaginados.length > 0; else semComunidades">
+                <div *ngFor="let comunidade of comunidadesPaginados">
+                    <div class="card-comunidade">
+                        <div class="banner-comunidade">
+                            <img [src]="comunidade.bannerUrl ||'assets/imagens/banner-trampo-generico.png'" alt="Banner da comunidade">
                         </div>
-                        <div class="comunidade-info-footer">
-                            <p>Criado por <span>{{comunidade.criador?.nome}}</span></p>
-                            <div class="botoes">
-                                <button class="btn-sair" (click)="openModalDelete(comunidade)">Sair</button>
-                                <button (click)="visualizarComunidade(comunidade.id)" class="btn-participar">Acessar <img src="assets/icones/acessar-icon.svg" alt="plus-icon"></button>
+                        <div class="comunidade-info">
+                            <div>
+                                <h1>{{comunidade.nome}}</h1>
+                                <p>{{comunidade.descricao}}</p>
+                            </div>
+                            <div class="comunidade-info-footer">
+                                <p>Criado por <span>{{comunidade.criador?.nome}}</span></p>
+                                <div class="botoes">
+                                    <button class="btn-sair" (click)="openModalDelete(comunidade)">Sair</button>
+                                    <button (click)="visualizarComunidade(comunidade.id)" class="btn-participar">Acessar <img src="assets/icones/acessar-icon.svg" alt="plus-icon"></button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <ng-template #semComunidades>
-            <div class="lista-vazia">
-                <img src="assets/imagens/sem-comunidades-image.jpg" alt="Sem comunidades">
-                <p>Você ainda não participa de nenhuma comunidade.</p>
+    
+            <ng-template #semComunidades>
+                <div class="lista-vazia">
+                    <img src="assets/imagens/sem-comunidades-image.jpg" alt="Sem comunidades">
+                    <p>Você ainda não participa de nenhuma comunidade.</p>
+                </div>
+            </ng-template>
+            <div class="paginacao">
+                <app-pagination
+                    [paginaAtual]="paginaAtual"
+                    [totalItens]="totalItens"
+                    [itensPorPagina]="itensPorPagina"
+                    (paginaMudou)="onPaginaMudou($event)">
+                </app-pagination>
             </div>
         </ng-template>
-        <div class="paginacao">
-            <app-pagination
-                [paginaAtual]="paginaAtual"
-                [totalItens]="totalItens"
-                [itensPorPagina]="itensPorPagina"
-                (paginaMudou)="onPaginaMudou($event)">
-            </app-pagination>
-        </div>
+
     </div>
 </section>
