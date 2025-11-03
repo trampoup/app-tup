@@ -38,7 +38,7 @@
             </div>
 
            <button class="btn-primary" (click)="login()" [disabled]="isLoading" [class.loading]="isLoading">
-              <span *ngIf="isLoading" class="spinner" aria-hidden="true"></span>
+              <span *ngIf="isLoading" aria-hidden="true"></span>
               {{ isLoading ? 'Entrando...' : 'Entrar' }}
           </button>
         </form>

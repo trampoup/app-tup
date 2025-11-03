@@ -114,7 +114,9 @@ export class AuthService {
         endereco:dto.endereco,
         cidade: dto.cidade,
         estado: dto.estado,
-        localizacaoAtual: dto.localizacaoAtual
+        localizacaoAtual: dto.localizacaoAtual,
+        sobrenome: dto.sobrenome,
+        cpf: dto.cpf,
       })),
       tap(u => {
         // converte a string que veio do back para o enum

@@ -162,6 +162,7 @@ body {
 }
 
 .btn-primary.loading {
+  flex-direction: row;
   position: relative;
   cursor: not-allowed;
 }

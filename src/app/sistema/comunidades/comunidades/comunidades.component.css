@@ -40,6 +40,18 @@
     font-size: 1rem;
 }
 
+.loading{
+  margin-top: 24px;
+}
+
+.loading p{
+  font-size: 20px;
+}
+
+.comunidades-titulo h1{
+  font-weight: 600;
+}
+
 .comunidades-titulo span {
     color: var(--lm-text02);
     font-weight: bold;
@@ -63,12 +75,23 @@
     cursor: pointer;
 }
 
+.btn-central-comunidades{
+  background: var(--lm-sidebar-primary);
+  border-radius: 8px;
+}
+
+.btn-central-comunidades:hover{
+  background: var(--lm-sidebar-primary-hover);
+}
+
+
+
 .search-container {
   width: 600px;
 }
 
 .categorias-carrossel {
-  margin: 32px 0;
+  margin: 8px 0;
   width: 100%;
 }
 
@@ -238,6 +261,14 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin: 18px 0;
+}
+
+.paginacao {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  gap: 5px;
 }
 
 .card-comunidade{

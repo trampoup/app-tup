@@ -1,0 +1,351 @@
+.main-container {
+    margin: 120px 32px 24px;
+    max-width: 100%;
+    background: var(--lm-branco);
+    border-radius: 24px;
+    padding: 40px 48px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.banner {
+    background-image: url("/assets/imagens/central-comunidades-background.png");
+    background-size: cover;
+    background-position: center;
+    padding: 48px 24px;
+    color: var(--lm-branco);
+    border-radius: 24px;
+}
+
+.banner h1 {
+    margin: 0;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--lm-branco);
+}
+
+.banner p {
+    margin: 10px 0 0;
+    font-size: 1.3rem;
+    width: 50%;
+}
+
+.minhas-comunidades-titulo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 30px;
+    gap: 0;
+    font-size: 1rem;
+}
+
+.minhas-comunidades-titulo h1{
+  font-weight: 600;
+}
+
+.minhas-comunidades-titulo select, #setores {
+  width: 240px;               
+  max-width: 100%;
+  padding: 10px 44px 10px 12px;
+  font-size: .95rem;
+
+  /* reseta a seta nativa */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background-color: rgba(21, 101, 120, 0.1);
+  border: none;
+  border-radius: 10px;
+
+  /* seta customizada (SVG) */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='%23041E4E' viewBox='0 0 24 24'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 22px;       /* ← aumenta/diminui a seta aqui */
+}
+
+/* esconde a seta do IE/Edge legado */
+#setores::-ms-expand { display: none; }
+
+.minhas-comunidades-titulo span {
+    color: var(--lm-text02);
+    font-weight: bold;
+}
+
+.minhas-comunidades-titulo a {
+    color: black;
+}
+
+.search-container {
+  width: 600px;
+}
+
+.minhas-comunidades-container{
+    margin-top: 30px;
+}
+
+.lista-vazia {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* centraliza horizontalmente */
+    justify-content: center;
+    /* centraliza verticalmente */
+    text-align: center;
+    padding: 1rem;
+    /* espaçamento interno*/
+    height: 100%;
+    /* ocupa toda a altura disponível do pai */
+}
+
+.lista-vazia img {
+    margin-bottom: 1rem;
+    width: 300px;
+    /*espaçamento entre a imagem e o paragrafo.*/
+}
+
+.lista-vazia p {
+    font-size: 1.3rem;
+}
+
+.comunidades-criadas-lista{
+  display: grid;
+  flex-direction: row;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin: 18px 0;
+}
+
+.card-comunidade-criada{
+  padding: 16px;
+  border-radius: 16px;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.184);
+}
+
+.banner-comunidade-criada,
+.banner-comunidade-criada img {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+}
+
+.comunidade-criada-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.comunidade-criada-info h1{
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.botoes-acao{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-acao {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e4e4e4b5;
+  transition: background 0.2s;
+}
+
+.btn-acao img {
+  width: 60%; /* escala a imagem dentro do círculo */
+  height: 60%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.btn-acao.edit:hover {
+    background-color: #00529e5e;
+    cursor: pointer;
+}
+
+.btn-acao.delete:hover {
+    background-color: #d930255e;
+    cursor: pointer;
+}
+
+.comunidade-criada-info-footer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+
+.comunidades-lista{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 18px 0;
+}
+
+.paginacao {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  gap: 5px;
+}
+.card-comunidade{
+  background: #28bfb53e;
+  padding: 16px;
+  display: flex;
+  gap: 24px;
+  border-radius: 16px;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.184);
+}
+
+.banner-comunidade,
+.banner-comunidade img {
+  width: 500px;
+  height: 250px;
+  border-radius: 12px;
+}
+
+.banner-comunidade img{
+  object-fit: cover;
+}
+
+.comunidade-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.comunidade-info p{
+  margin-bottom: auto;
+}
+
+.comunidade-info-footer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+}
+
+.comunidade-info-footer p, button{
+  margin: 0;
+}
+
+.comunidade-info-footer p{
+  font-size: 1rem;
+}
+
+.comunidade-info-footer span{
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.btn-cadastrar-comunidade {
+    display: inline-flex;
+    background-color: var(--secondary-button);
+    border-radius: 10px;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.btn-cadastrar-comunidade:hover {
+    background-color: var(--secondary-button-hover);
+    cursor: pointer;
+}
+
+.btn-participar{
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: 600;
+}
+
+.btn-participar img{
+  width: 24px;
+  height: 24px;
+}
+
+.botoes{
+  display: flex;
+  gap: 8px;
+}
+
+.btn-sair{
+  background: var(--danger);
+  color: white;
+  font-weight: 600;
+}
+
+.btn-sair:hover{
+  background: var(--danger-hover);
+}
+
+
+.cards-dados-servicos-profissionais{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.cards-dados-servicos-profissionais > div{
+  background-color: var(--card-background2);
+  border-radius: 20px;
+  padding: 15px;
+  font-size: 1rem;
+  border: 2px solid var(--lm-accent-02);
+}
+
+.cards-dados-servicos-profissionais > div span{
+  display: inline-block;
+  font-size: 3rem;
+  color: var(--lm-text03);
+  font-weight: 600;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.cards-dados-servicos-profissionais > div h2 {
+  display: flex;
+  align-items: center;   /* alinha verticalmente no meio */
+  gap: 0.5rem;           /* espaçamento entre ícone e texto */
+  margin: 0;             /* zera margins padrão de h2, se houver */
+}
+
+.cards-dados-servicos-profissionais > div h2 img{
+  margin-top: 0px;
+  display: inline-block;
+}
+
+.card-info{
+    display: flex;
+    align-items: center;
+    margin: 0;
+    gap: 8px;
+}
+
+.card-info p{
+    margin-top: auto;
+    color: #616161;
+}
+
+.loading{
+  margin: 40px auto;
+}
+
+.loading p{
+  font-size: 22px;
+}

@@ -2,8 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/configs/services/auth.service';
 import { ClimaService } from 'src/app/configs/services/clima.service';
 import { ModalWelcomeService } from 'src/app/configs/services/modal-welcome.service';
-import { TipoUsuario } from 'src/app/login/tipo-usuario.enum';
-import { Usuario } from 'src/app/login/usuario';
+import { UsuarioDadosDTO } from '../../cupons/UsuarioDadosDTO';
 
 @Component({
   selector: 'app-painel-profissional',
@@ -11,7 +10,7 @@ import { Usuario } from 'src/app/login/usuario';
   styleUrls: ['./painel-profissional.component.css']
 })
 export class PainelProfissionalComponent implements OnInit {
-  usuario: Usuario | null = null;
+  usuario: UsuarioDadosDTO | null = null;
   weatherDescription: string = 'Carregando...'; //nublado, etc..
   temperature: number = 0; //temperatura
   iconUrl: string = ''; //imagem de acordo com o clima.

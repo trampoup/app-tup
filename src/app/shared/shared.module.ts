@@ -9,6 +9,7 @@ import { InputVideoComponent } from './input-video/input-video.component';
 import { SearchComponent } from './search/search.component'; 
 import { FormsModule } from '@angular/forms';
 import { ModalGenericoComponent } from './modal-generico/modal-generico.component';
+import { ModalConfirmationComponent } from './modal-confirmation/modal-confirmation.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { ModalGenericoComponent } from './modal-generico/modal-generico.componen
     InputImgComponent,
     InputVideoComponent,
     SearchComponent,
-    ModalGenericoComponent
+    ModalGenericoComponent,
+    ModalConfirmationComponent
   ],
   imports: [
     CommonModule,

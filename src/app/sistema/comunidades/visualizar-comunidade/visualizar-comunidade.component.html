@@ -1,6 +1,13 @@
 <section class="main-container">
     <div class="banner-user">
         <img [src]="bannerUrl || '/assets/imagens/banner-trampo-generico.png'" alt="banner usuario">
+        <button class="banner-menu-btn" (click)="abrirModalMenu()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="6" r="1.5"></circle>
+                <circle cx="12" cy="12" r="1.5"></circle>
+                <circle cx="12" cy="18" r="1.5"></circle>
+            </svg>
+        </button>
     </div>
     <div class="header-container">
         <div class="title">
@@ -65,3 +72,32 @@
     </ng-template>
 
 </section>
+
+<!-- Template para o modal de menu -->
+<ng-template #templateMenuModal>
+    <div class="menu-modal-content">
+        <button class="menu-item btn-denunciar">
+            <span>Denunciar</span>
+        </button>
+        
+        <button class="menu-item" (click)="sairDaComunidade()">
+            <span>Sair da comunidade</span>
+        </button>
+        
+        <button class="menu-item" >
+            <span>Compartilhar</span>
+        </button>
+        
+        <button class="menu-item" >
+            <span>Copiar link</span>
+        </button>
+        
+        <button class="menu-item">
+            <span>Sobre essa comunidade</span>
+        </button>
+        
+        <button class="menu-item btn-cancelar" (click)="fecharModalMenu()">
+            <span>Cancelar</span>
+        </button>
+    </div>
+</ng-template>

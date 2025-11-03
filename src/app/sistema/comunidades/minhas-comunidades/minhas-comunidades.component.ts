@@ -3,7 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/configs/services/auth.service';
 import { ComunidadeService } from 'src/app/configs/services/comunidade.service';
+import { ModalDeleteService } from 'src/app/configs/services/modal-delete.service';
 import { environment } from 'src/environments/environment';
+import { ComunidadeResponseDTO } from '../ComunidadeResponseDTO';
 
 @Component({
   selector: 'app-minhas-comunidades',
@@ -12,17 +14,26 @@ import { environment } from 'src/environments/environment';
 })
 export class MinhasComunidadesComponent implements OnInit {
   isLoading: boolean = false;
-  comunidades : any[] = [];
+  comunidades : ComunidadeResponseDTO[] = [];
+  comunidadesPaginados: ComunidadeResponseDTO[] = [];
+
+  paginaAtual: number = 1;
+  itensPorPagina: number = 3;
+  totalItens: number = this.comunidades.length;
+  totalPaginas: number = Math.ceil(this.totalItens / this.itensPorPagina);
+
+
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private comunidadeService:ComunidadeService,
     private http: HttpClient,
+    private modalDeleteService: ModalDeleteService
   ) { }
 
   ngOnInit(): void {
-    this.obterComunidades();
+    this.obterComunidadesParticipando();
   }
 
   getRotaInicial():string{
@@ -34,17 +45,56 @@ export class MinhasComunidadesComponent implements OnInit {
   }
 
 
-  obterComunidades() {
+  obterComunidadesParticipando() {
     this.isLoading = true;
-    this.comunidadeService.obterComunidadesComBanners().subscribe({
+    this.comunidadeService.obterComunidadesParticipandoComBanners().subscribe({
       next: (lista) => {
         this.comunidades = lista;
+        this.comunidadesPaginados = this.comunidades;
         this.isLoading = false;
+        
+        this.totalItens = this.comunidades.length;
+        this.totalPaginas = Math.ceil(this.totalItens / this.itensPorPagina);
+        this.atualizarPaginacao();
         console.log('Comunidades obtidas:', this.comunidades);
       },
       error: (err) => {
         console.error('Erro ao obter comunidades:', err);
         this.isLoading = false;
+      }
+    });
+  }
+
+  atualizarPaginacao(): void {
+    const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
+    const fim = inicio + this.itensPorPagina;
+    this.comunidadesPaginados = this.comunidades.slice(inicio, fim);
+  }
+
+  onPaginaMudou(novaPagina: number) {
+    this.paginaAtual = novaPagina;
+    this.atualizarPaginacao();
+  }
+
+  openModalDelete(comunidade:ComunidadeResponseDTO) {
+    this.modalDeleteService.openModal({
+      title:'Sair da Comunidade',
+      description : `Deseja sair da comunidade <strong>${comunidade.nome}</strong>}<strong>?`,
+      item:comunidade,
+      deletarTextoBotao:'Sair'
+    },
+    () => {
+      this.sairDaComunidade(comunidade.id);
+    });
+  }
+
+  sairDaComunidade(comunidadeId: number) {
+    this.comunidadeService.sairDaComunidade(comunidadeId).subscribe({
+      next: () => {
+        this.obterComunidadesParticipando();
+      },
+      error: (err) => {
+        console.error('Erro ao sair da comunidade:', err);
       }
     });
   }

@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { ApiResponse } from './api-response-dto';
 import { UsuarioSiteDTO } from 'src/app/sistema/mini-site/cadastrar-site/usuario-site-dto';
 import { UsuarioDadosDTO } from 'src/app/sistema/cupons/UsuarioDadosDTO';
+import { UsuarioAtualizacaoDTO } from 'src/app/sistema/meu-perfil/UsuarioAtualizarDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,14 @@ export class UsuarioService {
 
   obterTodosProfissionais(){
     return this.http.get<UsuarioSiteDTO[]>(`${this.apiUrlLink}/obter-todos-profissionais`);
+  }
+
+  atualizarDadosPessoais(dto: UsuarioAtualizacaoDTO) {
+    return this.http.put<void>(`${this.apiUrlLink}/atualizar-dados-pessoais`, dto);
+  }
+
+  alterarSenha(payload: { senhaAtual: string; novaSenha: string }) {
+    return this.http.put<void>(`${this.apiUrlLink}/alterar-senha`, payload);
   }
 
 }

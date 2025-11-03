@@ -1,7 +1,7 @@
 <section class="main-container">
   <div class="cadastro-titulo">
     <h1>
-      <a [routerLink]="['/usuario/comunidades']">
+      <a [routerLink]="['/usuario/central-de-comunidades']">
         <img src="/assets/icones/voltar-icon.svg" />
       </a>
       {{ isEditMode ? 'Editar Comunidade' : 'Cadastrar Comunidade' }}
@@ -26,6 +26,7 @@
             <app-input-img label="Clique ou arraste a foto para fazer upload" 
             inputId="banner" 
             (imageSelected)="onImageSelected($event, 'banner')" 
+            (fileRemoved)="onFileRemoved()"
             [fotoPreview]="bannerPreview">
             </app-input-img>
             <p class="upload-info">Tamanho recomendado: 1390x233 pixels.</p>

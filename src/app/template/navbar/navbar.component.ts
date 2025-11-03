@@ -161,8 +161,28 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  getRotaMeuPerfil(): string {
+    if (this.authService.isCliente()) {
+      return '/usuario/meu-perfil-cliente';
+    } else if (this.authService.isProfissional()) {
+      return '/usuario/meu-perfil-profissional';
+    } else if (this.authService.isAdministrador()) {
+      return '/usuario/meu-perfil-admin';
+    } else {
+      return '/login'; // rota padrão se nenhum tipo corresponder
+    }
+  }
+
   isCliente(): boolean{
     return this.authService.isCliente();
+  }
+
+  isAdmin(): boolean{
+    return this.authService.isAdministrador();
+  }
+
+  isProfissional(): boolean{
+    return this.authService.isProfissional();
   }
 
   rotaInicial(): string{
