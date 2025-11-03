@@ -163,11 +163,11 @@ export class NavbarComponent implements OnInit {
 
   getRotaMeuPerfil(): string {
     if (this.authService.isCliente()) {
-      return '/usuario/meu-perfil-cliente';
+      return '/usuario/minha-conta-cliente';
     } else if (this.authService.isProfissional()) {
-      return '/usuario/meu-perfil-profissional';
+      return '/usuario/minha-conta-profissional';
     } else if (this.authService.isAdministrador()) {
-      return '/usuario/meu-perfil-admin';
+      return '/usuario/minha-conta-admin';
     } else {
       return '/login'; // rota padrão se nenhum tipo corresponder
     }

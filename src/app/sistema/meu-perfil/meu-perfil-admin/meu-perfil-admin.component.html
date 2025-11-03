@@ -4,6 +4,16 @@
         <div class="user-sidebar">
             <div class="user-photo">
                 <img [src]="fotoUrl || '/assets/imagens/foto-perfil-generico.png'" alt="foto do usuario">  
+                
+                <button
+                    class="camera-btn"
+                    type="button"
+                    title="Alterar foto de perfil"
+                    (click)="openModalFoto()"
+                    [disabled]="isUploadingFoto">
+                    <img src="/assets/icones/camera-icon.svg" alt="Alterar foto">
+                </button>
+            
             </div>
             <div class="user-info">
                 <h2>{{ perfil?.nome || 'Nome' }}</h2>
@@ -36,7 +46,11 @@
         <div class="informacoes-pessoais" *ngIf="isInfoUser">
             <h1>Informações Pessoais</h1>
 
-            <form class="forms-perfil" [formGroup]="editarUsuarioForm" (ngSubmit)="onSubmit()">
+            <form class="forms-perfil" 
+            [class.readonly]="!isEditing"
+            [attr.title]="!isEditing ? 'Clique em Editar para alterar' : null"
+            [formGroup]="editarUsuarioForm"
+            (ngSubmit)="onSubmit()">
                 <div class="form-grid">
                     <!-- NOME -->
                     <div class="form-group">
@@ -245,3 +259,29 @@
         </div>
     </section>
 </section>
+
+<!-- Conteúdo do modal de upload/remover foto -->
+<ng-template #modalUploadFoto>
+  <div class="modal-foto-wrapper">
+    <app-input-img
+      inputId="fotoPerfil"
+      [fotoPreview]="fotoPreviewTemp"
+      (imageSelected)="onFotoSelected($event)"
+      (fileRemoved)="onFotoRemoved()"
+      label="Clique ou arraste para enviar uma nova foto">
+    </app-input-img>
+
+    <small class="hint">Tamanho recomendado: 400x400 pixels.</small>
+
+    <div class="progress-bar-container" *ngIf="isUploadingFoto">
+      <div class="progress-bar upload" [style.width.%]="uploadProgress"></div>
+    </div>
+
+    <div class="alerts" style="margin-top:8px;">
+      <div class="alerts-container alert-danger" *ngIf="errorFotoMessage">
+        {{ errorFotoMessage }}
+      </div>
+    </div>
+  </div>
+</ng-template>
+

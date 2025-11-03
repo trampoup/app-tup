@@ -104,9 +104,9 @@ const routes: Routes = [
           { path:'visualizacao-de-profissionais-favoritos', component: VisualizacaoDeFavoritosComponent},
 
       // meu perfil com roles
-      { path: 'meu-perfil-admin', component: MeuPerfilAdminComponent},
-      { path: 'meu-perfil-profissional', component: MeuPerfilProfissionalComponent},
-      { path: 'meu-perfil-cliente', component: MeuPerfilClienteComponent},
+      { path: 'minha-conta-admin', component: MeuPerfilAdminComponent},
+      { path: 'minha-conta-profissional', component: MeuPerfilProfissionalComponent},
+      { path: 'minha-conta-cliente', component: MeuPerfilClienteComponent},
     ]
     }
 ];

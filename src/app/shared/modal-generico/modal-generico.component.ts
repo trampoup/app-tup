@@ -13,7 +13,7 @@ export class ModalGenericoComponent implements OnInit {
   @Input() cancelTextoBotao: string = 'Cancelar';
   @Input() contentTemplate?: TemplateRef<any>;
 
-  @Input() showFooter: boolean = true;           // controla se o rodapé aparece
+  @Input() showFooter: boolean = true;           
   @Output() closeModal = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<void>();
   

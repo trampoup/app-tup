@@ -36,6 +36,47 @@
     border-radius: 100px;
 }
 
+.user-photo {
+  position: relative;
+}
+
+.camera-btn {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  width: 35px;
+  height: 35px;
+  padding: 8px;
+  border-radius: 999px;
+  border: none;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(0,0,0,.12);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform .1s ease;
+}
+
+.camera-btn:hover { transform: scale(1.03); }
+.camera-btn:active { transform: scale(0.98); }
+.camera-btn[disabled] { opacity: .6; cursor: not-allowed; }
+
+.camera-btn img { width: 33px; height: 33px; }
+
+.modal-foto-wrapper .hint {
+  display: block;
+  margin-top: 8px;
+  color: #6b7280;
+  font-size: .9rem;
+}
+
+.progress-bar.upload {
+  animation: none !important;
+  transition: width .15s linear;
+  background-color: var(--accent-color, #28BFB6);
+}
+
+
 .user-info{
     display: flex;
     flex-direction: column;
@@ -209,8 +250,45 @@ input, select {
 }
 
 
+/* ===== Estados visuais quando os campos estão bloqueados ===== */
+.forms-perfil.readonly input,
+.forms-perfil.readonly select,
+.forms-perfil input:disabled,
+.forms-perfil select:disabled {
+  background-color: #f7f8fa;  
+  color: #8b93a1;            
+  border-color: #e2e6ef;      
+  cursor: not-allowed;       
+  opacity: 0.85;              
+}
+
+.forms-perfil.readonly input::placeholder,
+.forms-perfil input:disabled::placeholder {
+  color: #b8bfcb;
+}
+
+.forms-perfil.readonly input:hover,
+.forms-perfil.readonly select:hover,
+.forms-perfil input:disabled:hover,
+.forms-perfil select:disabled:hover {
+  cursor: not-allowed;
+  border-color: #d7dce6;
+}
+
+.forms-perfil input:disabled:focus,
+.forms-perfil select:disabled:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.forms-perfil.readonly .eye-button {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+
 /* DEFINIR NOVA SENHA */
-/* Forçar 1 coluna no grid desta seção */
 .form-grid.one-col {
   grid-template-columns: 1fr;
 }

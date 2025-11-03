@@ -1,1 +1,287 @@
-<p>meu-perfil-profissional works!</p>
+<section class="main-container">
+    <section class="submain-container" id="sidebar">
+
+        <div class="user-sidebar">
+            <div class="user-photo">
+                <img [src]="fotoUrl || '/assets/imagens/foto-perfil-generico.png'" alt="foto do usuario">  
+                
+                <button
+                    class="camera-btn"
+                    type="button"
+                    title="Alterar foto de perfil"
+                    (click)="openModalFoto()"
+                    [disabled]="isUploadingFoto">
+                    <img src="/assets/icones/camera-icon.svg" alt="Alterar foto">
+                </button>
+            
+            </div>
+            <div class="user-info">
+                <h2>{{ perfil?.nome || 'Nome' }}</h2>
+
+                <p class="cargo" *ngIf="perfil?.setor; else cargoPadrao">
+                {{ (categoriasDescricoes[perfil?.setor!] | titlecase) || 'Nome usuário' }}
+                </p>
+
+                <ng-template #cargoPadrao>
+                    <p class="cargo">{{"Usuário"}}</p>
+                </ng-template>
+
+                <div class="botoes">
+                    <button (click)="ativarInfo()" [class.active]="isInfoUser" [attr.aria-pressed]="isInfoUser">
+                        <img src="/assets/icones/user-icon.svg" alt="informações pessoais"> Informações pessoais
+                    </button>
+                    <button (click)="ativarSenha()" [class.active]="isAlterarSenha" [attr.aria-pressed]="isAlterarSenha">
+                        <img src="/assets/icones/alterar-senha-icon.svg" alt="Alterar senha"> Alterar senha
+                    </button>
+                    <button (click)="ativarPagamentos()" [class.active]="isPagamentos" [attr.aria-pressed]="isPagamentos">
+                        <img src="/assets/icones/pagamentos-icon.svg" alt="Pagamentos e Planos"> Pagamentos e Planos
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+    <section class="submain-container">
+        <div class="informacoes-pessoais" *ngIf="isInfoUser">
+            <h1>Informações Pessoais</h1>
+
+            <form class="forms-perfil" 
+            [class.readonly]="!isEditing"
+            [attr.title]="!isEditing ? 'Clique em Editar para alterar' : null"
+            [formGroup]="editarUsuarioForm"
+            (ngSubmit)="onSubmit()">
+                <div class="form-grid">
+                    <!-- NOME -->
+                    <div class="form-group">
+                        <label class="form-label required" for="nome">Nome</label>
+                        <input id="nome" type="text" formControlName="nome" placeholder="Seu nome completo">
+                    </div>
+
+                    <!-- SOBRENOME -->
+                    <div class="form-group">
+                       <label class="form-label required" for="sobrenome">Sobrenome</label>
+                      <input id="sobrenome" type="text" formControlName="sobrenome" placeholder="Seu sobrenome">
+                    </div>
+
+                    <!-- EMAIL -->
+                    <div class="form-group">
+                       <label class="form-label required" for="email">Email</label>
+                       <input id="email" type="email" formControlName="email" placeholder="seu@email.com">
+                    </div>
+
+                    <!-- CPF (bloqueado mesmo no modo edição, se mantiver a regra no TS) -->
+                    <div class="form-group">
+                      <label class="form-label required" for="cpf">CPF</label>
+                       <input id="cpf" type="text" formControlName="cpf" placeholder="000.000.000-00" mask="000.000.000-00">
+                    </div>
+
+                    <!-- ESTADO -->
+                    <div class="form-group">
+                      <label class="form-label required" for="estado">Estado</label>
+                    <!-- o input hidden ajuda a evitar autofill do navegador -->
+                      <input type="hidden">
+                        <select id="estado" class="form-select" formControlName="estado" (change)="onEstadoChange($event)">
+                            <option value="" disabled hidden selected>Selecione seu estado</option>
+                            <option *ngFor="let estado of listaEstados" [value]="estado.sigla">
+                            {{ estado.nome }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- CIDADE -->
+                    <div class="form-group">
+                        <label class="form-label required" for="cidade">Cidade</label>
+                        <select id="cidade" class="form-select" formControlName="cidade">
+                            <option value="" disabled hidden selected>Selecione sua cidade</option>
+                            <option *ngFor="let cidade of listaCidades" [value]="cidade.nome">
+                            {{ cidade.nome }}
+                            </option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- Botões (direita) -->
+                <div class="actions">
+                    <ng-container *ngIf="isEditing; else editarBtn">
+                        <button type="submit" class="btn primary">Salvar</button>
+                        <button type="button" class="btn ghost" (click)="onCancel()">Cancelar</button>
+                    </ng-container>
+                    <ng-template #editarBtn>
+                        <button type="button" class="btn primary" (click)="onEdit()">Editar <img src="/assets/icones/edit-icon.svg" alt=""></button>
+                    </ng-template>
+                </div>
+            </form>
+
+            <div class="alerts">
+                <div class="alerts-container alert-success" *ngIf="successPerfilMessage">
+                {{ successPerfilMessage }}
+                </div>
+                <div class="alerts-container alert-danger" *ngIf="errorPerfilMessage">
+                {{ errorPerfilMessage }}
+                </div>
+            </div>
+
+            <div class="progress-bar-container" *ngIf="isSavingProfile">
+                <div class="progress-bar"></div>
+            </div>
+            
+        </div>
+
+        <div *ngIf="isAlterarSenha" class="alterar-senha">
+            <h1>Alterar senha</h1>
+
+            <form autocomplete="off" class="forms-perfil" [formGroup]="alterarSenhaForm" (ngSubmit)="onSubmitAlterarSenha()">
+                <div class="form-grid one-col">
+                <!-- SENHA ATUAL -->
+                <div class="form-group">
+                    <label class="form-label required" for="senha-atual">Senha atual</label>
+                    <div class="input-icon-wrapper">
+                        <input id="senha-atual"
+                                [type]="currPwdFieldType"
+                                formControlName="senhaAtual"
+                                placeholder="Digite sua senha atual">
+                        <button type="button" (click)="toggleCurrPwdVisibility()" class="eye-button" tabindex="-1">
+                            <i [class]="currPwdFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+                        </button>
+                    </div>
+                    <small *ngIf="submitedPwd && alterarSenhaForm.get('senhaAtual')?.hasError('required')" class="danger">
+                    O campo Senha atual é obrigatório.
+                    </small>
+                </div>
+
+                <!-- NOVA SENHA -->
+                <div class="form-group">
+                    <label class="form-label required" for="nova-senha">Nova senha</label>
+                    <div class="input-icon-wrapper">
+                        <input id="nova-senha"
+                                [type]="newPwdFieldType"
+                                formControlName="novaSenha"
+                                placeholder="Digite sua nova senha">
+                        <button type="button" (click)="toggleNewPwdVisibility()" class="eye-button" tabindex="-1">
+                            <i [class]="newPwdFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+                        </button>
+                    </div>
+                    <small *ngIf="submitedPwd && alterarSenhaForm.get('novaSenha')?.hasError('required')" class="danger">
+                    O campo Nova senha é obrigatório.
+                    </small>
+
+                    <!-- CHECKLIST DE FORÇA -->
+                    <div class="pwd-checklist-wrapper">
+                        <p class="pwd-checklist-title">A senha deve ter pelo menos:</p>
+                        <ul class="password-checklist">
+                            <li [class.ok]="pwdChecks.upper">
+                            <span class="state">{{ pwdChecks.upper ? '✔' : '○' }}</span> 1 letra maiúscula
+                            </li>
+                            <li [class.ok]="pwdChecks.lower">
+                            <span class="state">{{ pwdChecks.lower ? '✔' : '○' }}</span> 1 letra minúscula
+                            </li>
+                            <li [class.ok]="pwdChecks.number">
+                            <span class="state">{{ pwdChecks.number ? '✔' : '○' }}</span> 1 número
+                            </li>
+                            <li [class.ok]="pwdChecks.special">
+                            <span class="state">{{ pwdChecks.special ? '✔' : '○' }}</span> 1 caractere especial
+                            </li>
+                            <li [class.ok]="pwdChecks.length">
+                            <span class="state">{{ pwdChecks.length ? '✔' : '○' }}</span> 8 caracteres
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                    <!-- CONFIRMAR NOVA SENHA -->
+                    <div class="form-group">
+                        <label class="form-label required" for="confirmar-nova-senha">Confirmar nova senha</label>
+                        <div class="input-icon-wrapper">
+                            <input id="confirmar-nova-senha"
+                                    [type]="confirmNewPwdFieldType"
+                                    formControlName="confirmarNovaSenha"
+                                    placeholder="Confirme sua nova senha">
+                            <button type="button" (click)="toggleConfirmNewPwdVisibility()" class="eye-button" tabindex="-1">
+                                <i [class]="confirmNewPwdFieldType === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+                            </button>
+                        </div>
+                        <small *ngIf="submitedPwd && alterarSenhaForm.get('confirmarNovaSenha')?.hasError('required')" class="danger">
+                        O campo Confirmar nova senha é obrigatório.
+                        </small>
+                        <small *ngIf="submitedPwd && pwdErrorMessage" class="danger">
+                        {{ pwdErrorMessage }}
+                        </small>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="btn success" [disabled]="isSavingPwd">Definir nova senha</button>
+                </div>
+            </form>
+
+            <div class="alerts" style="margin-top:8px;">
+                <div class="alerts-container alert-success" *ngIf="successPwdMessage">
+                    {{ successPwdMessage }}
+                </div>
+                <div class="alerts-container alert-danger" *ngIf="errorPwdMessage">
+                    {{ errorPwdMessage }}
+                </div>
+            </div>
+
+            <div class="progress-bar-container" *ngIf="isSavingPwd">
+                <div class="progress-bar"></div>
+            </div>
+
+        </div>
+
+        <div *ngIf="isPagamentos" class="pagamentos-e-planos">
+            <h1>Pagamentos e Planos</h1>
+            <div class="portal-planos">
+                <div class="dual-grid">
+                    <h3 class="titulo">Plano</h3>
+                    <p>{{"Starter"}}</p>
+                </div>
+                <div class="dual-grid">
+                    <h3 class="titulo">Intervalo de renovação</h3>
+                    <p>{{"dd/mm/aaaa"}}</p>
+                </div>
+                <div class="titulo" class="dual-grid">
+                    <h3 class="titulo">Plano</h3>
+                    <p class="ativo-info">{{"Ativo"}}</p>
+                </div>
+                <div class="dual-grid">
+                    <h3 class="titulo">Próxima renovação</h3>
+                    <p>{{"dd/mm/aaaa"}}</p>
+                </div>
+                <div  class="dual-grid">
+                    <h3 class="titulo">Válido até</h3>
+                    <p>{{"dd/mm/aaaa"}}</p>
+                </div>
+            </div>
+            <button>Abrir Portal de Assinaturas e Pagamentos</button>
+        </div>
+    </section>
+</section>
+
+<!-- Conteúdo do modal de upload/remover foto -->
+<ng-template #modalUploadFoto>
+  <div class="modal-foto-wrapper">
+    <app-input-img
+      inputId="fotoPerfil"
+      [fotoPreview]="fotoPreviewTemp"
+      (imageSelected)="onFotoSelected($event)"
+      (fileRemoved)="onFotoRemoved()"
+      label="Clique ou arraste para enviar uma nova foto">
+    </app-input-img>
+
+    <small class="hint">Tamanho recomendado: 400x400 pixels.</small>
+
+    <div class="progress-bar-container" *ngIf="isUploadingFoto">
+      <div class="progress-bar upload" [style.width.%]="uploadProgress"></div>
+    </div>
+
+    <div class="alerts" style="margin-top:8px;">
+      <div class="alerts-container alert-danger" *ngIf="errorFotoMessage">
+        {{ errorFotoMessage }}
+      </div>
+    </div>
+  </div>
+</ng-template>
+

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { UsuarioDadosDTO } from '../../cupons/UsuarioDadosDTO';
 import { categoriasDescricoes } from 'src/app/cadastro/categorias-descricoes-enum';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -7,6 +7,8 @@ import { UsuarioService } from 'src/app/configs/services/usuario.service';
 import { UsuarioAtualizacaoDTO } from '../UsuarioAtualizarDTO';
 import { AuthService } from 'src/app/configs/services/auth.service';
 import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.service';
+import { ModalGenericoService } from 'src/app/configs/services/modal-generico.service';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-meu-perfil-admin',
@@ -15,6 +17,7 @@ import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.se
 })
 export class MeuPerfilAdminComponent implements OnInit {
   isLoading: boolean = false;
+  readonly DEFAULT_AVATAR = '/assets/imagens/foto-perfil-generico.png';
   fotoUrl: string = '/assets/imagens/foto-perfil-generico.png';
   perfil: UsuarioDadosDTO | null = null;
   categoriasDescricoes = categoriasDescricoes;
@@ -40,13 +43,26 @@ export class MeuPerfilAdminComponent implements OnInit {
   successPwdMessage: string | null = null;
   errorPwdMessage: string | null = null;
 
+  // FOTO DE PERFIL
+  @ViewChild('modalUploadFoto') modalUploadFoto!: TemplateRef<any>;
+  @ViewChild('modalOutlet', { read: ViewContainerRef }) modalOutlet?: ViewContainerRef;
+
+  selectedFoto: File | null = null;
+  fotoPreviewTemp: string | ArrayBuffer | null = null;
+  removeFotoPerfil = false;
+
+  isUploadingFoto = false;
+  uploadProgress = 0;
+  successFotoMessage: string | null = null;
+  errorFotoMessage: string | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private serviceLocalidade: CidadesService,
     private usuarioService: UsuarioService,
     private authService: AuthService,                
-    private usuarioMidiasService: UsuarioMidiasService 
+    private usuarioMidiasService: UsuarioMidiasService ,
+    private modalService: ModalGenericoService,
   ) { }
 
   ngOnInit(): void {
@@ -156,7 +172,6 @@ export class MeuPerfilAdminComponent implements OnInit {
     });
   }
 
-
   onEdit(): void {
     this.isEditing = true;
     this.editarUsuarioForm.enable();
@@ -229,7 +244,6 @@ export class MeuPerfilAdminComponent implements OnInit {
 
   submitedPwd = false;
   pwdErrorMessage: string | null = null;
-
 
   // Olhinhos
   currPwdFieldType: 'password' | 'text' = 'password';
@@ -308,6 +322,98 @@ export class MeuPerfilAdminComponent implements OnInit {
     });
   }
 
+  openModalFoto(): void {
+    this.selectedFoto = null;
+    this.fotoPreviewTemp = (this.fotoUrl && this.fotoUrl !== this.DEFAULT_AVATAR) ? this.fotoUrl : null;    this.removeFotoPerfil = false;
+    this.uploadProgress = 0;
+    this.errorFotoMessage = null;
+
+    this.modalService.openModal(
+      {
+        title: 'Alterar foto de perfil',
+        size: 'md:max-w-md',
+        showFooter: true,
+        confirmTextoBotao: 'Alterar',
+        cancelTextoBotao: 'Cancelar',
+      },
+      () => this.confirmUploadOrRemove() as any,
+      this.modalUploadFoto
+    );
+  }
 
 
+  onFotoSelected(file: File | null) {
+    this.selectedFoto = file;
+    this.removeFotoPerfil = false;
+  }
+
+  onFotoRemoved() {
+    this.selectedFoto = null;
+    this.fotoPreviewTemp = null;
+    this.removeFotoPerfil = true;
+  }
+
+  confirmUploadOrRemove(): boolean | void {
+    this.errorFotoMessage = null;
+
+    if (this.removeFotoPerfil) {
+      this.isUploadingFoto = true;
+      this.usuarioMidiasService.delete('foto_perfil').subscribe({
+        next: () => {
+          this.isUploadingFoto = false;
+          this.fotoUrl = '/assets/imagens/foto-perfil-generico.png';
+          this.successFotoMessage = 'Foto de perfil removida.';
+          this.modalService.closeModal();
+        },
+        error: (err) => {
+          this.isUploadingFoto = false;
+          this.errorFotoMessage = err?.error?.erro || 'Não foi possível remover a foto.';
+        }
+      });
+      return false; 
+    }
+    if (!this.selectedFoto) {
+      this.errorFotoMessage = 'Selecione uma imagem ou clique em remover.';
+      return false; 
+    }
+
+    if (!this.selectedFoto.type.startsWith('image/')) {
+      this.errorFotoMessage = 'Arquivo inválido. Selecione uma imagem.';
+      return false;
+    }
+    const max = 15 * 1024 * 1024;
+    if (this.selectedFoto.size > max) {
+      this.errorFotoMessage = 'Imagem maior que 15MB.';
+      return false;
+    }
+
+    this.isUploadingFoto = true;
+    this.uploadProgress = 0;
+
+    this.usuarioMidiasService
+      .upload({ fotoPerfil: this.selectedFoto })
+      .subscribe({
+        next: (ev) => {
+          if (ev.type === HttpEventType.UploadProgress && ev.total) {
+            this.uploadProgress = Math.round((ev.loaded / ev.total) * 100);
+          }
+          if (ev.type === HttpEventType.Response) {
+            this.isUploadingFoto = false;
+            if (this.fotoPreviewTemp) {
+              this.fotoUrl = this.fotoPreviewTemp as string;
+            } else {
+              this.carregarFotoPerfil();
+            }
+            this.successFotoMessage = 'Foto de perfil atualizada.';
+            this.modalService.closeModal();
+          }
+        },
+        error: (err) => {
+          this.isUploadingFoto = false;
+          this.errorFotoMessage = err?.error?.erro || 'Falha ao enviar imagem.';
+        }
+      });
+
+    return false;
+  }
 }

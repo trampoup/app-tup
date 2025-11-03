@@ -30,10 +30,8 @@ export class UsuarioMidiasService {
       responseType: 'blob'
     });
   }
-  // /**
-  //  * (Opcional) Deletar uma mídia específica (se você criar o DELETE no back)
-  //  */
-  // delete(slot: MidiaSlot): Observable<void> {
-  //   return this.http.delete<void>(`${this.baseUrl}/${slot}`);
-  // }
+
+  delete(slot: MidiaSlot): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${slot}`);
+  }
 }
