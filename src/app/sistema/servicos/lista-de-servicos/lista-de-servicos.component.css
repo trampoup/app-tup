@@ -316,9 +316,8 @@ tr:hover {
 }
 
 .filtro-setor-select {
-
-  background-color: var(--primary-btnHover);
-  border: none;
+  background-color: none;
+  border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10px 5px;
   font-size: 1rem;
@@ -326,15 +325,80 @@ tr:hover {
 
   /* espaço pra futura setinha personalizada, se quiser */
   background-image: none;
-  color: #fafafa; /* ajuste se preferir contraste diferente */
+  color: #969696; /* ajuste se preferir contraste diferente */
 }
 
 .filtro-setor-select:hover {
-  background-color: #177a93;
+  background-color: #e8e8e8;
 }
 
 .filtro-setor-select:focus {
   outline: 2px solid rgba(0,0,0,0.15);
   outline-offset: 2px;
 }
+
+.lista-servicos{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
+  margin: 16px 0;
+}
+
+.card-profissional{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  gap: 8px;
+  cursor: pointer;
+  padding: 0 8px;
+  transition: all 0.3s ease-in-out;
+}
+
+.card-profissional:hover{
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+  transition: all 0.3s ease-in-out;
+}
+
+.user-photo{
+  margin: auto 0;
+}
+
+.user-photo img{
+    margin: auto 0;
+    width: 125px;
+    height: 125px;
+    border-radius: 100px;
+}
+
+.rating { display:flex; align-items:center; gap:6px; }
+.rating .star { color:#F5A623; font-size:22px; line-height:1;  }
+.rating .score { color:#F5A623; font-weight:700; font-size:.95rem; }
+
+.user-info{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 0;
+}
+
+.user-info  h2 {
+    font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--lm-preto);
+    margin: 0;
+}
+
+.cargo{
+    font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #585858;
+    margin: 0;
+}
+
 

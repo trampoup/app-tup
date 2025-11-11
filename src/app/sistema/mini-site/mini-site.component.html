@@ -1,15 +1,22 @@
 <div class="main-container">
     <div class="banner-user">
-        <img src="/assets/imagens/banner-trampo-generico.png" alt="banner usuario">
+        <img [src]="bannerUrl ?? '/assets/imagens/banner-trampo-generico.png'" alt="banner usuario">
     </div>
     <div class="header-container">
         <div class="user-info">
             <div class="user-photo">
-                <img src="/assets/imagens/foto-perfil-generico.png" alt="foto do usuario">
+                <img [src]="fotoUrl || '/assets/imagens/foto-perfil-generico.png'" alt="foto do usuario">  
             </div>
             <div class="user-details">
-                <h2>{{ "Usuário" }}</h2>
-                <p class="cargo">Profissão</p>
+                <h2>{{ perfil?.nome || '—' }}</h2>
+
+                <p class="cargo" *ngIf="perfil?.setor; else cargoPadrao">
+                {{ categoriasDescricoes[perfil?.setor!] | titlecase }}
+                </p>
+                <ng-template #cargoPadrao>
+                    <p class="cargo">{{getRoleUsuario() !== TipoUsuario.ADMIN ? "Profissional" : "Administrador"}}</p>
+                </ng-template>
+
                 <div class="rating">
                     <span class="score"> <span class="star">★</span> {{ (4.0) | number:'1.1-1' }}/5</span>
                 </div>
@@ -22,6 +29,17 @@
             <button class="btn-orcamento">Solicitar Orçamento</button>
         </div>
     </div>
+    <div class="video-view">
+        <video
+            *ngIf="videoUrl"
+            [src]="videoUrl"
+            controls
+            playsinline
+            preload="metadata"
+            style="width:100%; height:auto; border-radius:12px; max-height:70vh;">
+            Seu navegador não suporta vídeo HTML5.
+        </video>
+    </div>
     <div class="estatisticas-container">
         <div class="dual-grid-estatisticas">
             <img src="/assets/icones/servicos-realizados-icon.svg" alt="Serviços Realizados">
@@ -33,47 +51,60 @@
         </div>
         <div class="dual-grid-estatisticas">
             <img src="/assets/icones/experiencia-icon.svg" alt="Experiência">
-            <h3>{{"8"}} anos de experiência</h3>
+            <h3>{{perfil?.tempoExperiencia || "--"}} anos de experiência</h3>
         </div>
     </div>
     <div class="descricao-user">
         <div class="bio-user">
             <div class="desc-header">
                 <h3>Profissional Bio</h3>
-                <p>8 anos de experiência</p>
+                <p *ngIf="perfil?.tempoExperiencia != null">
+                {{ perfil?.tempoExperiencia }} anos de experiência
+                </p>
             </div>
             <p>
-                Este profissional ainda não preencheu a bio.
+                {{ perfil?.bio || 'Este profissional ainda não preencheu a bio.' }}
             </p>
         </div>
         <div class="skills-user">
             <div class="desc-header">
                 <h3>Skills</h3>
             </div>
-            <div class="skills-list">
-                <p>Instalação de Ar Condicionado Split e Janela</p>
-                <p>Elétrica básica</p>
-                <p>Higienização e infecção</p>
-                <p>Experiência com sistemas multi split</p>
-                <p>Atendimento emergencial em até 24h</p>
+            <div class="skills-list" *ngIf="skillsLista.length; else semSkills">
+                <p *ngFor="let s of skillsLista">{{ s }}</p>
             </div>
+
+            <ng-template #semSkills>
+                <div class="skills-list"><p>Sem skills cadastradas</p></div>
+            </ng-template>
         </div>  
     </div>
     <div class="servicos-container">
         <h1 class="titulo">Serviços</h1>
-        <div class="servicos-list">
+        <div class="servicos-list" *ngIf="servicos.length > 0; else semServicos">
             <div class="servico-item" *ngFor="let servico of servicosPaginados">
                 <div class="servico-item-header">
-                    <img src="/assets/imagens/imagens-de-exemplo/retangulo-cinza.png" alt="Serviço Icon">
+                    <img [src]="servico.bannerUrl || '/assets/imagens/imagens-de-exemplo/retangulo-cinza.png'"
+                        alt="Serviço Icon">
                     <div class="item-details">
-                        <h3>{{ servico.titulo }}</h3>
+                        <h3>{{ servico.nome }}</h3>
                         <p>{{ servico.descricao }}</p>
-                        <span class="preco">R${{ servico.valor | number:'1.2-2' }}</span>
+                        <span class="preco">R$ {{ (servico.valor | number:'1.2-2') || 'Não definido.' }}</span>
                     </div>
                 </div>
                 <button id="btn-solicitar-orcamento" class="btn-contato">Solicitar Orçamento</button>
             </div>
         </div>
+
+
+        <ng-template #semServicos>
+            <div class="no-data-message">
+                <img src="assets/icones/no-data-icon.svg" alt="Sem dados" />
+                <p>Sem serviços cadastrados.</p>
+            </div>
+        </ng-template>
+
+        
         <div class="paginacao">
             <app-pagination
                 [paginaAtual]="paginaAtualServicos"
@@ -83,6 +114,37 @@
             </app-pagination>
         </div>
     </div>
+
+    <div class="comentarios-container">
+        <h1 class="titulo">Comentários</h1>
+
+        <div class="comentarios-list">
+            <article class="comentario-card" *ngFor="let c of comentarios">
+            <header class="comentario-header">
+                <img [src]="c.foto" [alt]="'Foto de ' + c.nome">
+                <div class="comentario-meta">
+                <h4>
+                    {{ c.nome }}
+                    <span class="badge" *ngIf="c.verificado">Cliente verificado</span>
+                </h4>
+                <div class="stars-e-data">
+                    <div class="stars">
+                    <span *ngFor="let s of [1,2,3,4,5]; let i = index"
+                            [class.filled]="i < c.estrelas">★</span>
+                    </div>
+                    <small class="data">{{ c.data }}</small>
+                </div>
+                </div>
+            </header>
+
+            <h3 class="comentario-titulo">{{ c.titulo }}</h3>
+            <p class="comentario-texto">{{ c.texto }}</p>
+
+            </article>
+        </div>
+    </div>
+
+
     <div class="avaliacoes-container">
         <h1 class="titulo">Avaliações de clientes</h1>
         <section class="dual-flex">
@@ -106,30 +168,6 @@
                 <p>Compartilhe seus pensamentos com outros clientes</p>
             </div>
         </section>
-    </div>
-
-    <div class="principais-avaliacoes">
-        <h1 class="titulo">Principais Avaliações</h1>
-        <div class="avaliacoes-list">
-            <div class="avaliacao-item" *ngFor="let avaliacao of avaliacoesPaginadas">
-                <div class="avaliacao-header">
-                    <img [src]="avaliacao.foto" alt="Foto do usuário">
-                    <h3>{{ avaliacao.nome }}</h3>
-                </div>
-                <img src="/assets/imagens/imagens-de-exemplo/avaliacao-estrelas.png" alt="avaliação do usuário">
-                <p>Avaliado no Brasil em 22 de maio de 2025</p>
-                <h3 id="avaliacao-titulo">{{avaliacao.titulo}}</h3>
-                <h3 id="avaliacao-descricao">{{avaliacao.descricao}}</h3>
-            </div>
-        </div>
-        <div class="paginacao">
-            <app-pagination
-                [paginaAtual]="paginaAtualAvaliacoes"
-                [totalItens]="totalItensAvaliacoes"
-                [itensPorPagina]="itensPorPaginaAvaliacoes"
-                (paginaMudou)="onPaginaMudouAvaliacoes($event)">
-            </app-pagination>
-        </div>
     </div>
 
 </div>

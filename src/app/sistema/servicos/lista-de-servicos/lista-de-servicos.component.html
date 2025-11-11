@@ -10,7 +10,8 @@
     <!-- VISÃO DO CLIENTE -->
     <div class="banner" *ngIf="obterRoleUsuario() == TipoUsuario.CLIENTE">
         <h1>Serviços</h1>
-        <p>Acompanhe de forma organizada todos os serviços e profissionais que oferecem suas atividades com facilidade.
+        <p>
+            Encontre profissionais dos mais variados serviços e contrate agora mesmo!
         </p>
     </div>
 
@@ -26,20 +27,19 @@
 
         <ng-template #filtroCliente>
             <div class="filtro-setor">
-            <select
-            #setorSel
-            id="selectSetor"
-            class="filtro-setor-select"
-            [value]="selectedSetor"
-            (change)="onSetorChange(setorSel.value)"
-            aria-label="Filtrar profissionais por setor"
-            >
-            <option value="TODOS">Todos os setores</option>
-            <option *ngFor="let setor of setores" [value]="setor">
-                {{ categoriasDescricoes[setor] }}
-            </option>
-            </select>
-
+                <select
+                #setorSel
+                id="selectSetor"
+                class="filtro-setor-select"
+                [value]="selectedSetor"
+                (change)="onSetorChange(setorSel.value)"
+                aria-label="Filtrar profissionais por setor"
+                >
+                <option value="TODOS">Todos os profissionais</option>
+                <option *ngFor="let setor of setores" [value]="setor">
+                    {{ categoriasDescricoes[setor] }}
+                </option>
+                </select>
             </div>
         </ng-template>
     </div>
@@ -56,8 +56,6 @@
     <div class="progress-bar-container" *ngIf="isLoading">
         <div class="progress-bar"></div>
     </div>
-
-
 
     <ng-container *ngIf="obterRoleUsuario() !== TipoUsuario.CLIENTE; else viewCliente">
         <div class="tabela-container">
@@ -94,17 +92,17 @@
     
         <div *ngIf="servicosPaginados.length === 0">
             <ng-container *ngIf="mensagemBusca; else semlocalizacaos">
-            <div class="alert-filter">
-                <div class="alert alert-warning text-center">
-                {{ mensagemBusca }}
+                <div class="alert-filter">
+                    <div class="alert alert-warning text-center">
+                    {{ mensagemBusca }}
+                    </div>
                 </div>
-            </div>
             </ng-container>
             <ng-template #semlocalizacaos>
-            <div class="no-data-message">
-                <img src="assets/icones/no-data-icon.svg" alt="Sem dados" />
-                <p>Você não tem serviços cadastrados.</p>
-            </div>
+                <div class="no-data-message">
+                    <img src="assets/icones/no-data-icon.svg" alt="Sem dados" />
+                    <p>Você não tem serviços cadastrados.</p>
+                </div>
             </ng-template>
         </div>
     
@@ -119,34 +117,25 @@
 
     <ng-template #viewCliente> 
 
-        <!-- VISÃO DO CLIENTE -->
-        <div class="tabela-container">
-            <table>
-            <thead>
-                <tr>
-                <th>Nome</th>
-                <th>Bio</th>
-                <th>Setor</th>
-                <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let profissional of profissionaisPaginados">
-                <td>{{ profissional.nome || '-' }}</td>
-                <td>{{ profissional.bio || 'Sem bio cadastrada ainda.' }}</td>
-                <td>{{ categoriasDescricoes[profissional.setor!] || 'Sem valor definido.'}}</td>
-                <td>
-                    <div class="acoes">
-                    <button class="btn-acao visualizar">
-                        <img src="assets/icones/See.png" (click)="visualizarProfissional(profissional.id!)" alt="Visualizar" />
-                    </button>
+        <div class="lista-servicos" *ngIf="profissionaisPaginados.length > 0">
+            <div *ngFor="let profissional of profissionaisPaginados">
+                <div class="card-profissional" (click)="visualizarProfissional(profissional.id!)">
+                    <div class="user-photo">
+                        <img
+                        [src]="fotoPerfilMap[profissional.id!] || placeholderFoto"
+                        alt="foto do usuario"
+                        />                    </div>
+                    <div class="user-info">
+                        <h2>{{ profissional.nome }}</h2>
+                        <p>{{ categoriasDescricoes[profissional.setor!] }}</p>
+                        <div class="rating">
+                            <span class="score"> <span class="star">★</span> {{ (4.0) | number:'1.1-1' }}/5</span>
+                        </div>
                     </div>
-                </td>
-                </tr>
-            </tbody>
-            </table>
+                </div>
+            </div>
         </div>
-    
+
         <div *ngIf="profissionaisPaginados.length === 0">
             <ng-container *ngIf="mensagemBusca; else semlocalizacaos">
             <div>
