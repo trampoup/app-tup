@@ -12,7 +12,7 @@ const routes: Routes = [
   //públicas
   { path: 'login', component: LoginComponent },
   { path: 'cadastro', component: CadastroComponent},
-  { path: 'recuperacao-de-senha', component: EsqueciSenhaComponent },
+  { path: 'esqueci-minha-senha', component: EsqueciSenhaComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
   { path: 'perfil-publico', component: MiniSitePublicoComponent},
