@@ -325,7 +325,7 @@ tr:hover {
 
   /* espaço pra futura setinha personalizada, se quiser */
   background-image: none;
-  color: #969696; /* ajuste se preferir contraste diferente */
+  color: #414141; /* ajuste se preferir contraste diferente */
 }
 
 .filtro-setor-select:hover {
@@ -402,6 +402,10 @@ tr:hover {
     font-weight: 400;
     color: #585858;
     margin: 0;
+}
+
+.mensagem-busca {
+    margin-top: 20px;
 }
 
 

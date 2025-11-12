@@ -62,14 +62,14 @@ export class ListaDeServicosComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.obterRoleUsuario() === TipoUsuario.CLIENTE) {
-      this.carregarTodosProfissionais();
+      //this.carregarTodosProfissionais();
     }else{ //se for prof, carrega os serviços dele
       this.carregarMeusServicos();
     }
 
     // Lista de setores a partir do mapa de descrições já usado na tabela
     this.setores = Object.keys(this.categoriasDescricoes) as Setor[];
-    
+  
   }
 
   obterFotoPerfil(id: number){

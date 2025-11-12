@@ -8,13 +8,18 @@
         <div class="anuncios-topico">
             <h1>Anúncios</h1>
         </div>
-
-
+        <div class="em-breve">
+            <div class="logo">
+                <img src="assets/icones/logo-trampoup.png" alt="TrampoUP" />
+            </div>
+            <h2>Funcionalidade em breve!</h2>
+        </div>
+<!-- 
         <div class="anuncios-lista">
             <div class="anuncio-card" *ngFor="let anuncio of anuncios">
                 <img [src]="anuncio.imagem" [alt]="anuncio.titulo" />
             </div>
-        </div>
+        </div> -->
 
 
 
@@ -24,8 +29,13 @@
         <div class="destaques-topico">
             <h1>Destaques</h1>
         </div>
-
-        <div class="destaques-lista">
+        <div class="em-breve">
+            <div class="logo">
+                <img src="assets/icones/logo-trampoup.png" alt="TrampoUP" />
+            </div>
+            <h2>Funcionalidade em breve!</h2>
+        </div>
+        <!-- <div class="destaques-lista">
             <div
                 class="destaques-card"
                 *ngFor="let d of destaquesPaginados; let i = index; trackBy: trackByIndex"
@@ -35,9 +45,7 @@
                 role="button"
                 [attr.aria-expanded]="expandedDestaqueIndex === i ? 'true' : 'false'"
             >
-                <!-- Se expandido, mostra o NOVO CARD; senão, mostra o card compacto -->
                 <ng-container *ngIf="expandedDestaqueIndex === i; else collapsedCard">
-                    <!-- ===== CARD EXPANDIDO (substitui totalmente o conteúdo) ===== -->
                     <div class="card-expandido" (click)="$event.stopPropagation()">
                         <div class="banner-user">
                             <img src="/assets/imagens/banner-trampo-generico.png" [alt]="d.titulo" />
@@ -81,7 +89,7 @@
                 [itensPorPagina]="itensPorPagina"
                 (paginaMudou)="onPaginaMudou($event)">
             </app-pagination>
-        </div>
+        </div> -->
 
     </section>
 
