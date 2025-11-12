@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/configs/services/auth.service';
+import { ClimaService } from 'src/app/configs/services/clima.service';
 import { ModalWelcomeService } from 'src/app/configs/services/modal-welcome.service';
+import { UsuarioDadosDTO } from '../../cupons/UsuarioDadosDTO';
 
 @Component({
   selector: 'app-painel-cliente',
@@ -8,63 +10,229 @@ import { ModalWelcomeService } from 'src/app/configs/services/modal-welcome.serv
   styleUrls: ['./painel-cliente.component.css']
 })
 export class PainelClienteComponent implements OnInit {
-  anuncios = [ /*LISTA DE ANUNCIOS(TEMPORÁRIO, SOMENTE PARA MOSTRAR A INTERFACE AO ALEX)*/
-    {
-      titulo: 'anuncio 2',
-      imagem: 'assets/imagens/imagens-de-exemplo/anuncio1-exemplo.png'
-    },
-    {
-      titulo: 'anuncio 1',
-      imagem: 'assets/imagens/imagens-de-exemplo/anuncio2-exemplo.png'
-    }
-  ];
+  usuario: UsuarioDadosDTO | null = null;
+  weatherDescription: string = 'Carregando...'; //nublado, etc..
+  temperature: number = 0; //temperatura
+  iconUrl: string = ''; //imagem de acordo com o clima.
+  windSpeed: number = 0; //velocidade do vento
+  weatherData: any = {}; //.name é a cidade
+  currentTime: string = '';
+  currentDate: string = '';
 
-  destaques = [
+  quantidadeTotalServicos: number = 120;
+  avaliacaoMedia: number = 4.6;
+  quantidadeServicosDoMes: number = 8;
+  quantidadeClientesAtendidos:number = 61;
+
+
+  historicoServicos = [ //PROVISORIO
     {
-      titulo: 'destaque1',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo.png'
+      tipo:'Limpeza',
+      photo: '/assets/imagens/imagens-de-exemplo/m-userphoto-exemplo.svg',
+      nome: 'Maria Silva',
+      status: 'Concluido',
+      ingressou: new Date('2025-01-15')
     },
     {
-      titulo: 'destaque2',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo.png'
+      tipo:'Limpeza',
+      photo: '/assets/imagens/imagens-de-exemplo/p-userphoto-exemplo.svg',
+      nome: 'Pedro Costa',
+      status: 'Concluido',
+      ingressou: new Date('2025-06-03')
     },
     {
-      titulo: 'destaque3',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo.png'
+      tipo:'Limpeza',
+      photo: '/assets/imagens/imagens-de-exemplo/p-userphoto-exemplo.svg',
+      nome: 'Pedro Costa',
+      status: 'Concluido',
+      ingressou: new Date('2025-06-03')
     },
     {
-      titulo: 'destaque4',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo.png'
+      tipo:'Limpeza',
+      photo: '/assets/imagens/imagens-de-exemplo/j-userphoto-exemplo.svg',
+      nome: 'Joana Mendes',
+      status: 'Concluido',
+      ingressou: new Date('2025-05-28')
     },
     {
-      titulo: 'destaque5',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo.png'
-    },
-    {
-      titulo: 'destaque6',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo.png'
+      tipo:'Limpeza',
+      photo: '/assets/imagens/imagens-de-exemplo/j-userphoto-exemplo.svg',
+      nome: 'Joana Mendes',
+      status: 'Concluido',
+      ingressou: new Date('2025-06-13')
     }
   ];
 
   constructor(
-    private authService:AuthService,
-    private modalWelcomeService:ModalWelcomeService
+    private authService: AuthService,
+    private climaService: ClimaService,
+    private modalWelcomeService:ModalWelcomeService,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
-    this.mostrarModalWelcome();
-  }
+    this.renderChartGrafico();
+    this.getWeatherForCurrentLocation();
+    this.renderCharServicosPorMes();
 
+    this.authService.obterPerfilUsuario().subscribe(
+      (usuario) => {
+        this.usuario = usuario;
+      }
+    );
+  
+    this.updateDateTime();
+    setInterval(() => this.updateDateTime(), 60_000);
+    
+    if (this.authService.showModal) {
+      setTimeout(() => this.mostrarModalWelcome(), 0);
+    }
+  }
+  
   mostrarModalWelcome(){
-    if (this.authService.isCadastro) {
+    if (this.authService.showModal) {
       this.modalWelcomeService.openModal({
         title: '👋 Bem-vindo!',
         // description: 'Aqui vai a mensagem que você quiser...',
         size: 'md'     // sm | md | lg | full  (ajuste para as classes que você definiu no CSS)
       });
       this.authService.showModal = false;
-      this.authService.isCadastro = false;
     }
   }
 
+  renderChartGrafico() {
+    const options = {
+      chart: {
+        type: 'donut',
+        height: 350,
+        width: '100%',
+      },
+      title: {
+        text: 'Gráfico',
+        align: 'left',
+      },
+      series: [33, 22, 18, 10, 17],            // % aproximados de cada fatia
+      labels: ['Item', 'Item', 'Item', 'Item', 'Item'],
+      theme: {
+        palette: 'palette8',
+      },
+      legend: {
+        show: true,
+        position: 'bottom',          // coloca a legenda embaixo
+        horizontalAlign: 'center',   // centraliza
+      },
+      responsive: [
+        {
+          breakpoint: 980,
+          options: {
+            chart: {
+              width: 250,
+            },
+            legend: {
+              position: 'bottom',
+            },
+          },
+        },
+      ],
+    };
+  
+  const chart = new ApexCharts(
+    document.querySelector('#chart-grafico'),
+    options
+    )
+    chart.render();
+  }
+  
+  renderCharServicosPorMes() {
+    const options = {
+      series: [
+        { name: 'Serviços', data: [5, 8, 6, 10, 12, 9, 15, 11, 14, 18, 20, 16] },
+      ],
+      chart: {
+        type: 'bar',
+        height: 350,
+        width: '100%',
+        toolbar: { show: false }
+      },
+      colors:['#1E944B'],
+      dataLabels: { enabled: false },
+      stroke: { curve: 'smooth' },
+      title: { text: 'Serviços por mês', align: 'left' },
+      xaxis: {
+        categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+      },
+      legend: {
+        show: false
+      }
+    };
+
+    const chart = new ApexCharts(
+      document.querySelector('#chart-crescimento-mensal'),
+      options
+    );
+    chart.render();
+
+  }
+
+  
+  private updateDateTime() {
+    const now = new Date();
+    // formata HH:mm em pt-BR
+    this.currentTime = now.toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+
+    // aqui geramos “segunda-feira, 27/05” já em pt-BR
+    this.currentDate = now.toLocaleDateString('pt-BR', {
+      weekday: 'long',
+      day: '2-digit',
+      month: '2-digit'
+    });
+
+    this.cdr.detectChanges();
+  }
+
+  getWeatherForRussas(): void {
+    this.climaService.fetchWeatherForRussas().subscribe((data) => {
+      this.weatherData = data;
+      console.log(this.weatherData);
+      this.updateWeatherInfo();
+    });
+  }
+
+  getWeatherForCurrentLocation(): void {
+    this.climaService.fetchWeatherForCurrentLocation().subscribe(
+      (data) => {
+        this.weatherData = data;
+        console.log(this.weatherData);
+        this.updateWeatherInfo();
+      },
+      (error) => {
+        console.error('Error getting location', error);
+        this.getWeatherForRussas();
+      }
+    );
+  }
+
+  getWeatherForLocation(lat: number, lon: number): void {
+    this.climaService.fetchWeather(lat, lon).subscribe((data) => {
+      this.weatherData = data;
+      console.log(this.weatherData);
+      this.updateWeatherInfo();
+    });
+  }
+  
+  updateWeatherInfo(): void {
+    if (this.weatherData) {
+      this.weatherDescription = this.weatherData.weather[0].description;
+      this.temperature = Math.round(this.weatherData.main.temp);
+      this.iconUrl = `http://openweathermap.org/img/wn/${this.weatherData.weather[0].icon}.png`;
+      this.windSpeed = this.weatherData.wind.speed;
+      this.cdr.detectChanges();
+    }
+  }
+    
 }
+
