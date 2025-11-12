@@ -62,7 +62,7 @@ export class ListaDeServicosComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.obterRoleUsuario() === TipoUsuario.CLIENTE) {
-      //this.carregarTodosProfissionais();
+      this.carregarTodosProfissionais();
     }else{ //se for prof, carrega os serviços dele
       this.carregarMeusServicos();
     }
