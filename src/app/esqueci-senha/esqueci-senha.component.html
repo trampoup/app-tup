@@ -1,1 +1,86 @@
-<p>esqueci-senha works!</p>
+<div class="forgot-container">
+  <section class="image-section-left">
+    <div class="text-image">
+      <h1>
+        Recuperar acesso ao <strong>TrampoUP</strong>
+      </h1>
+      <h2>Vamos te ajudar a voltar para sua conta rapidinho.</h2>
+    </div>
+  </section>
+
+  <section class="forgot-section">
+    <div class="forgot-box">
+
+      <div class="logo">
+        <img src="assets/icones/logo-trampoup.png" alt="TrampoUP" />
+      </div>
+
+      <!-- Estado: FORM (antes de enviar) -->
+      <ng-container *ngIf="!sent; else enviadoState">
+        <h1 class="title">Recuperar senha</h1>
+        <p class="description">
+          Por favor, digite o e-mail da sua conta. Enviaremos um e-mail com instruções para você recuperar sua senha.
+        </p>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="email">E-mail</label>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="ex: exemplo@gmail.com"
+              [class.invalid]="submited && form.get('email')?.invalid"
+            />
+            <small *ngIf="submited && form.get('email')?.hasError('required')" class="danger">
+              O campo Email é obrigatório.
+            </small>
+            <small *ngIf="form.get('email')?.hasError('email')" class="danger">
+              Informe um e-mail válido.
+            </small>
+          </div>
+
+          <button type="submit"
+                  class="btn-primary"
+                  [disabled]="isLoading"
+                  [class.loading]="isLoading">
+            <span>{{ isLoading ? 'Enviando...' : 'Enviar' }}</span>
+          </button>
+        </form>
+
+        <div class="separator">
+          <span></span><small>ou</small><span></span>
+        </div>
+
+        <p class="sign-in">
+          Já possui uma conta? Faça
+          <a routerLink="/login">Login</a>
+          agora!
+        </p>
+      </ng-container>
+
+      <ng-template #enviadoState>
+        <h1 class="title">E-mail enviado</h1>
+        <p class="description">
+          Por favor, verifique o e-mail que enviamos para <strong>{{ emailEnviado || 'exemplo@lmcontabil.com' }}</strong>.
+        </p>
+
+        <p class="resend">
+          Não recebeu o e-mail?
+          <button type="button" class="link-green" (click)="reenviar()">Reenviar</button>
+        </p>
+
+        <div class="separator">
+          <span></span><small>ou</small><span></span>
+        </div>
+
+        <p class="sign-in">
+          Já possui uma conta? Faça
+          <a routerLink="/login">Login</a>
+          agora!
+        </p>
+      </ng-template>
+
+    </div>
+  </section>
+</div>

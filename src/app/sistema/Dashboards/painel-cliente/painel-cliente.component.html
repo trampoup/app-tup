@@ -1,82 +1,95 @@
 <div class="main-container">
-    <div class="banner">
-        <h1>Inicio</h1>
-        <p>Explore centenas de profissionais prontos para te ajudar.</p>
-    </div>
 
-    <section class="anuncios-container">
-        <div class="anuncios-topico">
-            <h1>Anúncios</h1>
-        </div>
+    <section class="titulo">
+        <div class="welcome">
+            <div class="bom-dia">
+                <h1> Bom dia, {{ usuario?.nome }} 👋</h1>
+                <p>Técnico em Ar Condicionado</p>
+            </div>
 
+            <div class="clima">
 
-        <div class="anuncios-lista">
-            <div class="anuncio-card" *ngFor="let anuncio of anuncios">
-                <img [src]="anuncio.imagem" [alt]="anuncio.titulo" />
+                <div class="clima-left">
+                    <div class="clima-info">
+                        <img id="icone-do-clima" [src]="iconUrl" alt="clima">
+                        <span id="tipo-do-clima ">{{ weatherDescription | titlecase }}</span>
+                    </div>
+                    <h3 id="temperatura">{{ temperature |number:'1.0-0' }}°<span>C</span></h3>
+                </div>
+
+                <div class="clima-right">
+                    <h3 id="hora">{{ currentTime }}</h3>
+                    <h3 id="data">{{ currentDate }}</h3>
+                    <h3 id="localidade">{{ weatherData.name }}</h3>
+                </div>
             </div>
         </div>
 
-
-
-    </section>
-
-    <section class="destaques-container">
-        <div class="destaques-topico">
-            <h1>Destaques</h1>
-        </div>
-
-        <div class="destaques-lista">
-            <div class="destaques-card" *ngFor="let destaque of destaques">
-                <img [src]="destaque.imagem" [alt]="destaque.titulo" />
-            </div>
-        </div>
-
-        
-        <div class="paginacao">
-            <button disabled class="button-paginacao">
-                <img src="assets/icones/seta-left-icon.svg" alt="Página anterior">
-            </button>
-
-            <button class="indices">1</button>
-            <button class="indices" id="botao2">2</button>
-
-
-            <button class="button-paginacao">
-                <img src="assets/icones/seta-right-icon.svg" alt="Próxima página">
-            </button>
-        </div>
-
-    </section>
-
-    <section class="servicos-container">
-        <div class="servicos-topico">
-            <h1>Serviços</h1>
-        </div>
-
-        <div class="servicos-lista">
-            <div class="servicos-card" *ngFor="let servico of destaques">
-                <img [src]="servico.imagem" [alt]="servico.titulo" />
-            </div>
-        </div>
-
-        <div class="paginacao">
-            <button disabled class="button-paginacao">
-                <img src="assets/icones/seta-left-icon.svg" alt="Página anterior">
-            </button>
-
-            <button class="indices">1</button>
-            <button class="indices" id="botao2">2</button>
-
-
-            <button class="button-paginacao">
-                <img src="assets/icones/seta-right-icon.svg" alt="Próxima página">
-            </button>
+        <div class="cards">
+            <h1>Dica rápida</h1>
+            <p>Responder mensagens rapidamente aumenta suas chances de fechar um serviço.</p>
+            <button id="btn-acessar-chat">Acessar chat</button>
         </div>
 
     </section>
 
 
+    <section class="cards-dados-servicos-profissionais">
 
-    <footer>
-    </footer>
+        <div id="card-total-de-servicos">
+            <span>{{quantidadeTotalServicos}}</span>
+            <h2><img src="/assets/icones/total-servicos-icon.svg">Total de serviços</h2>
+        </div>
+
+        <div id="card-quantidade-profissionas-ativos">
+            <span>{{avaliacaoMedia}} ★</span>
+            <h2><img src="/assets/icones/avaliacao-media-icon.svg">Avaliação Média</h2>
+        </div>
+
+        <div id="card-quantidade-profissionas-ativos">
+            <span>{{quantidadeServicosDoMes}}</span>
+            <h2><img src="/assets/icones/qtd-servicos-mes-icon.svg">Serviços <h2 id="mes-servico">Maio</h2></h2>
+        </div>
+
+        <div id="card-quantidade-servicos">
+            <span>{{quantidadeClientesAtendidos}}</span>
+            <h2><img src="/assets/icones/qtd-clientes-atendidos-icon.svg">Clientes Atendidos</h2>
+        </div>
+    </section>
+
+    <section class="grafico" id="chart-crescimento-mensal">
+    </section>
+
+    <section class="usuarios-e-grafico">
+        <section class="novos-usuarios">
+            <h2>Histórico de Serviços</h2>
+            <div class="tabela-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Serviço</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tbody>
+                        <tr *ngFor="let u of historicoServicos">
+                            <td>{{u.tipo}}</td>
+                            <td>{{ u.ingressou | date:'dd/MM/yyyy' }}</td>
+                            <td class="status-cell">{{ u.status }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <a class="ver-mais">
+                Ver mais
+                <img src="assets/icones/seta-direita-icon.svg" alt="Seta para a direita" class="ver-mais__icon" />
+            </a>
+        </section>
+    
+        <section class="grafico" id="chart-grafico">
+        </section>
+    </section>
+
 </div>

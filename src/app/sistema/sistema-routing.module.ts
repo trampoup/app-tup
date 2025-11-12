@@ -81,6 +81,7 @@ const routes: Routes = [
 
       // mini site
       { path: 'perfil-profissional', component: MiniSiteComponent},
+      { path: 'perfil-profissional/:id', component: MiniSiteComponent},
       { path: 'meu-perfil-profissional', component: MeuMiniSiteComponent},
       { path: 'cadastro-de-site', component: CadastrarSiteComponent},
 

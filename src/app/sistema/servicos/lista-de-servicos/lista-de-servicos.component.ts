@@ -6,10 +6,10 @@ import { ModalDeleteService } from 'src/app/configs/services/modal-delete.servic
 import { ServicosService } from 'src/app/configs/services/servicos.service';
 import { TipoUsuario } from 'src/app/login/tipo-usuario.enum';
 import { UsuarioService } from 'src/app/configs/services/usuario.service';
-import { UsuarioDadosDTO } from '../../cupons/UsuarioDadosDTO';
 import { UsuarioSiteDTO } from '../../mini-site/cadastrar-site/usuario-site-dto';
 import { categoriasDescricoes } from 'src/app/cadastro/categorias-descricoes-enum';
 import { Setor } from 'src/app/cadastro/categorias-enum';
+import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.service';
 
 @Component({
   selector: 'app-lista-de-servicos',
@@ -37,34 +37,43 @@ export class ListaDeServicosComponent implements OnInit {
   profissionais: UsuarioSiteDTO[] = [];
   profissionaisPaginados: UsuarioSiteDTO[] = [];
   selectedProfissional: UsuarioSiteDTO | null = null;
+
   paginaAtualProfissionais: number = 1;
-  itensPorPaginaProfissionais: number = 5;
+  itensPorPaginaProfissionais: number = 12;
   totalItensProfissionais: number = 0;
   totalPaginasProfissionais: number = 0;
 
   categoriasDescricoes = categoriasDescricoes;
 
-    // Filtro por setor (visão do cliente)
+  // Filtro por setor (visão do cliente)
   setores: Setor[] = [];
   selectedSetor: Setor | 'TODOS' = 'TODOS';
   profissionaisFiltrados: UsuarioSiteDTO[] = [];
+  fotoPerfilMap: Record<number, string | null> = {};
+  placeholderFoto = '/assets/imagens/foto-perfil-generico.png';
 
   constructor(private authService : AuthService,
     private router:Router,
     private modalDeleteService : ModalDeleteService,
     private servicoService: ServicosService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private usuarioMidiasService: UsuarioMidiasService
   ) { }
 
   ngOnInit(): void {
-    this.carregarMeusServicos();
     if (this.obterRoleUsuario() === TipoUsuario.CLIENTE) {
       this.carregarTodosProfissionais();
-    } 
+    }else{ //se for prof, carrega os serviços dele
+      this.carregarMeusServicos();
+    }
 
-      // Lista de setores a partir do mapa de descrições já usado na tabela
+    // Lista de setores a partir do mapa de descrições já usado na tabela
     this.setores = Object.keys(this.categoriasDescricoes) as Setor[];
     
+  }
+
+  obterFotoPerfil(id: number){
+    return this.usuarioMidiasService.getMidiaDoUsuario("foto_perfil", id);
   }
 
   getRotaInicial():string{
@@ -76,7 +85,7 @@ export class ListaDeServicosComponent implements OnInit {
   }
 
   visualizarProfissional(id: number){
-    this.router.navigate(['/perfil-publico', id]);
+    this.router.navigate(['/usuario/perfil-profissional', id]);
   }
 
   editarServico(id: number){
@@ -133,6 +142,22 @@ export class ListaDeServicosComponent implements OnInit {
         setTimeout(() => this.errorMessage = null, 2000);
       }
     })
+  }
+
+  private carregarFotosPerfisPaginados(): void {
+    const idsPagina = this.profissionaisPaginados
+      .map(p => p.id)
+      .filter((id): id is number => typeof id === 'number');
+
+    // Filtra apenas ids que ainda não estão no map (evita chamadas desnecessárias)
+    const faltando = idsPagina.filter(id => !(id in this.fotoPerfilMap));
+
+    if (faltando.length === 0) return;
+
+    this.usuarioMidiasService.getFotosPerfilDaPagina(faltando /*, true se precisar withCredentials */)
+      .subscribe((mapa) => {
+        this.fotoPerfilMap = { ...this.fotoPerfilMap, ...mapa };
+      });
   }
 
   carregarMeusServicos(){
@@ -203,6 +228,7 @@ export class ListaDeServicosComponent implements OnInit {
     const inicio = (this.paginaAtualProfissionais - 1) * this.itensPorPaginaProfissionais;
     const fim = inicio + this.itensPorPaginaProfissionais;
     this.profissionaisPaginados = this.profissionaisFiltrados.slice(inicio, fim);
+    this.carregarFotosPerfisPaginados();
   }
 
 

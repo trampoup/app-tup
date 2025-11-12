@@ -7,6 +7,7 @@ import { ApiResponse } from './api-response-dto';
 import { UsuarioSiteDTO } from 'src/app/sistema/mini-site/cadastrar-site/usuario-site-dto';
 import { UsuarioDadosDTO } from 'src/app/sistema/cupons/UsuarioDadosDTO';
 import { UsuarioAtualizacaoDTO } from 'src/app/sistema/meu-perfil/UsuarioAtualizarDTO';
+import { Setor } from 'src/app/cadastro/categorias-enum';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +43,14 @@ export class UsuarioService {
 
   alterarSenha(payload: { senhaAtual: string; novaSenha: string }) {
     return this.http.put<void>(`${this.apiUrlLink}/alterar-senha`, payload);
+  }
+
+  atualizarInteresses(interesses: Setor[]): Observable<any> {
+    return this.http.put(`${this.apiUrlLink}/interesses`, interesses);
+  }
+
+  obterProfissionaisPorInteresses(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrlLink}/profissionais-por-interesses`);
   }
 
 }

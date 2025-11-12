@@ -7,9 +7,8 @@ import { UsuarioService } from '../configs/services/usuario.service';
 import { AuthService } from '../configs/services/auth.service';
 import { switchMap } from 'rxjs';
 import { Router } from '@angular/router';
-import { LoginDTO } from '../login/LoginDTO';
 import { ApiResponse } from '../configs/services/api-response-dto';
-import { CATEGORIAS, Setor, SubSetor } from './categorias-enum';
+import { CATEGORIAS, Setor } from './categorias-enum';
 
 @Component({
   selector: 'app-cadastro',
@@ -32,6 +31,7 @@ export class CadastroComponent implements OnInit {
   protected readonly listaEstados = listaEstados;
 
   categoriasKeys: Setor[] = Object.keys(CATEGORIAS) as Setor[];
+  categoriasSelecionadas: Setor[] = [];
   //subCategoriasSelecionadas: Subcategoria[] = [];
   
 
@@ -87,6 +87,12 @@ export class CadastroComponent implements OnInit {
     if (this.step < 2) {      
       this.step++;
     }else{
+      console.log('Finalizar cadastro com categorias:', this.selectedCategories);
+      this.usuarioService.atualizarInteresses(this.selectedCategories).subscribe(() => {
+        console.log('Interesses atualizados com sucesso.');
+      }, error => {
+        console.error('Erro ao atualizar interesses:', error);
+      });
       const rotaInicial = this.authService.getRotaDashboard(); //ja redireciona para a rota inicial
       this.router.navigate([rotaInicial]);
     }
@@ -106,13 +112,6 @@ export class CadastroComponent implements OnInit {
     }
   }
 
-  //para as subcategorias
-  // categoriasKeys = Object.keys(CATEGORIAS) as CategoriaKey[];
-
-  // onCatChange(evt: Event) {
-  //   const cat = (evt.target as HTMLSelectElement).value as CategoriaKey;
-  //   this.subCategoriasSelecionadas = CATEGORIAS[cat];
-  // }
 
   onSubmitProfissional() {
     this.submited = true;
@@ -245,7 +244,7 @@ export class CadastroComponent implements OnInit {
       cidade: this.clienteForm.value.cidade ?? '',
       estado: this.clienteForm.value.estado ?? '',
       setor: this.clienteForm.value.setor ?? '',
-      tipoUsuario: TipoUsuario.CLIENTE // Define o tipo de usuário como cliente
+      tipoUsuario: TipoUsuario.CLIENTE
     }
 
     console.log('Cliente Cadastro:', clienteCadastro);
