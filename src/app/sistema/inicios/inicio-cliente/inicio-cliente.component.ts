@@ -1,5 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UsuarioSiteDTO } from '../../mini-site/cadastrar-site/usuario-site-dto';
+import { categoriasDescricoes } from 'src/app/cadastro/categorias-descricoes-enum';
+import { AuthService } from 'src/app/configs/services/auth.service';
+import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.service';
+import { UsuarioService } from 'src/app/configs/services/usuario.service';
 
 @Component({
   selector: 'app-inicio-cliente',
@@ -60,6 +65,15 @@ export class InicioClienteComponent implements OnInit {
       imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
     }
   ];
+  
+  isLoading: boolean = false;
+
+  // PROFISSIONAIS DO INTERESSE DO CLIENTE
+  profissionaisInteresse: UsuarioSiteDTO[] = [];
+  profissionaisInteressePaginados: UsuarioSiteDTO[] = [];
+  paginaAtualInteresse: number = 1;
+  itensPorPaginaInteresse: number = 8;
+  totalItensInteresse: number = 0;
 
 
   paginaAtual: number = 1;
@@ -73,17 +87,77 @@ export class InicioClienteComponent implements OnInit {
   servicosPaginados : any[] = [];
 
 
-  // 👇 Estado de expansão (índice dentro da página atual)
+  // Estado de expansão (índice dentro da página atual)
   expandedDestaqueIndex: number | null = null;
 
+  // Mapa de fotos de perfil
+  fotoPerfilMap: Record<number, string | null> = {};
+  placeholderFoto = '/assets/imagens/foto-perfil-generico.png';
+  
+  categoriasDescricoes = categoriasDescricoes;
+  mensagemBusca: string | null = '';
 
   constructor(
     private router: Router,
+    private usuarioService: UsuarioService,
+    private authService: AuthService,
+    private usuarioMidiasService: UsuarioMidiasService
   ) { }
 
   ngOnInit(): void {
+    this.carregarProfissionaisPorInteresse();
     this.atualizarPaginacaoDestaques();
     this.atualizarPaginacaoServicos();
+  }
+
+
+  carregarProfissionaisPorInteresse() {
+    this.isLoading = true;
+    this.usuarioService.obterProfissionaisPorInteresses().subscribe({
+      next: (profissionais) => {
+        this.profissionaisInteresse = profissionais || [];
+        this.totalItensInteresse = this.profissionaisInteresse.length;
+        this.atualizarPaginacaoProfissionaisInteresse();
+        this.carregarFotosPerfisPaginados();
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar profissionais por interesse:', error);
+        this.profissionaisInteresse = [];
+        this.totalItensInteresse = 0;
+        this.atualizarPaginacaoProfissionaisInteresse();
+        this.isLoading = false;
+      }
+    });
+  }
+
+  // CARREGAR FOTOS DE PERFIL
+  private carregarFotosPerfisPaginados(): void {
+    const idsPagina = this.profissionaisInteressePaginados
+      .map(p => p.id)
+      .filter((id): id is number => typeof id === 'number');
+
+    const faltando = idsPagina.filter(id => !(id in this.fotoPerfilMap));
+
+    if (faltando.length === 0) return;
+
+    this.usuarioMidiasService.getFotosPerfilDaPagina(faltando)
+      .subscribe((mapa) => {
+        this.fotoPerfilMap = { ...this.fotoPerfilMap, ...mapa };
+      });
+  }
+
+  onPaginaMudouInteresse(novaPagina: number) {
+    this.paginaAtualInteresse = novaPagina;
+    this.expandedDestaqueIndex = null;
+    this.atualizarPaginacaoProfissionaisInteresse();
+  }
+
+  atualizarPaginacaoProfissionaisInteresse(): void {
+    const inicio = (this.paginaAtualInteresse - 1) * this.itensPorPaginaInteresse;
+    const fim = inicio + this.itensPorPaginaInteresse;
+    this.profissionaisInteressePaginados = this.profissionaisInteresse.slice(inicio, fim);
+    this.carregarFotosPerfisPaginados();
   }
 
   // Toggle do card
@@ -101,6 +175,10 @@ export class InicioClienteComponent implements OnInit {
   verPerfil(d: any, $event: MouseEvent) {
     $event.stopPropagation(); // evita fechar/alternar o card ao clicar no botão
     this.router.navigate(['/usuario/perfil-profissional']); // Navega para o perfil do profissional
+  }
+
+  visualizarProfissional(id: number){
+    this.router.navigate(['/usuario/perfil-profissional', id]);
   }
 
   trackByIndex(index: number, _item: any): number {

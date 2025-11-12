@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, ElementRef, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'src/app/configs/services/auth.service';
 import { TipoUsuario } from 'src/app/login/tipo-usuario.enum';
 import { UsuarioSiteDTO } from './cadastrar-site/usuario-site-dto';
@@ -9,6 +9,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ServicosService } from 'src/app/configs/services/servicos.service';
 import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.service';
 import { UsuarioService } from 'src/app/configs/services/usuario.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-mini-site',
@@ -122,7 +123,8 @@ export class MiniSiteComponent implements OnInit {
     private servicosService: ServicosService,
     private sanitizer: DomSanitizer,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private el: ElementRef
   ) { }
 
 
@@ -144,6 +146,13 @@ export class MiniSiteComponent implements OnInit {
     this.carregarMidiasPublicas(id);
   }
 
+  private scrollToTop(): void {
+    const container = this.el.nativeElement.closest('mat-drawer-content');
+    if (container) {
+      container.scrollTop = 0;
+    }
+  }
+
   // ----- Perfil (dados)
   private carregarPerfilPublico(id: number) {
     this.usuarioService.obterSitePorIdUsuario(id).subscribe({
@@ -151,6 +160,7 @@ export class MiniSiteComponent implements OnInit {
         this.perfil = dto;
         const raw = dto?.skills ?? '';
         this.skillsLista = raw.split(/[;,]/).map(s => s.trim()).filter(Boolean);
+        this.scrollToTop();
       },
       error: () => {},
       complete: () => this.isLoading = false
