@@ -387,31 +387,58 @@ tr:hover {
   justify-content: flex-start;
   margin: 0;
   min-width: 0; 
+  width: 100%;
 }
 
-.user-info  h2 {
-    font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--lm-preto);
-    margin: 0;
-    flex-direction: column;
+.user-info h2 {
+  font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--lm-preto);
+  margin: 0;
+  flex-direction: column;
 }
 
 .cargo{
-    font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    color: #585858;
-    margin: 0;
+  font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 16px;
+  flex-wrap: nowrap;
+  font-weight: 400;
+  color: #585858;
+  margin: 0;
 }
-
 
 .user-info h2,
 .user-info p {
   white-space: normal;           
   overflow-wrap: break-word;      
   word-break: break-word;         
+}
+
+@media screen and (max-width: 450px) {
+  .lista-servicos{
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+
+.btn-card{
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap; 
+  width: 100%;
+  margin: 10px 0;
+}
+
+.btn-ver-perfil{
+  padding: 5px 8px;
+  margin: 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
 }
 
 .mensagem-busca {
