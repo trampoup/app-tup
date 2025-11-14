@@ -15,7 +15,7 @@
         </p>
     </div>
 
-    <div class="localizacao-titulo">
+    <div class="servico-titulo">
         <p><a [routerLink]="getRotaInicial()">Inicio</a> > <span>Serviços</span></p>
 
         <button *ngIf="obterRoleUsuario() !== TipoUsuario.CLIENTE; else filtroCliente" class="btn-cadastrar-endereco" [routerLink]="['/usuario/cadastro-de-servico']">
@@ -119,7 +119,7 @@
 
         <div class="lista-servicos" *ngIf="profissionaisPaginados.length > 0">
             <div *ngFor="let profissional of profissionaisPaginados">
-                <div class="card-profissional" (click)="visualizarProfissional(profissional.id!)">
+                <div class="card-profissional" >
                     <div class="user-photo">
                         <img
                         [src]="fotoPerfilMap[profissional.id!] || placeholderFoto"
@@ -127,9 +127,12 @@
                         />                    </div>
                     <div class="user-info">
                         <h2>{{ profissional.nome }}</h2>
-                        <p>{{ categoriasDescricoes[profissional.setor!] }}</p>
+                        <p class="cargo">{{ categoriasDescricoes[profissional.setor!] }}</p>
                         <div class="rating">
                             <span class="score"> <span class="star">★</span> {{ (4.0) | number:'1.1-1' }}/5</span>
+                        </div>
+                        <div class="btn-card">
+                            <button class="btn-ver-perfil" (click)="visualizarProfissional(profissional.id!)">Acessar Perfil</button>
                         </div>
                     </div>
                 </div>
@@ -138,7 +141,7 @@
 
         <div *ngIf="profissionaisPaginados.length === 0">
             <ng-container *ngIf="mensagemBusca; else semlocalizacaos">
-            <div>
+            <div class="mensagem-busca">
                 <div class="alert alert-warning text-center">
                 {{ mensagemBusca }}
                 </div>

@@ -33,7 +33,7 @@
     width: 40%;
 }
 
-.localizacao-titulo {
+.servico-titulo {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -43,12 +43,12 @@
     font-size: 1rem;
 }
 
-.localizacao-titulo span {
+.servico-titulo span {
     color: var(--lm-text02);
     font-weight: bold;
 }
 
-.localizacao-titulo a {
+.servico-titulo a {
     color: black;
 }
 
@@ -325,7 +325,7 @@ tr:hover {
 
   /* espaço pra futura setinha personalizada, se quiser */
   background-image: none;
-  color: #969696; /* ajuste se preferir contraste diferente */
+  color: #414141; /* ajuste se preferir contraste diferente */
 }
 
 .filtro-setor-select:hover {
@@ -339,7 +339,7 @@ tr:hover {
 
 .lista-servicos{
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 32px;
   margin: 16px 0;
 }
@@ -352,9 +352,9 @@ tr:hover {
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   gap: 8px;
-  cursor: pointer;
   padding: 5px 8px;
   transition: all 0.3s ease-in-out;
+  min-width: 0;
 }
 
 .card-profissional:hover{
@@ -386,22 +386,73 @@ tr:hover {
   flex-direction: column;
   justify-content: flex-start;
   margin: 0;
+  min-width: 0; 
+  width: 100%;
 }
 
-.user-info  h2 {
-    font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--lm-preto);
-    margin: 0;
+.user-info h2 {
+  font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--lm-preto);
+  margin: 0;
+  flex-direction: column;
 }
 
 .cargo{
-    font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    color: #585858;
-    margin: 0;
+  font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 16px;
+  flex-wrap: nowrap;
+  font-weight: 400;
+  color: #585858;
+  margin: 0;
 }
+
+.user-info h2,
+.user-info p {
+  white-space: normal;           
+  overflow-wrap: break-word;      
+  word-break: break-word;         
+}
+
+@media screen and (max-width: 450px) {
+  .lista-servicos{
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+
+.btn-card{
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap; 
+  width: 100%;
+  margin: 10px 0;
+}
+
+.btn-ver-perfil{
+  padding: 5px 8px;
+  margin: 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.mensagem-busca {
+    margin-top: 20px;
+}
+
+@media screen and (max-width: 799px) {
+
+  .servico-titulo{ 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+} 
+
 
 

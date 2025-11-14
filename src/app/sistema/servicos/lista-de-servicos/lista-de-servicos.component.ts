@@ -69,7 +69,7 @@ export class ListaDeServicosComponent implements OnInit {
 
     // Lista de setores a partir do mapa de descrições já usado na tabela
     this.setores = Object.keys(this.categoriasDescricoes) as Setor[];
-    
+  
   }
 
   obterFotoPerfil(id: number){

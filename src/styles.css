@@ -572,3 +572,27 @@ select:focus {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.em-breve{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  width: 100%;
+  background-color: #00cccc4a;
+  border-radius: 16px;
+}
+
+.em-breve .logo img{
+  width: 350px;
+  height: auto;
+}
+
+@media screen and (max-width: 450px) {
+  .em-breve .logo img{
+    width: 250px;
+    height: auto;
+  }
+}
