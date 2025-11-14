@@ -1,5 +1,9 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UsuarioSiteDTO } from '../../mini-site/cadastrar-site/usuario-site-dto';
+import { categoriasDescricoes } from 'src/app/cadastro/categorias-descricoes-enum';
+import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.service';
+import { UsuarioService } from 'src/app/configs/services/usuario.service';
 
 @Component({
   selector: 'app-inicio-admin',
@@ -61,6 +65,18 @@ export class InicioAdminComponent implements OnInit {
     }
   ];
 
+  profissionaisInteresse: UsuarioSiteDTO[] = [];
+  profissionaisInteressePaginados: UsuarioSiteDTO[] = [];
+  paginaAtualInteresse: number = 1;
+  itensPorPaginaInteresse: number = 8;
+  totalItensInteresse: number = 0;
+
+  // Mapa de fotos de perfil
+  fotoPerfilMap: Record<number, string | null> = {};
+  placeholderFoto = '/assets/imagens/foto-perfil-generico.png';
+  
+  categoriasDescricoes = categoriasDescricoes;
+  mensagemBusca: string | null = '';
 
   paginaAtual: number = 1;
   itensPorPagina: number = 8;
@@ -75,13 +91,17 @@ export class InicioAdminComponent implements OnInit {
 
   // 👇 Estado de expansão (índice dentro da página atual)
   expandedDestaqueIndex: number | null = null;
+  isLoading: boolean  = false;
 
 
   constructor(
     private router: Router,
+    private usuarioMidiasService: UsuarioMidiasService,
+    private usuarioService: UsuarioService,
   ) { }
 
   ngOnInit(): void {
+    this.carregarProfissionaisPorInteresse();
     this.atualizarPaginacaoDestaques();
     this.atualizarPaginacaoServicos();
   }
@@ -138,4 +158,57 @@ export class InicioAdminComponent implements OnInit {
     this.paginaAtualServicos = novaPagina;
     this.atualizarPaginacaoServicos();
   }
+
+  onPaginaMudouInteresse(novaPagina: number) {
+    this.paginaAtualInteresse = novaPagina;
+    this.expandedDestaqueIndex = null;
+    this.atualizarPaginacaoProfissionaisInteresse();
+  }
+
+  atualizarPaginacaoProfissionaisInteresse(): void {
+    const inicio = (this.paginaAtualInteresse - 1) * this.itensPorPaginaInteresse;
+    const fim = inicio + this.itensPorPaginaInteresse;
+    this.profissionaisInteressePaginados = this.profissionaisInteresse.slice(inicio, fim);
+    this.carregarFotosPerfisPaginados();
+  }
+
+  carregarProfissionaisPorInteresse() {
+    this.isLoading = true;
+    this.usuarioService.obterTodosProfissionais().subscribe({
+      next: (profissionais) => {
+        this.profissionaisInteresse = profissionais || [];
+        this.totalItensInteresse = this.profissionaisInteresse.length;
+        this.atualizarPaginacaoProfissionaisInteresse();
+        this.carregarFotosPerfisPaginados();
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Erro ao carregar profissionais por interesse:', error);
+        this.profissionaisInteresse = [];
+        this.totalItensInteresse = 0;
+        this.atualizarPaginacaoProfissionaisInteresse();
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private carregarFotosPerfisPaginados(): void {
+    const idsPagina = this.profissionaisInteressePaginados
+      .map(p => p.id)
+      .filter((id): id is number => typeof id === 'number');
+
+    const faltando = idsPagina.filter(id => !(id in this.fotoPerfilMap));
+
+    if (faltando.length === 0) return;
+
+    this.usuarioMidiasService.getFotosPerfilDaPagina(faltando)
+      .subscribe((mapa) => {
+        this.fotoPerfilMap = { ...this.fotoPerfilMap, ...mapa };
+      });
+  }
+
+  visualizarProfissional(id: number){
+    this.router.navigate(['/usuario/perfil-profissional', id]);
+  }
+
 }

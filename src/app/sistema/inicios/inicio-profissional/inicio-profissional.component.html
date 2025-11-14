@@ -8,17 +8,17 @@
         <div class="anuncios-topico">
             <h1>Anúncios</h1>
         </div>
+
         <div class="em-breve">
             <div class="logo">
                 <img src="assets/icones/logo-trampoup.png" alt="TrampoUP" />
             </div>
             <h2>Funcionalidade em breve!</h2>
         </div>
-<!-- 
-        <div class="anuncios-lista">
-            <div class="anuncio-card" *ngFor="let anuncio of anuncios">
+        <!-- <div class="anuncios-lista">
+             <div class="anuncio-card" *ngFor="let anuncio of anuncios">
                 <img [src]="anuncio.imagem" [alt]="anuncio.titulo" />
-            </div>
+            </div> 
         </div> -->
 
 
@@ -98,18 +98,49 @@
             <h1>Serviços do seu interesse</h1>
         </div>
 
-        <div class="servicos-lista">
-            <div class="servicos-card" *ngFor="let servico of servicosPaginados">
-                <img [src]="servico.imagem" [alt]="servico.titulo" />
+       <div class="lista-servicos" *ngIf="profissionaisInteressePaginados.length > 0">
+            <div *ngFor="let profissional of profissionaisInteressePaginados">
+                <div class="card-profissional" >
+                    <div class="user-photo">
+                        <img
+                        [src]="fotoPerfilMap[profissional.id!] || placeholderFoto"
+                        alt="foto do usuario"
+                        />                    </div>
+                    <div class="user-info">
+                        <h2>{{ profissional.nome }}</h2>
+                        <p class="cargo">{{ categoriasDescricoes[profissional.setor!] }}</p>
+                        <div class="rating">
+                            <span class="score"> <span class="star">★</span> {{ (4.0) | number:'1.1-1' }}/5</span>
+                        </div>
+                        <div class="btn-card">
+                            <button class="btn-ver-perfil" (click)="visualizarProfissional(profissional.id!)">Acessar Perfil</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="paginacao">
-            <app-pagination
-                [paginaAtual]="paginaAtualServicos"
-                [totalItens]="totalItensServicos"
-                [itensPorPagina]="itensPorPaginaServicos"
-                (paginaMudou)="onPaginaMudouServicos($event)">
+        <div *ngIf="profissionaisInteressePaginados.length === 0">
+            <ng-container *ngIf="mensagemBusca; else semlocalizacaos">
+            <div>
+                <div class="alert alert-warning text-center">
+                {{ mensagemBusca }}
+                </div>
+            </div>
+            </ng-container>
+            <ng-template #semlocalizacaos>
+            <div class="no-data-message">
+                <img src="assets/icones/no-data-icon.svg" alt="Sem dados" />
+                <p>Não há profissionais cadastrados.</p>
+            </div>
+            </ng-template>
+        </div>
+    
+        <div class="pagination">
+            <app-pagination [paginaAtual]="paginaAtualInteresse"
+            [totalItens]="totalItensInteresse" 
+            [itensPorPagina]="itensPorPaginaInteresse"
+            (paginaMudou)="onPaginaMudouInteresse($event)">
             </app-pagination>
         </div>
 

@@ -15,7 +15,7 @@
         </p>
     </div>
 
-    <div class="localizacao-titulo">
+    <div class="servico-titulo">
         <p><a [routerLink]="getRotaInicial()">Inicio</a> > <span>Serviços</span></p>
 
         <button *ngIf="obterRoleUsuario() !== TipoUsuario.CLIENTE; else filtroCliente" class="btn-cadastrar-endereco" [routerLink]="['/usuario/cadastro-de-servico']">
