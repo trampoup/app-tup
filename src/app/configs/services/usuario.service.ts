@@ -53,4 +53,12 @@ export class UsuarioService {
     return this.http.get<any[]>(`${this.apiUrlLink}/profissionais-por-interesses`);
   }
 
+  favoritarProfissional(idProfissional: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrlLink}/favoritos/${idProfissional}`, {});
+  }
+
+  obterFavoritos(): Observable<UsuarioDadosDTO[]> {
+    return this.http.get<UsuarioDadosDTO[]>(`${this.apiUrlLink}/favoritos`);
+  }
+
 }
