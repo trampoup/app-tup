@@ -17,6 +17,7 @@ import { EsqueciSenhaComponent } from './esqueci-senha/esqueci-senha.component';
 import { AuthService } from './configs/services/auth.service';
 import { TokenInterceptor } from './configs/security/token.interceptor';
 import { CadastroComponent } from './cadastro/cadastro.component';
+import { BotTiComponent } from './sistema/bot-ti/bot-ti.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { CadastroComponent } from './cadastro/cadastro.component';
     LayoutComponent,
     EsqueciSenhaComponent,
     CadastroComponent,
+    BotTiComponent
   ],
   imports: [
     BrowserModule,
