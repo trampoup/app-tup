@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { UsuarioCadastroDTO } from 'src/app/cadastro/usuario-cadastro-dto';
 import { environment } from 'src/environments/environment';
 import { ApiResponse } from './api-response-dto';
@@ -51,6 +51,31 @@ export class UsuarioService {
 
   obterProfissionaisPorInteresses(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrlLink}/profissionais-por-interesses`);
+  }
+
+  favoritarProfissional(idProfissional: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrlLink}/favoritos/${idProfissional}`, {});
+  }
+
+  obterFavoritos(): Observable<UsuarioDadosDTO[]> {
+    return this.http.get<UsuarioDadosDTO[]>(`${this.apiUrlLink}/favoritos`);
+  }
+
+  enviarEmailSuporte(mensagem: string): Observable<any> {
+    const url = `${this.apiUrlLink}/email/suporte`;
+    const requestDTO = { mensagem };
+    return this.http.post<any>(url, requestDTO).pipe(
+      catchError((error) => {
+        let errorMessage = 'Erro ao enviar e-mail para o suporte.';
+        if (error.error instanceof ErrorEvent) {
+          errorMessage = `Erro: ${error.error.message}`;
+        } else if (error.status) {
+          errorMessage = `Erro no servidor: ${error.status} - ${error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));
+      })
+    );
   }
 
 }

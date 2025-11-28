@@ -10,6 +10,7 @@ import { ServicosService } from 'src/app/configs/services/servicos.service';
 import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.service';
 import { UsuarioService } from 'src/app/configs/services/usuario.service';
 import { filter } from 'rxjs';
+import { ModalConfirmationService } from 'src/app/configs/services/modal-confirmation.service';
 
 @Component({
   selector: 'app-mini-site',
@@ -124,7 +125,8 @@ export class MiniSiteComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private route: ActivatedRoute,
     private router: Router,
-    private el: ElementRef
+    private el: ElementRef,
+    private modalConfirmationService : ModalConfirmationService
   ) { }
 
 
@@ -276,4 +278,32 @@ export class MiniSiteComponent implements OnInit {
     this.router.navigate(['/usuario/cadastro-de-site']);
   }
 
+  abrirModalFavoritar(){
+    this.modalConfirmationService.open({
+      title: 'Favoritar Profissional',
+      iconSrc: '/assets/icones/save-icon.svg',
+      description: 'Deseja adicionar este profissional aos seus favoritos?',
+      confirmButtonText: 'Sim',
+    },
+    () =>{
+      this.favoritarProfissional();
+    }
+  );
+
+  }
+
+  favoritarProfissional(){
+    if (!this.perfil?.id) {
+      console.error('ID do profissional não disponível para favoritar.');
+      return;
+    }
+    this.usuarioService.favoritarProfissional(this.perfil?.id!).subscribe({
+      next: () => {
+        console.log('Profissional favoritado com sucesso!');
+      },
+      error: (err) => {
+        console.error('Erro ao favoritar profissional', err);
+      }
+    });
+  }
 }

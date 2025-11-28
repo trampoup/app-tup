@@ -517,7 +517,7 @@ select:focus {
 
 .alert-warning {
   background-color: var(--warning);
-  color: var(--lm-branco);
+  color: var(--lm-text);
 }
 
 .alert-danger {

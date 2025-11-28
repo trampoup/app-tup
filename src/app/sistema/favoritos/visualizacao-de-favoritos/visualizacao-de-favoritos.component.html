@@ -1,1 +1,112 @@
-<p>visualizacao-de-favoritos works!</p>
+<section class="main-container">
+  <div class="banner">
+    <h1>Profissionais Favoritos</h1>
+    <p>
+      Salve seus profissionais preferidos e acesse-os quando quiser.
+    </p>
+  </div>
+
+  <div class="servico-titulo">
+    <p>
+      <a [routerLink]="getRotaInicial()">Inicio</a> >
+      <span>Favoritos</span>
+    </p>
+
+    <div class="filtro-setor">
+      <select
+        #setorSel
+        id="selectSetorFavoritos"
+        class="filtro-setor-select"
+        [value]="selectedSetor"
+        (change)="onSetorChange(setorSel.value)"
+        aria-label="Filtrar favoritos por setor"
+      >
+        <option value="TODOS">Todos os setores</option>
+        <option *ngFor="let setor of setores" [value]="setor">
+          {{ categoriasDescricoes[setor] }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="alerts">
+    <div id="sucess-message" class="alerts-container alert-success" *ngIf="successMessage">
+      {{ successMessage }}
+    </div>
+    <div class="alerts-container alert-danger" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <div class="progress-bar-container" *ngIf="isLoading">
+    <div class="progress-bar"></div>
+  </div>
+
+  <div class="lista-servicos" *ngIf="favoritosPaginados.length > 0">
+    <div *ngFor="let favorito of favoritosPaginados">
+      <div class="card-profissional">
+        <div class="user-photo">
+          <img
+            [src]="fotoPerfilMap[favorito.id!] || placeholderFoto"
+            alt="foto do usuario"
+          />
+        </div>
+
+        <div class="user-info">
+          <h2>{{ favorito.nome }}</h2>
+          <p class="cargo">
+            <ng-container *ngIf="favorito.setor; else emailFallback">
+              {{ categoriasDescricoes[favorito.setor] }}
+            </ng-container>
+            <ng-template #emailFallback>
+              {{ favorito.email }}
+            </ng-template>
+          </p>
+
+          <div class="rating">
+            <span class="score">
+              <span class="star">★</span>
+              {{ (4.0) | number:'1.1-1' }}/5
+            </span>
+          </div>
+
+          <div class="btn-card">
+            <button
+              class="btn-ver-perfil"
+              (click)="visualizarProfissional(favorito.id!)"
+            >
+              Acessar Perfil
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="favoritosPaginados.length === 0">
+    <ng-container *ngIf="mensagemBusca; else semFavoritos">
+      <div class="mensagem-busca">
+        <div class="alert alert-warning text-center">
+          {{ mensagemBusca }}
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #semFavoritos>
+      <div class="no-data-message">
+        <img src="assets/icones/no-data-icon.svg" alt="Sem dados" />
+        <p>Você ainda não tem profissionais favoritos.</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- PAGINAÇÃO -->
+  <div class="pagination" *ngIf="totalItensFavoritos > itensPorPaginaFavoritos">
+    <app-pagination
+      [paginaAtual]="paginaAtualFavoritos"
+      [totalItens]="totalItensFavoritos"
+      [itensPorPagina]="itensPorPaginaFavoritos"
+      (paginaMudou)="onPaginaMudouFavoritos($event)">
+    </app-pagination>
+  </div>
+</section>

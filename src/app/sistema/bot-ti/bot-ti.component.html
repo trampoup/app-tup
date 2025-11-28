@@ -1,0 +1,81 @@
+<!-- Botão flutuante -->
+<button class="chat-toggle-teste" *ngIf="!isOpen" (click)="toggleChat()">
+  <img src="assets/icones/suporte-ti.svg" alt="Botão de Suporte TI">
+</button>
+
+<!-- Janela de chat -->
+<div class="chat-window" *ngIf="isOpen" [@chatOpen]>
+  <div class="chat-header">
+    <h2>Suporte</h2>
+    <button class="close-btn" (click)="fecharChat()">×</button>
+  </div>
+  <div class="chat-content">
+    <!-- Tela de Menu -->
+    <div class="chat-body" *ngIf="telaAtual === 'menu'">
+      <div class="menu-opcoes">
+        <button class="btn-opcao btn-pagamento" (click)="selecionarOpcao('pagamento')">
+          Pagamento
+        </button>
+        <button class="btn-opcao btn-duvidas" (click)="selecionarOpcao('duvidas')">
+          Dúvidas
+        </button>
+        <button class="btn-opcao btn-whatsapp" (click)="selecionarOpcao('whatsapp')">
+          <img src="/assets/icones/whatsapp.svg" alt="whatsapp">WhatsApp
+        </button>
+      </div>
+    </div>
+
+    <div class="chat-body" *ngIf="telaAtual === 'conversa'">
+      <div *ngFor="let msg of mensagens">
+        <div
+          [ngClass]="{
+            'mensagem-bot': msg.autor === 'BOT',
+            'mensagem-user': msg.autor === 'USER'
+          }"
+        >
+          <span *ngIf="msg.autor === 'BOT'">
+            <img src="assets/icones/drc-suporte.svg" alt="BOT" class="bot-avatar" />
+          </span>
+          <span class="mensagem-texto">
+            <ng-container *ngIf="msg.digitando; else textoNormal">
+              <span class="digitando-balao">
+                <span class="dot" *ngFor="let d of [1,2,3]; let i = index" [ngStyle]="{'animation-delay': (i * 0.2) + 's'}">.</span>
+              </span>
+            </ng-container>
+            <ng-template #textoNormal>
+              {{ msg.texto }}
+            </ng-template>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tela de Dúvidas -->
+    <div class="chat-body duvidas-container" *ngIf="telaAtual === 'duvidas'">
+      <div class="duvidas-header">
+        <button class="btn-voltar" (click)="voltarParaMenu()">← Voltar</button>
+        <h3>Dúvidas Frequentes</h3>
+      </div>
+      <div class="duvidas-list">
+        <div class="duvida-item" *ngFor="let duvida of duvidas">
+          {{ duvida }}
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="telaAtual === 'conversa' && !conversaEncerrada" class="chat-input">
+      <input
+        type="text"
+        [(ngModel)]="inputMensagem"
+        [disabled]="digitandoBot"
+        placeholder="Digite sua mensagem..."
+        (keyup.enter)="enviarMensagem()"
+      />
+      <button (click)="enviarMensagem()" [disabled]="digitandoBot || !inputMensagem.trim()">Enviar</button>
+    </div>
+    <div *ngIf="telaAtual === 'conversa' && conversaEncerrada" class="chat-encerrado-botoes">
+      <button class="btn-nova" (click)="novaSolicitacao()">Nova solicitação</button>
+      <button class="fechar-btn" (click)="fecharChat()">Fechar conversa</button>
+    </div>
+  </div>
+</div>
