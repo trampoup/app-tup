@@ -22,6 +22,7 @@ export class MiniSiteComponent implements OnInit {
   categoriasDescricoes = categoriasDescricoes;
 
   isLoading = false;
+  isFavorito: boolean = false;
 
   perfil: UsuarioSiteDTO | null = null;
   skillsLista: string[] = [];
@@ -142,8 +143,8 @@ export class MiniSiteComponent implements OnInit {
       this.isLoading = false;
       return;
     }
-
     this.carregarPerfilPublico(id);
+    this.isFavorito = this.verificarSeEhFavorito(id);
     this.carregarServicosComBannner(id);
     this.carregarMidiasPublicas(id);
   }
@@ -278,6 +279,19 @@ export class MiniSiteComponent implements OnInit {
     this.router.navigate(['/usuario/cadastro-de-site']);
   }
 
+  verificarSeEhFavorito(id:number): boolean {
+    this.usuarioService.verificarSeEhFavorito(id).subscribe({
+      next: (isFavorito) => {
+        this.isFavorito = isFavorito;
+      },
+      error: (err) => {
+        console.error('Erro ao verificar se é favorito', err);
+        return false;
+      }
+    });
+    return false;
+  }
+
   abrirModalFavoritar(){
     this.modalConfirmationService.open({
       title: 'Favoritar Profissional',
@@ -289,7 +303,6 @@ export class MiniSiteComponent implements OnInit {
       this.favoritarProfissional();
     }
   );
-
   }
 
   favoritarProfissional(){
@@ -299,10 +312,40 @@ export class MiniSiteComponent implements OnInit {
     }
     this.usuarioService.favoritarProfissional(this.perfil?.id!).subscribe({
       next: () => {
+        this.isFavorito = true;
         console.log('Profissional favoritado com sucesso!');
       },
       error: (err) => {
         console.error('Erro ao favoritar profissional', err);
+      }
+    });
+  }
+
+  abrirModalDesfavoritar(){
+    this.modalConfirmationService.open({
+      title: 'Desfavoritar Profissional',
+      iconSrc: '/assets/icones/save-icon.svg',
+      description: 'Deseja remover este profissional dos seus favoritos?',
+      confirmButtonText: 'Sim',
+    },
+    () =>{
+      this.desfavoritarProfissional();
+    }
+  );
+  }
+
+  desfavoritarProfissional(){
+    if (!this.perfil?.id) {
+      console.error('ID do profissional não disponível para favoritar.');
+      return;
+    }
+    this.usuarioService.desfavoritarProfissional(this.perfil?.id!).subscribe({
+      next: () => {
+        console.log('Profissional desfavoritado com sucesso!');
+        this.isFavorito = false;
+      },
+      error: (err) => {
+        console.error('Erro ao desfavoritar profissional', err);
       }
     });
   }

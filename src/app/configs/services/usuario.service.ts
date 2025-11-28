@@ -57,8 +57,16 @@ export class UsuarioService {
     return this.http.post<void>(`${this.apiUrlLink}/favoritos/${idProfissional}`, {});
   }
 
+  desfavoritarProfissional(idProfissional: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrlLink}/favoritos/${idProfissional}`);
+  }
+
   obterFavoritos(): Observable<UsuarioDadosDTO[]> {
     return this.http.get<UsuarioDadosDTO[]>(`${this.apiUrlLink}/favoritos`);
+  }
+
+  verificarSeEhFavorito(idProfissional: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrlLink}/favoritos/${idProfissional}/verificar`);
   }
 
   enviarEmailSuporte(mensagem: string): Observable<any> {
