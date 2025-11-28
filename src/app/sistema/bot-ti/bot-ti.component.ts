@@ -49,6 +49,18 @@ export class BotTiComponent implements OnInit {
   marca = 'DRC Suporte de TI';
   protocolo = '';
 
+  telaAtual: 'menu' | 'conversa' | 'duvidas' = 'menu';
+  duvidas: string[] = [
+    'Como resetar minha senha?',
+    'Como vejo os planos?',
+    'Como solicitar um profissional?',
+    'Esqueci meu login, o que fazer?',
+    'Onde encontro os profissionais?',
+    'Como funciona os cupons?',
+    'Como reportar um problema técnico?',
+    'Finalizei o serviço do profissional, como avalio?'
+  ];
+
   constructor(
     private authService: AuthService,
     private usuarioService: UsuarioService
@@ -73,12 +85,14 @@ export class BotTiComponent implements OnInit {
         next: (usuario) => {
           this.nome = usuario.nome || 'Usuário';
           if (this.mensagens.length === 0) {
+            this.telaAtual = 'menu';
             this.iniciarConversa();
           }
         },
         error: () => {
           this.nome = 'Usuário';
           if (this.mensagens.length === 0) {
+            this.telaAtual = 'menu';
             this.iniciarConversa();
           }
         },
@@ -87,6 +101,27 @@ export class BotTiComponent implements OnInit {
     if (!this.isOpen) {
       this.resetarConversa();
     }
+  }
+
+  selecionarOpcao(opcao: string) {
+    switch(opcao) {
+      case 'pagamento':
+        this.telaAtual = 'conversa';
+        this.iniciarConversa();
+        break;
+      case 'duvidas':
+        this.telaAtual = 'duvidas';
+        break;
+      case 'whatsapp':
+        // Apenas visual - não faz nada
+        break;
+    }
+  }
+
+
+  voltarParaMenu() {
+    this.telaAtual = 'menu';
+    this.resetarConversa();
   }
 
   iniciarConversa(novaSolicitacao: boolean = false) {
@@ -185,5 +220,6 @@ export class BotTiComponent implements OnInit {
     this.inputMensagem = '';
     this.digitandoBot = false;
     this.conversaEncerrada = false;
+    this.telaAtual = 'menu';
   }
 }

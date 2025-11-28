@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { BotTiComponent } from '../sistema/bot-ti/bot-ti.component';
 
 @Component({
   selector: 'app-layout',
