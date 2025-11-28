@@ -24,7 +24,8 @@
         </div>
         <div class="actions-user">
             <button class="btn-share">Compartilhar <img src="/assets/icones/share-icon.svg" alt="save icon"></button>
-            <button (click)="abrirModalFavoritar()" class="btn-salvar"><img src="/assets/icones/save-icon.svg" alt="save icon"></button>
+            <button *ngIf="isFavorito" (click)="abrirModalDesfavoritar()" class="btn-salvar"><img src="/assets/icones/saved-icon.svg" alt="saved icon"></button>
+            <button *ngIf="!isFavorito" (click)="abrirModalFavoritar()" class="btn-salvar"><img src="/assets/icones/save-icon.svg" alt="save icon"></button>
             <button class="btn-contato">Contato</button>
             <button class="btn-orcamento">Solicitar Orçamento</button>
         </div>
