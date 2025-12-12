@@ -19,4 +19,8 @@ export class AvaliacaoService {
   listarPorProfissional(profissionalId: number): Observable<AvaliacaoDTO[]> {
     return this.http.get<AvaliacaoDTO[]>(`${this.baseUrl}/profissional/${profissionalId}`);
   }
+
+  listarMinhas(): Observable<AvaliacaoDTO[]> {
+    return this.http.get<AvaliacaoDTO[]>(`${this.baseUrl}/minhas`);
+  }
 }
