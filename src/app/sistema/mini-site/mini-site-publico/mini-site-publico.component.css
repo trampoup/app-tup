@@ -440,8 +440,7 @@
 
 #btn-avaliar{
     display: block;
-    margin: 0;
-    width: 55%;
+    margin: 0;  
     box-sizing: border-box;
 }
 
@@ -491,15 +490,23 @@
     font-weight: 600;
     color: var(--lm-preto);
     margin: 0;
-    margin-bottom: 16px;
 }
 
-
+.comentarios-container{
+    margin-top: 32px;
+}
 
 .comentarios-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
+}
+
+.comentarios-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
 }
 
 .comentario-card {

@@ -9,6 +9,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { categoriasDescricoes } from 'src/app/cadastro/categorias-descricoes-enum';
 import { Servico } from '../../servicos/Servico';
 import { ServicosService } from 'src/app/configs/services/servicos.service';
+import { AvaliacaoDTO } from '../Avaliacao';
+import { AvaliacaoService } from 'src/app/configs/services/avaliacao.service';
 
 @Component({
   selector: 'app-mini-site-publico',
@@ -18,96 +20,23 @@ import { ServicosService } from 'src/app/configs/services/servicos.service';
 export class MiniSitePublicoComponent implements OnInit {
   TipoUsuario = TipoUsuario;
 
-
-
-  avaliacoes = [ /*LISTA DE AVALIAÇÕES(TEMPORÁRIO, SOMENTE PARA MOSTRAR A INTERFACE AO ALEX)*/
-    {
-      nome: 'Maria',
-      foto: '/assets/imagens/imagens-de-exemplo/m-userphoto-exemplo.png',
-      titulo: 'Ameiiii!!!!',
-      descricao: 'Serviço rápido e bem feito. Muito atencioso!'
-    },
-    {
-      nome: 'Carlos',
-      foto: '/assets/imagens/imagens-de-exemplo/c-userphoto-exemplo.png',
-      titulo: 'Super recomendo!',
-      descricao: 'Meu ar voltou a funcionar como novo. Super recomendo!'
-    },
-    {
-      nome: 'Juliana',
-      foto: '/assets/imagens/imagens-de-exemplo/j-userphoto-exemplo.png',
-      titulo: 'Instalação sem sujeira',
-      descricao: 'Fez a instalação sem sujeira e explicou tudo direitinho.'
-    },
-    {
-      nome: 'Carlos',
-      foto: '/assets/imagens/imagens-de-exemplo/c-userphoto-exemplo.png',
-      titulo: 'Super recomendo!',
-      descricao: 'Meu ar voltou a funcionar como novo. Super recomendo!'
-    },
-    {
-      nome: 'Maria',
-      foto: '/assets/imagens/imagens-de-exemplo/m-userphoto-exemplo.png',
-      titulo: 'Ameiiii!!!!',
-      descricao: 'Serviço rápido e bem feito. Muito atencioso!'
-    }
-  ];
-
-
-  comentarios = [
-    {
-      nome: 'Ana Paula',
-      foto: '/assets/imagens/imagens-de-exemplo/a-userphoto-exemplo.png',
-      data: 'há 2 dias',
-      titulo: 'Excelente atendimento',
-      texto: 'Chegou no horário, explicou o serviço e entregou melhor que o combinado.',
-      estrelas: 5,
-      verificado: true
-    },
-    {
-      nome: 'Rafael N.',
-      foto: '/assets/imagens/imagens-de-exemplo/r-userphoto-exemplo.png',
-      data: 'há 1 semana',
-      titulo: 'Preço justo e serviço rápido',
-      texto: 'Instalação sem sujeira e com testes. Recomendo.',
-      estrelas: 4,
-      verificado: false
-    },
-    {
-      nome: 'Juliana F.',
-      foto: '/assets/imagens/imagens-de-exemplo/j-userphoto-exemplo.png',
-      data: 'há 3 semanas',
-      titulo: 'Resolveu meu problema',
-      texto: 'Meu ar não gelava, ele identificou na hora e consertou. Voltarei a contratar.',
-      estrelas: 5,
-      verificado: true
-    },
-    {
-      nome: 'Carlos M.',
-      foto: '/assets/imagens/imagens-de-exemplo/c-userphoto-exemplo.png',
-      data: 'há 1 mês',
-      titulo: 'Bom, mas poderia ser mais rápido',
-      texto: 'Trabalho bem feito, só achei que demorou um pouco na chegada.',
-      estrelas: 4,
-      verificado: false
-    }
-  ];
-
-
   servicos: Servico[] = [];
-  // Paginacao de servicos
+
   paginaAtualServicos = 1;
   itensPorPaginaServicos = 6;
   totalPaginasServicos = Math.ceil(this.servicos.length / this.itensPorPaginaServicos);
   servicosPaginados: Servico[] = [];
 
-  // Paginacao de avaliacoes
+  avaliacoes: AvaliacaoDTO[] = [];
+  avaliacoesPaginadas: AvaliacaoDTO[] = [];
   paginaAtualAvaliacoes = 1;
-  itensPorPaginaAvaliacoes = 4;
-  totalPaginasAvaliacoes = Math.ceil(this.avaliacoes.length / this.itensPorPaginaAvaliacoes);
-  avaliacoesPaginadas: typeof this.avaliacoes = [];
+  itensPorPaginaAvaliacoes = 6;
+  totalPaginasAvaliacoes = 0;
+  mediaAvaliacoes = 0;
 
-  isLoading : boolean = false;
+  fotosClientes: Record<number, string | null> = {};
+
+  isLoading: boolean = false;
 
   perfil: UsuarioSiteDTO | null = null;
   skillsLista: string[] = [];
@@ -120,25 +49,29 @@ export class MiniSitePublicoComponent implements OnInit {
   videoUrl: SafeUrl | null = null;
   private videoObjectUrl: string | null = null; // para revogar depois
 
+  // valores mockados só para visual (mantidos)
+  userScore = 120;
+  maxScore = 200;
+
   constructor(
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute,  
-    private usuarioService:UsuarioService,
-    private usuarioMidiasService:UsuarioMidiasService,
+    private route: ActivatedRoute,
+    private usuarioService: UsuarioService,
+    private usuarioMidiasService: UsuarioMidiasService,
     private sanitizer: DomSanitizer,
-    private servicosService : ServicosService
-  ) { }
+    private servicosService: ServicosService,
+    private avaliacaoService: AvaliacaoService
+  ) {}
 
   ngOnInit(): void {
     this.atualizarPaginacaoServicos();
     this.atualizarPaginacaoAvaliacoes();
 
-
     const idParam = this.route.snapshot.paramMap.get('id');
     const id = Number(idParam);
     if (!id || Number.isNaN(id)) {
-      console.log("URL INVALIDA ID AUSENTE");
+      console.log('URL INVALIDA ID AUSENTE');
       this.isLoading = false;
       return;
     }
@@ -146,6 +79,7 @@ export class MiniSitePublicoComponent implements OnInit {
     this.carregarPerfilPublico(id);
     this.carregarServicosComBannner(id);
     this.carregarMidiasPublicas(id);
+    this.carregarAvaliacoes(id);
   }
 
   // ----- Perfil (dados)
@@ -154,20 +88,20 @@ export class MiniSitePublicoComponent implements OnInit {
       next: (dto) => {
         this.perfil = dto;
         const raw = dto?.skills ?? '';
-        this.skillsLista = raw.split(/[;,]/).map(s => s.trim()).filter(Boolean);
+        this.skillsLista = raw.split(/[;,]/).map((s) => s.trim()).filter(Boolean);
       },
       error: () => {},
-      complete: () => this.isLoading = false
+      complete: () => (this.isLoading = false)
     });
   }
 
-  private carregarServicosComBannner(id : number | string) {
+  private carregarServicosComBannner(id: number | string) {
     this.servicosService.obterServicosPorProfissionalComBanners(id).subscribe({
       next: (servicos) => {
         this.servicos = servicos ?? [];
         this.atualizarPaginacaoServicos();
       },
-      error: (err) => console.error('Erro ao obter serviços', err),
+      error: (err) => console.error('Erro ao obter serviços', err)
     });
   }
 
@@ -176,9 +110,11 @@ export class MiniSitePublicoComponent implements OnInit {
     this.usuarioMidiasService.getMidiaDoUsuario('banner', id).subscribe({
       next: (blob) => {
         if (!blob || blob.size === 0) return;
-        const typed = blob.type?.startsWith('image/') ? blob : new Blob([blob], { type: 'image/jpeg' });
+        const typed = blob.type?.startsWith('image/')
+          ? blob
+          : new Blob([blob], { type: 'image/jpeg' });
         const reader = new FileReader();
-        reader.onload = () => this.bannerUrl = reader.result as string;
+        reader.onload = () => (this.bannerUrl = reader.result as string);
         reader.readAsDataURL(typed);
       }
     });
@@ -187,14 +123,16 @@ export class MiniSitePublicoComponent implements OnInit {
     this.usuarioMidiasService.getMidiaDoUsuario('foto_perfil', id).subscribe({
       next: (blob) => {
         if (!blob || blob.size === 0) return;
-        const typed = blob.type?.startsWith('image/') ? blob : new Blob([blob], { type: 'image/jpeg' });
+        const typed = blob.type?.startsWith('image/')
+          ? blob
+          : new Blob([blob], { type: 'image/jpeg' });
         const reader = new FileReader();
-        reader.onload = () => this.fotoUrl = reader.result as string;
+        reader.onload = () => (this.fotoUrl = reader.result as string);
         reader.readAsDataURL(typed);
       }
     });
 
-
+    // vídeo
     this.usuarioMidiasService.getMidiaDoUsuario('video', id).subscribe({
       next: (blob) => {
         if (!blob || blob.size === 0) return;
@@ -203,50 +141,32 @@ export class MiniSitePublicoComponent implements OnInit {
           ? blob
           : new Blob([blob], { type: 'video/mp4' });
 
-        // revoga o anterior (evita vazamento de memória)
         if (this.videoObjectUrl) URL.revokeObjectURL(this.videoObjectUrl);
 
-        // cria o Object URL e sanitiza
         this.videoObjectUrl = URL.createObjectURL(typed);
-        this.videoUrl = this.sanitizer.bypassSecurityTrustUrl(this.videoObjectUrl); // <-- AQUI
+        this.videoUrl = this.sanitizer.bypassSecurityTrustUrl(this.videoObjectUrl);
       }
     });
-
   }
 
   ngOnDestroy(): void {
     if (this.videoObjectUrl) {
       URL.revokeObjectURL(this.videoObjectUrl);
       this.videoObjectUrl = null;
-  }}
+    }
+  }
 
-  // valores mockados só para visual
-  userScore = 120;
-  maxScore = 200;
+  // ----- Helpers visuais gerais
 
   get progressPercent(): number {
     return Math.min(100, Math.round((this.userScore / this.maxScore) * 100));
   }
 
-
   getRoleUsuario(): TipoUsuario {
     return this.authService.getRoleUsuario();
   }
 
-  atualizarPaginacaoAvaliacoes(): void {
-    const inicio = (this.paginaAtualAvaliacoes - 1) * this.itensPorPaginaAvaliacoes;
-    const fim = inicio + this.itensPorPaginaAvaliacoes;
-    this.avaliacoesPaginadas = this.avaliacoes.slice(inicio, fim);
-  }
-
-  get totalItensAvaliacoes() {
-    return this.avaliacoes.length; 
-  }
-
-  onPaginaMudouAvaliacoes(novaPagina: number) {
-    this.paginaAtualAvaliacoes = novaPagina;
-    this.atualizarPaginacaoAvaliacoes();
-  }
+  // ----- Paginação de serviços
 
   atualizarPaginacaoServicos(): void {
     const inicio = (this.paginaAtualServicos - 1) * this.itensPorPaginaServicos;
@@ -255,7 +175,7 @@ export class MiniSitePublicoComponent implements OnInit {
   }
 
   get totalItensServicos() {
-    return this.servicos.length; 
+    return this.servicos.length;
   }
 
   onPaginaMudouServicos(novaPagina: number) {
@@ -263,11 +183,121 @@ export class MiniSitePublicoComponent implements OnInit {
     this.atualizarPaginacaoServicos();
   }
 
-  redirectToGameficacao(){
+  // ----- Avaliações (somente leitura no público)
+
+  private carregarAvaliacoes(profissionalId: number): void {
+    this.avaliacaoService.listarPorProfissional(profissionalId).subscribe({
+      next: (lista) => {
+        this.avaliacoes = lista ?? [];
+        this.atualizarMediaAvaliacoes();
+        this.atualizarPaginacaoAvaliacoes();
+      },
+      error: (err) => {
+        console.error('Erro ao carregar avaliações', err);
+      }
+    });
+  }
+
+  private atualizarMediaAvaliacoes(): void {
+    if (!this.avaliacoes.length) {
+      this.mediaAvaliacoes = 0;
+      return;
+    }
+    const soma = this.avaliacoes.reduce((acc, a) => acc + (a.estrela || 0), 0);
+    this.mediaAvaliacoes = soma / this.avaliacoes.length;
+  }
+
+  atualizarPaginacaoAvaliacoes(): void {
+    const inicio = (this.paginaAtualAvaliacoes - 1) * this.itensPorPaginaAvaliacoes;
+    const fim = inicio + this.itensPorPaginaAvaliacoes;
+    this.avaliacoesPaginadas = this.avaliacoes.slice(inicio, fim);
+    this.totalPaginasAvaliacoes = Math.ceil(
+      (this.avaliacoes.length || 0) / this.itensPorPaginaAvaliacoes
+    );
+    this.carregarFotosClientesPagina();
+  }
+
+  get totalItensAvaliacoes() {
+    return this.avaliacoes.length;
+  }
+
+  onPaginaMudouAvaliacoes(novaPagina: number) {
+    this.paginaAtualAvaliacoes = novaPagina;
+    this.atualizarPaginacaoAvaliacoes();
+  }
+
+  getTempoDecorridoAvaliacao(avaliacao: AvaliacaoDTO): string {
+    if (!avaliacao?.dataCriacao) {
+      return '';
+    }
+
+    let dataMs: number;
+
+    if (avaliacao.dataCriacao instanceof Date) {
+      dataMs = avaliacao.dataCriacao.getTime();
+    } else {
+      // string "yyyy-MM-dd HH:mm:ss" -> "yyyy-MM-ddTHH:mm:ss"
+      const raw = avaliacao.dataCriacao.toString().replace(' ', 'T');
+      const parsed = new Date(raw);
+      if (isNaN(parsed.getTime())) {
+        return '';
+      }
+      dataMs = parsed.getTime();
+    }
+
+    const agora = Date.now();
+    const diffMs = agora - dataMs;
+
+    if (diffMs < 0) {
+      return 'agora mesmo';
+    }
+
+    const diffSeg = Math.floor(diffMs / 1000);
+    const diffMin = Math.floor(diffSeg / 60);
+    const diffHoras = Math.floor(diffMin / 60);
+    const diffDias = Math.floor(diffHoras / 24);
+
+    if (diffMin < 1) {
+      return 'agora mesmo';
+    }
+
+    if (diffMin < 60) {
+      return `há ${diffMin} minuto${diffMin > 1 ? 's' : ''}`;
+    }
+
+    if (diffHoras < 24) {
+      return `há ${diffHoras} hora${diffHoras > 1 ? 's' : ''}`;
+    }
+
+    return `há ${diffDias} dia${diffDias > 1 ? 's' : ''}`;
+  }
+
+  private carregarFotosClientesPagina(): void {
+    const ids = this.avaliacoesPaginadas
+      .map((a) => a.clienteId)
+      .filter((id): id is number => !!id);
+
+    if (!ids.length) {
+      return;
+    }
+
+    this.usuarioMidiasService.getFotosPerfilDaPagina(ids).subscribe({
+      next: (mapa) => {
+        this.fotosClientes = { ...this.fotosClientes, ...mapa };
+      },
+      error: (err) => {
+        console.error('Erro ao carregar fotos dos clientes', err);
+      }
+    });
+  }
+
+  // ----- Navegação
+
+  redirectToGameficacao() {
     this.router.navigate(['/usuario/gameficacao']);
   }
 
-  redirectToEditarSite(){
+  redirectToEditarSite() {
     this.router.navigate(['/usuario/cadastro-de-site']);
   }
 
