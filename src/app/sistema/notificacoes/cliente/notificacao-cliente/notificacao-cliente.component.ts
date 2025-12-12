@@ -81,7 +81,7 @@ export class NotificacaoClienteComponent implements OnInit {
         id: 6,
         nomeUsuario: 'Fernanda Lima',
         descricao: 'enviou uma nova mensagem para você.',
-        dataNotificacao: new Date(agora - 45 * 60 * 1000), // há 45 minutos
+        dataNotificacao: new Date(agora - 4 * 24 * 60 * 60 * 1000), // há 3 dias
         lida: true,
         fotoUrl: fotoGenerica
       },
@@ -89,7 +89,7 @@ export class NotificacaoClienteComponent implements OnInit {
         id: 7,
         nomeUsuario: 'Fernanda Lima',
         descricao: 'enviou uma nova mensagem para você.',
-        dataNotificacao: new Date(agora - 10 * 1000), // há alguns segundos
+        dataNotificacao: new Date(agora - 4 * 24 * 60 * 60 * 1000), // há 3 dias
         lida: true,
         fotoUrl: fotoGenerica
       }
@@ -156,10 +156,11 @@ export class NotificacaoClienteComponent implements OnInit {
 
   openModalConfirmacao(){
     this.modalConfirmationService.open({
-        title: 'Marca as notificações',
+        title: 'Marcar as notificações',
         description: `Tem certeza que deseja marcar todas as notificações como lidas?`,
         confirmButtonText: 'Confirmar',
         size: 'md',
+        iconSrc: '/assets/icones/notificacao 2.svg',
       },
       () => {
         this.markAllAsRead();

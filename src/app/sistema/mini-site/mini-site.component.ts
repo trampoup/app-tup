@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'src/app/configs/services/auth.service';
 import { TipoUsuario } from 'src/app/login/tipo-usuario.enum';
@@ -11,6 +11,9 @@ import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.se
 import { UsuarioService } from 'src/app/configs/services/usuario.service';
 import { filter } from 'rxjs';
 import { ModalConfirmationService } from 'src/app/configs/services/modal-confirmation.service';
+import { ModalGenericoService } from 'src/app/configs/services/modal-generico.service';
+import { AvaliacaoDTO } from './Avaliacao';
+import { AvaliacaoService } from 'src/app/configs/services/avaliacao.service';
 
 @Component({
   selector: 'app-mini-site',
@@ -29,94 +32,35 @@ export class MiniSiteComponent implements OnInit {
 
   servicos: Servico[] = [];
   servicosPaginados: Servico[] = [];
-
-  avaliacoes = [ /*LISTA DE AVALIAÇÕES(TEMPORÁRIO, SOMENTE PARA MOSTRAR A INTERFACE AO ALEX)*/
-    {
-      nome: 'Maria',
-      foto: '/assets/imagens/imagens-de-exemplo/m-userphoto-exemplo.png',
-      titulo: 'Ameiiii!!!!',
-      descricao: 'Serviço rápido e bem feito. Muito atencioso!'
-    },
-    {
-      nome: 'Carlos',
-      foto: '/assets/imagens/imagens-de-exemplo/c-userphoto-exemplo.png',
-      titulo: 'Super recomendo!',
-      descricao: 'Meu ar voltou a funcionar como novo. Super recomendo!'
-    },
-    {
-      nome: 'Juliana',
-      foto: '/assets/imagens/imagens-de-exemplo/j-userphoto-exemplo.png',
-      titulo: 'Instalação sem sujeira',
-      descricao: 'Fez a instalação sem sujeira e explicou tudo direitinho.'
-    },
-    {
-      nome: 'Carlos',
-      foto: '/assets/imagens/imagens-de-exemplo/c-userphoto-exemplo.png',
-      titulo: 'Super recomendo!',
-      descricao: 'Meu ar voltou a funcionar como novo. Super recomendo!'
-    },
-    {
-      nome: 'Maria',
-      foto: '/assets/imagens/imagens-de-exemplo/m-userphoto-exemplo.png',
-      titulo: 'Ameiiii!!!!',
-      descricao: 'Serviço rápido e bem feito. Muito atencioso!'
-    }
-  ];
-
-    comentarios = [
-    {
-      nome: 'Ana Paula',
-      foto: '/assets/imagens/imagens-de-exemplo/a-userphoto-exemplo.png',
-      data: 'há 2 dias',
-      titulo: 'Excelente atendimento',
-      texto: 'Chegou no horário, explicou o serviço e entregou melhor que o combinado.',
-      estrelas: 5,
-      verificado: true
-    },
-    {
-      nome: 'Rafael N.',
-      foto: '/assets/imagens/imagens-de-exemplo/r-userphoto-exemplo.png',
-      data: 'há 1 semana',
-      titulo: 'Preço justo e serviço rápido',
-      texto: 'Instalação sem sujeira e com testes. Recomendo.',
-      estrelas: 4,
-      verificado: false
-    },
-    {
-      nome: 'Juliana F.',
-      foto: '/assets/imagens/imagens-de-exemplo/j-userphoto-exemplo.png',
-      data: 'há 3 semanas',
-      titulo: 'Resolveu meu problema',
-      texto: 'Meu ar não gelava, ele identificou na hora e consertou. Voltarei a contratar.',
-      estrelas: 5,
-      verificado: true
-    },
-    {
-      nome: 'Carlos M.',
-      foto: '/assets/imagens/imagens-de-exemplo/c-userphoto-exemplo.png',
-      data: 'há 1 mês',
-      titulo: 'Bom, mas poderia ser mais rápido',
-      texto: 'Trabalho bem feito, só achei que demorou um pouco na chegada.',
-      estrelas: 4,
-      verificado: false
-    }
-  ];
   
   // Paginacao de servicos
   paginaAtualServicos = 1;
   itensPorPaginaServicos = 6;
   totalPaginasServicos = Math.ceil(this.servicos.length / this.itensPorPaginaServicos);
 
-  // Paginacao de avaliacoes
+  avaliacoes: AvaliacaoDTO[] = [];
+  avaliacoesPaginadas: AvaliacaoDTO[] = [];
+
+  // Paginação de avaliações
   paginaAtualAvaliacoes = 1;
-  itensPorPaginaAvaliacoes = 4;
-  totalPaginasAvaliacoes = Math.ceil(this.avaliacoes.length / this.itensPorPaginaAvaliacoes);
-  avaliacoesPaginadas: typeof this.avaliacoes = [];
+  itensPorPaginaAvaliacoes = 6;
+  mediaAvaliacoes = 0;
   
   bannerUrl: string | null = null;
   fotoUrl: string | null = null;
   videoUrl: SafeUrl | null = null;
   private videoObjectUrl: string | null = null;
+
+  @ViewChild('avaliacaoTemplate') avaliacaoTemplate!: TemplateRef<any>;
+
+  avaliacaoEstrelas = 0;
+  avaliacaoTitulo = '';
+  avaliacaoTexto = '';
+  avaliacaoErro: string | null = null;
+  starHover = 0;
+
+  fotosClientes: Record<number, string | null> = {};
+
   
   constructor(
     private authService: AuthService,
@@ -127,13 +71,14 @@ export class MiniSiteComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private el: ElementRef,
-    private modalConfirmationService : ModalConfirmationService
+    private modalConfirmationService : ModalConfirmationService,
+    private modalGenericoService : ModalGenericoService,
+    private avaliacaoService : AvaliacaoService
   ) { }
 
 
   ngOnInit(): void {
     this.atualizarPaginacaoServicos();
-    this.atualizarPaginacaoAvaliacoes();
 
 
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -147,6 +92,7 @@ export class MiniSiteComponent implements OnInit {
     this.isFavorito = this.verificarSeEhFavorito(id);
     this.carregarServicosComBannner(id);
     this.carregarMidiasPublicas(id);
+    this.carregarAvaliacoes(id);
   }
 
   private scrollToTop(): void {
@@ -241,20 +187,6 @@ export class MiniSiteComponent implements OnInit {
     return this.authService.getRoleUsuario();
   }
 
-  atualizarPaginacaoAvaliacoes(): void {
-    const inicio = (this.paginaAtualAvaliacoes - 1) * this.itensPorPaginaAvaliacoes;
-    const fim = inicio + this.itensPorPaginaAvaliacoes;
-    this.avaliacoesPaginadas = this.avaliacoes.slice(inicio, fim);
-  }
-
-  get totalItensAvaliacoes() {
-    return this.avaliacoes.length; 
-  }
-
-  onPaginaMudouAvaliacoes(novaPagina: number) {
-    this.paginaAtualAvaliacoes = novaPagina;
-    this.atualizarPaginacaoAvaliacoes();
-  }
 
   atualizarPaginacaoServicos(): void {
     const inicio = (this.paginaAtualServicos - 1) * this.itensPorPaginaServicos;
@@ -349,4 +281,204 @@ export class MiniSiteComponent implements OnInit {
       }
     });
   }
+
+  abrirModalAvaliarProfissional(): void {
+    this.avaliacaoEstrelas = 0;
+    this.avaliacaoTitulo = '';
+    this.avaliacaoTexto = '';
+    this.avaliacaoErro = null;
+    this.starHover = 0;
+
+    this.modalGenericoService.openModal(
+      {
+        title: 'Avaliar Profissional',
+        confirmTextoBotao: 'Enviar',
+        cancelTextoBotao: 'Cancelar',
+        showFooter: true,
+        size: 'lg'
+      },
+      () => this.onConfirmAvaliacao(),   
+      this.avaliacaoTemplate            
+    );
+  }
+
+  onConfirmAvaliacao(): boolean {
+    this.avaliacaoErro = null;
+
+    const titulo = this.avaliacaoTitulo.trim();
+    const texto  = this.avaliacaoTexto.trim();
+
+    // validações de campos obrigatórios
+    if (!this.avaliacaoEstrelas) {
+      this.avaliacaoErro = 'Selecione uma nota de 1 a 5 estrelas para o serviço.';
+      return false;
+    }
+
+    if (!titulo) {
+      this.avaliacaoErro = 'Digite um título curto para a sua avaliação.';
+      return false;
+    }
+
+    if (!texto) {
+      this.avaliacaoErro = 'Escreva um comentário contando como foi o serviço.';
+      return false;
+    }
+
+    // validações de tamanho (espelha o backend)
+    if (titulo.length > 50) {
+      this.avaliacaoErro = 'O título da avaliação pode ter no máximo 50 caracteres.';
+      return false;
+    }
+
+    if (texto.length > 150) {
+      this.avaliacaoErro = 'O texto da avaliação pode ter no máximo 150 caracteres.';
+      return false;
+    }
+
+    if (!this.perfil?.id) {
+      this.avaliacaoErro = 'Não foi possível identificar o profissional a ser avaliado.';
+      return false;
+    }
+
+
+    const dto: AvaliacaoDTO = {
+      titulo: this.avaliacaoTitulo.trim(),
+      descricao: this.avaliacaoTexto.trim(),
+      estrela: this.avaliacaoEstrelas,
+      profissionalId: this.perfil.id
+    };
+
+    this.avaliacaoService.criar(dto).subscribe({
+      next: (resp) => {
+        // adiciona na lista local
+        this.avaliacoes.unshift(resp);
+        this.atualizarMediaAvaliacoes();
+        this.atualizarPaginacaoAvaliacoes();
+        console.log('Avaliação enviada:', resp);
+      },
+      error: (err) => {
+        console.error('Erro ao enviar avaliação', err);
+      }
+    });
+    return true;
+  }
+
+  setAvaliacaoEstrelas(valor: number): void {
+    this.avaliacaoEstrelas = valor;
+  }
+
+  onStarHover(valor: number): void {
+    this.starHover = valor;
+  }
+
+  onStarLeave(): void {
+    this.starHover = 0;
+  }
+
+  private carregarAvaliacoes(profissionalId: number): void {
+    this.avaliacaoService.listarPorProfissional(profissionalId).subscribe({
+      next: (lista) => {
+        this.avaliacoes = lista ?? [];
+        this.atualizarMediaAvaliacoes();
+        this.atualizarPaginacaoAvaliacoes();
+      },
+      error: (err) => {
+        console.error('Erro ao carregar avaliações', err);
+      }
+    });
+  }
+
+  private atualizarMediaAvaliacoes(): void {
+    if (!this.avaliacoes.length) {
+      this.mediaAvaliacoes = 0;
+      return;
+    }
+    const soma = this.avaliacoes.reduce((acc, a) => acc + (a.estrela || 0), 0);
+    this.mediaAvaliacoes = soma / this.avaliacoes.length;
+  }
+
+    // Paginação avaliações
+  atualizarPaginacaoAvaliacoes(): void {
+    const inicio = (this.paginaAtualAvaliacoes - 1) * this.itensPorPaginaAvaliacoes;
+    const fim = inicio + this.itensPorPaginaAvaliacoes;
+    this.avaliacoesPaginadas = this.avaliacoes.slice(inicio, fim);
+    this.carregarFotosClientesPagina();
+  }
+
+  get totalItensAvaliacoes() {
+    return this.avaliacoes.length;
+  }
+
+  onPaginaMudouAvaliacoes(novaPagina: number) {
+    this.paginaAtualAvaliacoes = novaPagina;
+    this.atualizarPaginacaoAvaliacoes();
+  }
+
+
+  getTempoDecorridoAvaliacao(avaliacao: AvaliacaoDTO): string {
+    if (!avaliacao?.dataCriacao) {
+      return '';
+    }
+
+    let dataMs: number;
+
+    if (avaliacao.dataCriacao instanceof Date) {
+      dataMs = avaliacao.dataCriacao.getTime();
+    } else {
+      // string "yyyy-MM-dd HH:mm:ss" -> "yyyy-MM-ddTHH:mm:ss"
+      const raw = avaliacao.dataCriacao.toString().replace(' ', 'T');
+      const parsed = new Date(raw);
+      if (isNaN(parsed.getTime())) {
+        return '';
+      }
+      dataMs = parsed.getTime();
+    }
+
+    const agora = Date.now();
+    const diffMs = agora - dataMs;
+
+    if (diffMs < 0) {
+      return 'agora mesmo';
+    }
+
+    const diffSeg = Math.floor(diffMs / 1000);
+    const diffMin = Math.floor(diffSeg / 60);
+    const diffHoras = Math.floor(diffMin / 60);
+    const diffDias = Math.floor(diffHoras / 24);
+
+    if (diffMin < 1) {
+      return 'agora mesmo';
+    }
+
+    if (diffMin < 60) {
+      return `há ${diffMin} minuto${diffMin > 1 ? 's' : ''}`;
+    }
+
+    if (diffHoras < 24) {
+      return `há ${diffHoras} hora${diffHoras > 1 ? 's' : ''}`;
+    }
+
+    return `há ${diffDias} dia${diffDias > 1 ? 's' : ''}`;
+  }
+
+  private carregarFotosClientesPagina(): void {
+    const ids = this.avaliacoesPaginadas
+      .map(a => a.clienteId)
+      .filter((id): id is number => !!id);
+
+    if (!ids.length) {
+      return;
+    }
+
+    this.usuarioMidiasService.getFotosPerfilDaPagina(ids).subscribe({
+      next: (mapa) => {
+        // mescla no cache local para não perder já carregados
+        this.fotosClientes = { ...this.fotosClientes, ...mapa };
+      },
+      error: (err) => {
+        console.error('Erro ao carregar fotos dos clientes', err);
+      }
+    });
+  }
+
 }
