@@ -37,7 +37,7 @@ import { NotificacaoClienteComponent } from './notificacoes/cliente/notificacao-
 const routes: Routes = [
   {  path: 'usuario', 
     component: LayoutComponent,
-    // canActivate: [AuthGuard],        // <<<<< protege TODOS os filhos
+    canActivate: [AuthGuard],       
     children: [
        //inicios
        { path: 'inicio-admin', component: InicioAdminComponent},
