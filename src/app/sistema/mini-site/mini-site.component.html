@@ -18,8 +18,12 @@
                 </ng-template>
 
                 <div class="rating">
-                    <span class="score"> <span class="star">★</span> {{ (4.0) | number:'1.1-1' }}/5</span>
+                    <span class="score">
+                        <span class="star">★</span>
+                        {{ (mediaAvaliacoes || 0) | number:'1.1-1' }}/5
+                    </span>
                 </div>
+
             </div>
         </div>
         <div class="actions-user">
@@ -117,36 +121,68 @@
     </div>
 
     <div class="comentarios-container">
-        <h1 class="titulo">Comentários</h1>
+        <div class="comentarios-header">
+            <h1 class="titulo">Comentários</h1>
+            <button class="btn-orcamento" id="btn-avaliar" (click)="abrirModalAvaliarProfissional()">
+            Escreva uma avaliação
+            </button>
+        </div>
 
-        <div class="comentarios-list">
-            <article class="comentario-card" *ngFor="let c of comentarios">
+        <div class="comentarios-list" *ngIf="avaliacoesPaginadas.length; else semAvaliacoes">
+            <article class="comentario-card" *ngFor="let a of avaliacoesPaginadas">
             <header class="comentario-header">
-                <img [src]="c.foto" [alt]="'Foto de ' + c.nome">
+                <img
+                [src]="a.clienteId && fotosClientes[a.clienteId] ? fotosClientes[a.clienteId] : '/assets/imagens/foto-perfil-generico.png'"
+                [alt]="'Foto de ' + (a.clienteNome || 'cliente')"
+                />                
                 <div class="comentario-meta">
                 <h4>
-                    {{ c.nome }}
-                    <span class="badge" *ngIf="c.verificado">Cliente verificado</span>
+                    {{ a.clienteNome || 'Cliente' }}
                 </h4>
                 <div class="stars-e-data">
                     <div class="stars">
-                    <span *ngFor="let s of [1,2,3,4,5]; let i = index"
-                            [class.filled]="i < c.estrelas">★</span>
+                    <span
+                        *ngFor="let s of [1,2,3,4,5]; let i = index"
+                        [class.filled]="i < (a.estrela || 0)"
+                        >★</span
+                    >
                     </div>
-                    <small class="data">{{ c.data }}</small>
+                    <small class="data">{{ getTempoDecorridoAvaliacao(a) }}</small>
                 </div>
                 </div>
             </header>
 
-            <h3 class="comentario-titulo">{{ c.titulo }}</h3>
-            <p class="comentario-texto">{{ c.texto }}</p>
-
+            <h3 class="comentario-titulo">{{ a.titulo || 'Avaliação do cliente' }}</h3>
+            <p class="comentario-texto">{{ a.descricao }}</p>
             </article>
         </div>
+
+        <ng-template #semAvaliacoes>
+            <div class="no-data-message">
+                <img src="assets/icones/no-data-icon.svg" alt="Sem dados" />
+                <p>Este profissional ainda não possui avaliações.</p>
+            </div>
+        </ng-template>
+
+        
+        <div class="paginacao">
+            <app-pagination
+            [paginaAtual]="paginaAtualAvaliacoes"
+            [totalItens]="totalItensAvaliacoes"
+            [itensPorPagina]="itensPorPaginaAvaliacoes"
+            (paginaMudou)="onPaginaMudouAvaliacoes($event)">
+            </app-pagination>
+        </div>
+        
     </div>
 
+    <!-- <div class="avalie-container">
+        <h2>Avalie este profissional</h2>
+        <button class="btn-orcamento" id="btn-avaliar" (click)="abrirModalAvaliarProfissional()">Escreva uma avaliação</button>
+        <p>Compartilhe seus pensamentos com outros clientes</p>
+    </div> -->
 
-    <div class="avaliacoes-container">
+    <!-- <div class="avaliacoes-container">
         <h1 class="titulo">Avaliações de clientes</h1>
         <section class="dual-flex">
             <section class="avaliacoes-media-e-barra">
@@ -163,12 +199,51 @@
                     <p>1 estrelas <img src="/assets/imagens/imagens-de-exemplo/barra-vazia.png" alt="barra de avaliações"> {{"0%"}}</p>
                 </div>
             </section>
-            <div class="avalie-container">
-                <h2>Avalie este profissional</h2>
-                <button class="btn-orcamento" id="btn-avaliar">Escreva uma avaliação</button>
-                <p>Compartilhe seus pensamentos com outros clientes</p>
-            </div>
+
         </section>
+    </div> -->
+</div>
+
+
+<ng-template #avaliacaoTemplate>
+  <div class="avaliacao-modal">
+    <div class="avaliacao-modal-section">
+      <label class="avaliacao-modal-label">Como estava o serviço?</label>
+
+    <div class="avaliacao-stars">
+        <button
+            type="button"
+            *ngFor="let star of [1,2,3,4,5]"
+            (click)="setAvaliacaoEstrelas(star)"
+            (mouseenter)="onStarHover(star)"
+            (mouseleave)="onStarLeave()"
+            [class.filled]="star <= (starHover || avaliacaoEstrelas)"
+        >
+            ★
+        </button>
     </div>
 
-</div>
+    </div>
+
+    <div class="avaliacao-modal-section">
+      <label class="avaliacao-modal-label">Dê um título à sua avaliação</label>
+      <input
+        type="text"
+        [(ngModel)]="avaliacaoTitulo"
+        placeholder="Digite um título para a avaliação">
+    </div>
+
+    <div class="avaliacao-modal-section">
+      <label class="avaliacao-modal-label">Escrever uma avaliação</label>
+      <textarea
+        [(ngModel)]="avaliacaoTexto"
+        placeholder="O que os outros clientes precisam saber?">
+      </textarea>
+    </div>
+
+    <p class="avaliacao-erro" *ngIf="avaliacaoErro">
+      {{ avaliacaoErro }}
+    </p>
+  </div>
+</ng-template>
+

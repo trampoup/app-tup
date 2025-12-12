@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap");
 
 html,
 body {
@@ -77,6 +78,7 @@ html {
   --container-modal: #ffffff;
   --card-background: #D9E8FF;
   --card-background2: #F6F6F6;
+  --card-background3: #0E90AF;
   /* inputs */
   --bg-input: #ffffff;
   /* tabela */

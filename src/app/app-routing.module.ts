@@ -7,6 +7,7 @@ import { PainelAdminComponent } from './sistema/Dashboards/painel-admin/painel-a
 import { CadastroComponent } from './cadastro/cadastro.component';
 import { AuthGuard } from './configs/security/auth.guard';
 import { MiniSitePublicoComponent } from './sistema/mini-site/mini-site-publico/mini-site-publico.component';
+import { PlanosComponent } from './planos/planos.component';
 
 const routes: Routes = [
   //públicas
@@ -17,6 +18,8 @@ const routes: Routes = [
 
   { path: 'perfil-publico', component: MiniSitePublicoComponent},
   { path: 'perfil-publico/:id', component: MiniSitePublicoComponent },
+
+  { path: 'planos', component: PlanosComponent },
 
   //privadas
   { path: '', component: LayoutComponent,

@@ -421,7 +421,6 @@
 #btn-avaliar{
     display: block;
     margin: 0;
-    width: 55%;
     box-sizing: border-box;
 }
 
@@ -471,7 +470,6 @@
     font-weight: 600;
     color: var(--lm-preto);
     margin: 0;
-    margin-bottom: 16px;
 }
 
 @media screen and (min-width: 901px) and (max-width: 1280px) {
@@ -502,11 +500,21 @@
   margin-bottom: 0;
 }
 
+.comentarios-container{
+    margin-top: 32px;
+}
 
 .comentarios-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
+}
+
+.comentarios-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
 }
 
 .comentario-card {
@@ -563,11 +571,11 @@
 .stars {
   display: inline-flex;
   gap: 2px;
-  font-size: 16px;
+  font-size: 24px;
   line-height: 1;
 }
 
-.stars span { color: #d0d0d0; }
+.stars span { color: #d0d0d0;}
 .stars span.filled { color: #F5A623; } /* mesma cor das estrelas que vc já usa */
 
 .data {
@@ -593,5 +601,70 @@
   gap: 12px;
   margin-top: 8px;
 }
+
+/* Modal de avaliação do profissional */
+.avaliacao-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.avaliacao-modal-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.avaliacao-modal-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1a1918;
+  font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+.avaliacao-stars {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.avaliacao-stars button {
+  background: transparent;
+  border: none;
+  font-size: 55px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  color: #f0c550; /* estrela preenchida */
+  text-shadow: 0 0 3px #f0c550; 
+}
+
+.avaliacao-stars button:not(.filled) {
+  color: #f5f5f5; /* estrela vazia */
+}
+
+.avaliacao-modal input,
+.avaliacao-modal textarea {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  padding: 15px 15px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.avaliacao-modal textarea {
+  min-height: 120px;
+  resize: none;
+}
+
+.avaliacao-erro {
+  margin: 0;
+  margin-top: 4px;
+  font-size: 16px;
+  color: #c53030;
+}
+
 
 

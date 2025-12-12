@@ -18,6 +18,7 @@ import { AuthService } from './configs/services/auth.service';
 import { TokenInterceptor } from './configs/security/token.interceptor';
 import { CadastroComponent } from './cadastro/cadastro.component';
 import { BotTiComponent } from './sistema/bot-ti/bot-ti.component';
+import { PlanosComponent } from './planos/planos.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { BotTiComponent } from './sistema/bot-ti/bot-ti.component';
     LayoutComponent,
     EsqueciSenhaComponent,
     CadastroComponent,
-    BotTiComponent
+    BotTiComponent,
+    PlanosComponent
   ],
   imports: [
     BrowserModule,

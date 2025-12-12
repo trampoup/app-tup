@@ -19,7 +19,10 @@
                 </ng-template>
 
                 <div class="rating">
-                    <span class="score"> <span class="star">★</span> {{ (4.0) | number:'1.1-1' }}/5</span>
+                    <span class="score">
+                        <span class="star">★</span>
+                        {{ (mediaAvaliacoes || 0) | number : '1.1-1' }}/5
+                    </span>
                 </div>
             </div>
         </div>
@@ -141,34 +144,57 @@
     <div class="comentarios-container">
         <h1 class="titulo">Comentários</h1>
 
-        <div class="comentarios-list">
-            <article class="comentario-card" *ngFor="let c of comentarios">
-            <header class="comentario-header">
-                <img [src]="c.foto" [alt]="'Foto de ' + c.nome">
-                <div class="comentario-meta">
+        <div class="comentarios-list" *ngIf="avaliacoesPaginadas.length; else semAvaliacoes">
+            <article class="comentario-card" *ngFor="let a of avaliacoesPaginadas">
+             <header class="comentario-header">
+                <img
+                [src]="a.clienteId && fotosClientes[a.clienteId]
+                    ? fotosClientes[a.clienteId]
+                    : '/assets/imagens/foto-perfil-generico.png'"
+                [alt]="'Foto de ' + (a.clienteNome || 'cliente')"
+                />
+            <div class="comentario-meta">
                 <h4>
-                    {{ c.nome }}
-                    <span class="badge" *ngIf="c.verificado">Cliente verificado</span>
+                {{ a.clienteNome || 'Cliente' }}
                 </h4>
                 <div class="stars-e-data">
-                    <div class="stars">
-                    <span *ngFor="let s of [1,2,3,4,5]; let i = index"
-                            [class.filled]="i < c.estrelas">★</span>
-                    </div>
-                    <small class="data">{{ c.data }}</small>
+                <div class="stars">
+                    <span
+                    *ngFor="let s of [1, 2, 3, 4, 5]; let i = index"
+                    [class.filled]="i < (a.estrela || 0)"
+                    >★</span
+                    >
                 </div>
+                <small class="data">{{ getTempoDecorridoAvaliacao(a) }}</small>
                 </div>
+            </div>
             </header>
 
-            <h3 class="comentario-titulo">{{ c.titulo }}</h3>
-            <p class="comentario-texto">{{ c.texto }}</p>
+            <h3 class="comentario-titulo">{{ a.titulo || 'Avaliação do cliente' }}</h3>
+            <p class="comentario-texto">{{ a.descricao }}</p>
+        </article>
+        </div>
 
-            </article>
+        <ng-template #semAvaliacoes>
+        <div class="no-data-message">
+            <img src="assets/icones/no-data-icon.svg" alt="Sem dados" />
+            <p>Você ainda não recebeu avaliações.</p>
+        </div>
+        </ng-template>
+
+        <div class="paginacao">
+            <app-pagination
+                [paginaAtual]="paginaAtualAvaliacoes"
+                [totalItens]="totalItensAvaliacoes"
+                [itensPorPagina]="itensPorPaginaAvaliacoes"
+                (paginaMudou)="onPaginaMudouAvaliacoes($event)"
+            >
+            </app-pagination>
         </div>
     </div>
 
 
-    <div class="avaliacoes-container">
+    <!-- <div class="avaliacoes-container">
         <h1 class="titulo">Avaliações de clientes</h1>
         <section class="dual-flex">
             <section class="avaliacoes-media-e-barra">
@@ -191,7 +217,7 @@
                 <p>Compartilhe seus pensamentos com outros clientes</p>
             </div>
         </section>
-    </div>
+    </div> -->
 
     <!-- <div class="principais-avaliacoes">
         <h1 class="titulo">Principais Avaliações</h1>

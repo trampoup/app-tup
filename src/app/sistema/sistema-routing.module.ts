@@ -32,6 +32,7 @@ import { VisualizarLocalizacoesComponent } from './localizacao/visualizar-locali
 import { VisualizarLocalizacaoComponent } from './localizacao/visualizar-localizacao/visualizar-localizacao.component';
 import { CadastrarLocalizacaoComponent } from './localizacao/cadastrar-localizacao/cadastrar-localizacao.component';
 import { CentralComunidadesComponent } from './comunidades/central-comunidades/central-comunidades.component';
+import { NotificacaoClienteComponent } from './notificacoes/cliente/notificacao-cliente/notificacao-cliente.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -94,8 +95,8 @@ const routes: Routes = [
         { path: 'lista-de-conversa-como-os-clientes', component: ListaDeConversaComOsClientesComponent},
 
          // Notificacoes do Cliente
-         { path: 'notificacao-do-cliente', component: ConversaComProfissionalComponent},
-         { path: 'lista-de-notificacoes-cliente', component: ListaDeConversaComOsProfissionaisComponent},
+         { path: 'notificacoes', component: NotificacaoClienteComponent},
+        //  { path: 'notificacao-do-cliente', component: ConversaComProfissionalComponent},
   
           // Notificacoes do profissional 
           { path: 'notificacao-do-profissional', component: ConversaComClienteComponent},
