@@ -76,3 +76,126 @@
         </div>      
 
 </section>
+
+<!-- MODAL -->
+ <ng-template #planosImpulsoTemplate>
+  <section class="impulso-planos-container">
+    <h2 class="impulso-title">Escolha seu plano de impulso!</h2>
+    <p class="impulso-subtitle">
+      Impulsione seu perfil agora e deixe seu trampo na frente dos clientes certos. 🚀
+    </p>
+
+    <div class="planos-list">
+      <div class="plano-card">
+        <div class="plano-header">
+          <h2>Grátis (Impulso Start)</h2>
+          <h1 class="plano-preco">R$0,00 <small>/único</small></h1>
+        </div>
+        <div class="plano-info">
+          <ul class="plano-beneficios">
+            <li>
+              <img src="/assets/icones/check 1.svg" alt="check" />
+              Visibilidade básica por 24h
+            </li>
+            <li>
+              <img src="/assets/icones/check 1.svg" alt="check" />
+              Selo: <strong>Perfil Ativo</strong>
+            </li>
+            <li>
+              <img src="/assets/icones/check 1.svg" alt="check" />
+              Tempo de destaque: <strong>24 horas</strong>
+            </li>
+          </ul>
+        </div>
+        <button class="button-plano" (click)="onSelecionarPlano('turbo')">
+          Escolher Impulso Turbo
+        </button>
+      </div>
+      <div class="plano-card">
+        <div class="plano-header">
+          <h2>Rápido (Impulso Turbo)</h2>
+          <h1 class="plano-preco">R$14,90 <small>/único</small></h1>
+        </div>
+        <div class="plano-info">
+          <ul class="plano-beneficios">
+            <li>
+              <img src="/assets/icones/check 1.svg" alt="check" />
+              Destaque + WhatsApp ativo
+            </li>
+            <li>
+              <img src="/assets/icones/check 1.svg" alt="check" />
+              Selo: <strong>Profissional em Ascensão</strong>
+            </li>
+            <li>
+              <img src="/assets/icones/check 1.svg" alt="check" />
+              Tempo de destaque: <strong>7 dias</strong>
+            </li>
+          </ul>
+        </div>
+        <button class="button-plano" (click)="onSelecionarPlano('turbo')">
+          Escolher Impulso Turbo
+        </button>
+      </div>
+
+      <div class="plano-card">
+        <div class="plano-header">
+          <h2>Pro (Impulso Power)</h2>
+          <h1 class="plano-preco">R$24,90 <small>/único</small></h1>
+        </div>
+        <div class="plano-info">
+          <ul class="plano-beneficios">
+            <li>
+              <img src="/assets/icones/check 2.svg" alt="check" />
+              Destaque + WhatsApp + 1 anúncio
+            </li>
+            <li>
+              <img src="/assets/icones/check 2.svg" alt="check" />
+              Selo: <strong>Profissional em Alta</strong>
+            </li>
+            <li>
+              <img src="/assets/icones/check 2.svg" alt="check" />
+              Tempo de destaque: <strong>15 dias</strong>
+            </li>
+          </ul>
+        </div>
+        <button class="button-plano" (click)="onSelecionarPlano('power')">
+          Escolher Impulso Power
+        </button>
+      </div>
+
+      <div class="plano-card level-up">
+        <div class="plano-header level-up">
+          <h2>Master (Impulso Elite)</h2>
+          <h1 class="plano-preco">R$39,90 <small>/único</small></h1>
+        </div>
+        <div class="plano-info">
+          <ul class="plano-beneficios level-up">
+            <li>
+              <img src="/assets/icones/check 2.svg" alt="check" />
+              Destaque + WhatsApp + 3 anúncios
+            </li>
+            <li>
+              <img src="/assets/icones/check 2.svg" alt="check" />
+              Gerar cupons para clientes
+            </li>
+            <li>
+              <img src="/assets/icones/check 2.svg" alt="check" />
+              Selo: <strong>Profissional Premium</strong>
+            </li>
+            <li>
+              <img src="/assets/icones/check 2.svg" alt="check" />
+              Tempo de destaque: <strong>30 dias</strong>
+            </li>
+          </ul>
+        </div>
+        <button class="button-plano level-up" (click)="onSelecionarPlano('elite')">
+          Escolher Impulso Elite
+        </button>
+      </div>
+    </div>
+
+    <p class="impulso-note">
+      ✨ A TrampoUp não vende impulsos — vende visibilidade, reconhecimento e progresso.
+    </p>
+  </section>
+</ng-template>

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/configs/services/auth.service';
+import { ModalGenericoService } from 'src/app/configs/services/modal-generico.service';
 
 interface Action {
   type: string;
@@ -37,15 +38,22 @@ export class GameficacaoComponent implements OnInit {
     { type: 'socialProof',     label: 'Receber 3 avaliações (qualquer nota)',    points: 25, done: false },
   ];
 
-  constructor(private router: Router,
-    private authService:AuthService,
-  ){}
   // Recompensas por nível
   rewards: Reward[] = [
     { points: 50, description: '3 dias de destaque no feed' },
     { points: 100, description: '7 dias de destaque + selo de Engajado' },
     { points: 200, description: '14 dias de destaque + selo Ouro + botão Impulsionar Grátis' },
   ];
+
+  @ViewChild('planosImpulsoTemplate') planosImpulsoTemplate!: TemplateRef<any>;
+
+  constructor(
+    private router: Router,
+    private authService:AuthService,
+    private modalService: ModalGenericoService
+  ){}
+
+  
 
   ngOnInit(): void {
    
@@ -75,13 +83,26 @@ export class GameficacaoComponent implements OnInit {
   }
 
   purchaseBoost(): void {
-    // lógica para redirecionar ao pagamento de impulsionamento avulso
-    console.log('Iniciando fluxo de pagamento...');
+    this.modalService.openModal(
+      {
+        title: 'Planos de Impulso',
+        size: 'lg',
+        showFooter: false
+      },
+      undefined,
+      this.planosImpulsoTemplate
+    );
   }
 
   resetScore(): void {
     // reset manual (ou disparado mensalmente no backend)
     this.userScore = 0;
     this.actions.forEach(a => (a.done = false));
+  }
+
+  onSelecionarPlano(tipo: 'turbo' | 'power' | 'elite'): void {
+    console.log(`Plano escolhido: ${tipo}`);
+    // aqui depois você pluga o fluxo de pagamento
+    this.modalService.closeModal();
   }
 }

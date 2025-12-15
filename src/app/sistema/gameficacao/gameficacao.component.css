@@ -355,3 +355,166 @@
       flex-direction: column;
     }
   }
+
+  /* ---- Modal de Planos de Impulso ---- */
+
+.impulso-planos-container {
+  padding: 8px 0 0;
+}
+
+.impulso-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: var(--lm-text);
+  text-align: center;
+}
+
+.impulso-subtitle {
+  margin: 0 0 16px;
+  font-size: 0.95rem;
+  color: var(--lm-text02);
+  text-align: center;
+}
+
+
+.planos-list {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.plano-card {
+  background-color: var(--lm-branco);
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-height: 320px;
+  width: 280px;
+  box-shadow: 0 0 12px rgba(15, 23, 42, 0.08);
+}
+
+.plano-card.level-up {
+  background-color: var(--card-background3);
+  color: var(--lm-branco);
+}
+
+.plano-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 6px;
+  color: #111827;
+  margin-top: 0;
+}
+
+.plano-header.level-up {
+  color: var(--lm-branco);
+}
+
+.plano-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.plano-preco {
+  font-family: "Inter", sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.plano-preco small {
+  font-size: 0.9rem;
+}
+
+.plano-info {
+  width: 100%;
+  display: flex;
+  margin: 0 0 auto 0;
+}
+
+.plano-beneficios {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: "Manrope", sans-serif;
+}
+
+.plano-beneficios.level-up li {
+  color: var(--lm-branco);
+}
+
+.plano-beneficios li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #111827;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.plano-beneficios li img {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+}
+
+.button-plano {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 10px 18px;
+  background-color: #F5A002;
+  font-weight: 600;
+  margin-top: auto;
+  font-size: 0.9rem;
+  border: none;
+  color: #111827;
+}
+
+.button-plano.level-up {
+  color: var(--card-background3);
+  background-color: var(--lm-branco);
+}
+
+.button-plano:hover {
+  background-color: #d48800;
+  cursor: pointer;
+}
+
+.button-plano.level-up:hover {
+  background-color: #e6e6e6;
+}
+
+.button-plano:active {
+  transform: scale(0.98);
+  transition: transform 0.1s;
+}
+
+.impulso-note {
+  margin-top: 16px;
+  font-size: 1rem;
+  color: var(--lm-text03);
+  text-align: center;
+}
+
+/* Responsivo dentro do modal */
+@media (max-width: 768px) {
+  .planos-list {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .plano-card {
+    width: 100%;
+  }
+}
