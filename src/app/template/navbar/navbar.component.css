@@ -740,21 +740,6 @@ mat-drawer-content.shifted {
   transform: translateY(-50%);
 }
 
-.notification-count{
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: #dc3545;
-  color: white;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  font-size: 11px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .show-sidebar .notification-badge {
   top: -8px;
   right: -8px;
