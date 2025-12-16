@@ -12,6 +12,57 @@
           <img src="/assets/icones/localizacao-headersidebar-icon.svg" alt="location">
         </div>
         <div class="usuario">
+          <div class="notification-container">
+
+            <button class="notification-toggle" (click)="toggleNotification()">
+              <img src="assets/icones/notificacao.svg" alt="Notificações" />
+              <!-- Indicador de notificações não lidas -->
+              <span *ngIf="unreadNotifications > 0" class="notification-count">{{unreadNotifications}}</span>
+            </button>
+
+          <!-- Dropdown de notificações -->
+            <div class="notification-dropdown" [ngClass]="{ 'show': isNotificationOpen }">
+              <div class="notification-header">
+                <h3>Notificações</h3>
+                <button class="mark-all-read" (click)="markAllAsRead()">Marcar todas como lida</button>
+              </div>
+              <div class="notification-list">
+                <div
+                  *ngFor="let notification of notifications"
+                  class="notification-item"
+                  [class.lida]="notification.lida"
+                  (click)="markNotificationAsRead(notification)"
+                >
+                  <div class="notification-conteudo">
+                    <div class="notification-avatar">
+                      <img [src]="notification.fotoUrl" alt="Foto do usuário" />
+                    </div>
+
+                    <div class="notification-mensagem">
+                      <p class="notification-title">{{ notification.nomeUsuario }},</p>
+                      <p class="notification-message">{{ notification.descricao }}</p>
+                    </div>
+                  </div>
+
+                  <span class="notification-time">
+                    {{ getTempoDecorrido(notification) }}
+                  </span>
+
+                  <div class="notification-new" *ngIf="!notification.lida"></div>
+                </div>
+
+                <div *ngIf="notifications.length === 0" class="empty-notifications">
+                  <p>Nenhuma notificação</p>
+                </div>
+              </div>
+
+              <div class="notification-footer">
+                <a routerLink="/usuario/notificacoes">Ver todas as notificações</a>
+              </div>
+            </div>
+          </div>
+
+
           <img src="assets/imagens/user-photo.png" *ngIf="fotoUsuario; else fallbackPhoto" alt="User Photo" class="user-photo" />
 
           <ng-template #fallbackPhoto>

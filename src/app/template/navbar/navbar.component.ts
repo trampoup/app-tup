@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/configs/services/auth.service';
 import { LocalizacaoService } from 'src/app/configs/services/localizacao.service';
 import { ModalGenericoService } from 'src/app/configs/services/modal-generico.service';
 import { Localizacao } from 'src/app/sistema/localizacao/localizacao';
+import { Notificacao } from 'src/app/sistema/notificacoes/Notificacao';
 
 
 @Component({
@@ -44,6 +45,10 @@ export class NavbarComponent implements OnInit {
   localizacoes: Localizacao[] = [];
   selectedLocalizacaoId: number | string | null = null;
 
+  isNotificationOpen = false;
+  notifications: Notificacao[] = [];
+  unreadNotifications = 0;
+
    // Mapeamento das permissões para suas descrições
   private permissaoDescricao: { [key: string]: string } = {
     'ADMIN': 'Administrador',
@@ -73,6 +78,9 @@ export class NavbarComponent implements OnInit {
         console.error('Erro ao obter perfil do usuário:', error);
       }
     });
+
+    this.carregarNotificacoesMock();
+    this.updateUnreadCount();
   }
 
   carregarLocalizacoes():void{
@@ -273,4 +281,140 @@ export class NavbarComponent implements OnInit {
     const index = seed ? seed.charCodeAt(0) % colors.length : 0;
     return colors[index];
   }
+
+  private carregarNotificacoesMock(): void {
+    const fotoGenerica = 'assets/imagens/foto-perfil-generico.png';
+
+    const agora = Date.now();
+
+    this.notifications = [
+      {
+        id: 1,
+        nomeUsuario: 'Paulo Clima LTDA',
+        descricao: 'Lembrete de serviço amanhã às 14h.',
+        dataNotificacao: new Date(agora - 20 * 60 * 1000), // há 20 minutos
+        lida: false,
+        fotoUrl: 'assets/imagens/imagens-de-exemplo/foto-profissional.png'
+      },
+      {
+        id: 2,
+        nomeUsuario: 'Fernanda Lima',
+        descricao: 'enviou uma nova mensagem para você.',
+        dataNotificacao: new Date(agora - 2 * 60 * 60 * 1000), // há 2 horas
+        lida: false,
+        fotoUrl: fotoGenerica
+      },
+      {
+        id: 3,
+        nomeUsuario: 'Fernanda Lima',
+        descricao: 'enviou uma nova mensagem para você.',
+        dataNotificacao: new Date(agora - 5 * 60 * 1000), // há 5 minutos
+        lida: false,
+        fotoUrl: fotoGenerica
+      },
+      {
+        id: 4,
+        nomeUsuario: 'Fernanda Lima',
+        descricao: 'enviou uma nova mensagem para você.',
+        dataNotificacao: new Date(agora - 26 * 60 * 60 * 1000), // há 1 dia+
+        lida: true,
+        fotoUrl: fotoGenerica
+      },
+      {
+        id: 5,
+        nomeUsuario: 'Fernanda Lima',
+        descricao: 'enviou uma nova mensagem para você.',
+        dataNotificacao: new Date(agora - 3 * 24 * 60 * 60 * 1000), // há 3 dias
+        lida: true,
+        fotoUrl: fotoGenerica
+      },
+      {
+        id: 6,
+        nomeUsuario: 'Fernanda Lima',
+        descricao: 'enviou uma nova mensagem para você.',
+        dataNotificacao: new Date(agora - 4 * 24 * 60 * 60 * 1000), // há 3 dias
+        lida: true,
+        fotoUrl: fotoGenerica
+      },
+      {
+        id: 7,
+        nomeUsuario: 'Fernanda Lima',
+        descricao: 'enviou uma nova mensagem para você.',
+        dataNotificacao: new Date(agora - 4 * 24 * 60 * 60 * 1000), // há 3 dias
+        lida: true,
+        fotoUrl: fotoGenerica
+      }
+    ];
+
+    this.notifications.sort(
+      (a, b) => new Date(b.dataNotificacao).getTime() - new Date(a.dataNotificacao).getTime()
+    );
+  }
+
+  getTempoDecorrido(notificacao: Notificacao): string {
+    if (!notificacao?.dataNotificacao) {
+      return '';
+    }
+
+    const agora = Date.now();
+    const data = new Date(notificacao.dataNotificacao).getTime();
+    const diffMs = agora - data;
+
+    if (diffMs < 0) {
+      return 'agora mesmo';
+    }
+
+    const diffSeg = Math.floor(diffMs / 1000);
+    const diffMin = Math.floor(diffSeg / 60);
+    const diffHoras = Math.floor(diffMin / 60);
+    const diffDias = Math.floor(diffHoras / 24);
+
+    if (diffMin < 1) {
+      return 'agora mesmo';
+    }
+
+    if (diffMin < 60) {
+      return `há ${diffMin} minuto${diffMin > 1 ? 's' : ''}`;
+    }
+
+    if (diffHoras < 24) {
+      return `há ${diffHoras} hora${diffHoras > 1 ? 's' : ''}`;
+    }
+
+    return `há ${diffDias} dia${diffDias > 1 ? 's' : ''}`;
+  }
+
+  // Método para alternar o dropdown de notificações
+  toggleNotification(): void {
+    this.isNotificationOpen = !this.isNotificationOpen;
+    
+    // Fecha o dropdown do usuário se estiver aberto
+    if (this.isNotificationOpen && this.isDropdownOpen) {
+      this.isDropdownOpen = false;
+    }
+  }
+
+
+  markNotificationAsRead(notification: Notificacao): void {
+    if (notification.lida) return;
+    notification.lida = true;
+    this.updateUnreadCount();
+  }
+
+  markAllAsRead(): void {
+    // Marca todas as notificações como lidas
+    this.notifications.forEach(notification => {
+      notification.lida = true;
+    });
+    
+    // Atualiza o contador de notificações não lidas
+    this.updateUnreadCount();
+  }
+
+  // Método para atualizar contador de não lidas
+  updateUnreadCount(): void {
+    this.unreadNotifications = this.notifications.filter(n => !n.lida).length;
+  }
+
+
 }
