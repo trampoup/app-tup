@@ -32,6 +32,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
 }
 
 .user-info{
@@ -138,6 +139,8 @@
 
 .actions-user.profissional > button{
     padding: 12px 28px;
+    justify-content: center;
+    align-items: center; 
 }
 
 .btn-impulsionar{
@@ -196,6 +199,9 @@
     padding-inline: 36px;
     margin-top: 24px;
     margin-bottom: 24px;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
 }
 
 .dual-grid-estatisticas{
@@ -337,8 +343,17 @@
     font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
     color: var(--lm-preto);
     margin-right: auto;
+    flex: 1 1 auto;
     min-width: 0;                     /* chave para o texto encolher */
-    overflow: hidden;                 /* evita transbordo */
+    overflow: visible;                 /* evita transbordo */
+}
+
+.item-details h3,
+.item-details p,
+.item-details span {
+  white-space: normal;
+  overflow-wrap: anywhere; /* quebra palavras gigantes */
+  word-break: break-word;  /* fallback */
 }
 
 .item-details h3{
@@ -541,11 +556,7 @@
 
 /* (opcional) no mobile, se os botões precisarem quebrar,
    você pode deixar a coluna ocupar a largura máxima */
-@media (max-width: 640px){
-  .actions-user-col{
-    width: 100%;
-  }
-}
+
 
 /* --- Progress bar compacta com animação de foguete --- */
 .mini-progress-bar{
@@ -778,16 +789,123 @@
 }
 
 /* Responsivo */
-@media (max-width: 900px) {
-  .comentarios-list { grid-template-columns: 1fr; }
-}
 
-@media screen and (min-width: 901px) and (max-width: 1280px) {
+
+@media(max-width: 1366px) {
     .actions-user.profissional > button {
         padding: 10px 8px;
         font-size: 12px;
     }
 
+}
+
+@media(max-width: 1330px){
+    .servicos-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 1006px){
+  .header-container{
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .user-info{
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+  }
+
+  .user-photo{
+    margin-left: 0;
+  }
+
+  .user-details{
+    align-items: center;
+    text-align: center;
+  }
+  .user-details h2 {
+    font-size: 28px;
+  }
+
+  .cargo{
+    font-size: 19px;
+  }
+
+  .actions-user-col{
+    align-items: center;
+    margin-right: auto;
+  }
+
+  .actions-user.profissional{
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+
+  .estatisticas-container{
+    gap: 8px;
+    justify-content: center;
+    margin-inline: auto;
+  }
+
+  .comentarios-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  
+}
+
+@media (max-width: 700px){
+  .bio-user, .skills-user{
+    width: 100%;
+  }
+
+  .descricao-user{
+    flex-direction: column;
+  }
+
+  .servicos-list { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+
+  .comentarios-list { grid-template-columns: 1fr; }
+
+
+}
+
+@media (max-width: 470px){
+  .actions-user-col{
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    align-items: center;
+  }
+
+  .actions-user.profissional{
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .no-data-message img {
+    width: 150px;
+  }
+
+  .no-data-message p {
+    font-size: 1rem;
+  }
+
+}
+
+@media (max-width: 400px){
+  .servico-item-header{
+    flex-direction: column;
+    align-items: center;
+  }
+  .item-details{
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .servico-item-header img{
+    width: auto;
+  }
 }
 
 
