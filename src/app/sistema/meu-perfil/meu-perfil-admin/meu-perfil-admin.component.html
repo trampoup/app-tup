@@ -26,17 +26,22 @@
                     <p class="cargo">{{"Usuário"}}</p>
                 </ng-template>
 
-                <div class="botoes">
-                    <button (click)="ativarInfo()" [class.active]="isInfoUser" [attr.aria-pressed]="isInfoUser">
-                        <img src="/assets/icones/user-icon.svg" alt="informações pessoais"> Informações pessoais
-                    </button>
-                    <button (click)="ativarSenha()" [class.active]="isAlterarSenha" [attr.aria-pressed]="isAlterarSenha">
-                        <img src="/assets/icones/alterar-senha-icon.svg" alt="Alterar senha"> Alterar senha
-                    </button>
-                    <button (click)="ativarPagamentos()" [class.active]="isPagamentos" [attr.aria-pressed]="isPagamentos">
-                        <img src="/assets/icones/pagamentos-icon.svg" alt="Pagamentos e Planos"> Pagamentos e Planos
-                    </button>
+                <div class="tabs-scroll">
+                    <div class="botoes" role="tablist" aria-label="Seções do perfil">
+                        <button (click)="ativarInfo()" [class.active]="isInfoUser" type="button">
+                        <img src="/assets/icones/user-icon.svg" alt=""> Informações pessoais
+                        </button>
+
+                        <button (click)="ativarSenha()" [class.active]="isAlterarSenha" type="button">
+                        <img src="/assets/icones/alterar-senha-icon.svg" alt=""> Alterar senha
+                        </button>
+
+                        <button (click)="ativarPagamentos()" [class.active]="isPagamentos" type="button">
+                        <img src="/assets/icones/pagamentos-icon.svg" alt=""> Pagamentos e Planos
+                        </button>
+                    </div>
                 </div>
+
 
             </div>
         </div>

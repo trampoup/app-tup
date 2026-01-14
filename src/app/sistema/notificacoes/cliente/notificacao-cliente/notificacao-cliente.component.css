@@ -249,6 +249,18 @@
   color: #666;
 }
 
+@media (max-width: 993px){
+  .select-container {
+    width: 160px;
+  }
+
+  .notificacao-tempo{
+    bottom:3px;
+    font-size: 10px;
+    right: 16px;
+  }
+}
+
 /* responsivo básico */
 @media (max-width: 767px) {
   .main-container {
@@ -260,6 +272,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
+    padding: 8px;
   }
 
   .actions {
@@ -270,4 +283,37 @@
   .search-container {
     width: 100%;
   }
+}
+
+@media (max-width: 633px){
+  .select-container {
+    width: 160px;
+  }
+  /* .filtro-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+  } */
+}
+
+@media (max-width: 541px){
+  .filtro-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .select-container, .btn-container, .btn-container button {
+    width: 100%;
+  }
+
+  .btn-container button{
+    box-sizing: border-box;
+  }
+  .notificacao-item {
+    padding: 23px;
+  } 
+
 }

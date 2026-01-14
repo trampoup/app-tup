@@ -24,6 +24,10 @@
                         {{ (mediaAvaliacoes || 0) | number : '1.1-1' }}/5
                     </span>
                 </div>
+                <div class="profile-views">
+                    <i class="bi bi-eye"></i>
+                    <span>{{ perfil?.visualizacoesPerfil || 0 }} pessoas visualizaram o perfil</span>
+                </div>
             </div>
         </div>
         <div class="actions-user">
@@ -165,7 +169,7 @@
             </div>
         </ng-template>
 
-        <div class="paginacao" *ngIf="totalItensAvaliacoes > itensPorPaginaAvaliacoes">
+        <div class="paginacao">
             <app-pagination
                 [paginaAtual]="paginaAtualAvaliacoes"
                 [totalItens]="totalItensAvaliacoes"

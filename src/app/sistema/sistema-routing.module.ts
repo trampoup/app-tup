@@ -92,7 +92,7 @@ const routes: Routes = [
 
         // Bate Papo com o profissional 
         { path: 'conversa-com-cliente', component: ConversaComClienteComponent},
-        { path: 'lista-de-conversa-como-os-clientes', component: ListaDeConversaComOsClientesComponent},
+        { path: 'lista-de-conversas-com-os-clientes', component: ListaDeConversaComOsClientesComponent},
 
          // Notificacoes do Cliente
          { path: 'notificacoes', component: NotificacaoClienteComponent},

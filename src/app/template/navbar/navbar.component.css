@@ -717,54 +717,12 @@ mat-drawer-content.shifted {
   padding: 8px;
 }
 
-/* Badge de contagem de notificações não lidas */
-.notification-badge {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #dc3545;
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 500;
-  border-radius: 50%;
-  min-width: 22px;
-  width: auto;
-  height: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  top: 50%;
-  right: 16px;
-  transform: translateY(-50%);
-}
-
-.show-sidebar .notification-badge {
+.show-sidebar {
   top: -8px;
   right: -8px;
   transform: none;
 }
 
-/* Dropdown de notificações */
-.notification-dropdown {
-  display: none;
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: white;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  width: 350px;
-  max-height: 400px;
-  overflow: hidden;
-  z-index: 20;
-  margin-top: 10px;
-}
-
-.notification-dropdown.show {
-  display: block;
-}
 
 /* Cabeçalho do dropdown */
 .notification-header {
@@ -794,23 +752,6 @@ mat-drawer-content.shifted {
   background: #007bff2e;
 }
 
-/* Lista de notificações */
-.notification-list {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.notification-item {
-  padding: 12px 15px;
-  display: flex;
-  align-items: flex-start;
-  border-bottom: 1px solid #f1f1f1;
-  transition: background-color 0.2s;
-}
-
-.notification-item:hover {
-  background-color: #f8f9fa;
-}
 
 .notification-item.unread {
   background-color: #f0f7ff;
@@ -987,4 +928,36 @@ mat-drawer-content.shifted {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media (max-width: 507px){
+  .notification-dropdown {
+    width: 300px;
+    right: -20px;
+  }
+}
+
+@media (max-width: 400px){
+  .notification-dropdown {
+    width: 250px;
+    right: -40px;
+  }
+
+  .notification-item {
+    padding: 12px 10px;
+  }
+
+  .notification-avatar {
+    width: 30px;
+    height: 30px;
+  }
+
+  .notification-mensagem {
+    font-size: 12px;
+  }
+
+  .notification-time {
+    font-size: 10px;
+    right: 24px;
+  }
 }
