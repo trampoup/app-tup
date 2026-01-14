@@ -7,4 +7,5 @@ export interface UsuarioSiteDTO {
   bio?: string | null;
   skills?: string | null;
   tempoExperiencia?: number | null;
+  visualizacoesPerfil?: number | null;
 }

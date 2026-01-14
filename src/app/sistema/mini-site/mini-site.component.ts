@@ -106,6 +106,7 @@ export class MiniSiteComponent implements OnInit {
   private carregarPerfilPublico(id: number) {
     this.usuarioService.obterSitePorIdUsuario(id).subscribe({
       next: (dto) => {
+        console.log('Dados do perfil carregados:', dto);
         this.perfil = dto;
         const raw = dto?.skills ?? '';
         this.skillsLista = raw.split(/[;,]/).map(s => s.trim()).filter(Boolean);

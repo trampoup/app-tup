@@ -636,6 +636,22 @@
   margin-bottom: 0;
 }
 
+.profile-views{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  color: var(--lm-text04);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.profile-views i{
+  font-size: 16px;
+  line-height: 1;
+}
+
+
 /* Responsivo */
 
 
