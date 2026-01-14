@@ -1,1 +1,74 @@
-<p>conversa-com-cliente works!</p>
+<div class="main-container">
+  <div class="chat-container">
+    <div class="conversa-container">
+
+      <header class="chat-header">
+        <div class="back-title">
+          <img
+            src="/assets/icones/voltar-icon.svg"
+            alt="Back"
+            class="back-icon"
+            (click)="goBack()"
+          />
+        </div>
+
+        <div class="target-user">
+          <ng-container *ngIf="targetAvatar; else initialsAvatar">
+            <img class="target-avatar" [src]="targetAvatar" alt="Avatar do contato" />
+          </ng-container>
+
+          <ng-template #initialsAvatar>
+            <div class="target-avatar-initial" [style.background]="getRandomColor(targetName)">
+              {{ getInitial(targetName) }}
+            </div>
+          </ng-template>
+
+          <div class="target-info">
+            <div class="target-name">{{ targetName }}</div>
+            <div class="target-sub">{{ targetSubtitle }}</div>
+          </div>
+        </div>
+      </header>
+
+      <section class="chat-messages" #messagesContainer>
+        <div *ngFor="let message of messages"
+          class="message"
+          [ngClass]="{ user: message.isMe, other: !message.isMe }">
+
+          <div class="message-content">
+            <span class="message-username">{{ message.username }}</span>
+            <p class="message-text">{{ message.message }}</p>
+            <span class="message-timestamp">
+              {{ message.timestamp | date:'dd/MM/yyyy HH:mm' }}
+              <span *ngIf="message.isMe" class="message-check">✓</span>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <footer class="chat-input">
+        <form [formGroup]="chatForm" (ngSubmit)="enviarMensagem()" novalidate>
+          <textarea
+            #replyTextarea
+            formControlName="replymessage"
+            placeholder="Envie uma mensagem..."
+            (keydown)="onKeydown($event)"
+            (input)="autoGrow()"
+            rows="1"
+          ></textarea>
+
+          <button
+            type="button"
+            class="send-btn"
+            [disabled]="!chatForm.value.replymessage?.trim()"
+            (click)="enviarMensagem()"
+            aria-label="Enviar"
+          >
+            <img src="assets/icones/send-mens.svg" alt="Enviar" class="send-icon" />
+          </button>
+        </form>
+      </footer>
+
+    </div>
+  </div>
+</div>

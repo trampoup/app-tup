@@ -1,1 +1,71 @@
-<p>lista-de-conversa-com-os-clientes works!</p>
+<div class="main-container">
+  <div class="banner">
+    <h1>Conversas</h1>
+    <p>Negocie detalhes, tire dúvidas e acompanhe tudo em um só lugar.</p>
+  </div>
+
+  <div class="lista-de-conversas-titulo">
+    <p><a [routerLink]="getRotaInicial()">Inicio</a> > <span>Conversas</span></p>
+  </div>
+
+  <div class="contacts-container">
+    <div class="header-contatos">
+      <h2>Contatos</h2>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">
+      Carregando contatos...
+    </div>
+
+    <div *ngIf="!isLoading && contacts.length === 0" class="empty-state">
+      Nenhum contato disponível.
+    </div>
+
+    <div class="contacts-list">
+      <div
+        *ngFor="let contact of contacts"
+        class="contact-card"
+        (click)="openChat(contact)"
+      >
+        <div class="contact-avatar-wrap">
+          <img
+            *ngIf="contact.avatarUrl"
+            class="contact-avatar"
+            [src]="contact.avatarUrl"
+            alt="avatar"
+          />
+          <div
+            *ngIf="!contact.avatarUrl"
+            class="contact-avatar-initial"
+            [style.background]="getRandomColor(contact.nome)"
+          >
+            {{ getInitial(contact.nome) }}
+          </div>
+        </div>
+
+        <div class="contact-info">
+          <div class="contact-name"><img src="/assets/icones/maleta.svg" alt="Icone Profissional">{{ contact.nome }}</div>
+          <div class="contact-cargo" *ngIf="contact.cargo">{{ contact.cargo }}</div>
+
+          <div class="contact-last-msg" *ngIf="contact.ultimaMensagem">
+            {{ contact.ultimaMensagem }}
+          </div>
+
+          <div class="contact-last-msg" *ngIf="!contact.ultimaMensagem">
+            Clique para iniciar uma conversa
+          </div>
+        </div>
+
+        <div class="badge-group">
+          <div class="contact-unread" *ngIf="contact.naoLidas && contact.naoLidas > 0">
+            {{ contact.naoLidas }}
+          </div>
+
+          <div class="contact-timestamp" *ngIf="contact.ultimaMensagemEm">
+            {{ contact.ultimaMensagemEm | date:'short' }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
