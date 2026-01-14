@@ -255,6 +255,7 @@
     justify-content: space-between;
     margin-bottom: 8px;
     margin-top: 0;
+    gap: 8px;
 }
 
 .desc-header h3{
@@ -889,6 +890,12 @@
 
   .no-data-message p {
     font-size: 1rem;
+    text-align: center;
+  }
+
+  .video-view video {
+    max-width: 100%;
+    height: auto;
   }
 
 }
