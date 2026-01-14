@@ -46,7 +46,7 @@
     
 
     <div id="campo-descricao">
-        <label for="bio">Bio</label>
+        <label class="required" for="bio">Bio</label>
         <textarea 
         name="bio" 
         formControlName="bio" 
@@ -59,16 +59,16 @@
         <label class="form-label">
           Vídeo de Apresentação <span>(opcional)</span>
         </label>
-        <app-input-video label="Clique ou arraste o video para fazer upload" inputId="video" (videoSelected)="onVideoSelected($event, 'video')" [videoPreview]="videoPreview"></app-input-video>
+        <app-input-video label="Clique ou arraste o video para fazer upload" inputId="video"  [maxDurationSeconds]="30"  (validationError)="errorMessage = $event" (videoSelected)="onVideoSelected($event, 'video')" [videoPreview]="videoPreview"></app-input-video>
     </div>
 
     <div id="campo-valor">
-        <label for="experiencia">Tempo de experiência</label>
+        <label class="required" for="experiencia">Tempo de experiência</label>
         <input type="text" id="input-valor" (keypress)="allowOnlyNumbers($event)"  formControlName="tempoExperiencia" name="tempoExperiencia" placeholder="Digite o tempo">
     </div>
 
     <div id="campo-valor">
-        <label for="valor">Skills</label>
+        <label class="required" for="valor">Skills</label>
 
         <div class="skills-input" (click)="skillInput?.focus()">
           <span class="chip" *ngFor="let s of skills; let i = index">

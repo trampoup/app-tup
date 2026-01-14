@@ -8,9 +8,13 @@ import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 export class InputVideoComponent {
   @Input() label: string = 'Clique ou arraste o video para fazer upload';
   @Input() inputId: string = 'video';
+  @Input() maxDurationSeconds: number = 30;
   @Output() videoSelected = new EventEmitter<File | null>();
   @Input() videoPreview: string | ArrayBuffer | null = null;
   @Output() fileRemoved = new EventEmitter<void>();
+  @Output() validationError = new EventEmitter<string>();
+
+  localError: string | null = null;
   selectedFile: File | null = null; 
 
   constructor() { }
@@ -35,7 +39,54 @@ export class InputVideoComponent {
     }
   }
 
-  processFile(file: File, inputElement: HTMLInputElement): void {
+  private rejectFile(inputElement: HTMLInputElement, msg: string) {
+    this.localError = msg;
+    this.validationError.emit(msg);
+
+    this.selectedFile = null;
+    this.videoPreview = null;
+    this.videoSelected.emit(null);
+
+    if (inputElement) inputElement.value = '';
+  }
+
+  private getVideoDurationSeconds(file: File): Promise<number> {
+    return new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const video = document.createElement('video');
+
+      video.preload = 'metadata';
+      video.src = url;
+
+      video.onloadedmetadata = () => {
+        const dur = video.duration;
+        URL.revokeObjectURL(url);
+        resolve(dur);
+      };
+
+      video.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error('Erro ao ler metadata do vídeo'));
+      };
+    });
+  }
+
+
+  private async processFile(file: File, inputElement: HTMLInputElement): Promise<void> {
+    this.localError = null;
+
+    const duration = await this.getVideoDurationSeconds(file).catch(() => null);
+
+    if (duration == null || Number.isNaN(duration)) {
+      this.rejectFile(inputElement, 'Não foi possível validar a duração do vídeo. Tente outro arquivo.');
+      return;
+    }
+
+    if (duration > this.maxDurationSeconds) {
+      this.rejectFile(inputElement, `Vídeo muito longo: ${Math.ceil(duration)}s. O máximo permitido é ${this.maxDurationSeconds}s.`);
+      return;
+    }
+
     this.selectedFile = file;
     const reader = new FileReader();
 
