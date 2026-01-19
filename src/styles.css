@@ -549,6 +549,17 @@ select:focus {
   font-weight: 400;
 }
 
+@media (max-width: 470px){
+  .no-data-message img {
+    width: 150px;
+  }
+
+  .no-data-message p {
+    font-size: 1rem;
+    text-align: center;
+  }
+}
+
 .loading{
   top: 0;
   left: 0;
