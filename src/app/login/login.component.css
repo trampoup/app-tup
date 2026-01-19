@@ -306,9 +306,6 @@ body {
   }
 }
 @media screen and (min-width: 769px) and (max-width: 1280px) {
-  .text-image {
-    margin-left: 10%;          /* desloca em % pra manter centralização */
-  }
   .text-image h1 {
     font-size: 48px;
   }
@@ -317,5 +314,39 @@ body {
   }
   .text-image h2 {
     font-size: 20px;
+  }
+}
+
+@media (max-width: 1440px) {
+  .text-image{
+    margin-left: 10%;      
+    max-width: 520px;      
+  }
+
+  .text-image h1{
+    font-size: 52px;       
+  }
+
+  .text-image h1 strong{
+    margin-top: 2.2rem;   
+  }
+}
+
+@media (max-width: 925px) {
+  .text-image{
+    margin-left: 5%;       
+    max-width: 450px;      
+  }
+
+  .text-image h1{
+    font-size: 42px;       
+  }
+
+  .text-image h1 strong{
+    margin-top: 2rem;     
+  }
+
+  .text-image h2{
+    font-size: 18px;      
   }
 }
