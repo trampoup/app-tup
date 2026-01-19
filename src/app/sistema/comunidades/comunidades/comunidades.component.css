@@ -326,4 +326,281 @@
   display: flex;
   gap: 8px;
   align-items: center;
+  box-sizing: border-box;
+}
+
+/* responsivo básico */
+@media (max-width: 767px) {
+  .main-container {
+    margin: 90px 20px 20px;
+    padding: 20px;
+  }
+
+  .breadcrumb-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 8px;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+    gap: 24px;
+  }
+
+  .search-container {
+    width: 100%;
+  }
+}
+
+/* 1) Ajustes gerais do container */
+@media (max-width: 1024px){
+  .main-container{
+    margin: 110px 24px 24px;
+    padding: 28px 28px;
+  }
+
+  .banner{
+    padding: 40px 20px;
+  }
+
+  .banner p{
+    width: 70%;
+  }
+
+  .search-container{
+    width: 100%;
+    max-width: 520px;
+  }
+}
+
+@media (max-width: 768px){
+  .main-container{
+    margin: 90px 16px 16px;
+    padding: 18px 18px;
+  }
+
+  .banner{
+    padding: 28px 16px;
+    border-radius: 18px;
+  }
+
+  .banner h1{
+    font-size: 1.4rem;
+  }
+
+  .banner p{
+    font-size: 1rem;
+    width: 100%;
+  }
+
+  .comunidades-titulo{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .search-container{
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .btn-central-comunidades,
+  .btn-cadastrar-comunidade{
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 480px){
+  .main-container{
+    margin: 80px 12px 12px;
+    padding: 14px 14px;
+    border-radius: 18px;
+  }
+
+  .banner{
+    padding: 22px 14px;
+    border-radius: 16px;
+  }
+
+  .banner h1{ font-size: 1.25rem; }
+  .banner p { font-size: .95rem; }
+}
+
+
+/* ==========================================
+   2) CARROSSEL — scroll horizontal + botões
+========================================== */
+
+/* Deixa o scroller com “feeling” de mobile */
+.carousel-scroller{
+  scroll-snap-type: x mandatory;
+  padding-bottom: 6px;
+}
+
+/* cada item “encaixa” no scroll */
+.carousel-item{
+  scroll-snap-align: start;
+}
+
+@media (max-width: 768px){
+  .item-label{
+    font-size: 1rem;
+    padding: 6px 10px;
+  }
+
+  .carousel-btn{
+    width: 42px;
+    height: 42px;
+  }
+  .carousel-btn.left{ left: 6px; }
+  .carousel-btn.right{ right: 6px; }
+
+  .carousel-item{
+    flex: 0 0 48vw;      
+  }
+
+  .item-image{
+    aspect-ratio: 16 / 8;
+  }
+
+  /*
+  .carousel-btn{ display: none; }
+  .carousel-viewport{ overflow: visible; }
+  */
+}
+
+@media (max-width: 480px){
+  .carousel-track{
+    gap: 12px;
+    padding: 8px 10px; 
+  }
+
+  .carousel-root{
+    gap: 0;
+  }
+
+  .carousel-viewport{
+    --gap: 12px;
+    --cols: 1;
+  }
+
+  .carousel-item{
+    flex: 0 0 88vw;         /* aumenta o card no mobile */
+    border-radius: 18px;    /* opcional: mais arredondado */
+  }
+
+  .item-image{
+    aspect-ratio: 16 / 8;
+  }
+
+  .item-label{
+    font-size: 1.05rem;
+    padding: 8px 12px;
+  }
+
+  .carousel-btn{
+    width: 38px;
+    height: 38px;
+  }
+}
+
+
+/* ==========================================
+   3) CARDS DAS COMUNIDADES — responsivo
+========================================== */
+
+/* Desktop: mantém como está, mas garante imagem não estoura */
+.banner-comunidade,
+.banner-comunidade img{
+  max-width: 100%;
+}
+
+/* Tablet: card vira coluna (imagem em cima, conteúdo embaixo) */
+@media (max-width: 900px){
+  .card-comunidade{
+    flex-direction: column;
+    gap: 14px;
+    padding: 14px;
+  }
+
+  .banner-comunidade,
+  .banner-comunidade img{
+    width: 100%;
+    height: 220px;
+    border-radius: 12px;
+  }
+
+  .comunidade-info{
+    width: 100%;
+  }
+
+  .comunidade-info h1{
+    font-size: 1.2rem;
+    margin: 0 0 6px;
+  }
+
+  .comunidade-info p{
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 600px){
+  .banner-comunidade,
+  .banner-comunidade img{
+    height: 190px;
+  }
+
+  .comunidade-info-footer{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .btn-participar{
+    width: 100%;
+    justify-content: center;
+    padding: 12px 14px;
+    border-radius: 12px;
+  }
+
+  .comunidade-info-footer p{
+    font-size: .95rem;
+  }
+
+  .comunidade-info-footer span{
+    font-size: .95rem;
+  }
+}
+
+@media (max-width: 420px){
+  .card-comunidade{
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .banner-comunidade,
+  .banner-comunidade img{
+    height: 170px;
+    border-radius: 10px;
+  }
+
+  .comunidade-info h1{
+    font-size: 1.05rem;
+  }
+
+  .comunidade-info p{
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 360px){
+  .carousel-item{
+    flex-basis: 92vw;       /* ocupa mais da tela */
+  }
+  .item-image{
+    aspect-ratio: 16 / 12;  /* um pouco mais alto */
+  }
 }
