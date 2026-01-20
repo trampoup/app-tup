@@ -84,7 +84,6 @@ export class MiniSiteComponent implements OnInit {
     const idParam = this.route.snapshot.paramMap.get('id');
     const id = Number(idParam);
     if (!id || Number.isNaN(id)) {
-      console.log("URL INVALIDA ID AUSENTE");
       this.isLoading = false;
       return;
     }
@@ -106,7 +105,6 @@ export class MiniSiteComponent implements OnInit {
   private carregarPerfilPublico(id: number) {
     this.usuarioService.obterSitePorIdUsuario(id).subscribe({
       next: (dto) => {
-        console.log('Dados do perfil carregados:', dto);
         this.perfil = dto;
         const raw = dto?.skills ?? '';
         this.skillsLista = raw.split(/[;,]/).map(s => s.trim()).filter(Boolean);
@@ -246,7 +244,6 @@ export class MiniSiteComponent implements OnInit {
     this.usuarioService.favoritarProfissional(this.perfil?.id!).subscribe({
       next: () => {
         this.isFavorito = true;
-        console.log('Profissional favoritado com sucesso!');
       },
       error: (err) => {
         console.error('Erro ao favoritar profissional', err);
@@ -274,7 +271,6 @@ export class MiniSiteComponent implements OnInit {
     }
     this.usuarioService.desfavoritarProfissional(this.perfil?.id!).subscribe({
       next: () => {
-        console.log('Profissional desfavoritado com sucesso!');
         this.isFavorito = false;
       },
       error: (err) => {
@@ -355,7 +351,6 @@ export class MiniSiteComponent implements OnInit {
         this.avaliacoes.unshift(resp);
         this.atualizarMediaAvaliacoes();
         this.atualizarPaginacaoAvaliacoes();
-        console.log('Avaliação enviada:', resp);
       },
       error: (err) => {
         console.error('Erro ao enviar avaliação', err);

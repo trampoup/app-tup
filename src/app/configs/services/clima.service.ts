@@ -39,7 +39,6 @@ export class ClimaService {
         position => {
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
-          console.log(`Localização detectada: lat=${lat}, lon=${lon}`);
 
           this.fetchWeather(lat, lon).subscribe(
             data => {

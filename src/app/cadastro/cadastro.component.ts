@@ -87,11 +87,8 @@ export class CadastroComponent implements OnInit {
     if (this.step < 2) {      
       this.step++;
     }else{
-      console.log('Finalizar cadastro com categorias:', this.selectedCategories);
       this.usuarioService.atualizarInteresses(this.selectedCategories).subscribe(() => {
-        console.log('Interesses atualizados com sucesso.');
       }, error => {
-        console.error('Erro ao atualizar interesses:', error);
       });
       const rotaInicial = this.authService.getRotaDashboard(); //ja redireciona para a rota inicial
       this.router.navigate([rotaInicial]);
@@ -163,7 +160,6 @@ export class CadastroComponent implements OnInit {
       }))
       .subscribe({
         next: (response) => {
-          console.log('Cadastro realizado com sucesso:', response);
           this.errorMessage = null;
           this.isLoading = false;
           this.submited = false;
@@ -247,7 +243,6 @@ export class CadastroComponent implements OnInit {
       tipoUsuario: TipoUsuario.CLIENTE
     }
 
-    console.log('Cliente Cadastro:', clienteCadastro);
     
     this.usuarioService.cadastrarUsuario(clienteCadastro)
       .pipe(switchMap((created: ApiResponse<UsuarioCadastroDTO>) => {
@@ -260,7 +255,6 @@ export class CadastroComponent implements OnInit {
       }))
       .subscribe({
         next: (response) => {
-          console.log('Cadastro realizado com sucesso:', response);
           this.errorMessage = null;
           this.isLoading = false;
           this.submited = false;

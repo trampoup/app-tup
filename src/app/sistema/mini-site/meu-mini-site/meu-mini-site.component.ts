@@ -84,7 +84,6 @@ export class MeuMiniSiteComponent implements OnInit {
       next: (dto) => {
         this.perfil = dto;
 
-        console.log("meu id", this.perfil.id);
         const raw = dto?.skills ?? '';
         this.skillsLista = raw
           .split(/[;,]/)

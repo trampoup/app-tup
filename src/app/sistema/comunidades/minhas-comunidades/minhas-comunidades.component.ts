@@ -56,7 +56,6 @@ export class MinhasComunidadesComponent implements OnInit {
         this.totalItens = this.comunidades.length;
         this.totalPaginas = Math.ceil(this.totalItens / this.itensPorPagina);
         this.atualizarPaginacao();
-        console.log('Comunidades obtidas:', this.comunidades);
       },
       error: (err) => {
         console.error('Erro ao obter comunidades:', err);

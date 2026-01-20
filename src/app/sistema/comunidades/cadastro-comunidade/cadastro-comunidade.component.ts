@@ -100,7 +100,6 @@ export class CadastroComunidadeComponent implements OnInit {
       reader.readAsDataURL(image);
       this.removeBanner = false;
     }
-    console.log(`Imagem de ${tipo} selecionada:`, image);
   }
 
   onSubmit() {
@@ -134,7 +133,6 @@ export class CadastroComunidadeComponent implements OnInit {
       formData.append('banner', bannerFile);
     }
     
-    console.log('Comunidade a ser enviada:', comunidade);
 
     const request$ = this.isEditMode && this.comunidadeId
       ? this.comunidadeService.editarComunidade(this.comunidadeId, formData, this.removeBanner)

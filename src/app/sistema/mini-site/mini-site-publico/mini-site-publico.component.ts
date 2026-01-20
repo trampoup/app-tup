@@ -71,7 +71,6 @@ export class MiniSitePublicoComponent implements OnInit {
     const idParam = this.route.snapshot.paramMap.get('id');
     const id = Number(idParam);
     if (!id || Number.isNaN(id)) {
-      console.log('URL INVALIDA ID AUSENTE');
       this.isLoading = false;
       return;
     }

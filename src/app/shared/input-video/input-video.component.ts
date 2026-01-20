@@ -128,7 +128,6 @@ export class InputVideoComponent {
 
     this.fileRemoved.emit();
 
-    console.log('Arquivo removido');
   }
 
 }

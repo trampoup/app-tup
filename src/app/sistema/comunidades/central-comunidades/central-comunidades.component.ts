@@ -72,7 +72,6 @@ export class CentralComunidadesComponent implements OnInit {
         this.totalPaginasCCriadas = Math.ceil(this.totalItensCCriadas / this.itensPorPaginaCCriadas);
         this.paginaAtualCCriadas = 1;
         this.atualizarPaginacaoCriadas();
-        console.log('Comunidades criadas obtidas:', this.comunidadesCriadas);
       },
       error: (err) => {
         console.error('Erro ao obter comunidades criadas:', err);
@@ -94,7 +93,6 @@ export class CentralComunidadesComponent implements OnInit {
         this.totalPaginasCParticipo = Math.ceil(this.totalItensCParticipo / this.itensPorPaginaCParticipo);
         this.paginaAtualCParticipo = 1;
         this.atualizarPaginacaoParticipando();
-        console.log('Comunidades obtidas:', this.comunidadesParticipando);
       },
       error: (err) => {
         console.error('Erro ao obter comunidades:', err);
@@ -117,7 +115,6 @@ export class CentralComunidadesComponent implements OnInit {
           this.totalPaginasCParticipo = Math.ceil(this.totalItensCParticipo / this.itensPorPaginaCParticipo);
           this.paginaAtualCParticipo = 1;
           this.atualizarPaginacaoParticipando();
-          console.log('Comunidades filtradas:', lista);
           this.isLoadingParticipando = false;
         },
         error: (err) => {

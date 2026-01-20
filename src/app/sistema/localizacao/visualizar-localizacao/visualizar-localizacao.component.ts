@@ -82,7 +82,6 @@ export class VisualizarLocalizacaoComponent implements OnInit, AfterViewInit, On
     this.localizacaoService.obterPorId(this.localizacaoId).subscribe({
       next: (localizacao: Localizacao) => {
         this.selectedLocalizacao = localizacao;
-        console.log(this.selectedLocalizacao);
         this.isLoading = false;
 
         // Gera o mapa estático baseado na localização

@@ -144,7 +144,6 @@ export class CadastrarLocalizacaoComponent implements OnInit {
       },
       error: err =>{
         this.isLoading = false;
-        console.log(err);
         this.errorMessage = err?.error?.message || 'Erro ao salvar localização';
         this.successMessage = null;
       }
