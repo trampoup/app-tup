@@ -197,7 +197,6 @@ export class PainelProfissionalComponent implements OnInit {
   getWeatherForRussas(): void {
     this.climaService.fetchWeatherForRussas().subscribe((data) => {
       this.weatherData = data;
-      console.log(this.weatherData);
       this.updateWeatherInfo();
     });
   }
@@ -206,7 +205,6 @@ export class PainelProfissionalComponent implements OnInit {
     this.climaService.fetchWeatherForCurrentLocation().subscribe(
       (data) => {
         this.weatherData = data;
-        console.log(this.weatherData);
         this.updateWeatherInfo();
       },
       (error) => {
@@ -219,7 +217,6 @@ export class PainelProfissionalComponent implements OnInit {
   getWeatherForLocation(lat: number, lon: number): void {
     this.climaService.fetchWeather(lat, lon).subscribe((data) => {
       this.weatherData = data;
-      console.log(this.weatherData);
       this.updateWeatherInfo();
     });
   }

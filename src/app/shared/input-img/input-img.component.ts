@@ -78,6 +78,5 @@ export class InputImgComponent implements OnInit {
 
     this.fileRemoved.emit();
 
-    console.log('Arquivo removido');
   }
 }

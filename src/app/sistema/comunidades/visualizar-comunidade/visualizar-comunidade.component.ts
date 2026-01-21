@@ -68,13 +68,11 @@ export class VisualizarComunidadeComponent implements OnInit {
 
   carregarComunidade(): void{
     this.comunidadeId = this.route.snapshot.paramMap.get('id');
-    console.log('ID da comunidade:', this.comunidadeId);
     if (!this.comunidadeId) { return; }
     this.isLoading = true;
 
     this.comunidadeService.obterComunidadePorId(this.comunidadeId).subscribe({
       next: (comunidade: ComunidadeResponseDTO) => {
-        console.log('Comunidade obtida:', comunidade);
         this.comunidade = comunidade;
         //isso aqui vai mudar, é só pra mostrar na reunião
         this.http.get(`${environment.apiURLBase}/api/comunidades/${comunidade.id}/banner`, { responseType: 'blob' })
@@ -120,7 +118,6 @@ export class VisualizarComunidadeComponent implements OnInit {
     if (this.comunidade?.id) {
       this.comunidadeService.sairDaComunidade(this.comunidade.id).subscribe({
         next: () => {
-          console.log('Saiu da comunidade com sucesso');
           this.fecharModalMenu();
           // Aqui você pode redirecionar ou mostrar uma mensagem
            this.router.navigate(['/usuario/comunidades']);

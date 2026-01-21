@@ -127,10 +127,8 @@ export class ListaDeCuponsComponent implements OnInit {
       this.cuponsService.getMeusCuponsCadastrados().subscribe(
         res => { 
           this.meusCupons = res ?? [];
-          console.log(this.meusCupons)
           this.totalPaginas = Math.ceil(this.meusCupons.length / this.itensPorPagina);
           this.atualizarPaginacao();
-          console.log("Cupons paginados" + this.meusCuponsPaginados);
           this.isLoading = false;
         },
         error => {

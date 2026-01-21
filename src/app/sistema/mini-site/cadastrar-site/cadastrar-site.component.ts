@@ -126,7 +126,6 @@ export class CadastrarSiteComponent implements OnInit {
   private loadBannerFromServer() {
     this.usuarioMidiaService.getMinhaMidia('banner').subscribe({
       next: (blob) => {
-        console.log('Banner blob:', blob);
         if (!blob || blob.size === 0) return;
 
         // Se o back vier sem content-type de imagem, força um tipo image/*
@@ -136,7 +135,6 @@ export class CadastrarSiteComponent implements OnInit {
 
         const reader = new FileReader();
         reader.onload = () => {
-          console.log('Banner preview loaded');
           this.bannerPreview = reader.result as string; // "data:image/..." OK
         };
         reader.readAsDataURL(typedBlob);
@@ -183,14 +181,12 @@ export class CadastrarSiteComponent implements OnInit {
   onVideoSelected(video: File | null, tipo: string) {
     this.selectedVideos[tipo] = video;
     this.siteForm.get('video')?.setValue(video); // opcional (mantém o form coerente)
-    console.log(`video de ${tipo} selecionada:`, video);
   }
 
 
   onImageSelected(image: File | null, tipo: string) {
     this.selectedImages[tipo] = image;
     this.siteForm.get(tipo)?.setValue(image);
-    console.log(`Imagem de ${tipo} selecionada:`, image);
   }
 
   onSubmit(){

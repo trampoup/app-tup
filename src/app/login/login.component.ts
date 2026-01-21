@@ -52,7 +52,6 @@ export class LoginComponent {
     this.authService.login(dadosLogin).subscribe({
       next: (response: any) => {
         if (this.errorMessage) this.errorMessage = null;
-        console.log('Login:', response);
         const access_token = response.access_token; //so para ver o token
         localStorage.setItem('access_token', access_token);
 

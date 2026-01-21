@@ -71,7 +71,6 @@ export class CadastroDeServicoComponent implements OnInit {
   onImageSelected(image: File | null, tipo: string) {
     this.selectedImages[tipo] = image;
     this.servicoForm.get(tipo)?.setValue(image);
-    console.log(`Imagem de ${tipo} selecionada:`, image);
   }
 
   onSubmit(){
@@ -112,7 +111,6 @@ export class CadastroDeServicoComponent implements OnInit {
       },
       error: err =>{
         this.isLoading = false;
-        console.log(err);
         this.errorMessage = err?.error?.message || 'Erro ao salvar serviço';
         this.successMessage = null;
       }

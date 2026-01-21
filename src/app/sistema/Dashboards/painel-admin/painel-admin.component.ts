@@ -127,15 +127,15 @@ export class PainelAdminComponent implements OnInit {
         text: 'Gráfico',
         align: 'left',
       },
-      series: [33, 22, 18, 10, 17],            // % aproximados de cada fatia
+      series: [33, 22, 18, 10, 17],           
       labels: ['Item', 'Item', 'Item', 'Item', 'Item'],
       theme: {
         palette: 'palette8',
       },
       legend: {
         show: true,
-        position: 'bottom',          // coloca a legenda embaixo
-        horizontalAlign: 'center',   // centraliza
+        position: 'bottom',          
+        horizontalAlign: 'center',  
       },
       responsive: [
         {
@@ -215,7 +215,6 @@ export class PainelAdminComponent implements OnInit {
   getWeatherForRussas(): void {
     this.climaService.fetchWeatherForRussas().subscribe((data) => {
       this.weatherData = data;
-      console.log(this.weatherData);
       this.updateWeatherInfo();
     });
   }
@@ -224,7 +223,6 @@ export class PainelAdminComponent implements OnInit {
     this.climaService.fetchWeatherForCurrentLocation().subscribe(
       (data) => {
         this.weatherData = data;
-        console.log(this.weatherData);
         this.updateWeatherInfo();
       },
       (error) => {
@@ -237,7 +235,6 @@ export class PainelAdminComponent implements OnInit {
   getWeatherForLocation(lat: number, lon: number): void {
     this.climaService.fetchWeather(lat, lon).subscribe((data) => {
       this.weatherData = data;
-      console.log(this.weatherData);
       this.updateWeatherInfo();
     });
   }

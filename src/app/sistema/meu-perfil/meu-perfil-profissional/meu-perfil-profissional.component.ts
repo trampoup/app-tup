@@ -116,8 +116,6 @@ export class MeuPerfilProfissionalComponent implements OnInit {
 
         this.perfil = u;
 
-        console.log('Dados do usuário carregados:', u);
-
         const estado = u.estado ?? '';
         const cidade = u.cidade ?? '';
 

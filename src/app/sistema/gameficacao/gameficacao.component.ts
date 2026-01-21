@@ -79,7 +79,6 @@ export class GameficacaoComponent implements OnInit {
   boostFree(): void {
     if (this.userScore < this.maxScore) return;
     // lógica para aplicar destaque gratuito (ex: chamar API)
-    console.log('Aplicando destaque gratuito!');
   }
 
   purchaseBoost(): void {
@@ -101,7 +100,6 @@ export class GameficacaoComponent implements OnInit {
   }
 
   onSelecionarPlano(tipo: 'turbo' | 'power' | 'elite'): void {
-    console.log(`Plano escolhido: ${tipo}`);
     // aqui depois você pluga o fluxo de pagamento
     this.modalService.closeModal();
   }
