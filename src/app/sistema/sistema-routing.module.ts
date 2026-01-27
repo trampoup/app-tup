@@ -87,7 +87,7 @@ const routes: Routes = [
       { path: 'cadastro-de-site', component: CadastrarSiteComponent},
 
        // Bate Papo com o Cliente
-       { path: 'conversa-com-o-profissional', component: ConversaComProfissionalComponent},
+       { path: 'conversa-com-profissional', component: ConversaComProfissionalComponent},
        { path: 'lista-de-conversas-com-os-profissionais', component: ListaDeConversaComOsProfissionaisComponent},
 
         // Bate Papo com o profissional 

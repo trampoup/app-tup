@@ -28,23 +28,23 @@ export class ConversaComProfissionalComponent implements OnInit {
 
   myUsername = 'Você';
 
-  targetName = 'Cliente';
-  targetSubtitle = 'Cliente';
+  targetName = 'Profissional';
+  targetSubtitle = 'Profissional';
   targetAvatar = '';
 
   messages: MessageMock[] = [
     {
-      username: 'Cliente',
-      message: 'Olá! Você consegue me atender hoje?',
+      username: 'Você',
+      message: 'Olá! 🙂',
+      timestamp: new Date(Date.now() - 1000 * 60 * 22).toISOString(),
+      isMe: true
+    },
+    {
+      username: 'Profissional',
+      message: 'Olá! Como posso ajudar hoje?',
       timestamp: new Date(Date.now() - 1000 * 60 * 25).toISOString(),
       isMe: false
     },
-    {
-      username: 'Você',
-      message: 'Consigo sim! Me diga o que você precisa 🙂',
-      timestamp: new Date(Date.now() - 1000 * 60 * 22).toISOString(),
-      isMe: true
-    }
   ];
 
   @ViewChild('messagesContainer') private messagesContainer!: ElementRef;
@@ -57,8 +57,8 @@ export class ConversaComProfissionalComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe(qp => {
-      this.targetName = qp.get('contactName') || 'Cliente';
-      this.targetSubtitle = qp.get('contactSubtitle') || 'Cliente';
+      this.targetName = qp.get('contactName') || 'Profissional';
+      this.targetSubtitle = qp.get('contactSubtitle') || 'Profissional';
       this.targetAvatar = qp.get('contactAvatar') || '';
       setTimeout(() => this.scrollToBottom(), 30);
     });
@@ -70,7 +70,7 @@ export class ConversaComProfissionalComponent implements OnInit {
 
   goBack(): void {
     // volta para lista
-    this.router.navigate(['/usuario/lista-de-conversas-com-os-clientes'], {
+    this.router.navigate(['/usuario/lista-de-conversas-com-os-profissionais'], {
       relativeTo: this.route
     });
   }
