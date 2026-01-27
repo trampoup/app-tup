@@ -127,11 +127,12 @@
 }
 
 .btn-contato{
-    background-color: #1C9212;
+    background: linear-gradient(to right, #57D164, #25A939);
 }
 
 .btn-contato:hover{
-    background-color: #0f7006;
+    background: linear-gradient(to right, #6EE87A, #39C44A);
+    transition: background 0.3s ease;
 }
 
 .btn-orcamento{
