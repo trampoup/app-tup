@@ -706,6 +706,8 @@ mat-drawer-content.shifted {
 .notification-container {
   position: relative;
   margin-right: 15px;
+  border: 1px solid var(--lm-border05);
+  border-radius: 50%;
 }
 
 /* Botão de notificações */
@@ -715,6 +717,14 @@ mat-drawer-content.shifted {
   border: none;
   cursor: pointer;
   padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-toggle img {
+  width: 24px;
+  height: 24px;
 }
 
 .show-sidebar {
