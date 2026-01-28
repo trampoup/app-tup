@@ -42,6 +42,7 @@ import { VisualizarLocalizacaoComponent } from './localizacao/visualizar-localiz
 import { CadastrarLocalizacaoComponent } from './localizacao/cadastrar-localizacao/cadastrar-localizacao.component';
 import { NgxMaskModule } from 'ngx-mask';
 import { CentralComunidadesComponent } from './comunidades/central-comunidades/central-comunidades.component';
+import { HistoricoServicosComponent } from './servicos/historico-servicos/historico-servicos.component';
 
 
   @NgModule({
@@ -80,7 +81,8 @@ import { CentralComunidadesComponent } from './comunidades/central-comunidades/c
       VisualizarLocalizacoesComponent,
       VisualizarLocalizacaoComponent,
       CadastrarLocalizacaoComponent,
-      CentralComunidadesComponent
+      CentralComunidadesComponent,
+      HistoricoServicosComponent
     ],
     imports: [
     CommonModule,

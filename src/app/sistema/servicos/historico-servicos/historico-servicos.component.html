@@ -1,0 +1,180 @@
+<section class="main-container">
+    <!-- VISÃO DO ADMIN E PROFISSIONAL -->
+    <div class="banner" *ngIf="obterRoleUsuario() !== TipoUsuario.CLIENTE">
+        <h1>Histórico de Serviços</h1>
+        <p>Visualize o histórico de serviços realizados
+        </p>
+    </div>
+
+    <!-- VISÃO DO CLIENTE -->
+    <div class="banner" *ngIf="obterRoleUsuario() == TipoUsuario.CLIENTE">
+        <h1>Histórico de Serviços</h1>
+        <p>
+            Visualize o histórico de serviços contratados.
+        </p>
+    </div>
+
+    <div class="servico-titulo">
+        <p><a [routerLink]="getRotaInicial()">Inicio</a> > <span>Histórico de Serviços</span></p>
+        <div class="search-container">
+            <app-search ></app-search>
+        </div>
+    </div>
+
+    <div class="alerts">
+        <div id="sucess-message" class="alerts-container alert-success" *ngIf="successMessage">
+        {{ successMessage }}
+        </div>
+        <div class="alerts-container alert-danger" *ngIf="errorMessage">
+        {{ errorMessage }}
+        </div>
+    </div>
+
+    <div class="progress-bar-container" *ngIf="isLoading">
+        <div class="progress-bar"></div>
+    </div>
+
+    <ng-container *ngIf="obterRoleUsuario() !== TipoUsuario.CLIENTE; else viewCliente">
+        <div class="tabela-container">
+            <table>
+            <thead>
+                <tr>
+                <th>Cliente</th>
+                <th>Data</th>
+                <th>Status</th>
+                <th>Serviço</th>
+                <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let servico of servicosPaginados">
+                    <td>
+                    <div class="perfil">
+                        <div [style.background-color]="getRandomColor(servico.clienteNome)" class="avatar">
+                            <span >{{ getInitials(servico.clienteNome) }}</span>
+                        </div>
+                        <span>{{ servico.clienteNome || '-' }}</span>
+                    </div>
+                    </td>
+
+                    <td>{{ servico.data | date:'dd/MM/yyyy' }}</td>
+
+                    <td>
+                    <app-status-badge [status]="servico.status"></app-status-badge>
+                    </td>
+
+                    <td class="servico-col">
+                    {{ servico.servicoDescricao || '-' }}
+                    </td>
+
+                    <td>
+                    <div class="acoes">
+                        <button class="btn-acao visualizar" type="button">
+                        <img src="assets/icones/See.png" alt="Visualizar" />
+                        </button>
+                    </div>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+    
+        <div *ngIf="servicosPaginados.length === 0">
+            <ng-container *ngIf="mensagemBusca; else semServicos">
+                <div class="alert-filter">
+                    <div class="alert alert-warning text-center">
+                    {{ mensagemBusca }}
+                    </div>
+                </div>
+            </ng-container>
+            <ng-template #semServicos>
+                <div class="no-data-message">
+                    <img src="assets/icones/no-data-icon.svg" alt="Sem dados" />
+                    <p>Você não tem serviços em seu histórico.</p>
+                </div>
+            </ng-template>
+        </div>
+    
+        <div class="pagination">
+            <app-pagination [paginaAtual]="paginaAtual" [totalItens]="totalItens" [itensPorPagina]="itensPorPagina"
+            (paginaMudou)="onPaginaMudou($event)">
+            </app-pagination>
+        </div>
+    </ng-container>
+
+
+
+    <ng-template #viewCliente> 
+        <div class="tabela-container">
+            <table>
+            <thead>
+                <tr>
+                <th>Profissional</th>
+                <th>Data</th>
+                <th>Status</th>
+                <th>Serviço</th>
+                <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let servico of servicosPaginados">
+                    <td>
+                    <div class="perfil">
+                        <div [style.background-color]="getRandomColor(servico.clienteNome)" class="avatar">
+                            <span >{{ getInitials(servico.clienteNome) }}</span>
+                        </div>
+                        <span>{{ servico.clienteNome || '-' }}</span>
+                    </div>
+                    </td>
+
+                    <td>{{ servico.data | date:'dd/MM/yyyy' }}</td>
+
+                    <td>
+                    <app-status-badge [status]="servico.status"></app-status-badge>
+                    </td>
+
+                    <td class="servico-col">
+                    {{ servico.servicoDescricao || '-' }}
+                    </td>
+
+                    <td>
+                    <div class="acoes">
+                        <button class="btn-acao visualizar" type="button">
+                        <img src="assets/icones/See.png" alt="Visualizar" />
+                        </button>
+                    </div>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+    
+        <div *ngIf="servicosPaginados.length === 0">
+            <ng-container *ngIf="mensagemBusca; else semServicos">
+                <div class="alert-filter">
+                    <div class="alert alert-warning text-center">
+                    {{ mensagemBusca }}
+                    </div>
+                </div>
+            </ng-container>
+            <ng-template #semServicos>
+                <div class="no-data-message">
+                    <img src="assets/icones/no-data-icon.svg" alt="Sem dados" />
+                    <p>Você não tem serviços em seu histórico.</p>
+                </div>
+            </ng-template>
+        </div>
+        
+        <!-- Alterar paginação quando estiver funcionando -->
+        <div class="pagination">
+            <app-pagination [paginaAtual]="paginaAtual" [totalItens]="totalItens" [itensPorPagina]="itensPorPagina"
+            (paginaMudou)="onPaginaMudou($event)">
+            </app-pagination>
+        </div>
+
+    </ng-template>
+
+
+</section>

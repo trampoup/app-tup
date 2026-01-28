@@ -1,0 +1,47 @@
+.status-badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.bg-dot{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background: none;
+}
+
+.status-badge .dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* CONCLUÍDO */
+.status-badge.concluido{
+  background: rgba(46, 204, 113, 0.12);
+  color: #1E8E3E;
+}
+.status-badge.concluido .dot{ background: var(--success); }
+
+/* EM PROGRESSO */
+.status-badge.em-progresso{
+  background: rgba(245, 160, 2, 0.12);
+  color: #C77700;
+}
+.status-badge.em-progresso .dot{ background: #F5A002; }
+
+/* CANCELADO */
+.status-badge.cancelado{
+  background: rgba(231, 76, 60, 0.12);
+  color: #C0392B;
+}
+.status-badge.cancelado .dot{ background: #E74C3C; }

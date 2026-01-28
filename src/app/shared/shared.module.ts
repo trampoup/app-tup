@@ -10,6 +10,7 @@ import { SearchComponent } from './search/search.component';
 import { FormsModule } from '@angular/forms';
 import { ModalGenericoComponent } from './modal-generico/modal-generico.component';
 import { ModalConfirmationComponent } from './modal-confirmation/modal-confirmation.component';
+import { StatusBadgeComponent } from './status/status-badge/status-badge.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { ModalConfirmationComponent } from './modal-confirmation/modal-confirmat
     InputVideoComponent,
     SearchComponent,
     ModalGenericoComponent,
-    ModalConfirmationComponent
+    ModalConfirmationComponent,
+    StatusBadgeComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +36,8 @@ import { ModalConfirmationComponent } from './modal-confirmation/modal-confirmat
     PaginationComponent,
     InputImgComponent,
     InputVideoComponent,
-    SearchComponent
+    SearchComponent,
+    StatusBadgeComponent
   ]
 })
 export class SharedModule { }
