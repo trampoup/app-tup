@@ -209,17 +209,14 @@
   padding: 10px;
 }
 
-/* Container principal da tabela */
 .novos-usuarios {
   border: 2px solid var(--lm-accent-02);
   border-radius: 20px;
   padding: 20px;
   margin-top: 20px;
   background: var(--lm-branco);
-  margin-right: 2%;
 }
 
-/* Título */
 .novos-usuarios > h2 {
   margin: 0 0 16px;
   font-size: 1.25rem;
@@ -227,72 +224,71 @@
   font-weight: 600;
 }
 
-/* Wrapper para scroll horizontal, se necessário */
 .novos-usuarios .tabela-container {
   overflow-x: auto;
 }
 
-/* Layout da tabela */
 .novos-usuarios table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
-/* Cabeçalho */
 .novos-usuarios thead th {
   text-align: left;
+  padding: 8px 12px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--lm-text01);
+}
+
+.novos-usuarios tbody td {
+  padding: 12px 12px;
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--lm-text01);
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-color, #E0E0E0);
+  vertical-align: middle;
 }
 
-tr{
-  font-weight: 500;
+.novos-usuarios tbody tr {
+  border-bottom: 1px solid #E0E0E0;
 }
 
-.novos-usuarios thead th {
-  font-weight: 700; 
-}
-
-
-/* Separador entre linhas */
-.novos-usuarios tbody tr + tr {
-  border-top: 1px solid var(--border-color, #E0E0E0);
-}
-
-/* Células de dados */
-.novos-usuarios td {
-  padding: 12px 0;
-  font-size: 0.875rem;
-}
-
-/* Coluna de Usuário: alinha foto + nome */
-.novos-usuarios .perfil {
+.novos-usuarios .cliente-cell {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 10px;
+  min-width: 0;
 }
 
-
-.novos-usuarios .avatar-pequeno {
-  width: 32px;
-  height: 32px;
+.cliente-cell .avatar {
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  object-fit: cover;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
 }
 
+.cliente-cell .avatar span {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
 
 .novos-usuarios .ver-mais {
-  display: block;           
-  width: fit-content;       
-  margin: 16px auto 0;      
+  display: inline-flex;
+  width: fit-content;
+  margin: 16px auto 0;
   font-size: 0.875rem;
   font-weight: 600;
   text-decoration: none;
   gap: 4px;
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  color: var(--lm-text01);
 }
 
 .novos-usuarios .ver-mais__icon {
@@ -300,101 +296,97 @@ tr{
   height: 16px;
 }
 
-.novos-usuarios table {
-  width: auto;           
-  margin: 0 auto;        /* opcional, centraliza */
-  table-layout: auto;    /* layout padrão para colunas ajustarem ao conteúdo */
+/* Última coluna (botão) alinhada à direita */
+.novos-usuarios thead th:last-child,
+.novos-usuarios tbody td:last-child {
+  text-align: right;
+  padding-right: 5%;
 }
 
-.novos-usuarios thead th,
-.novos-usuarios td {
-  padding: 8px 12px;     
+.avaliar-profissional {
+  padding: 8px;
+  border-radius: 8px;
+  background-color: var(--quinary-button);
+  text-wrap: nowrap;
 }
 
-.usuarios-e-grafico {
+.avaliar-profissional:hover {
+  background-color: var(--info-hover);
+}
+
+/* Modal de avaliação do profissional */
+.avaliacao-modal {
   display: flex;
-  gap: 20px;           /* espaço entre as colunas */
-  align-items: stretch;/* garante que fiquem com mesma altura */
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 12px;
 }
 
-/* faz cada section ocupar metade do container */
-.usuarios-e-grafico  > section {
-  flex: 1;
+.avaliacao-modal-section {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
+  gap: 6px;
 }
 
-.novos-usuarios,
-#chart-grafico {
-  float: none !important;
-  width: auto !important;
+.avaliacao-modal-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1a1918;
+  font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
+.avaliacao-stars {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
 
-/* 1) Força a tabela a 100% e distribui colunas fixas */
-.novos-usuarios .tabela-container table {
+.avaliacao-stars button {
+  background: transparent;
+  border: none;
+  font-size: 55px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  color: #f0c550;
+  text-shadow: 0 0 3px #f0c550;
+}
+
+.avaliacao-stars button:not(.filled) {
+  color: #f5f5f5;
+}
+
+.avaliacao-modal input,
+.avaliacao-modal textarea {
   width: 100%;
-  table-layout: fixed;      /* uso colunas de largura definida abaixo */
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  padding: 15px 15px;
+  font-size: 14px;
+  font-family: inherit;
 }
 
-/* 2) Padding uniforme, mas sem excesso nas laterais */
-.novos-usuarios .tabela-container th,
-.novos-usuarios .tabela-container td {
-  padding: 8px 12px;        /* 8px em cima/baixo, 12px nas laterais */
-  font-size: 0.875rem;
+.avaliacao-modal textarea {
+  min-height: 120px;
+  resize: none;
 }
 
-
-
-/* 7) Reduz gap entre avatar e nome dentro da célula */
-.novos-usuarios .perfil {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;             /* avatar “colado” no nome */
+.avaliacao-erro {
+  margin: 0;
+  margin-top: 4px;
+  font-size: 16px;
+  color: #c53030;
 }
 
-/* 8) Ajuste extra para o avatar */
-.novos-usuarios .avatar-pequeno {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
+.avaliar-profissional:disabled{
+  cursor: not-allowed;
+  opacity: 0.6;
+  background-color: var(--lm-border04);
 }
 
-/* 1) deixa a célula um flex container, centralizando verticalmente */
-.cliente-cell {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;      /* espaço entre a foto e o nome */
+.avaliar-profissional:disabled:hover{
+  background-color: var(--lm-border04);
 }
-
-/* 2) garante que o texto fique no meio certinho */
-.cliente-cell .cliente-nome {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.status-cell {
-  position: relative;
-  display: flex;
-  align-items: center;
-  vertical-align: middle;
-  color: var(--sucess2);               /* texto verde */
-  font-weight: 600;             /* igual ao protótipo */
-  top: 25%;
-  transform: translateY(-25%); /* manter a linha centralizada com as outras linhas da tabela.*/
-}
-
-/* 2) cria o quadradinho verde antes do texto */
-.status-cell::before {
-  background: url('/assets/icones/concluido-icon.svg');
-  content: '';
-  left: 0;
-  width: 1rem;               
-  height: 1rem;              
-  margin-right: 1rem;
-}
-
 
 @media screen and (max-width: 500px) {
   .main-container {

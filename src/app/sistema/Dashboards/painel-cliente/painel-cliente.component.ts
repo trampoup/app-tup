@@ -1,8 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/configs/services/auth.service';
 import { ClimaService } from 'src/app/configs/services/clima.service';
 import { ModalWelcomeService } from 'src/app/configs/services/modal-welcome.service';
 import { UsuarioDadosDTO } from '../../cupons/UsuarioDadosDTO';
+import { ModalGenericoService } from 'src/app/configs/services/modal-generico.service';
+import { StatusServico } from '../../servicos/StatusServico';
+import { getAvatarColor } from 'src/app/shared/avatar/avatar-color.utils';
 
 @Component({
   selector: 'app-painel-cliente',
@@ -10,6 +13,8 @@ import { UsuarioDadosDTO } from '../../cupons/UsuarioDadosDTO';
   styleUrls: ['./painel-cliente.component.css']
 })
 export class PainelClienteComponent implements OnInit {
+  @ViewChild('avaliacaoTemplate', { static: true }) avaliacaoTemplate!: TemplateRef<any>;
+
   usuario: UsuarioDadosDTO | null = null;
   weatherDescription: string = 'Carregando...'; //nublado, etc..
   temperature: number = 0; //temperatura
@@ -24,41 +29,50 @@ export class PainelClienteComponent implements OnInit {
   quantidadeServicosDoMes: number = 8;
   quantidadeClientesAtendidos:number = 61;
 
+  StatusServico = StatusServico;
+  avaliacaoEstrelas = 0;
+  starHover = 0;
+  avaliacaoTitulo = '';
+  avaliacaoTexto = '';
+  avaliacaoErro = '';
+  servicoSelecionado: any = null;
+
+
 
   historicoServicos = [ //PROVISORIO
     {
       tipo:'Limpeza',
       photo: '/assets/imagens/imagens-de-exemplo/m-userphoto-exemplo.svg',
       nome: 'Maria Silva',
-      status: 'Concluido',
+      status: StatusServico.EM_PROGRESSO,
       ingressou: new Date('2025-01-15')
     },
     {
       tipo:'Limpeza',
       photo: '/assets/imagens/imagens-de-exemplo/p-userphoto-exemplo.svg',
       nome: 'Pedro Costa',
-      status: 'Concluido',
+      status: StatusServico.CONCLUIDO,
       ingressou: new Date('2025-06-03')
     },
     {
       tipo:'Limpeza',
       photo: '/assets/imagens/imagens-de-exemplo/p-userphoto-exemplo.svg',
       nome: 'Pedro Costa',
-      status: 'Concluido',
+      status: StatusServico.CONCLUIDO,
       ingressou: new Date('2025-06-03')
     },
     {
       tipo:'Limpeza',
       photo: '/assets/imagens/imagens-de-exemplo/j-userphoto-exemplo.svg',
       nome: 'Joana Mendes',
-      status: 'Concluido',
+      status: StatusServico.CONCLUIDO,
       ingressou: new Date('2025-05-28')
     },
     {
       tipo:'Limpeza',
       photo: '/assets/imagens/imagens-de-exemplo/j-userphoto-exemplo.svg',
       nome: 'Joana Mendes',
-      status: 'Concluido',
+      status: StatusServico.CONCLUIDO,
       ingressou: new Date('2025-06-13')
     }
   ];
@@ -67,11 +81,12 @@ export class PainelClienteComponent implements OnInit {
     private authService: AuthService,
     private climaService: ClimaService,
     private modalWelcomeService:ModalWelcomeService,
+    private modalGenericoService: ModalGenericoService,
     private cdr: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
-    this.renderChartGrafico();
+    // this.renderChartGrafico();
     this.getWeatherForCurrentLocation();
     this.renderCharServicosPorMes();
 
@@ -230,6 +245,75 @@ export class PainelClienteComponent implements OnInit {
       this.cdr.detectChanges();
     }
   }
-    
+  abrirModalAvaliarProfissional(servico: any): void {
+    this.servicoSelecionado = servico;
+
+    this.avaliacaoEstrelas = 0;
+    this.starHover = 0;
+    this.avaliacaoTitulo = '';
+    this.avaliacaoTexto = '';
+    this.avaliacaoErro = '';
+
+    this.modalGenericoService.openModal(
+      {
+        title: 'Avaliar Profissional',
+        description: '',
+        size: 'md',
+        confirmTextoBotao: 'Enviar avaliação',
+        cancelTextoBotao: 'Cancelar',
+        showFooter: true,
+        confirmButtonClass: 'btn-success',
+      },
+      () => this.confirmarAvaliacao(),
+      this.avaliacaoTemplate
+    );
+  }
+
+  confirmarAvaliacao(): boolean {
+    if (!this.avaliacaoEstrelas) {
+      this.avaliacaoErro = 'Selecione a quantidade de estrelas.';
+      return false;
+    }
+    if (!this.avaliacaoTitulo.trim()) {
+      this.avaliacaoErro = 'Digite um título para a avaliação.';
+      return false;
+    }
+    if (!this.avaliacaoTexto.trim()) {
+      this.avaliacaoErro = 'Escreva sua avaliação.';
+      return false;
+    }
+
+    this.avaliacaoErro = '';
+
+    return true;
+  }
+
+  setAvaliacaoEstrelas(star: number): void {
+    this.avaliacaoEstrelas = star;
+    this.avaliacaoErro = '';
+  }
+
+  onStarHover(star: number): void {
+    this.starHover = star;
+  }
+
+  onStarLeave(): void {
+    this.starHover = 0;
+  }
+
+  getInitials(nome: string): string {
+    const n = (nome ?? '').trim();
+    if (!n) return '';
+    const parts = n.split(/\s+/);
+    const first = parts[0]?.[0] ?? '';
+    return first.toUpperCase();
+  }
+
+  getAvatarColor(nome: string): string {
+    return getAvatarColor(nome);
+  }
+ 
+
+
 }
 

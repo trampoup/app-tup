@@ -82,7 +82,7 @@ export class PainelProfissionalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.renderChartGrafico();
+    // this.renderChartGrafico();
     this.getWeatherForCurrentLocation();
     this.renderCharServicosPorMes();
 
