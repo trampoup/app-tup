@@ -202,6 +202,54 @@
   display: inline-block;
 }
 
+#card-eu-indico.card-eu-indico{
+  background-color: var(--lm-text03); 
+  border: 2px solid var(--warning3);
+  border-radius: 20px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  text-align: center;
+}
+
+#card-eu-indico .indico-title{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: black; 
+}
+
+.indico-title span{
+  color: black !important;
+  font-weight: 500 !important;
+  font-size: 2.8rem !important;
+}
+
+#card-eu-indico .indico-icon{
+  width: 40px;
+  height: 40px;
+}
+
+#card-eu-indico .indico-btn{
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 12px;
+
+  background-color: var(--lm-primary);
+  color: var(--lm-branco);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#card-eu-indico .indico-btn:hover{
+  background-color: var(--primary-btnHover);
+}
+
+
 .grafico{
   border: 2px solid var(--lm-accent-02);
   border-radius: 20px;
