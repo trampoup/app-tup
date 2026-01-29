@@ -28,6 +28,10 @@
             <div class="target-sub">{{ targetSubtitle }}</div>
           </div>
         </div>
+        <div class="buttons-header">
+          <button class="green-button" (click)="openCodigoValidacaoModal()">Iniciar Serviço</button>
+          <button class="avaliar-button" *ngIf="avaliarCliente">Avaliar Cliente</button>
+        </div>
       </header>
 
       <section class="chat-messages" #messagesContainer>
@@ -72,3 +76,25 @@
     </div>
   </div>
 </div>
+
+<ng-template #codigoValidacaoTemplate>
+  <div class="codigo-modal">
+    <img
+      class="codigo-modal__icon"
+      src="/assets/icones/codigo-modal.svg"
+      alt="Ícone de validação"
+    />
+
+    <h3 class="codigo-modal__title">
+      Um código de validação foi enviado para {{ targetName }}.
+    </h3>
+
+    <p class="codigo-modal__text">
+      Solicite esse código para finalizar o serviço.
+    </p>
+
+    <button class="codigo-modal__btn" (click)="closeCodigoValidacaoModal()">
+      Ok, fechar
+    </button>
+  </div>
+</ng-template>

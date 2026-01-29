@@ -14,7 +14,8 @@ export class ModalGenericoComponent implements OnInit {
   @Input() cancelTextoBotao: string = 'Cancelar';
   @Input() contentTemplate?: TemplateRef<any>;
 
-  @Input() showFooter: boolean = true;           
+  @Input() showFooter: boolean = true;  
+  @Input() showHeader: boolean = true;         
   @Output() closeModal = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<void>();
   

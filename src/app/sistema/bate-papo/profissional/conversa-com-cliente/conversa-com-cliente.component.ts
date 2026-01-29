@@ -3,10 +3,12 @@ import {
   Component,
   ElementRef,
   OnInit,
+  TemplateRef,
   ViewChild
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ModalGenericoService } from 'src/app/configs/services/modal-generico.service';
 
 interface MessageMock {
   username: string;
@@ -21,6 +23,10 @@ interface MessageMock {
   styleUrls: ['./conversa-com-cliente.component.css']
 })
 export class ConversaComClienteComponent implements OnInit, AfterViewInit {
+  @ViewChild('codigoValidacaoTemplate')
+  codigoValidacaoTemplate!: TemplateRef<any>;
+  
+  avaliarCliente: boolean = false;
   chatForm = new FormGroup({
     replymessage: new FormControl<string>('', { nonNullable: true })
   });
@@ -51,7 +57,8 @@ export class ConversaComClienteComponent implements OnInit, AfterViewInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private modalService: ModalGenericoService
   ) {}
 
   ngOnInit(): void {
@@ -139,5 +146,23 @@ export class ConversaComClienteComponent implements OnInit, AfterViewInit {
     const colors = ['#FFB3BA', '#FFDFBA', '#BAFFC9', '#BAE1FF', '#D5BAFF'];
     const index = seed ? seed.charCodeAt(0) % colors.length : 0;
     return colors[index];
+  }
+
+  openCodigoValidacaoModal(): void {
+    this.modalService.openModal(
+      {
+        title: 'Código de validação',
+        showHeader: false,
+        showFooter: false,
+        size: 'sm:max-w-md'
+      },
+      undefined,
+      this.codigoValidacaoTemplate
+    );
+  }
+
+
+  closeCodigoValidacaoModal(): void {
+    this.modalService.closeModal();
   }
 }

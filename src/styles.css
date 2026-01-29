@@ -151,6 +151,15 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
+.green-button{
+  background-color: var(--secondary-button);
+  border-radius: 8px;
+}
+
+.green-button:hover{
+  background-color: var(--secondary-button-hover);
+}
+
 main {
   display: flex;
   justify-content: center;
