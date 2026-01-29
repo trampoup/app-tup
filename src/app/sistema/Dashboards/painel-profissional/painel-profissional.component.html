@@ -71,30 +71,65 @@
                             <th>Cliente</th>
                             <th>Data</th>
                             <th>Status</th>
+                            <th></th>
                         </tr>
                     </thead>
-                    <tbody>
                     <tbody>
                         <tr *ngFor="let u of historicoServicos">
                             <td>{{u.tipo}}</td>
                             <td class="cliente-cell">
-                                <img class="avatar-pequeno" [src]="u.photo" [alt]="u.nome" />
-                                {{ u.nome }}
+                                <div class="avatar" [style.backgroundColor]="getAvatarColor(u.nome)">
+                                    <span>{{ getInitials(u.nome) }}</span>
+                                </div>
+                                <span class="cliente-nome">{{ u.nome }}</span>
                             </td>
                             <td>{{ u.ingressou | date:'dd/MM/yyyy' }}</td>
-                            <td class="status-cell">{{ u.status }}</td>
+                            <td> <app-status-badge [status]="u.status"></app-status-badge> </td>
+                            <td>
+                                <button *ngIf="u.status == StatusServico.EM_PROGRESSO"
+                                (click)="abrirModalFinalizar(u)"
+                                 class="finalizar-servico">
+                                 Finalizar Serviço
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <a class="ver-mais">
+            <a class="ver-mais" routerLink="/usuario/historico-de-servicos">
                 Ver mais
                 <img src="assets/icones/seta-direita-icon.svg" alt="Seta para a direita" class="ver-mais__icon" />
             </a>
         </section>
     
-        <section class="grafico" id="chart-grafico">
-        </section>
+        <!-- <section class="grafico" id="chart-grafico">
+        </section> -->
     </section>
 
 </div>
+
+
+<ng-template #finalizarServicoTpl>
+  <div class="finalizar-modal">
+    <p class="finalizar-subtitulo">Digite o código</p>
+
+    <div class="codigo-container">
+    <input
+        *ngFor="let _ of codigo; let i = index; trackBy: trackByIndex"
+        class="codigo-input"
+        type="text"
+        maxlength="1"
+        readonly
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        autocorrect="off"
+        [value]="codigo[i]"
+        (keydown)="onCodeKeydown(i, $event)"
+        (paste)="onCodePaste(i, $event)"
+        (focus)="selectAll($event)"
+    />
+    </div>
+
+  </div>
+</ng-template>

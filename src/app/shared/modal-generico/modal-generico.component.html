@@ -32,7 +32,7 @@
                 <button class="btn-acao cancelar" (click)="onModalClose()">
                   Cancelar
                 </button>
-                <button class="btn-acao salvar" (click)="onConfirm()">
+                <button class="btn-acao salvar" [ngClass]="confirmButtonClass" (click)="onConfirm()">
                   {{ confirmTextoBotao || "Confirmar" }}
                 </button>
               </div>

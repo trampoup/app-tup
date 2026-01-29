@@ -3,6 +3,7 @@ import { TipoUsuario } from 'src/app/login/tipo-usuario.enum';
 import { Servico } from '../Servico';
 import { AuthService } from 'src/app/configs/services/auth.service';
 import { StatusServico } from '../StatusServico';
+import { getAvatarColor } from 'src/app/shared/avatar/avatar-color.utils';
 
 export interface ServicoHistorico {
   id: number;
@@ -64,8 +65,8 @@ export class HistoricoServicosComponent implements OnInit {
     return this.authService.getRoleUsuario();
   }
 
-  getRotaInicial():string{
-    return this.authService.getRotaInicial();
+  getRotaDashboard():string{
+    return this.authService.getRotaDashboard();
   }
 
   onPaginaMudou(novaPagina: number) {
@@ -88,15 +89,7 @@ export class HistoricoServicosComponent implements OnInit {
   }
 
   getRandomColor(seed: string): string {
-    const colors = [
-      '#FFB3BA', // rosa pastel
-      '#FFDFBA', // laranja pastel
-      '#BAFFC9', // verde pastel
-      '#BAE1FF', // azul pastel
-      '#D5BAFF'  // roxo pastel
-    ];
-    const index = seed ? seed.charCodeAt(0) % colors.length : 0;
-    return colors[index];
+    return getAvatarColor(seed);
   }
 
 }

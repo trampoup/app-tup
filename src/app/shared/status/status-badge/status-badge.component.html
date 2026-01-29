@@ -1,4 +1,6 @@
 <span class="status-badge" [ngClass]="statusClass">
-  <div class="bg-dot"><span class="dot"></span></div>
-  {{ label }}
+  <span class="square" aria-hidden="true">
+    <span class="dot"></span>
+  </span>
+  <span class="label">{{ label }}</span>
 </span>
