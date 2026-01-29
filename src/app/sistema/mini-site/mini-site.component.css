@@ -646,6 +646,72 @@
   line-height: 1;
 }
 
+/* Modal de avaliação do profissional */
+.avaliacao-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.avaliacao-modal-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.avaliacao-modal-label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1a1918;
+  font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+.avaliacao-stars {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.avaliacao-stars button {
+  background: transparent;
+  border: none;
+  font-size: 55px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  color: #f0c550; /* estrela preenchida */
+  text-shadow: 0 0 3px #f0c550; 
+}
+
+.avaliacao-stars button:not(.filled) {
+  color: #f5f5f5; /* estrela vazia */
+}
+
+.avaliacao-modal input,
+.avaliacao-modal textarea {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  padding: 15px 15px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.avaliacao-modal textarea {
+  min-height: 120px;
+  resize: none;
+}
+
+.avaliacao-erro {
+  margin: 0;
+  margin-top: 4px;
+  font-size: 16px;
+  color: #c53030;
+}
+
+
+
 
 /* Responsivo */
 
