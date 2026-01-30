@@ -82,7 +82,7 @@ export class InicioClienteComponent implements OnInit {
   destaquesPaginados : any[] = [];
 
   paginaAtualServicos: number = 1;
-  itensPorPaginaServicos: number = 8;
+  itensPorPaginaServicos: number = 6;
   totalPaginasServicos: number = Math.ceil(this.anuncios.length / this.itensPorPagina);
   servicosPaginados : any[] = [];
 

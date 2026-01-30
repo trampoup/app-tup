@@ -337,12 +337,33 @@ tr:hover {
   outline-offset: 2px;
 }
 
-.lista-servicos{
+/* SERVIÇOS: grid previsível (3 por linha) */
+.servicos-lista{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 32px;
+  gap: 24px;
   margin: 16px 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
+
+@media (max-width: 1024px){
+  .servicos-lista{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px){
+  .servicos-lista{
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+/* garante que o card respeite a coluna do grid */
+.card-profissional{
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
 
 .card-profissional{
   display: flex;
@@ -355,6 +376,9 @@ tr:hover {
   padding: 5px 8px;
   transition: all 0.3s ease-in-out;
   min-width: 0;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .card-profissional:hover{

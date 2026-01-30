@@ -103,12 +103,31 @@
   margin-bottom: 0;
 }
 
-.lista-servicos{
+.servicos-lista{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 32px;
+  gap: 24px;
   margin: 16px 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
+
+@media (max-width: 1024px){
+  .servicos-lista{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px){
+  .servicos-lista{
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+.card-profissional{
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
 
 .card-profissional{
   display: flex;
