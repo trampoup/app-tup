@@ -108,8 +108,10 @@
 
 <ng-template #servicoFinalizadoTemplate>
   <div class="finalizado-modal">
-    <!-- ícone depois; por enquanto vazio (se quiser, deixe um div placeholder) -->
-    <div class="finalizado-icon-placeholder"></div>
+  <div class="finalizado-animation">
+    <ng-lottie [options]="finalizadoAnimOptions"></ng-lottie>
+  </div>
+
 
     <h3 class="finalizado-title">Serviço finalizado com sucesso!</h3>
     <p class="finalizado-text">Deseja avaliar {{ targetName }} agora?</p>

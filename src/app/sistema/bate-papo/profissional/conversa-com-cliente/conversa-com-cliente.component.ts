@@ -9,6 +9,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ModalGenericoService } from 'src/app/configs/services/modal-generico.service';
+import { AnimationOptions } from 'ngx-lottie';
 
 interface MessageMock {
   username: string;
@@ -23,6 +24,12 @@ interface MessageMock {
   styleUrls: ['./conversa-com-cliente.component.css']
 })
 export class ConversaComClienteComponent implements OnInit, AfterViewInit {
+  finalizadoAnimOptions: AnimationOptions = {
+    path: '/assets/animations/Success Check.json',
+    loop: false,
+    autoplay: true
+  };
+
   @ViewChild('codigoValidacaoTemplate')
   codigoValidacaoTemplate!: TemplateRef<any>;
 

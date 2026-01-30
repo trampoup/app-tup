@@ -43,6 +43,7 @@ import { CadastrarLocalizacaoComponent } from './localizacao/cadastrar-localizac
 import { NgxMaskModule } from 'ngx-mask';
 import { CentralComunidadesComponent } from './comunidades/central-comunidades/central-comunidades.component';
 import { HistoricoServicosComponent } from './servicos/historico-servicos/historico-servicos.component';
+import { LottieModule } from 'ngx-lottie';
 
 
   @NgModule({
@@ -93,7 +94,8 @@ import { HistoricoServicosComponent } from './servicos/historico-servicos/histor
     SharedModule,
     NgxMaskModule.forRoot(),
     //DragDropModule
-    MatMenuModule
+    MatMenuModule,
+    LottieModule
 ],
   })
   export class SistemaModule { }

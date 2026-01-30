@@ -231,12 +231,19 @@
   font-family: "Manrope", sans-serif !important;
 }
 
-.finalizado-icon-placeholder{
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
+.finalizado-animation{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 110px;
+  height: 110px;
   margin: 6px 0 14px;
-  background: rgba(0,0,0,0.06);
+}
+
+.finalizado-animation lottie-player{
+  width: 110px;
+  height: 110px;
+  display: block;
 }
 
 .finalizado-title{
