@@ -20,6 +20,14 @@ import { CadastroComponent } from './cadastro/cadastro.component';
 import { BotTiComponent } from './sistema/bot-ti/bot-ti.component';
 import { PlanosComponent } from './planos/planos.component';
 
+
+import { LottieModule } from 'ngx-lottie';
+import player from 'lottie-web';
+
+export function playerFactory() {
+  return player;
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,6 +49,7 @@ import { PlanosComponent } from './planos/planos.component';
     ReactiveFormsModule,
     SharedModule,
     NgxMaskModule.forRoot(),
+    LottieModule.forRoot({ player: playerFactory }),
   ],
   providers: [
     AuthService,

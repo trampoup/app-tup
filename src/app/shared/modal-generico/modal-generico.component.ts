@@ -10,10 +10,12 @@ export class ModalGenericoComponent implements OnInit {
   @Input() description: string = '';
   @Input() size: string = 'xl:max-w-7xl';
   @Input() confirmTextoBotao: string = 'Salvar';
+  @Input() confirmButtonClass?: string | string[] | Record<string, boolean>;
   @Input() cancelTextoBotao: string = 'Cancelar';
   @Input() contentTemplate?: TemplateRef<any>;
 
-  @Input() showFooter: boolean = true;           
+  @Input() showFooter: boolean = true;  
+  @Input() showHeader: boolean = true;         
   @Output() closeModal = new EventEmitter<void>();
   @Output() confirm = new EventEmitter<void>();
   

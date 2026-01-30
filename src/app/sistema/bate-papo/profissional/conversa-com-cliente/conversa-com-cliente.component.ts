@@ -3,10 +3,13 @@ import {
   Component,
   ElementRef,
   OnInit,
+  TemplateRef,
   ViewChild
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ModalGenericoService } from 'src/app/configs/services/modal-generico.service';
+import { AnimationOptions } from 'ngx-lottie';
 
 interface MessageMock {
   username: string;
@@ -21,6 +24,19 @@ interface MessageMock {
   styleUrls: ['./conversa-com-cliente.component.css']
 })
 export class ConversaComClienteComponent implements OnInit, AfterViewInit {
+  finalizadoAnimOptions: AnimationOptions = {
+    path: '/assets/animations/Success Check.json',
+    loop: false,
+    autoplay: true
+  };
+
+  @ViewChild('codigoValidacaoTemplate')
+  codigoValidacaoTemplate!: TemplateRef<any>;
+
+  @ViewChild('servicoFinalizadoTemplate', { static: true })
+  servicoFinalizadoTemplate!: TemplateRef<any>;
+  
+  avaliarCliente: boolean = false;
   chatForm = new FormGroup({
     replymessage: new FormControl<string>('', { nonNullable: true })
   });
@@ -30,6 +46,11 @@ export class ConversaComClienteComponent implements OnInit, AfterViewInit {
   targetName = 'Cliente';
   targetSubtitle = 'Cliente';
   targetAvatar = '';
+  clientRating = 4.6; 
+
+  private shouldOpenFinalizado = false;
+  private viewReady = false; //pra evitar bug
+  private finalizadoOpened = false;
 
   messages: MessageMock[] = [
     {
@@ -51,7 +72,8 @@ export class ConversaComClienteComponent implements OnInit, AfterViewInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private modalService: ModalGenericoService
   ) {}
 
   ngOnInit(): void {
@@ -59,16 +81,52 @@ export class ConversaComClienteComponent implements OnInit, AfterViewInit {
       this.targetName = qp.get('contactName') || 'Cliente';
       this.targetSubtitle = qp.get('contactSubtitle') || 'Cliente';
       this.targetAvatar = qp.get('contactAvatar') || '';
+      this.shouldOpenFinalizado = qp.get('serviceFinalized') === '1';
       setTimeout(() => this.scrollToBottom(), 30);
+      this.tryOpenFinalizadoModal();
     });
   }
 
   ngAfterViewInit(): void {
+    this.viewReady = true;
     setTimeout(() => this.scrollToBottom(), 50);
+    this.tryOpenFinalizadoModal();
   }
 
+  private tryOpenFinalizadoModal(): void {
+    if (!this.viewReady) return;
+    if (!this.shouldOpenFinalizado) return;
+    if (this.finalizadoOpened) return;
+
+    this.finalizadoOpened = true;
+
+    this.modalService.openModal(
+      {
+        title: '',
+        showHeader: false,
+        showFooter: false,
+        size: 'md'
+      },
+      undefined,
+      this.servicoFinalizadoTemplate
+    );
+  }
+
+  closeServicoFinalizadoModal(): void {
+    this.modalService.closeModal();
+
+    this.avaliarCliente = true;
+
+    //remove a flag da URL pra não abrir de novo ao dar refresh
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { serviceFinalized: null },
+      queryParamsHandling: 'merge'
+    });
+  }
+
+
   goBack(): void {
-    // volta para lista
     this.router.navigate(['/usuario/lista-de-conversas-com-os-profissionais'], {
       relativeTo: this.route
     });
@@ -139,5 +197,23 @@ export class ConversaComClienteComponent implements OnInit, AfterViewInit {
     const colors = ['#FFB3BA', '#FFDFBA', '#BAFFC9', '#BAE1FF', '#D5BAFF'];
     const index = seed ? seed.charCodeAt(0) % colors.length : 0;
     return colors[index];
+  }
+
+  openCodigoValidacaoModal(): void {
+    this.modalService.openModal(
+      {
+        title: 'Código de validação',
+        showHeader: false,
+        showFooter: false,
+        size: 'sm:max-w-md'
+      },
+      undefined,
+      this.codigoValidacaoTemplate
+    );
+  }
+
+
+  closeCodigoValidacaoModal(): void {
+    this.modalService.closeModal();
   }
 }

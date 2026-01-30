@@ -25,7 +25,7 @@ export class ListaDeConversaComOsProfissionaisComponent {
     {
       id: 101,
       nome: 'Maria Eduarda',
-      cargo: 'Cliente',
+      cargo: 'Profissional',
       avatarUrl: 'https://i.pravatar.cc/150?img=32',
       ultimaMensagem: 'Oi! Pode me passar um orçamento para a troca de lente?',
       ultimaMensagemEm: new Date(Date.now() - 1000 * 60 * 12),
@@ -34,7 +34,7 @@ export class ListaDeConversaComOsProfissionaisComponent {
     {
       id: 102,
       nome: 'João Pedro',
-      cargo: 'Cliente',
+      cargo: 'Profissional',
       avatarUrl: '',
       ultimaMensagem: 'Fechado! Pode agendar pra amanhã às 15h?',
       ultimaMensagemEm: new Date(Date.now() - 1000 * 60 * 60 * 3),
@@ -43,7 +43,7 @@ export class ListaDeConversaComOsProfissionaisComponent {
     {
       id: 103,
       nome: 'Ana Clara',
-      cargo: 'Cliente',
+      cargo: 'Profissional',
       avatarUrl: 'https://i.pravatar.cc/150?img=47',
       ultimaMensagem: 'Obrigada, ficou perfeito 🙌',
       ultimaMensagemEm: new Date(Date.now() - 1000 * 60 * 60 * 27),

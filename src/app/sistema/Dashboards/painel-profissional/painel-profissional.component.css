@@ -202,24 +202,72 @@
   display: inline-block;
 }
 
+#card-eu-indico.card-eu-indico{
+  background-color: var(--lm-text03); 
+  border: 2px solid var(--warning3);
+  border-radius: 20px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  text-align: center;
+}
+
+#card-eu-indico .indico-title{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: black; 
+}
+
+.indico-title span{
+  color: black !important;
+  font-weight: 500 !important;
+  font-size: 2.8rem !important;
+}
+
+#card-eu-indico .indico-icon{
+  width: 40px;
+  height: 40px;
+}
+
+#card-eu-indico .indico-btn{
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 12px;
+
+  background-color: var(--lm-primary);
+  color: var(--lm-branco);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#card-eu-indico .indico-btn:hover{
+  background-color: var(--primary-btnHover);
+}
+
+
 .grafico{
   border: 2px solid var(--lm-accent-02);
   border-radius: 20px;
   margin-top: 20px;
   padding: 10px;
 }
+/* =========================
+   TABELA - HISTÓRICO SERVIÇOS
+   ========================= */
 
-/* Container principal da tabela */
 .novos-usuarios {
   border: 2px solid var(--lm-accent-02);
   border-radius: 20px;
   padding: 20px;
   margin-top: 20px;
   background: var(--lm-branco);
-  margin-right: 2%;
 }
 
-/* Título */
 .novos-usuarios > h2 {
   margin: 0 0 16px;
   font-size: 1.25rem;
@@ -227,72 +275,78 @@
   font-weight: 600;
 }
 
-/* Wrapper para scroll horizontal, se necessário */
+/* wrapper para scroll no mobile */
 .novos-usuarios .tabela-container {
   overflow-x: auto;
 }
 
-/* Layout da tabela */
 .novos-usuarios table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: collapse; /* importante pra bordas ficarem ok */
+  table-layout: fixed;       /* mantém colunas mais estáveis */
 }
 
-/* Cabeçalho */
+/* header */
 .novos-usuarios thead th {
   text-align: left;
+  padding: 8px 12px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--lm-text01);
+}
+
+.novos-usuarios tbody td {
+  padding: 12px 12px;
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--lm-text01);
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-color, #E0E0E0);
+  vertical-align: middle;
 }
 
-tr{
-  font-weight: 500;
+.novos-usuarios tbody tr {
+  border-bottom: 1px solid #E0E0E0;
 }
 
-.novos-usuarios thead th {
-  font-weight: 700; 
-}
-
-
-/* Separador entre linhas */
-.novos-usuarios tbody tr + tr {
-  border-top: 1px solid var(--border-color, #E0E0E0);
-}
-
-/* Células de dados */
-.novos-usuarios td {
-  padding: 12px 0;
-  font-size: 0.875rem;
-}
-
-/* Coluna de Usuário: alinha foto + nome */
-.novos-usuarios .perfil {
+.novos-usuarios .cliente-cell {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 10px;
+  min-width: 0;
 }
 
-
-.novos-usuarios .avatar-pequeno {
-  width: 32px;
-  height: 32px;
+.cliente-cell .avatar{
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  object-fit: cover;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
 }
 
+.cliente-cell .avatar span{
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
 
+.col-acao{
+  text-align: right;
+}
+
+/* link ver mais */
 .novos-usuarios .ver-mais {
-  display: block;           
-  width: fit-content;       
-  margin: 16px auto 0;      
+  display: inline-flex;
+  width: fit-content;
+  margin: 16px auto 0;
   font-size: 0.875rem;
   font-weight: 600;
   text-decoration: none;
   gap: 4px;
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  color: var(--lm-text01);
 }
 
 .novos-usuarios .ver-mais__icon {
@@ -300,15 +354,14 @@ tr{
   height: 16px;
 }
 
-.novos-usuarios table {
-  width: auto;           
-  margin: 0 auto;        /* opcional, centraliza */
-  table-layout: auto;    /* layout padrão para colunas ajustarem ao conteúdo */
+.finalizar-servico{
+  padding: 8px;
+  border-radius: 8px;
+  background-color: var(--quinary-button);
 }
 
-.novos-usuarios thead th,
-.novos-usuarios td {
-  padding: 8px 12px;     
+.finalizar-servico:hover{
+  background-color: var(--info-hover);
 }
 
 .usuarios-e-grafico {
@@ -330,71 +383,64 @@ tr{
   width: auto !important;
 }
 
-
-/* 1) Força a tabela a 100% e distribui colunas fixas */
-.novos-usuarios .tabela-container table {
-  width: 100%;
-  table-layout: fixed;      /* uso colunas de largura definida abaixo */
+/* Última coluna (botão) alinhada à direita */
+.novos-usuarios thead th:last-child,
+.novos-usuarios tbody td:last-child {
+  text-align: right;
+  padding-right: 5%; /* cola mais na borda */
 }
 
-/* 2) Padding uniforme, mas sem excesso nas laterais */
-.novos-usuarios .tabela-container th,
-.novos-usuarios .tabela-container td {
-  padding: 8px 12px;        /* 8px em cima/baixo, 12px nas laterais */
-  font-size: 0.875rem;
-}
-
-
-
-/* 7) Reduz gap entre avatar e nome dentro da célula */
-.novos-usuarios .perfil {
+/* conteúdo do modal */
+.finalizar-modal{
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.25rem;             /* avatar “colado” no nome */
+  gap: 14px;
+  padding: 10px 0 0;
 }
 
-/* 8) Ajuste extra para o avatar */
-.novos-usuarios .avatar-pequeno {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
+.finalizar-subtitulo{
+  margin: 0;
+  font-size: 16px;
+  color: var(--lm-text);
+  font-weight: 500;
 }
 
-/* 1) deixa a célula um flex container, centralizando verticalmente */
-.cliente-cell {
+.codigo-container{
   display: flex;
+  gap: 12px;
+  justify-content: center;
   align-items: center;
-  gap: 0.5rem;      /* espaço entre a foto e o nome */
+  margin-top: 8px;
 }
 
-/* 2) garante que o texto fique no meio certinho */
-.cliente-cell .cliente-nome {
-  display: inline-block;
-  vertical-align: middle;
+.codigo-input{
+  width: 54px;
+  height: 54px;
+  border-radius: 10px;
+  border: 1px solid #dcdcdc;
+  background: #fff;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  outline: none;
 }
 
-.status-cell {
-  position: relative;
-  display: flex;
-  align-items: center;
-  vertical-align: middle;
-  color: var(--sucess2);               /* texto verde */
-  font-weight: 600;             /* igual ao protótipo */
-  top: 25%;
-  transform: translateY(-25%); /* manter a linha centralizada com as outras linhas da tabela.*/
+.codigo-input:focus{
+  border-color: rgba(30, 146, 18, 0.6);
+  box-shadow: 0 0 0 4px rgba(30, 146, 18, 0.12);
 }
 
-/* 2) cria o quadradinho verde antes do texto */
-.status-cell::before {
-  background: url('/assets/icones/concluido-icon.svg');
-  content: '';
-  left: 0;
-  width: 1rem;               
-  height: 1rem;              
-  margin-right: 1rem;
+/* mobile */
+@media (max-width: 480px){
+  .codigo-container{ gap: 8px; }
+  .codigo-input{
+    width: 42px;
+    height: 48px;
+    border-radius: 10px;
+    font-size: 18px;
+  }
 }
-
 
 @media screen and (max-width: 500px) {
   .main-container {

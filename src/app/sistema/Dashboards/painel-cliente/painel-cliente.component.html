@@ -65,31 +65,96 @@
             <h2>Histórico de Serviços</h2>
             <div class="tabela-container">
                 <table>
-                    <thead>
-                        <tr>
-                            <th>Serviço</th>
-                            <th>Data</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <tbody>
-                        <tr *ngFor="let u of historicoServicos">
-                            <td>{{u.tipo}}</td>
-                            <td>{{ u.ingressou | date:'dd/MM/yyyy' }}</td>
-                            <td class="status-cell">{{ u.status }}</td>
-                        </tr>
-                    </tbody>
+                <thead>
+                <tr>
+                    <th>Serviço</th>
+                    <th>Profissional</th>
+                    <th>Data</th>
+                    <th>Status</th>
+                    <th>Código</th>
+                    <th></th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr *ngFor="let u of historicoServicos">
+                    <td>{{ u.tipo }}</td>
+                    <td class="cliente-cell">
+                    <div class="avatar" [style.backgroundColor]="getAvatarColor(u.nome)">
+                        <span>{{ getInitials(u.nome) }}</span>
+                    </div>
+                    <span class="cliente-nome">{{ u.nome }}</span>
+                    </td>
+                    <td>{{ u.ingressou | date:'dd/MM/yyyy' }}</td>
+                    <td>
+                        <app-status-badge [status]="u.status"></app-status-badge>
+                    </td>
+                    
+                    <td>XXXXXX</td>
+                    <td>
+                    <button
+                        *ngIf="u.status != StatusServico.CANCELADO"
+                        [disabled]="u.status === StatusServico.EM_PROGRESSO"
+                        (click)="abrirModalAvaliarProfissional(u)"
+                        class="avaliar-profissional"
+                    >
+                        Avaliar Profissional
+                    </button>
+                    </td>
+                </tr>
+                </tbody>
+
                 </table>
             </div>
-            <a class="ver-mais">
+            <a class="ver-mais" routerLink="/usuario/historico-de-servicos">
                 Ver mais
                 <img src="assets/icones/seta-direita-icon.svg" alt="Seta para a direita" class="ver-mais__icon" />
             </a>
         </section>
-    
+<!--     
         <section class="grafico" id="chart-grafico">
-        </section>
+        </section> -->
     </section>
 
 </div>
+
+<ng-template #avaliacaoTemplate>
+  <div class="avaliacao-modal">
+    <div class="avaliacao-modal-section">
+      <label class="avaliacao-modal-label">Como estava o serviço?</label>
+
+      <div class="avaliacao-stars">
+        <button
+          type="button"
+          *ngFor="let star of [1,2,3,4,5]"
+          (click)="setAvaliacaoEstrelas(star)"
+          (mouseenter)="onStarHover(star)"
+          (mouseleave)="onStarLeave()"
+          [class.filled]="star <= (starHover || avaliacaoEstrelas)"
+        >
+          ★
+        </button>
+      </div>
+    </div>
+
+    <div class="avaliacao-modal-section">
+      <label class="avaliacao-modal-label">Dê um título à sua avaliação</label>
+      <input
+        type="text"
+        [(ngModel)]="avaliacaoTitulo"
+        placeholder="Digite um título para a avaliação">
+    </div>
+
+    <div class="avaliacao-modal-section">
+      <label class="avaliacao-modal-label">Escrever uma avaliação</label>
+      <textarea
+        [(ngModel)]="avaliacaoTexto"
+        placeholder="O que os outros clientes precisam saber?">
+      </textarea>
+    </div>
+
+    <p class="avaliacao-erro" *ngIf="avaliacaoErro">
+      {{ avaliacaoErro }}
+    </p>
+  </div>
+</ng-template>

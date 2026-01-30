@@ -25,8 +25,19 @@
 
           <div class="target-info">
             <div class="target-name">{{ targetName }}</div>
-            <div class="target-sub">{{ targetSubtitle }}</div>
+            <!-- <div class="target-sub">{{ targetSubtitle }}</div> -->
+            <div class="rating">
+              <span class="score">
+                <span class="star">★</span>
+                {{ clientRating | number:'1.1-1' }}/5
+              </span>
+            </div>
+
           </div>
+        </div>
+        <div class="buttons-header">
+          <button class="green-button" (click)="openCodigoValidacaoModal()">Iniciar Serviço</button>
+          <button class="avaliar-button" *ngIf="avaliarCliente">Avaliar Cliente</button>
         </div>
       </header>
 
@@ -72,3 +83,41 @@
     </div>
   </div>
 </div>
+
+<ng-template #codigoValidacaoTemplate>
+  <div class="codigo-modal">
+    <img
+      class="codigo-modal__icon"
+      src="/assets/icones/codigo-modal.svg"
+      alt="Ícone de validação"
+    />
+
+    <h3 class="codigo-modal__title">
+      Um código de validação foi enviado para {{ targetName }}.
+    </h3>
+
+    <p class="codigo-modal__text">
+      Solicite esse código para finalizar o serviço.
+    </p>
+
+    <button class="codigo-modal__btn" (click)="closeCodigoValidacaoModal()">
+      Ok, fechar
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #servicoFinalizadoTemplate>
+  <div class="finalizado-modal">
+  <div class="finalizado-animation">
+    <ng-lottie [options]="finalizadoAnimOptions"></ng-lottie>
+  </div>
+
+
+    <h3 class="finalizado-title">Serviço finalizado com sucesso!</h3>
+    <p class="finalizado-text">Deseja avaliar {{ targetName }} agora?</p>
+
+    <button class="finalizado-btn" (click)="closeServicoFinalizadoModal()">
+      Ok, fechar
+    </button>
+  </div>
+</ng-template>

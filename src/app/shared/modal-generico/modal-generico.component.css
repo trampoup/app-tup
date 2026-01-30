@@ -192,6 +192,15 @@
   background: var(--sixtiary-button);
 }
 
+.btn-acao.salvar.btn-success {
+  background: var(--success); 
+}
+
+.btn-acao.salvar.btn-success:hover {
+  background: var(--success2)
+}
+
+
 .btn-acao.cancelar {
   border: none;
   background: none;

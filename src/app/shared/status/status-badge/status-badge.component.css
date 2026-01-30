@@ -1,0 +1,71 @@
+.status-badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.status-badge .square{
+  width: 16px;            
+  height: 16px;           
+  border-radius: 4px;
+  display: inline-flex;  
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  box-sizing: border-box;
+}
+
+/* bolinha interna */
+.status-badge .dot{
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* texto */
+.status-badge .label{
+  background: transparent;
+}
+
+/* CONCLUÍDO */
+.status-badge.concluido .square{
+  background: var(--success3);
+}
+.status-badge.concluido .dot{
+  background: var(--success2);
+}
+.status-badge.concluido .label{
+  color: var(--success2);
+}
+
+/* EM PROGRESSO */
+.status-badge.em-progresso .square{
+  background: var(--warning2);
+  border: 1px solid rgba(245, 160, 2, 0.55);
+}
+.status-badge.em-progresso .dot{
+  background: var(--warning3);
+}
+.status-badge.em-progresso .label{
+  color: var(--warning3);
+}
+
+/* CANCELADO */
+.status-badge.cancelado .square{
+  background: rgba(231, 76, 60, 0.20);
+  border: 1px solid rgba(231, 76, 60, 0.50);
+}
+.status-badge.cancelado .dot{
+  background: #C0392B;
+}
+.status-badge.cancelado .label{
+  color: #C0392B;
+}

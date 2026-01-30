@@ -33,6 +33,7 @@ import { VisualizarLocalizacaoComponent } from './localizacao/visualizar-localiz
 import { CadastrarLocalizacaoComponent } from './localizacao/cadastrar-localizacao/cadastrar-localizacao.component';
 import { CentralComunidadesComponent } from './comunidades/central-comunidades/central-comunidades.component';
 import { NotificacaoClienteComponent } from './notificacoes/cliente/notificacao-cliente/notificacao-cliente.component';
+import { HistoricoServicosComponent } from './servicos/historico-servicos/historico-servicos.component';
 
 const routes: Routes = [
   {  path: 'usuario', 
@@ -78,6 +79,8 @@ const routes: Routes = [
       { path: 'servicos', component: ListaDeServicosComponent},
       { path: 'cadastro-de-servico', component: CadastroDeServicoComponent},
       { path: 'cadastro-de-servico/:id', component: CadastroDeServicoComponent},
+      { path: 'historico-de-servicos', component: HistoricoServicosComponent},
+
 
 
       // mini site
@@ -87,7 +90,7 @@ const routes: Routes = [
       { path: 'cadastro-de-site', component: CadastrarSiteComponent},
 
        // Bate Papo com o Cliente
-       { path: 'conversa-com-o-profissional', component: ConversaComProfissionalComponent},
+       { path: 'conversa-com-profissional', component: ConversaComProfissionalComponent},
        { path: 'lista-de-conversas-com-os-profissionais', component: ListaDeConversaComOsProfissionaisComponent},
 
         // Bate Papo com o profissional 

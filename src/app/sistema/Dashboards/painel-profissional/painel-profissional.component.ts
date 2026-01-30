@@ -1,8 +1,12 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/configs/services/auth.service';
 import { ClimaService } from 'src/app/configs/services/clima.service';
 import { ModalWelcomeService } from 'src/app/configs/services/modal-welcome.service';
 import { UsuarioDadosDTO } from '../../cupons/UsuarioDadosDTO';
+import { StatusServico } from '../../servicos/StatusServico';
+import { getAvatarColor } from 'src/app/shared/avatar/avatar-color.utils';
+import { ModalGenericoService } from 'src/app/configs/services/modal-generico.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-painel-profissional',
@@ -10,6 +14,8 @@ import { UsuarioDadosDTO } from '../../cupons/UsuarioDadosDTO';
   styleUrls: ['./painel-profissional.component.css']
 })
 export class PainelProfissionalComponent implements OnInit {
+  @ViewChild('finalizarServicoTpl', { static: true }) finalizarServicoTpl!: TemplateRef<any>;
+
   usuario: UsuarioDadosDTO | null = null;
   weatherDescription: string = 'Carregando...'; //nublado, etc..
   temperature: number = 0; //temperatura
@@ -24,41 +30,46 @@ export class PainelProfissionalComponent implements OnInit {
   quantidadeServicosDoMes: number = 8;
   quantidadeClientesAtendidos:number = 61;
 
+  StatusServico = StatusServico;
+
+  servicoSelecionado: any | null = null;
+  codigo: string[] = Array(6).fill('');
+
 
   historicoServicos = [ //PROVISORIO
     {
       tipo:'Limpeza',
       photo: '/assets/imagens/imagens-de-exemplo/m-userphoto-exemplo.svg',
       nome: 'Maria Silva',
-      status: 'Concluido',
+      status: StatusServico.EM_PROGRESSO,
       ingressou: new Date('2025-01-15')
     },
     {
       tipo:'Limpeza',
       photo: '/assets/imagens/imagens-de-exemplo/p-userphoto-exemplo.svg',
       nome: 'Pedro Costa',
-      status: 'Concluido',
+      status: StatusServico.CONCLUIDO,
       ingressou: new Date('2025-06-03')
     },
     {
       tipo:'Limpeza',
       photo: '/assets/imagens/imagens-de-exemplo/p-userphoto-exemplo.svg',
       nome: 'Pedro Costa',
-      status: 'Concluido',
+      status: StatusServico.CONCLUIDO,
       ingressou: new Date('2025-06-03')
     },
     {
       tipo:'Limpeza',
       photo: '/assets/imagens/imagens-de-exemplo/j-userphoto-exemplo.svg',
       nome: 'Joana Mendes',
-      status: 'Concluido',
+      status: StatusServico.CONCLUIDO,
       ingressou: new Date('2025-05-28')
     },
     {
       tipo:'Limpeza',
       photo: '/assets/imagens/imagens-de-exemplo/j-userphoto-exemplo.svg',
       nome: 'Joana Mendes',
-      status: 'Concluido',
+      status: StatusServico.CONCLUIDO,
       ingressou: new Date('2025-06-13')
     }
   ];
@@ -67,11 +78,13 @@ export class PainelProfissionalComponent implements OnInit {
     private authService: AuthService,
     private climaService: ClimaService,
     private modalWelcomeService:ModalWelcomeService,
+    private modalGenericoService: ModalGenericoService,
     private cdr: ChangeDetectorRef,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.renderChartGrafico();
+    // this.renderChartGrafico();
     this.getWeatherForCurrentLocation();
     this.renderCharServicosPorMes();
 
@@ -93,12 +106,168 @@ export class PainelProfissionalComponent implements OnInit {
     if (this.authService.showModal) {
       this.modalWelcomeService.openModal({
         title: '👋 Bem-vindo!',
-        // description: 'Aqui vai a mensagem que você quiser...',
-        size: 'md'     // sm | md | lg | full  (ajuste para as classes que você definiu no CSS)
+        size: 'md' 
       });
       this.authService.showModal = false;
     }
   }
+
+  abrirModalFinalizar(servico: any): void {
+    this.servicoSelecionado = servico;
+    this.codigo = Array(6).fill('');
+
+    this.modalGenericoService.openModal(
+      {
+        title: 'Finalizar Serviço',
+        description: '',
+        size: 'md',                 
+        confirmTextoBotao: 'Finalizar Serviço',
+        confirmButtonClass: 'btn-success',
+        cancelTextoBotao: 'Cancelar',
+        showFooter: true
+      },
+      () => this.confirmarFinalizacao(),
+      this.finalizarServicoTpl
+    );
+
+    setTimeout(() => {
+      const first = document
+      .querySelector('.codigo-container input.codigo-input') as HTMLInputElement | null;
+      first?.focus();
+    }, 0);
+
+  }
+
+  confirmarFinalizacao(): boolean {
+    const code = this.codigo.join('');
+    const isValid = this.codigo.every(c => !!c) && code.length === 6;
+
+    if (!isValid) return false;
+    setTimeout(() => this.irParaChatDoCliente(), 0);
+    return true; 
+  }
+
+  private irParaChatDoCliente(): void {
+    if (!this.servicoSelecionado) return;
+
+    this.router.navigate(
+      ['/usuario/conversa-com-cliente'], 
+      {
+        queryParams: {
+          contactName: this.servicoSelecionado.nome,
+          contactSubtitle: this.servicoSelecionado.tipo || 'Cliente',
+          contactAvatar: this.servicoSelecionado.photo || '',
+          serviceFinalized: 1
+        }
+      }
+    );
+  }
+
+
+  private getCodeInputs(target: EventTarget | null): HTMLInputElement[] {
+    const el = target as HTMLElement | null;
+    const container = el?.closest('.codigo-container') as HTMLElement | null;
+    if (!container) return [];
+    return Array.from(container.querySelectorAll('input.codigo-input')) as HTMLInputElement[];
+  }
+
+  onCodeKeydown(index: number, event: KeyboardEvent): void {
+    const inputEl = event.target as HTMLInputElement;
+    const inputs = this.getCodeInputs(event.target);
+    const key = event.key;
+
+    // deixa Tab e Shift+Tab
+    if (key === 'Tab') return;
+
+    // navegação
+    if (key === 'ArrowLeft') {
+      event.preventDefault();
+      inputs[index - 1]?.focus();
+      return;
+    }
+    if (key === 'ArrowRight') {
+      event.preventDefault();
+      inputs[index + 1]?.focus();
+      return;
+    }
+
+    // apagar
+    if (key === 'Backspace') {
+      event.preventDefault();
+
+      if (this.codigo[index]) {
+        this.codigo[index] = '';
+        inputEl.value = '';
+        return;
+      }
+
+      if (index > 0) {
+        const prev = inputs[index - 1];
+        this.codigo[index - 1] = '';
+        if (prev) {
+          prev.value = '';
+          prev.focus();
+        }
+      }
+      return;
+    }
+
+    if (key === 'Delete') {
+      event.preventDefault();
+      this.codigo[index] = '';
+      inputEl.value = '';
+      return;
+    }
+
+    if (key.length === 1) {
+      const ch = key.toUpperCase();
+      if (!/^[A-Z0-9]$/.test(ch)) {
+        event.preventDefault();
+        return;
+      }
+
+      event.preventDefault(); 
+      this.codigo[index] = ch;
+      inputEl.value = ch;
+      // avança
+      if (index < this.codigo.length - 1) {
+        inputs[index + 1]?.focus();
+      }
+      return;
+    }
+  }
+
+  onCodePaste(index: number, event: ClipboardEvent): void {
+    event.preventDefault();
+
+    const text = event.clipboardData?.getData('text') ?? '';
+    const cleaned = text.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (!cleaned) return;
+
+    const inputs = this.getCodeInputs(event.target);
+
+    for (let off = 0; off < this.codigo.length - index && off < cleaned.length; off++) {
+      const ch = cleaned[off];
+      this.codigo[index + off] = ch;
+
+      const el = inputs[index + off];
+      if (el) el.value = ch;
+    }
+
+    const nextIndex = Math.min(index + cleaned.length, this.codigo.length - 1);
+    inputs[nextIndex]?.focus();
+  }
+
+  
+  trackByIndex(index: number): number {
+    return index;
+  }
+
+  selectAll(event: FocusEvent): void {
+    const el = event.target as HTMLInputElement;
+    el.select();
+  }
+
 
   renderChartGrafico() {
     const options = {
@@ -173,7 +342,6 @@ export class PainelProfissionalComponent implements OnInit {
     chart.render();
 
   }
-
   
   private updateDateTime() {
     const now = new Date();
@@ -229,6 +397,18 @@ export class PainelProfissionalComponent implements OnInit {
       this.windSpeed = this.weatherData.wind.speed;
       this.cdr.detectChanges();
     }
+  }
+
+  getInitials(nome: string): string {
+    const n = (nome ?? '').trim();
+    if (!n) return '';
+    const parts = n.split(/\s+/);
+    const first = parts[0]?.[0] ?? '';
+    return (first).toUpperCase();
+  }
+
+  getAvatarColor(nome: string): string {
+    return getAvatarColor(nome);
   }
   
 }

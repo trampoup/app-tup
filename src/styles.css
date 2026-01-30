@@ -55,6 +55,8 @@ html {
   --success4: #D1FAE5;   
   --info: #177ab8;
   --warning: #ffc107;
+  --warning2: #FFC66B;
+  --warning3: #DB8F02;
   --danger: #b72130;
   --info-hover: #1b88cc;
   --danger-hover: #d22536;
@@ -63,6 +65,7 @@ html {
   --lm-border02: #ced4da;
   --lm-border03: #bfc4de;
   --lm-border04: #A4A4A4;
+  --lm-border05: #488796;
   /* Buttons */
   --primary-button: #28BFB6;
   --primary-btnHover: #156578;
@@ -146,6 +149,15 @@ button:hover {
 button:focus-visible {
   outline: 2px solid var(--lm-primary);
   outline-offset: 2px;
+}
+
+.green-button{
+  background-color: var(--secondary-button);
+  border-radius: 8px;
+}
+
+.green-button:hover{
+  background-color: var(--secondary-button-hover);
 }
 
 main {
