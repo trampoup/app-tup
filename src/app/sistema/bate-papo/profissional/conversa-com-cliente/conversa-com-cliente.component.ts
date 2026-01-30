@@ -39,6 +39,7 @@ export class ConversaComClienteComponent implements OnInit, AfterViewInit {
   targetName = 'Cliente';
   targetSubtitle = 'Cliente';
   targetAvatar = '';
+  clientRating = 4.6; 
 
   private shouldOpenFinalizado = false;
   private viewReady = false; //pra evitar bug

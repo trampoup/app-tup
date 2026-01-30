@@ -25,7 +25,14 @@
 
           <div class="target-info">
             <div class="target-name">{{ targetName }}</div>
-            <div class="target-sub">{{ targetSubtitle }}</div>
+            <!-- <div class="target-sub">{{ targetSubtitle }}</div> -->
+            <div class="rating">
+              <span class="score">
+                <span class="star">★</span>
+                {{ clientRating | number:'1.1-1' }}/5
+              </span>
+            </div>
+
           </div>
         </div>
         <div class="buttons-header">
