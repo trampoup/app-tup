@@ -25,6 +25,9 @@ interface MessageMock {
 export class ConversaComClienteComponent implements OnInit, AfterViewInit {
   @ViewChild('codigoValidacaoTemplate')
   codigoValidacaoTemplate!: TemplateRef<any>;
+
+  @ViewChild('servicoFinalizadoTemplate', { static: true })
+  servicoFinalizadoTemplate!: TemplateRef<any>;
   
   avaliarCliente: boolean = false;
   chatForm = new FormGroup({
@@ -36,6 +39,10 @@ export class ConversaComClienteComponent implements OnInit, AfterViewInit {
   targetName = 'Cliente';
   targetSubtitle = 'Cliente';
   targetAvatar = '';
+
+  private shouldOpenFinalizado = false;
+  private viewReady = false; //pra evitar bug
+  private finalizadoOpened = false;
 
   messages: MessageMock[] = [
     {
@@ -66,16 +73,52 @@ export class ConversaComClienteComponent implements OnInit, AfterViewInit {
       this.targetName = qp.get('contactName') || 'Cliente';
       this.targetSubtitle = qp.get('contactSubtitle') || 'Cliente';
       this.targetAvatar = qp.get('contactAvatar') || '';
+      this.shouldOpenFinalizado = qp.get('serviceFinalized') === '1';
       setTimeout(() => this.scrollToBottom(), 30);
+      this.tryOpenFinalizadoModal();
     });
   }
 
   ngAfterViewInit(): void {
+    this.viewReady = true;
     setTimeout(() => this.scrollToBottom(), 50);
+    this.tryOpenFinalizadoModal();
   }
 
+  private tryOpenFinalizadoModal(): void {
+    if (!this.viewReady) return;
+    if (!this.shouldOpenFinalizado) return;
+    if (this.finalizadoOpened) return;
+
+    this.finalizadoOpened = true;
+
+    this.modalService.openModal(
+      {
+        title: '',
+        showHeader: false,
+        showFooter: false,
+        size: 'md'
+      },
+      undefined,
+      this.servicoFinalizadoTemplate
+    );
+  }
+
+  closeServicoFinalizadoModal(): void {
+    this.modalService.closeModal();
+
+    this.avaliarCliente = true;
+
+    //remove a flag da URL pra não abrir de novo ao dar refresh
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { serviceFinalized: null },
+      queryParamsHandling: 'merge'
+    });
+  }
+
+
   goBack(): void {
-    // volta para lista
     this.router.navigate(['/usuario/lista-de-conversas-com-os-profissionais'], {
       relativeTo: this.route
     });

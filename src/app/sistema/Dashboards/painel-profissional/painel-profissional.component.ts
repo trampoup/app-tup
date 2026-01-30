@@ -6,6 +6,7 @@ import { UsuarioDadosDTO } from '../../cupons/UsuarioDadosDTO';
 import { StatusServico } from '../../servicos/StatusServico';
 import { getAvatarColor } from 'src/app/shared/avatar/avatar-color.utils';
 import { ModalGenericoService } from 'src/app/configs/services/modal-generico.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-painel-profissional',
@@ -79,6 +80,7 @@ export class PainelProfissionalComponent implements OnInit {
     private modalWelcomeService:ModalWelcomeService,
     private modalGenericoService: ModalGenericoService,
     private cdr: ChangeDetectorRef,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -141,9 +143,26 @@ export class PainelProfissionalComponent implements OnInit {
     const isValid = this.codigo.every(c => !!c) && code.length === 6;
 
     if (!isValid) return false;
-
+    setTimeout(() => this.irParaChatDoCliente(), 0);
     return true; 
   }
+
+  private irParaChatDoCliente(): void {
+    if (!this.servicoSelecionado) return;
+
+    this.router.navigate(
+      ['/usuario/conversa-com-cliente'], 
+      {
+        queryParams: {
+          contactName: this.servicoSelecionado.nome,
+          contactSubtitle: this.servicoSelecionado.tipo || 'Cliente',
+          contactAvatar: this.servicoSelecionado.photo || '',
+          serviceFinalized: 1
+        }
+      }
+    );
+  }
+
 
   private getCodeInputs(target: EventTarget | null): HTMLInputElement[] {
     const el = target as HTMLElement | null;

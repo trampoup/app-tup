@@ -98,3 +98,17 @@
     </button>
   </div>
 </ng-template>
+
+<ng-template #servicoFinalizadoTemplate>
+  <div class="finalizado-modal">
+    <!-- ícone depois; por enquanto vazio (se quiser, deixe um div placeholder) -->
+    <div class="finalizado-icon-placeholder"></div>
+
+    <h3 class="finalizado-title">Serviço finalizado com sucesso!</h3>
+    <p class="finalizado-text">Deseja avaliar {{ targetName }} agora?</p>
+
+    <button class="finalizado-btn" (click)="closeServicoFinalizadoModal()">
+      Ok, fechar
+    </button>
+  </div>
+</ng-template>
