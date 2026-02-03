@@ -40,10 +40,9 @@
 }
 
 .anuncios-lista,
-.destaques-lista,
-.servicos-lista {
+.destaques-lista{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     flex-wrap: wrap;
     gap: 16px;
 }
@@ -51,8 +50,7 @@
 /* 2) Tablet pequeno (≥300px): 1 colunas */
 @media screen and (min-width: 300px) {
   .anuncios-lista,
-  .destaques-lista,
-  .servicos-lista {
+  .destaques-lista{
     grid-template-columns: repeat(1, 1fr);
   }
 
@@ -65,8 +63,7 @@
 /* 3) Tablet grande / desktop médio (≥700px): 2 colunas */
 @media screen and (min-width: 700px) {
   .anuncios-lista,
-  .destaques-lista,
-  .servicos-lista {
+  .destaques-lista {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -74,20 +71,13 @@
 /* 3) Tablet grande / desktop médio (≥800px): 3 colunas */
 @media screen and (min-width: 800px) {
   .anuncios-lista,
-  .destaques-lista,
-  .servicos-lista {
+  .destaques-lista{
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 /* 4) Desktop amplo (≥1200px): 4 colunas – seu “padrão” atual */
 @media screen and (min-width: 1200px) {
-  .anuncios-lista,
-  .destaques-lista,
-  .servicos-lista {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
   .main-container{
     padding: 40px 64px;
   }
@@ -114,6 +104,32 @@
 .servicos-card:hover {
     transform: scale(1.02);
 }
+
+/* SERVIÇOS: grid previsível */
+.servicos-lista{
+  display: grid;
+  gap: 24px;
+  margin: 16px 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 1024px){
+  .servicos-lista{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px){
+  .servicos-lista{
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+.card-profissional{
+  width: 100%;
+  min-width: 0;
+}
+
 
 
 /*O card se ajusta ao tamanho da imagem ou terá um tamanho fixo para upload das imagens?*/
@@ -349,13 +365,6 @@
 }
 
 
-.lista-servicos{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 32px;
-  margin: 16px 0;
-}
-
 .card-profissional{
   display: flex;
   flex-direction: row;
@@ -367,6 +376,9 @@
   padding: 5px 8px;
   transition: all 0.3s ease-in-out;
   min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden
 }
 
 .card-profissional:hover{
@@ -411,6 +423,14 @@
   flex-direction: column;
 }
 
+.user-info h2,
+.user-info .cargo{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
 .cargo{
   font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   font-size: 16px;
@@ -425,11 +445,5 @@
   white-space: normal;           
   overflow-wrap: break-word;      
   word-break: break-word;         
-}
-
-@media screen and (max-width: 450px) {
-  .lista-servicos{
-    grid-template-columns: repeat(1, 1fr);
-  }
 }
 

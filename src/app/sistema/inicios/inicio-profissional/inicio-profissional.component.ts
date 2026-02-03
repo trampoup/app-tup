@@ -68,7 +68,7 @@ export class InicioProfissionalComponent implements OnInit {
   profissionaisInteresse: UsuarioSiteDTO[] = [];
   profissionaisInteressePaginados: UsuarioSiteDTO[] = [];
   paginaAtualInteresse: number = 1;
-  itensPorPaginaInteresse: number = 8;
+  itensPorPaginaInteresse: number = 6;
   totalItensInteresse: number = 0;
 
   // Mapa de fotos de perfil
