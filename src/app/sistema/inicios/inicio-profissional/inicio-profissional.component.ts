@@ -5,6 +5,7 @@ import { UsuarioSiteDTO } from '../../mini-site/cadastrar-site/usuario-site-dto'
 import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.service';
 import { UsuarioService } from 'src/app/configs/services/usuario.service';
 import { AnimationOptions } from 'ngx-lottie';
+import { AuthService } from 'src/app/configs/services/auth.service';
 
 @Component({
   selector: 'app-inicio-profissional',
@@ -44,6 +45,7 @@ export class InicioProfissionalComponent implements OnInit {
     private router: Router,
     private usuarioMidiasService: UsuarioMidiasService,
     private usuarioService: UsuarioService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -71,6 +73,17 @@ export class InicioProfissionalComponent implements OnInit {
       }
     });
   }
+
+  redirectToSitePublico(): void {
+    const id = this.authService.getUsuarioId();
+    if (!id) return;
+
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/perfil-publico',id])
+    );
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
 
   verPerfil(d: any, $event: MouseEvent) {
     $event.stopPropagation();

@@ -156,6 +156,10 @@ export class AuthService {
     return !!localStorage.getItem('access_token');
   }
 
+  getUsuarioId() {
+    return this.UsuarioPerfil?.id;
+  }
+
   /** Retorna o usuário do cache; se não houver e tiver token, busca na API; se falhar, devolve null */
   getUsuarioComCache$(): Observable<UsuarioDadosDTO | null> {
     if (this.UsuarioPerfil) return of(this.UsuarioPerfil);
