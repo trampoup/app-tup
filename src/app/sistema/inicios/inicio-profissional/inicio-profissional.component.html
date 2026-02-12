@@ -1,101 +1,64 @@
 <div class="main-container">
-    <div class="banner">
-        <h1>Início</h1>
-        <p>Explore centenas de profissionais prontos para te ajudar.</p>
+    <div class="banner" *ngIf="temMiniSite; else semMiniSite;">
+        <div class="banner-left">
+            <h1>Seu site está ativo e visível para clientes próximos a {{ cidadeBanner }}!</h1>
+            <p>Veja como você aparece para os clientes.</p>
+
+            <button class="visualizar-site" type="button">
+            Visualizar meu site
+            </button>
+        </div>
+
+        <div class="banner-right" aria-hidden="true">
+            <!-- Badge 1 -->
+            <div class="banner-badge badge-servicos">
+                <img class="badge-icon" src="/assets/icones/servicos-realizados-icon.svg" alt="">
+                <span class="badge-text">{{ servicosRealizados }} serviços realizados</span>
+            </div>
+
+            <!-- Badge 2 -->
+            <div class="banner-badge badge-experiencia">
+                 <img class="badge-icon" src="/assets/icones/experiencia-icon.svg" alt="">
+                <span class="badg-icone-text">{{ anosExperiencia }} anos de experiência</span>
+            </div>
+
+            <img
+                src="/assets/imagens/profissional.png"
+                alt=""
+                class="banner-profissional"
+            />
+        </div>
+
     </div>
 
-    <section class="anuncios-container">
-        <div class="anuncios-topico">
-            <h1>Anúncios</h1>
+    <ng-template #semMiniSite>
+    <div class="banner">
+        <div class="banner-left sem-mini-site">
+            <h1>Olá, {{nomeProfissional}}!</h1>
+            <p>Crie seu perfil para ficar visível na sua região.</p>
+
+            <button (click)="redirectToCadastroSite()" class="visualizar-site" type="button">
+            Completar meu perfil
+            </button>
         </div>
 
-        <div class="em-breve">
-            <div class="logo">
-                <img src="assets/icones/logo-trampoup.png" alt="TrampoUP" />
-            </div>
-            <h2>Funcionalidade em breve!</h2>
-        </div>
-        <!-- <div class="anuncios-lista">
-             <div class="anuncio-card" *ngFor="let anuncio of anuncios">
-                <img [src]="anuncio.imagem" [alt]="anuncio.titulo" />
-            </div> 
-        </div> -->
-
-
-
-    </section>
-
-    <section class="destaques-container">
-        <div class="destaques-topico">
-            <h1>Destaques</h1>
-        </div>
-        <div class="em-breve">
-            <div class="logo">
-                <img src="assets/icones/logo-trampoup.png" alt="TrampoUP" />
-            </div>
-            <h2>Funcionalidade em breve!</h2>
-        </div>
-        <!-- <div class="destaques-lista">
-            <div
-                class="destaques-card"
-                *ngFor="let d of destaquesPaginados; let i = index; trackBy: trackByIndex"
-                (click)="toggleDestaque(i)"
-                [class.expanded]="expandedDestaqueIndex === i"
-                tabindex="0"
-                role="button"
-                [attr.aria-expanded]="expandedDestaqueIndex === i ? 'true' : 'false'"
-            >
-                <ng-container *ngIf="expandedDestaqueIndex === i; else collapsedCard">
-                    <div class="card-expandido" (click)="$event.stopPropagation()">
-                        <div class="banner-user">
-                            <img src="/assets/imagens/banner-trampo-generico.png" [alt]="d.titulo" />
-                        </div>
-                        <div class="avatar-user">
-                            <img src="/assets/imagens/foto-perfil-generico.png" [alt]="d.titulo" />
-                        </div>
-
-                        <div class="name-user">
-                            <h2>{{ "Usuário" }}</h2>
-                            <div class="rating">
-                                <span class="score"> <span class="star">★</span> {{ (d.nota ?? 4.0) | number:'1.1-1' }}/5</span>
-                            </div>
-                        </div>
-                        <p class="profissao-user">Profissão</p>
-                        <div class="bio-user">
-                            <p style="margin: 0"><strong>Profissional bio</strong></p>
-                            <p id="descricao" style="color: #585858;">Este usuário ainda não cadastrou a bio.</p>
-                        </div>
-                        <div class="btn-card">
-                            <button class="btn-ver-perfil" (click)="verPerfil(d, $event)">Acessar Perfil</button>
-                            <button class="btn-salvar"><img src="/assets/icones/save-icon.svg" alt="save icon"></button>
-                            <button class="btn-share"><img src="/assets/icones/share-icon.svg" alt="save icon"></button>
-                         </div>
-                    </div>
-                </ng-container>
-
-                <ng-template #collapsedCard>
-                    <div class="card-colapsado">
-                        <img [src]="d.imagem" [alt]="d.titulo" />
-                    </div>
-                </ng-template>
-            </div>
+        <div class="banner-right" aria-hidden="true">
+            <img
+                src="/assets/imagens/profissional.png"
+                alt=""
+                class="banner-profissional"
+            />
         </div>
 
-        
-        <div class="paginacao">
-            <app-pagination
-                [paginaAtual]="paginaAtual"
-                [totalItens]="totalItens"
-                [itensPorPagina]="itensPorPagina"
-                (paginaMudou)="onPaginaMudou($event)">
-            </app-pagination>
-        </div> -->
+    </div>
 
-    </section>
+    </ng-template>
+
+
 
     <section class="servicos-container">
         <div class="servicos-topico">
-            <h1>Serviços do seu interesse</h1>
+            <h1>Destaques da sua região</h1>
         </div>
 
        <div class="servicos-lista" *ngIf="profissionaisInteressePaginados.length > 0">
@@ -147,7 +110,27 @@
     </section>
 
 
+    <section class="servicos-container" *ngIf="temMiniSite">
+        <div class="servicos-topico">
+            <h1>Sugestão do dia</h1>
+        </div>
 
-    <footer>
-    </footer>
+        <div class="banner banner-sugestao">
+            <div class="banner-sugestao-left">
+                <h2>Compartilhe seu site e ganhe 10 pontos</h2>
+                <p>Crie seu perfil para ficar visível na sua região</p>
+
+                <button class="btn-compartilhar" type="button">
+                    Compartilhar meu site
+                </button>
+            </div>
+
+            <div class="banner-sugestao-right" aria-hidden="true">
+                <div class="rocket-anim">
+                    <ng-lottie  [options]="rocketLunchAnimOptions"></ng-lottie>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </div>
