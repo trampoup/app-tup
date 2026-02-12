@@ -136,6 +136,10 @@
   right: 288px;
 }
 
+.badge-text{
+  font-size: 16px;
+}
+
 .badge-experiencia{
   bottom: 15px;
   right: -12px;
@@ -402,7 +406,7 @@
 
 .badge-avaliacao .star{
   color: #F5A623;
-  font-size: 18px;
+  font-size: 22px;
   line-height: 1;
 }
 

@@ -4,7 +4,7 @@
         class="banner-track"
         [style.transform]="'translateX(-' + (activeBannerIndex * 100) + '%)'"
     >
-        <!-- SLIDE 1: SEU BANNER ATUAL -->
+        <!-- SLIDE 1 -->
         <div class="banner-slide">
         <div class="banner" *ngIf="temMiniSite; else semMiniSite;">
             <div class="banner-left">
@@ -28,7 +28,7 @@
 
             <div class="banner-badge badge-experiencia">
                 <img class="badge-icon" src="/assets/icones/experiencia-icon.svg" alt="">
-                <span class="badg-icone-text">{{ anosExperiencia }} anos de experiência</span>
+                <span class="badge-text">{{ anosExperiencia }} anos de experiência</span>
             </div>
 
             <img
