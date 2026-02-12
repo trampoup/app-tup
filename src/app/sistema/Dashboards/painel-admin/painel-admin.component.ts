@@ -15,6 +15,7 @@ import {
 } from 'ng-apexcharts';
 import { ModalWelcomeService } from 'src/app/configs/services/modal-welcome.service';
 import { UsuarioDadosDTO } from '../../cupons/UsuarioDadosDTO';
+import { UsuarioService } from 'src/app/configs/services/usuario.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -86,6 +87,7 @@ export class PainelAdminComponent implements OnInit {
     private climaService: ClimaService,
     private modalWelcomeService: ModalWelcomeService,
     private cdr: ChangeDetectorRef,
+    private usuarioService: UsuarioService
   ) { }
 
   ngOnInit(): void {
@@ -98,6 +100,15 @@ export class PainelAdminComponent implements OnInit {
         this.usuario = usuario;
       }
     );
+
+    this.usuarioService.obterCardsInicioAdmin().subscribe({
+      next: (cards) => {
+        this.quantidadeTotalServicos = cards.quantidadeTotalServicos;
+        this.quantidadeProfissionaisAtivos = cards.quantidadeProfissionaisAtivos;
+        this.quantidadeServicos = cards.quantidadeServicos; 
+      },
+      error: (err) => console.error('Erro ao carregar cards do admin', err)
+    });
 
     this.updateDateTime();
     setInterval(() => this.updateDateTime(), 60_000);

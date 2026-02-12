@@ -4,6 +4,7 @@ import { categoriasDescricoes } from 'src/app/cadastro/categorias-descricoes-enu
 import { UsuarioSiteDTO } from '../../mini-site/cadastrar-site/usuario-site-dto';
 import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.service';
 import { UsuarioService } from 'src/app/configs/services/usuario.service';
+import { AnimationOptions } from 'ngx-lottie';
 
 @Component({
   selector: 'app-inicio-profissional',
@@ -11,60 +12,6 @@ import { UsuarioService } from 'src/app/configs/services/usuario.service';
   styleUrls: ['./inicio-profissional.component.css']
 })
 export class InicioProfissionalComponent implements OnInit {
-  anuncios = [ /*LISTA DE ANUNCIOS(TEMPORÁRIO, SOMENTE PARA MOSTRAR A INTERFACE AO ALEX)*/
-    {
-      titulo: 'anuncio 2',
-      imagem: 'assets/imagens/imagens-de-exemplo/anuncio1-exemplo.png'
-    },
-    {
-      titulo: 'anuncio 1',
-      imagem: 'assets/imagens/imagens-de-exemplo/anuncio2-exemplo.png'
-    }
-  ];
-
-  destaques = [
-    {
-      titulo: 'destaque1',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
-    },
-    {
-      titulo: 'destaque2',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
-    },
-    {
-      titulo: 'destaque3',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
-    },
-    {
-      titulo: 'destaque4',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
-    },
-    {
-      titulo: 'destaque5',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
-    },
-    {
-      titulo: 'destaque6',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
-    },
-    {
-      titulo: 'destaque7',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
-    },
-    {
-      titulo: 'destaque8',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
-    },
-    {
-      titulo: 'destaque9',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
-    },
-    {
-      titulo: 'destaque10',
-      imagem: 'assets/imagens/imagens-de-exemplo/profissional-exemplo2.png'
-    }
-  ];
-
   profissionaisInteresse: UsuarioSiteDTO[] = [];
   profissionaisInteressePaginados: UsuarioSiteDTO[] = [];
   paginaAtualInteresse: number = 1;
@@ -79,20 +26,19 @@ export class InicioProfissionalComponent implements OnInit {
   mensagemBusca: string | null = '';
   isLoading: boolean = false;
 
-  paginaAtual: number = 1;
-  itensPorPagina: number = 8;
-  totalPaginas: number = Math.ceil(this.destaques.length / this.itensPorPagina);
-  destaquesPaginados : any[] = [];
-
-  paginaAtualServicos: number = 1;
-  itensPorPaginaServicos: number = 8;
-  totalPaginasServicos: number = Math.ceil(this.anuncios.length / this.itensPorPagina);
-  servicosPaginados : any[] = [];
-
-
-  // 👇 Estado de expansão (índice dentro da página atual)
   expandedDestaqueIndex: number | null = null;
 
+  rocketLunchAnimOptions: AnimationOptions = {
+    path: '/assets/animations/Rocket Lunch.json',
+    loop: true,
+    autoplay: true
+  };
+
+  temMiniSite:boolean = false;
+  nomeProfissional: string = 'Profissional';
+  cidadeBanner: string = '—';
+  servicosRealizados:number = 38;
+  anosExperiencia:number = 0;
 
   constructor(
     private router: Router,
@@ -101,63 +47,40 @@ export class InicioProfissionalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.carregarResumoBanner();
     this.carregarProfissionaisPorInteresse();
-    this.atualizarPaginacaoDestaques();
-    this.atualizarPaginacaoServicos();
+    this.atualizarPaginacaoProfissionaisInteresse();
   }
 
-  // Toggle do card
-  toggleDestaque(i: number) {
-    this.expandedDestaqueIndex = this.expandedDestaqueIndex === i ? null : i;
+  private carregarResumoBanner(): void {
+    this.usuarioService.obterResumoInicioProfissional().subscribe({
+      next: (res) => {
+        console.log('Resumo início profissional:', res);
+        this.temMiniSite = res.miniSiteAtivo;
+        this.nomeProfissional = res.nome || 'Profissional';
+        this.cidadeBanner = res.cidadeAtual || 'sua região';
+        this.servicosRealizados = res.servicosRealizados ?? 0;
+        this.anosExperiencia = res.anosExperiencia ?? 0;
+      },
+      error: () => {
+        // fallback: sem mini site
+        this.temMiniSite = false;
+        this.cidadeBanner = 'sua região';
+        this.servicosRealizados = 0;
+        this.anosExperiencia = 0;
+      }
+    });
   }
 
-  // Acessibilidade: ESC para fechar expansão
-  @HostListener('document:keydown.escape')
-  onEsc() {
-    this.expandedDestaqueIndex = null;
-  }
-
-  // Exemplo de ação dentro do card expandido
   verPerfil(d: any, $event: MouseEvent) {
-    $event.stopPropagation(); // evita fechar/alternar o card ao clicar no botão
-    this.router.navigate(['/usuario/perfil-profissional']); // Navega para o perfil do profissional
+    $event.stopPropagation();
+    this.router.navigate(['/usuario/perfil-profissional']); 
   }
 
   trackByIndex(index: number, _item: any): number {
     return index;
   }
 
-  atualizarPaginacaoDestaques(): void {
-    const inicio = (this.paginaAtual - 1) * this.itensPorPagina;
-    const fim = inicio + this.itensPorPagina;
-    this.destaquesPaginados = this.destaques.slice(inicio, fim);
-  }
-
-  get totalItens() {
-    return this.destaques.length;
-  }
-
-  onPaginaMudou(novaPagina: number) {
-    this.paginaAtual = novaPagina;
-    this.expandedDestaqueIndex = null; // fecha ao mudar de página
-    this.atualizarPaginacaoDestaques();
-  }
-
-
-  atualizarPaginacaoServicos(): void {
-    const inicio = (this.paginaAtualServicos - 1) * this.itensPorPaginaServicos;
-    const fim = inicio + this.itensPorPaginaServicos;
-    this.servicosPaginados = this.destaques.slice(inicio, fim); //SUBSTITUIR POR SERVIÇOS QUANDO IMPLEMENTAR
-  }
-
-  get totalItensServicos() {
-    return this.destaques.length; //SUBSTITUIR POR SERVIÇOS QUANDO IMPLEMENTAR
-  }
-
-  onPaginaMudouServicos(novaPagina: number) {
-    this.paginaAtualServicos = novaPagina;
-    this.atualizarPaginacaoServicos();
-  }
   onPaginaMudouInteresse(novaPagina: number) {
     this.paginaAtualInteresse = novaPagina;
     this.expandedDestaqueIndex = null;
@@ -208,5 +131,9 @@ export class InicioProfissionalComponent implements OnInit {
 
   visualizarProfissional(id: number){
     this.router.navigate(['/usuario/perfil-profissional', id]);
+  }
+
+  redirectToCadastroSite() {
+    this.router.navigate(['/usuario/cadastro-de-site']);
   }
 }

@@ -8,6 +8,9 @@ import { UsuarioSiteDTO } from 'src/app/sistema/mini-site/cadastrar-site/usuario
 import { UsuarioDadosDTO } from 'src/app/sistema/cupons/UsuarioDadosDTO';
 import { UsuarioAtualizacaoDTO } from 'src/app/sistema/meu-perfil/UsuarioAtualizarDTO';
 import { Setor } from 'src/app/cadastro/categorias-enum';
+import { InicioProfissionalResumoDTO } from 'src/app/sistema/inicios/inicio-profissional/InicioProfissionalResumoDTO';
+import { AdminDashboardCardsDTO } from 'src/app/sistema/Dashboards/painel-admin/AdminDashboardCardsDTO';
+
 
 @Injectable({
   providedIn: 'root'
@@ -85,5 +88,14 @@ export class UsuarioService {
       })
     );
   }
+
+  obterResumoInicioProfissional() {
+    return this.http.get<InicioProfissionalResumoDTO>(`${this.apiUrlLink}/inicio-profissional/resumo`);
+  }
+
+  obterCardsInicioAdmin() {
+    return this.http.get<AdminDashboardCardsDTO>(`${this.apiUrlLink}/estatisticas/cards-painel-admin`);
+  }
+
 
 }
