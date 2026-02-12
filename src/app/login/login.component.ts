@@ -65,7 +65,7 @@ export class LoginComponent {
             this.authService.setRoleUsuario(TipoUsuario.ADMIN);
             break;
           case 'ROLE_PROFISSIONAL':
-            this.router.navigate(['/usuario/painel-principal-profissional']);
+            this.router.navigate(['/usuario/inicio-profissional']);
             this.authService.setRoleUsuario(TipoUsuario.PROFISSIONAL);
             break;
           case 'ROLE_CLIENTE':

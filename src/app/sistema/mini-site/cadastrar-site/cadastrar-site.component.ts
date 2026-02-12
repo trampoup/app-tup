@@ -231,7 +231,9 @@ export class CadastrarSiteComponent implements OnInit {
           video:  videoFile  || undefined,
           fotoPerfil: fotoPerfilFIle || undefined
         }).subscribe({
-          next: () => {},
+          next: () => {
+            this.isLoading = false;
+          },
           error: (err) => {
             this.errorMessage = err?.error?.message || 'Erro ao enviar mídias.';
             this.isLoading = false;

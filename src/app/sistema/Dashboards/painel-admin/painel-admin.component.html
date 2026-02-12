@@ -74,7 +74,7 @@
                             <img class="avatar-pequeno" [src]="u.photo" [alt]="u.nome" />
                             <td>{{ u.nome }}</td>
                             <td>{{ u.cargo }}</td>
-                            <td>{{ u.ingressou | date:'dd/MM/yyyy' }}</td>
+                            <td>{{ u.ingressou ? (u.ingressou | date:'dd/MM/yyyy') : '—' }}</td>
                         </tr>
                     </tbody>
                 </table>

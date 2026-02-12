@@ -27,6 +27,18 @@ export type ChartOptions = {
   legend: ApexLegend;        // <— adicione aqui
 };
 
+export interface AdminNovoUsuarioDTO {
+  id: number;
+  nome: string;
+  tipoUsuario: 'ADMIN' | 'PROFISSIONAL' | 'CLIENTE';
+  createdAt: any;
+}
+
+export interface AdminCrescimentoMensalDTO {
+  ano: number;
+  quantidadePorMes: number[]; 
+}
+
 
 @Component({
   selector: 'app-painel-admin',
@@ -48,38 +60,10 @@ export class PainelAdminComponent implements OnInit {
 
   tipoUsuarioDescricao = TipoUsuarioDescricao;
 
-  novosUsuarios = [ //PROVISORIO
-    {
-      photo: '/assets/imagens/imagens-de-exemplo/m-userphoto-exemplo.svg',
-      nome: 'Maria Silva',
-      cargo: 'Profissional',
-      ingressou: new Date('2025-01-15')
-    },
-    {
-      photo: '/assets/imagens/imagens-de-exemplo/p-userphoto-exemplo.svg',
-      nome: 'Pedro Costa',
-      cargo: 'Cliente',
-      ingressou: new Date('2025-06-03')
-    },
-    {
-      photo: '/assets/imagens/imagens-de-exemplo/p-userphoto-exemplo.svg',
-      nome: 'Pedro Costa',
-      cargo: 'Cliente',
-      ingressou: new Date('2025-06-03')
-    },
-    {
-      photo: '/assets/imagens/imagens-de-exemplo/j-userphoto-exemplo.svg',
-      nome: 'Joana Mendes',
-      cargo: 'Profissional',
-      ingressou: new Date('2025-05-28')
-    },
-    {
-      photo: '/assets/imagens/imagens-de-exemplo/j-userphoto-exemplo.svg',
-      nome: 'Joana Mendes',
-      cargo: 'Profissional',
-      ingressou: new Date('2025-06-13')
-    }
-  ];
+  novosUsuarios: any[] = [];
+  placeholderFoto = '/assets/imagens/foto-perfil-generico.png';
+  private chartCrescimentoMensal: any;
+  private anoCrescimento = new Date().getFullYear();
 
 
   constructor(
@@ -91,9 +75,10 @@ export class PainelAdminComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.carregarNovosUsuarios()
     this.renderChartGrafico();
     this.getWeatherForCurrentLocation();
-    this.renderCharCrescimentoMensal();
+    // this.renderCharCrescimentoMensal();
 
     this.authService.obterPerfilUsuario().subscribe(
       (usuario) => {
@@ -115,6 +100,107 @@ export class PainelAdminComponent implements OnInit {
     
     this.mostrarModalWelcome();
   }
+
+
+  private cargoPorTipo(tipo: string) {
+    if (tipo === 'PROFISSIONAL') return 'Profissional';
+    if (tipo === 'CLIENTE') return 'Cliente';
+    if (tipo === 'ADMIN') return 'Admin';
+    return 'Usuário';
+  }
+
+  carregarNovosUsuarios() {
+    this.usuarioService.obterNovosUsuariosAdmin().subscribe((lista) => {
+      const parsed = (lista || []).map(u => ({
+        photo: this.placeholderFoto,
+        nome: u.nome,
+        cargo: this.cargoPorTipo(u.tipoUsuario),
+        ingressou: this.parseCreatedAt(u.createdAt)
+      }));
+
+      this.novosUsuarios = parsed;
+
+      const quantidadePorMes = this.agruparPorMes(this.novosUsuarios, this.anoCrescimento);
+      this.renderCrescimentoMensalMock(this.anoCrescimento, quantidadePorMes);
+    });
+  }
+
+  private agruparPorMes(novos: any[], ano: number): number[] {
+    const meses = Array(12).fill(0);
+
+    for (const u of (novos || [])) {
+      const d: Date | null = u.ingressou;
+      if (!d || isNaN(d.getTime())) continue;
+
+      if (d.getFullYear() !== ano) continue; // filtra por ano atual (pode remover se quiser)
+
+      const monthIndex = d.getMonth(); // 0..11
+      meses[monthIndex] += 1;
+    }
+
+    return meses;
+  }
+
+  private renderCrescimentoMensalMock(ano: number, quantidadePorMes: number[]) {
+    const options = {
+      series: [{ name: 'Usuários', data: quantidadePorMes }],
+      chart: {
+        type: 'line',
+        height: 350,
+        width: '100%',
+        toolbar: { show: false }
+      },
+      dataLabels: { enabled: false },
+      stroke: { curve: 'smooth' },
+      title: { text: `Crescimento Mensal ${ano}`, align: 'left' },
+      xaxis: {
+        categories: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
+      },
+      legend: { show: false }
+    };
+
+    // se já existe, só atualiza
+    if (this.chartCrescimentoMensal) {
+      this.chartCrescimentoMensal.updateOptions(options);
+      this.chartCrescimentoMensal.updateSeries(options.series);
+      return;
+    }
+
+    // cria uma vez
+    this.chartCrescimentoMensal = new ApexCharts(
+      document.querySelector('#chart-crescimento-mensal'),
+      options
+    );
+    this.chartCrescimentoMensal.render();
+  }
+
+  private parseCreatedAt(value: any): Date | null {
+    if (value == null) return null;
+
+    // ISO string
+    if (typeof value === 'string') {
+      const d = new Date(value);
+      return isNaN(d.getTime()) ? null : d;
+    }
+
+    // number: pode ser segundos ou ms
+    if (typeof value === 'number') {
+      const ms = value < 1e12 ? value * 1000 : value;
+      const d = new Date(ms);
+      return isNaN(d.getTime()) ? null : d;
+    }
+
+    // array [yyyy,MM,dd,HH,mm,ss,nano]
+    if (Array.isArray(value)) {
+      const [y, m, d, hh = 0, mm = 0, ss = 0, nano = 0] = value;
+      const ms = Math.floor(nano / 1e6);
+      return new Date(Date.UTC(y, (m - 1), d, hh, mm, ss, ms));
+    }
+
+    return null;
+  }
+
+
 
   mostrarModalWelcome(){
     if (this.authService.showModal) {
@@ -173,35 +259,34 @@ export class PainelAdminComponent implements OnInit {
   }
 
   renderCharCrescimentoMensal() {
-    const options = {
-      series: [
-        { name: 'Parametro', data: [5, 8, 6, 10, 12, 9, 15, 11, 14, 18, 20, 16] },
-        { name: 'Parametro', data: [2, 4, 3, 5, 6, 4, 8, 6, 7, 9, 10, 8] }
-      ],
-      chart: {
-        type: 'line',
-        height: 350,
-        width: '100%',
-        toolbar: { show: false }
-      },
-      dataLabels: { enabled: false },
-      stroke: { curve: 'smooth' },
-      title: { text: 'Crescimento Mensal', align: 'left' },
-      xaxis: {
-        categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
-      },
-      legend: {
-        show: false
-      }
-    };
+    this.usuarioService.obterCrescimentoMensalUsuarios().subscribe((res) => {
+      const options = {
+        series: [
+          { name: 'Usuários', data: res.quantidadePorMes }
+        ],
+        chart: {
+          type: 'line',
+          height: 350,
+          width: '100%',
+          toolbar: { show: false }
+        },
+        dataLabels: { enabled: false },
+        stroke: { curve: 'smooth' },
+        title: { text: `Crescimento Mensal (${res.ano})`, align: 'left' },
+        xaxis: {
+          categories: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
+        },
+        legend: { show: false }
+      };
 
-    const chart = new ApexCharts(
-      document.querySelector('#chart-crescimento-mensal'),
-      options
-    );
-    chart.render();
-
+      const chart = new ApexCharts(
+        document.querySelector('#chart-crescimento-mensal'),
+        options
+      );
+      chart.render();
+    });
   }
+
 
 
   private updateDateTime() {

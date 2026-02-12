@@ -18,6 +18,7 @@ export class AuthService {
   clientSecret: string = environment.clientSecret;
 
   private UsuarioPerfil: UsuarioDadosDTO | null = null;
+  private idUsuario: number | null = null;
   private tipoUsuarioAtual: TipoUsuario | null = null;
 
   private usuarioPerfilSubject = new BehaviorSubject<UsuarioDadosDTO | null>(null);
@@ -135,6 +136,8 @@ export class AuthService {
         cpf: dto.cpf,
       })),
       tap(u => {
+        this.idUsuario = u.idUsuario!;
+        console.log('ID do usuário obtido:', this.idUsuario);
         this.tipoUsuarioAtual = u.tipoUsuario;
         this.UsuarioPerfil = u;
         this.usuarioPerfilSubject.next(u);
@@ -154,6 +157,10 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('access_token');
+  }
+
+  getUsuarioId() {
+    return this.idUsuario;
   }
 
   /** Retorna o usuário do cache; se não houver e tiver token, busca na API; se falhar, devolve null */

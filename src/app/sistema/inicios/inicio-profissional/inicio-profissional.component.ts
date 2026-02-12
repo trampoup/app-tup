@@ -1,10 +1,11 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { categoriasDescricoes } from 'src/app/cadastro/categorias-descricoes-enum';
 import { UsuarioSiteDTO } from '../../mini-site/cadastrar-site/usuario-site-dto';
 import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.service';
 import { UsuarioService } from 'src/app/configs/services/usuario.service';
 import { AnimationOptions } from 'ngx-lottie';
+import { AuthService } from 'src/app/configs/services/auth.service';
 
 @Component({
   selector: 'app-inicio-profissional',
@@ -40,22 +41,73 @@ export class InicioProfissionalComponent implements OnInit {
   servicosRealizados:number = 38;
   anosExperiencia:number = 0;
 
+
+  activeBannerIndex = 0;
+  bannersCount = 2;
+  private bannerTimer: any;
+
+  showCongrats = false;
+
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private usuarioMidiasService: UsuarioMidiasService,
     private usuarioService: UsuarioService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
+    this.handleCongratsByUrl();
+    this.startBannerCarousel();
+
+
     this.carregarResumoBanner();
     this.carregarProfissionaisPorInteresse();
     this.atualizarPaginacaoProfissionaisInteresse();
   }
 
+
+  ngOnDestroy(): void {
+    if (this.bannerTimer) clearInterval(this.bannerTimer);
+  }
+
+    private startBannerCarousel(): void {
+    if (this.bannerTimer) clearInterval(this.bannerTimer);
+
+    this.bannerTimer = setInterval(() => {
+      this.activeBannerIndex = (this.activeBannerIndex + 1) % this.bannersCount;
+    }, 7000);
+  }
+
+  goToBanner(i: number): void {
+    this.activeBannerIndex = i;
+    this.startBannerCarousel(); // reinicia timer
+  }
+
+  private handleCongratsByUrl(): void {
+    this.route.queryParamMap.subscribe(params => {
+      const ok = params.get('siteConcluido');
+      if (!ok) return;
+
+      this.showCongrats = true;
+      this.activeBannerIndex = 0;
+
+      // remove o param da URL (pra não ficar repetindo)
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { siteConcluido: null },
+        queryParamsHandling: 'merge',
+        replaceUrl: true
+      });
+
+      setTimeout(() => (this.showCongrats = false), 9000);
+    });
+  }
+
+
   private carregarResumoBanner(): void {
     this.usuarioService.obterResumoInicioProfissional().subscribe({
       next: (res) => {
-        console.log('Resumo início profissional:', res);
         this.temMiniSite = res.miniSiteAtivo;
         this.nomeProfissional = res.nome || 'Profissional';
         this.cidadeBanner = res.cidadeAtual || 'sua região';
@@ -63,7 +115,6 @@ export class InicioProfissionalComponent implements OnInit {
         this.anosExperiencia = res.anosExperiencia ?? 0;
       },
       error: () => {
-        // fallback: sem mini site
         this.temMiniSite = false;
         this.cidadeBanner = 'sua região';
         this.servicosRealizados = 0;
@@ -71,6 +122,29 @@ export class InicioProfissionalComponent implements OnInit {
       }
     });
   }
+
+
+  redirectToCadastroSite() {
+    this.router.navigate(['/usuario/cadastro-de-site'], {
+      queryParams: { returnTo: '/usuario/inicio-profissional' }
+    });
+  }
+
+  irParaMeuPerfilProfissional(): void {
+    this.router.navigate(['/usuario/meu-perfil-profissional']);
+  }
+
+  redirectToSitePublico(): void {
+    const id = this.authService.getUsuarioId();
+    console.log('ID do usuário para perfil público:', id);
+    if (!id) return;
+
+    const url = this.router.serializeUrl(
+      this.router.createUrlTree(['/perfil-publico',id])
+    );
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+
 
   verPerfil(d: any, $event: MouseEvent) {
     $event.stopPropagation();
@@ -131,9 +205,5 @@ export class InicioProfissionalComponent implements OnInit {
 
   visualizarProfissional(id: number){
     this.router.navigate(['/usuario/perfil-profissional', id]);
-  }
-
-  redirectToCadastroSite() {
-    this.router.navigate(['/usuario/cadastro-de-site']);
   }
 }
