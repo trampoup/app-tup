@@ -12,7 +12,7 @@
   border-radius: 24px;
   padding: 40px 64px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  overflow: visible !important;     /* libera overflow pra fora do container */
 }
 
 .banner {
@@ -302,6 +302,109 @@
   z-index: 1;
 }
 
+.banner-carousel{
+  position: relative;
+  overflow: visible;
+  clip-path: inset(-200px 0 -200px 0 round 24px);
+}
+
+.banner-track{
+  display: flex;
+  transition: transform .65s ease;
+  will-change: transform;
+}
+
+.banner-slide{
+  flex: 0 0 100%;
+  min-width: 100%;
+}
+
+.carousel-dots{
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 60;
+}
+
+.carousel-dot{
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.65);
+  border: 1px solid rgba(0,0,0,0.10);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.14);
+  cursor: pointer;
+  padding: 0;         
+  line-height: 0;      
+}
+
+.carousel-dot.active{
+  background: #ffffff;
+  transform: scale(1.15);
+}
+
+
+.banner-congrats{
+  margin-top: 10px;
+  font-weight: 600;
+  opacity: 0.95;
+}
+
+.banner.banner-avaliacoes{
+  background-image: none !important;
+
+  background: #F5A00240;
+
+  color: #1b1b1b;
+}
+
+.banner-avaliacoes .banner-left h1{
+  color: #7a4a00; /* próximo do print */
+  max-width: 75%;
+}
+
+.banner-avaliacoes .banner-left p{
+  color: rgba(27,27,27,0.80);
+  max-width: 72%;
+}
+
+.btn-avaliacoes{
+  background: #1b1b1b;
+  color: #fff;
+  border: 0;
+}
+
+.banner-avaliacoes-right{
+  position: relative;
+}
+
+/* imagem “vazando” */
+.banner-avaliacoes-img{
+  position: absolute;
+  bottom: 0;
+  right: -18px;
+  height: 120%;
+  width: auto;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* badge igual ao print */
+.badge-avaliacao{
+  top: 88px;
+  right: 220px;
+  background: rgba(255,255,255,0.92);
+}
+
+.badge-avaliacao .star{
+  color: #F5A623;
+  font-size: 18px;
+  line-height: 1;
+}
 
 
 /* responsivo */

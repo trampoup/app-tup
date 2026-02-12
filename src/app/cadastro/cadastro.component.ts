@@ -167,8 +167,7 @@ export class CadastroComponent implements OnInit {
           this.profissionalForm.reset();
 
           this.authService.setRoleUsuario(TipoUsuario.PROFISSIONAL);
-          const rotaInicial = this.authService.getRotaDashboard(); //cadastra e ja redireciona para a rota inicial
-          this.router.navigate([rotaInicial]);
+          this.router.navigate(['/usuario/inicio-profissional']); //redireciona para o dashboard do profissional
           
         },
         error: (error) => {

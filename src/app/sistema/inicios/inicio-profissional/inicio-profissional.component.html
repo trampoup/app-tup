@@ -1,24 +1,33 @@
 <div class="main-container">
-    <div class="banner" *ngIf="temMiniSite; else semMiniSite;">
-        <div class="banner-left">
+    <div class="banner-carousel">
+    <div
+        class="banner-track"
+        [style.transform]="'translateX(-' + (activeBannerIndex * 100) + '%)'"
+    >
+        <!-- SLIDE 1: SEU BANNER ATUAL -->
+        <div class="banner-slide">
+        <div class="banner" *ngIf="temMiniSite; else semMiniSite;">
+            <div class="banner-left">
             <h1>Seu site está ativo e visível para clientes próximos a {{ cidadeBanner }}!</h1>
-            <p>Veja como você aparece para os clientes.</p>
 
-            <button class="visualizar-site" type="button">
-            Visualizar meu site
+            <p *ngIf="showCongrats" class="banner-congrats">
+                🎉 Parabéns, {{ nomeProfissional }}! Você completou seu perfil e já está visível na sua região.
+            </p>
+            <p *ngIf="!showCongrats">Veja como você aparece para os clientes.</p>
+
+            <button class="visualizar-site" type="button" (click)="redirectToSitePublico()">
+                Visualizar meu site
             </button>
-        </div>
+            </div>
 
-        <div class="banner-right" aria-hidden="true">
-            <!-- Badge 1 -->
+            <div class="banner-right" aria-hidden="true">
             <div class="banner-badge badge-servicos">
                 <img class="badge-icon" src="/assets/icones/servicos-realizados-icon.svg" alt="">
                 <span class="badge-text">{{ servicosRealizados }} serviços realizados</span>
             </div>
 
-            <!-- Badge 2 -->
             <div class="banner-badge badge-experiencia">
-                 <img class="badge-icon" src="/assets/icones/experiencia-icon.svg" alt="">
+                <img class="badge-icon" src="/assets/icones/experiencia-icon.svg" alt="">
                 <span class="badg-icone-text">{{ anosExperiencia }} anos de experiência</span>
             </div>
 
@@ -27,9 +36,82 @@
                 alt=""
                 class="banner-profissional"
             />
+            </div>
         </div>
 
+        <ng-template #semMiniSite>
+            <div class="banner">
+            <div class="banner-left sem-mini-site">
+                <h1>Olá, {{nomeProfissional}}!</h1>
+                <p>Crie seu perfil para ficar visível na sua região.</p>
+
+                <button (click)="redirectToCadastroSite()" class="visualizar-site" type="button">
+                Completar meu perfil
+                </button>
+            </div>
+
+            <div class="banner-right" aria-hidden="true">
+                <img
+                src="/assets/imagens/profissional.png"
+                alt=""
+                class="banner-profissional"
+                />
+            </div>
+            </div>
+        </ng-template>
+        </div>
+
+        <!-- SLIDE 2: BANNER “AVALIAÇÕES VALEM OURO” -->
+        <div class="banner-slide">
+        <div class="banner banner-avaliacoes">
+            <div class="banner-left banner-avaliacoes-left">
+            <h1>Avaliações valem ouro!</h1>
+            <p>
+                Peça feedback ao final de cada serviço e destaque suas melhores avaliações no perfil para gerar autoridade.
+            </p>
+
+            <button class="visualizar-site btn-avaliacoes" type="button" (click)="irParaMeuPerfilProfissional()">
+                Ver meu perfil
+            </button>
+            </div>
+
+            <div class="banner-right banner-avaliacoes-right" aria-hidden="true">
+            <div class="banner-badge badge-avaliacao">
+                <span class="star">★</span>
+                <span class="badge-text">4.8/5</span>
+            </div>
+
+            <!-- coloque a imagem da mulher aqui -->
+            <img
+                src="/assets/imagens/mulher.png"
+                alt=""
+                class="banner-avaliacoes-img"
+            />
+            </div>
+        </div>
+        </div>
     </div>
+
+    <!-- DOTS -->
+    <div class="carousel-dots">
+        <button
+        type="button"
+        class="carousel-dot"
+        [class.active]="activeBannerIndex === 0"
+        (click)="goToBanner(0)"
+        aria-label="Banner 1"
+        ></button>
+
+        <button
+        type="button"
+        class="carousel-dot"
+        [class.active]="activeBannerIndex === 1"
+        (click)="goToBanner(1)"
+        aria-label="Banner 2"
+        ></button>
+    </div>
+    </div>
+
 
     <ng-template #semMiniSite>
     <div class="banner">

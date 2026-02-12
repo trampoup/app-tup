@@ -120,7 +120,6 @@ export class PainelAdminComponent implements OnInit {
 
       this.novosUsuarios = parsed;
 
-      // --- MOCK DO GRÁFICO: agrupa por mês usando os "novos usuários" ---
       const quantidadePorMes = this.agruparPorMes(this.novosUsuarios, this.anoCrescimento);
       this.renderCrescimentoMensalMock(this.anoCrescimento, quantidadePorMes);
     });
@@ -153,7 +152,7 @@ export class PainelAdminComponent implements OnInit {
       },
       dataLabels: { enabled: false },
       stroke: { curve: 'smooth' },
-      title: { text: `Crescimento Mensal (mock via novos usuários) - ${ano}`, align: 'left' },
+      title: { text: `Crescimento Mensal ${ano}`, align: 'left' },
       xaxis: {
         categories: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
       },
