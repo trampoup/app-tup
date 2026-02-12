@@ -65,18 +65,17 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.obterPerfilUsuario().subscribe({
-      next: (perfil) => {
-        this.nomeUsuario = perfil.nome;
-        this.permissaoUsuario = this.permissaoDescricao[perfil.tipoUsuario] || 'Usuário';
-        this.enderecoUsuario = perfil.endereco ?? "Endereço do Usuário";
-        this.cidadeUsuario = perfil.cidade,
-        this.estadoUsuario = perfil.estado
-        this.localizacaoUsuario = perfil.localizacaoAtual ?? null;
-      },
-      error: (error) => {
-        console.error('Erro ao obter perfil do usuário:', error);
-      }
+    this.authService.getUsuarioComCache$().subscribe();
+    
+    this.authService.usuarioPerfil$.subscribe((perfil) => {
+      if (!perfil) return;
+
+      this.nomeUsuario = perfil.nome;
+      this.permissaoUsuario = this.permissaoDescricao[perfil.tipoUsuario] || 'Usuário';
+      this.enderecoUsuario = perfil.endereco ?? "Endereço do Usuário";
+      this.cidadeUsuario = perfil.cidade;
+      this.estadoUsuario = perfil.estado;
+      this.localizacaoUsuario = perfil.localizacaoAtual ?? null;
     });
 
     this.carregarNotificacoesMock();

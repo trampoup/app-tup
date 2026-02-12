@@ -3,6 +3,7 @@ import { Form, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.service';
 import { UsuarioService } from 'src/app/configs/services/usuario.service';
 import { UsuarioSiteDTO } from './usuario-site-dto';
+import { AuthService } from 'src/app/configs/services/auth.service';
 
 @Component({
   selector: 'app-cadastrar-site',
@@ -37,7 +38,8 @@ export class CadastrarSiteComponent implements OnInit {
   constructor(
     private formBuilder : FormBuilder,
     private usuarioService:UsuarioService,
-    private usuarioMidiaService: UsuarioMidiasService
+    private usuarioMidiaService: UsuarioMidiasService,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -49,6 +51,7 @@ export class CadastrarSiteComponent implements OnInit {
         if (dto) {
           this.isEditMode = true;
           this.siteForm.patchValue({
+            nome: dto.nome ?? '',
             bio: dto.bio ?? '',
             tempoExperiencia: dto.tempoExperiencia ?? null
           });
@@ -66,6 +69,7 @@ export class CadastrarSiteComponent implements OnInit {
       fotoPerfil: new FormControl<File | null>(null),
       banner: new FormControl<File | null>(null),
       video:  new FormControl<File | null>(null),
+      nome: new FormControl('', [Validators.required, Validators.minLength(2)]),
       bio: new FormControl('', [Validators.required]),
       skills: new FormControl('', [Validators.required]),
       tempoExperiencia: new FormControl<number | null>(null, [Validators.required]),
@@ -199,6 +203,7 @@ export class CadastrarSiteComponent implements OnInit {
     this.errorMessage = null;
 
     const dto: UsuarioSiteDTO = {
+      nome: (this.siteForm.value.nome || '').trim(),
       bio: this.siteForm.value.bio || '',
       skills: this.skills.join(', '),
       tempoExperiencia: Number(this.siteForm.value.tempoExperiencia) || 0,
@@ -207,6 +212,8 @@ export class CadastrarSiteComponent implements OnInit {
 
     this.usuarioService.atualizarMeuSite(dto).subscribe({
       next: () => {
+        this.authService.setNomeUsuario(dto.nome!); 
+
         const bannerFile = this.selectedImages['banner'] ?? null;
         const fotoPerfilFIle = this.selectedImages['fotoPerfil'] ?? null;;
         const videoFile  = this.selectedVideos['video'] ?? null;
@@ -216,8 +223,8 @@ export class CadastrarSiteComponent implements OnInit {
           this.successMessage = this.isEditMode ? 'Alterações salvas!' : 'Cadastro realizado!';
           this.isLoading = false;
           return;
-        }
-
+        } 
+        
         // Upload das mídias via service de mídias
         this.usuarioMidiaService.upload({
           banner: bannerFile || undefined,

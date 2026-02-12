@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { TipoUsuario } from 'src/app/login/tipo-usuario.enum';
 import { HttpClient, HttpErrorResponse, HttpParams, HttpResponse } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -20,6 +20,9 @@ export class AuthService {
   private UsuarioPerfil: UsuarioDadosDTO | null = null;
   private tipoUsuarioAtual: TipoUsuario | null = null;
 
+  private usuarioPerfilSubject = new BehaviorSubject<UsuarioDadosDTO | null>(null);
+  usuarioPerfil$ = this.usuarioPerfilSubject.asObservable();
+
   showModal: boolean = true;
   isCadastro:boolean = false;
 
@@ -35,6 +38,16 @@ export class AuthService {
 
   isCliente(): boolean {
     return this.tipoUsuarioAtual === TipoUsuario.CLIENTE;
+  }
+
+  setNomeUsuario(nome: string): void {
+    const atual = this.usuarioPerfilSubject.value ?? this.UsuarioPerfil;
+    if (!atual) return;
+
+    const atualizado = { ...atual, nome };
+
+    this.UsuarioPerfil = atualizado;
+    this.usuarioPerfilSubject.next(atualizado);
   }
 
 
@@ -94,6 +107,9 @@ export class AuthService {
   
   encerrarSessao(){
     localStorage.removeItem('access_token')
+    this.UsuarioPerfil = null;
+    this.tipoUsuarioAtual = null;
+    this.usuarioPerfilSubject.next(null); 
     this.showModal = true;
     this.isCadastro = false;
   }
@@ -119,9 +135,9 @@ export class AuthService {
         cpf: dto.cpf,
       })),
       tap(u => {
-        // converte a string que veio do back para o enum
         this.tipoUsuarioAtual = u.tipoUsuario;
         this.UsuarioPerfil = u;
+        this.usuarioPerfilSubject.next(u);
       }),
       catchError((error: HttpErrorResponse) => {
         console.error('Erro ao obter perfil do usuário:', error);
