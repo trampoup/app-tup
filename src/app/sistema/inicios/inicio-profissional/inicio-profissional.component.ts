@@ -136,6 +136,7 @@ export class InicioProfissionalComponent implements OnInit {
 
   redirectToSitePublico(): void {
     const id = this.authService.getUsuarioId();
+    console.log('ID do usuário para perfil público:', id);
     if (!id) return;
 
     const url = this.router.serializeUrl(
