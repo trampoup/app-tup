@@ -93,7 +93,7 @@ export class ComunidadesComponent implements OnInit {
 
   obterComunidades() {
     this.isLoading = true;
-    this.comunidadeService.obterComunidadesComBanners().subscribe({
+    this.comunidadeService.obterComunidades().subscribe({
       next: (lista) => {
         this.comunidades = lista;
         this.comunidadesPaginados = this.comunidades;
@@ -142,7 +142,7 @@ export class ComunidadesComponent implements OnInit {
       return;
     }
     this.isLoading = true;
-    this.comunidadeService.buscarComunidadesPorNomeComBanners(termo).subscribe({
+    this.comunidadeService.buscarComunidadesPorNome(termo).subscribe({
       next: (lista) => {
         this.comunidades = lista;
         this.paginaAtual = 1; // reseta paginação ao fazer busca

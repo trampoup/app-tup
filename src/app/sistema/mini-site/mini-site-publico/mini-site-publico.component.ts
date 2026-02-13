@@ -76,7 +76,7 @@ export class MiniSitePublicoComponent implements OnInit {
     }
 
     this.carregarPerfilPublico(id);
-    this.carregarServicosComBannner(id);
+    this.carregarServicos(id);
     this.carregarMidiasPublicas(id);
     this.carregarAvaliacoes(id);
   }
@@ -94,8 +94,8 @@ export class MiniSitePublicoComponent implements OnInit {
     });
   }
 
-  private carregarServicosComBannner(id: number | string) {
-    this.servicosService.obterServicosPorProfissionalComBanners(id).subscribe({
+  private carregarServicos(id: number | string) {
+    this.servicosService.obterServicosPorProfissional(id).subscribe({
       next: (servicos) => {
         this.servicos = servicos ?? [];
         this.atualizarPaginacaoServicos();
@@ -105,55 +105,21 @@ export class MiniSitePublicoComponent implements OnInit {
   }
 
   private carregarMidiasPublicas(id: number) {
-    // banner
-    this.usuarioMidiasService.getMidiaDoUsuario('banner', id).subscribe({
-      next: (blob) => {
-        if (!blob || blob.size === 0) return;
-        const typed = blob.type?.startsWith('image/')
-          ? blob
-          : new Blob([blob], { type: 'image/jpeg' });
-        const reader = new FileReader();
-        reader.onload = () => (this.bannerUrl = reader.result as string);
-        reader.readAsDataURL(typed);
-      }
+    this.usuarioMidiasService.getMidiaDoUsuario('banner', id).subscribe((url) => {
+      this.bannerUrl = url;
     });
 
-    // foto perfil
-    this.usuarioMidiasService.getMidiaDoUsuario('foto_perfil', id).subscribe({
-      next: (blob) => {
-        if (!blob || blob.size === 0) return;
-        const typed = blob.type?.startsWith('image/')
-          ? blob
-          : new Blob([blob], { type: 'image/jpeg' });
-        const reader = new FileReader();
-        reader.onload = () => (this.fotoUrl = reader.result as string);
-        reader.readAsDataURL(typed);
-      }
+    this.usuarioMidiasService.getMidiaDoUsuario('foto_perfil', id).subscribe((url) => {
+      this.fotoUrl = url;
     });
 
-    // vídeo
-    this.usuarioMidiasService.getMidiaDoUsuario('video', id).subscribe({
-      next: (blob) => {
-        if (!blob || blob.size === 0) return;
-
-        const typed = blob.type?.startsWith('video/')
-          ? blob
-          : new Blob([blob], { type: 'video/mp4' });
-
-        if (this.videoObjectUrl) URL.revokeObjectURL(this.videoObjectUrl);
-
-        this.videoObjectUrl = URL.createObjectURL(typed);
-        this.videoUrl = this.sanitizer.bypassSecurityTrustUrl(this.videoObjectUrl);
-      }
+    this.usuarioMidiasService.getMidiaDoUsuario('video', id).subscribe((url) => {
+      this.videoUrl = url ? this.sanitizer.bypassSecurityTrustUrl(url) : null;
     });
   }
 
-  ngOnDestroy(): void {
-    if (this.videoObjectUrl) {
-      URL.revokeObjectURL(this.videoObjectUrl);
-      this.videoObjectUrl = null;
-    }
-  }
+  ngOnDestroy(): void {}
+
 
   // ----- Helpers visuais gerais
 

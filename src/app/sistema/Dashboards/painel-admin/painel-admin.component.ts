@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/configs/services/auth.service';
 import * as ApexCharts from 'apexcharts';
 import { TipoUsuarioDescricao } from 'src/app/login/tipo-usuario-descricao';
 import { ClimaService } from 'src/app/configs/services/clima.service';
+import { listaEstados } from 'src/app/configs/services/cidade.service';
 
 import {
   ApexAxisChartSeries,
@@ -24,7 +25,7 @@ export type ChartOptions = {
   dataLabels: ApexDataLabels;
   stroke: ApexStroke;
   title: ApexTitleSubtitle;
-  legend: ApexLegend;        // <— adicione aqui
+  legend: ApexLegend;        
 };
 
 export interface AdminNovoUsuarioDTO {
@@ -37,6 +38,11 @@ export interface AdminNovoUsuarioDTO {
 export interface AdminCrescimentoMensalDTO {
   ano: number;
   quantidadePorMes: number[]; 
+}
+
+export interface AdminUsuariosPorEstadoDTO {
+  estados: string[];
+  quantidades: number[];
 }
 
 
@@ -62,9 +68,7 @@ export class PainelAdminComponent implements OnInit {
 
   novosUsuarios: any[] = [];
   placeholderFoto = '/assets/imagens/foto-perfil-generico.png';
-  private chartCrescimentoMensal: any;
-  private anoCrescimento = new Date().getFullYear();
-
+  private chartUsuariosPorEstado: any;
 
   constructor(
     private authService: AuthService,
@@ -76,9 +80,10 @@ export class PainelAdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.carregarNovosUsuarios()
-    this.renderChartGrafico();
+    // this.renderChartGrafico();
+    this.renderChartUsuariosPorEstado();
     this.getWeatherForCurrentLocation();
-    // this.renderCharCrescimentoMensal();
+    this.renderCharCrescimentoMensal();
 
     this.authService.obterPerfilUsuario().subscribe(
       (usuario) => {
@@ -119,59 +124,7 @@ export class PainelAdminComponent implements OnInit {
       }));
 
       this.novosUsuarios = parsed;
-
-      const quantidadePorMes = this.agruparPorMes(this.novosUsuarios, this.anoCrescimento);
-      this.renderCrescimentoMensalMock(this.anoCrescimento, quantidadePorMes);
     });
-  }
-
-  private agruparPorMes(novos: any[], ano: number): number[] {
-    const meses = Array(12).fill(0);
-
-    for (const u of (novos || [])) {
-      const d: Date | null = u.ingressou;
-      if (!d || isNaN(d.getTime())) continue;
-
-      if (d.getFullYear() !== ano) continue; // filtra por ano atual (pode remover se quiser)
-
-      const monthIndex = d.getMonth(); // 0..11
-      meses[monthIndex] += 1;
-    }
-
-    return meses;
-  }
-
-  private renderCrescimentoMensalMock(ano: number, quantidadePorMes: number[]) {
-    const options = {
-      series: [{ name: 'Usuários', data: quantidadePorMes }],
-      chart: {
-        type: 'line',
-        height: 350,
-        width: '100%',
-        toolbar: { show: false }
-      },
-      dataLabels: { enabled: false },
-      stroke: { curve: 'smooth' },
-      title: { text: `Crescimento Mensal ${ano}`, align: 'left' },
-      xaxis: {
-        categories: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
-      },
-      legend: { show: false }
-    };
-
-    // se já existe, só atualiza
-    if (this.chartCrescimentoMensal) {
-      this.chartCrescimentoMensal.updateOptions(options);
-      this.chartCrescimentoMensal.updateSeries(options.series);
-      return;
-    }
-
-    // cria uma vez
-    this.chartCrescimentoMensal = new ApexCharts(
-      document.querySelector('#chart-crescimento-mensal'),
-      options
-    );
-    this.chartCrescimentoMensal.render();
   }
 
   private parseCreatedAt(value: any): Date | null {
@@ -200,18 +153,96 @@ export class PainelAdminComponent implements OnInit {
     return null;
   }
 
-
-
   mostrarModalWelcome(){
     if (this.authService.showModal) {
       this.modalWelcomeService.openModal({
         title: '👋 Bem-vindo!',
-        // description: 'Aqui vai a mensagem que você quiser...',
-        size: 'md'     // sm | md | lg | full  (ajuste para as classes que você definiu no CSS)
+        size: 'md'     
       });
       this.authService.showModal = false;
     }
   }
+
+  private estadoNomePorSigla = new Map(
+    listaEstados.map(e => [e.sigla.toUpperCase(), e.nome])
+  );
+
+  private estadoLabel(raw: string): string {
+    const v = (raw || '').trim();
+    if (!v) return '—';
+
+    const upper = v.toUpperCase();
+    if (upper.length <= 2 && this.estadoNomePorSigla.has(upper)) {
+      return this.estadoNomePorSigla.get(upper)!;
+    }
+
+    return v;
+  }
+
+
+  private renderChartUsuariosPorEstado(): void {
+    this.usuarioService.obterUsuariosPorEstadoAdmin().subscribe({
+      next: (res) => {
+        const labelsRaw = (res?.estados || []).map(e => this.estadoLabel(e));
+        const seriesRaw = (res?.quantidades || []).map(n => Number(n || 0));
+
+        // opcional: top 8 + "Outros" (pra não lotar o donut)
+        const max = 8;
+        let labels = labelsRaw;
+        let series = seriesRaw;
+
+        if (labelsRaw.length > max) {
+          const topLabels = labelsRaw.slice(0, max);
+          const topSeries = seriesRaw.slice(0, max);
+          const outros = seriesRaw.slice(max).reduce((a, b) => a + b, 0);
+
+          labels = outros > 0 ? [...topLabels, 'Outros'] : topLabels;
+          series = outros > 0 ? [...topSeries, outros] : topSeries;
+        }
+
+        if (this.chartUsuariosPorEstado) {
+          this.chartUsuariosPorEstado.destroy();
+        }
+
+        const options: any = {
+          chart: {
+            type: 'donut',
+            height: 350,
+            width: '100%',
+          },
+          title: {
+            text: 'Usuários por Estado',
+            align: 'left',
+          },
+          series: series.length ? series : [1],
+          labels: labels.length ? labels : ['Sem dados'],
+          theme: { palette: 'palette8' },
+          legend: {
+            show: true,
+            position: 'bottom',
+            horizontalAlign: 'center',
+          },
+          responsive: [
+            {
+              breakpoint: 980,
+              options: {
+                chart: { width: 250 },
+                legend: { position: 'bottom' },
+              },
+            },
+          ],
+        };
+
+        this.chartUsuariosPorEstado = new ApexCharts(
+          document.querySelector('#chart-grafico'),
+          options
+        );
+        this.chartUsuariosPorEstado.render();
+      },
+      error: (err) => console.error('Erro ao carregar usuários por estado', err)
+    });
+  }
+
 
   renderChartGrafico() {
     const options = {
@@ -291,14 +322,12 @@ export class PainelAdminComponent implements OnInit {
 
   private updateDateTime() {
     const now = new Date();
-    // formata HH:mm em pt-BR
     this.currentTime = now.toLocaleTimeString('pt-BR', {
       hour: '2-digit',
       minute: '2-digit'
     });
 
 
-    // aqui geramos “segunda-feira, 27/05” já em pt-BR
     this.currentDate = now.toLocaleDateString('pt-BR', {
       weekday: 'long',
       day: '2-digit',

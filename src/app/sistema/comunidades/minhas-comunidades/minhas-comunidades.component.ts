@@ -47,7 +47,7 @@ export class MinhasComunidadesComponent implements OnInit {
 
   obterComunidadesParticipando() {
     this.isLoading = true;
-    this.comunidadeService.obterComunidadesParticipandoComBanners().subscribe({
+    this.comunidadeService.obterComunidadesParticipando().subscribe({
       next: (lista) => {
         this.comunidades = lista;
         this.comunidadesPaginados = this.comunidades;

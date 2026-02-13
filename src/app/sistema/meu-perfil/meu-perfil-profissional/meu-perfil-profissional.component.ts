@@ -151,22 +151,8 @@ export class MeuPerfilProfissionalComponent implements OnInit {
   }
 
   private carregarFotoPerfil(): void {
-    this.usuarioMidiasService.getMinhaMidia('foto_perfil').subscribe({
-      next: (blob: Blob) => {
-        if (!blob || blob.size === 0) return; 
-
-        const typed = blob.type?.startsWith('image/')
-          ? blob
-          : new Blob([blob], { type: 'image/jpeg' }); 
-
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.fotoUrl = reader.result as string; 
-        };
-        reader.readAsDataURL(typed);
-      },
-      error: () => {
-      }
+    this.usuarioMidiasService.getMinhaMidia('foto_perfil').subscribe((url) => {
+      this.fotoUrl = url || this.DEFAULT_AVATAR;
     });
   }
 
@@ -389,7 +375,7 @@ export class MeuPerfilProfissionalComponent implements OnInit {
     this.uploadProgress = 0;
 
     this.usuarioMidiasService
-      .upload({ fotoPerfil: this.selectedFoto })
+      .uploadWithProgress({ fotoPerfil: this.selectedFoto })
       .subscribe({
         next: (ev) => {
           if (ev.type === HttpEventType.UploadProgress && ev.total) {
@@ -397,6 +383,7 @@ export class MeuPerfilProfissionalComponent implements OnInit {
           }
           if (ev.type === HttpEventType.Response) {
             this.isUploadingFoto = false;
+            // Atualiza na tela
             if (this.fotoPreviewTemp) {
               this.fotoUrl = this.fotoPreviewTemp as string;
             } else {

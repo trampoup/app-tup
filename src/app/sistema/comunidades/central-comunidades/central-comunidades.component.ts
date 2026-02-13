@@ -62,7 +62,7 @@ export class CentralComunidadesComponent implements OnInit {
 
   obterComudadesCriadas(){
     this.isLoadingCriadas = true;
-    this.comunidadeService.obterComunidadesCriadasComBanners().subscribe({
+    this.comunidadeService.obterComunidadesCriadas().subscribe({
       next: (lista) => {
         this.comunidadesCriadas = lista;
         this.comunidadesCriadasPaginados = this.comunidadesCriadas;
@@ -83,7 +83,7 @@ export class CentralComunidadesComponent implements OnInit {
 
   obterComunidadesParticipando() {
     this.isLoadingParticipando = true;
-    this.comunidadeService.obterComunidadesParticipandoComBanners().subscribe({
+    this.comunidadeService.obterComunidadesParticipando().subscribe({
       next: (lista) => {
         this.comunidadesParticipando = lista;
         this.comunidadesParticipandoPaginados = this.comunidadesParticipando;

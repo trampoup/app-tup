@@ -4,6 +4,8 @@ import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.se
 import { UsuarioService } from 'src/app/configs/services/usuario.service';
 import { UsuarioSiteDTO } from './usuario-site-dto';
 import { AuthService } from 'src/app/configs/services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-cadastrar-site',
@@ -23,26 +25,36 @@ export class CadastrarSiteComponent implements OnInit {
 
   banner: File | null = null;
   selectedBanner: { [key: string]: File | null } = {};
-  bannerPreview: string | ArrayBuffer | null = null;
+  bannerPreview: string | null = null;
 
   videoPreview: string | ArrayBuffer | null = null;
+  private videoObjectUrl: string | null = null;
   selectedVideos: { [key: string]: File | null } = {};
 
   fotoPerfil: File | null = null;
   selectedFotoPerfil: { [key: string]: File | null } = {};
-  fotoPerfilPreview: string | ArrayBuffer | null = null;
+  fotoPerfilPreview: string | null = null;
 
   skillsCtrl = new FormControl<string>('', { nonNullable: true });
   skills: string[] = [];
+
+  private hasReturnTo = false;
+  private returnToUrl = '/usuario/inicio-profissional';
   
   constructor(
     private formBuilder : FormBuilder,
     private usuarioService:UsuarioService,
     private usuarioMidiaService: UsuarioMidiasService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
+    const returnTo = this.route.snapshot.queryParamMap.get('returnTo');
+    this.hasReturnTo = !!returnTo;
+    this.returnToUrl = returnTo || '/usuario/inicio-profissional';
+
     this.loadFotoPerfilFromServer();
     this.loadBannerFromServer();
     this.loadVideoFromServer();
@@ -126,22 +138,10 @@ export class CadastrarSiteComponent implements OnInit {
     this.syncSkillsToForm();
   }
 
-
   private loadBannerFromServer() {
     this.usuarioMidiaService.getMinhaMidia('banner').subscribe({
-      next: (blob) => {
-        if (!blob || blob.size === 0) return;
-
-        // Se o back vier sem content-type de imagem, força um tipo image/*
-        const typedBlob = blob.type && blob.type.startsWith('image/')
-          ? blob
-          : new Blob([blob], { type: 'image/jpeg' }); // fallback
-
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.bannerPreview = reader.result as string; // "data:image/..." OK
-        };
-        reader.readAsDataURL(typedBlob);
+      next: (url) => {
+        this.bannerPreview = url;
       },
       error: (error) => {      
         console.error('Error loading banner:', error);
@@ -152,32 +152,20 @@ export class CadastrarSiteComponent implements OnInit {
 
   private loadVideoFromServer() {
     this.usuarioMidiaService.getMinhaMidia('video').subscribe({
-      next: (blob) => {
-        if (!blob || blob.size === 0) return;
-
-        const typed = blob.type?.startsWith('video/')
-          ? blob
-          : new Blob([blob], { type: 'video/mp4' });
-
-        const reader = new FileReader();
-        reader.onload = () => this.videoPreview = reader.result as string; // "data:video/..."
-        reader.readAsDataURL(typed);
+      next: (url) => {
+        if (this.videoObjectUrl) {
+          URL.revokeObjectURL(this.videoObjectUrl);
+          this.videoObjectUrl = null;
+        }
+        this.videoPreview = url; // ✅ string (S3)
       }
     });
   }
 
   private loadFotoPerfilFromServer() {
     this.usuarioMidiaService.getMinhaMidia('foto_perfil').subscribe({
-      next: (blob) => {
-        if (!blob || blob.size === 0) return;
-
-        const typedBlob = blob.type?.startsWith('image/')
-          ? blob
-          : new Blob([blob], { type: 'image/jpeg' }); // fallback
-
-        const reader = new FileReader();
-        reader.onload = () => this.fotoPerfilPreview = reader.result as string; // data:image/...
-        reader.readAsDataURL(typedBlob);
+      next: (url) => {
+        this.fotoPerfilPreview = url;
       }
     });
   }
@@ -222,6 +210,7 @@ export class CadastrarSiteComponent implements OnInit {
         if (!temArquivos) {
           this.successMessage = this.isEditMode ? 'Alterações salvas!' : 'Cadastro realizado!';
           this.isLoading = false;
+          this.redirectAfterSaveIfReturnTo();
           return;
         } 
         
@@ -233,6 +222,7 @@ export class CadastrarSiteComponent implements OnInit {
         }).subscribe({
           next: () => {
             this.isLoading = false;
+
           },
           error: (err) => {
             this.errorMessage = err?.error?.message || 'Erro ao enviar mídias.';
@@ -241,6 +231,7 @@ export class CadastrarSiteComponent implements OnInit {
           complete: () => {
             this.successMessage = this.isEditMode ? 'Perfil e mídias atualizados!' : 'Cadastro concluído com mídias!';
             this.isLoading = false;
+            this.redirectAfterSaveIfReturnTo();
           }
         });
       },
@@ -257,6 +248,16 @@ export class CadastrarSiteComponent implements OnInit {
     if (!/[0-9\.]/.test(tecla)) {
       event.preventDefault();
     }
+  }
+
+  private redirectAfterSaveIfReturnTo(): void {
+
+    if (!this.hasReturnTo) return;
+    const tree = this.router.parseUrl(this.returnToUrl);
+
+    tree.queryParams = { ...tree.queryParams, fromSite: 1 };
+
+    this.router.navigateByUrl(tree);
   }
 
 }

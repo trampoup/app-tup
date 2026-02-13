@@ -66,7 +66,7 @@ export class MeuMiniSiteComponent implements OnInit {
     this.atualizarPaginacaoAvaliacoes();
 
     this.carregarMeuSite();
-    this.carregarMeusServicosComBanners();
+    this.carregarMeusServicos();
     this.carregarMidias();
     this.carregarMinhasAvaliacoes();
   }
@@ -95,8 +95,8 @@ export class MeuMiniSiteComponent implements OnInit {
     });
   }  
 
-  private carregarMeusServicosComBanners() {
-    this.servicosService.obterMeusServicosComBanners().subscribe({
+  private carregarMeusServicos() {
+    this.servicosService.obterMeusServicos().subscribe({
       next: (servicos) => {
         this.servicos = servicos ?? [];
         this.atualizarPaginacaoServicos();
@@ -106,65 +106,20 @@ export class MeuMiniSiteComponent implements OnInit {
   }
 
   private carregarMidias() {
-    this.usuarioMidiasService.getMinhaMidia('banner').subscribe({
-      next: (blob) => {
-        if (!blob || blob.size === 0) return;
-
-        const typed = blob.type?.startsWith('image/')
-          ? blob
-          : new Blob([blob], { type: 'image/jpeg' }); // fallback
-
-        const reader = new FileReader();
-        reader.onload = () => {
-          // vira "data:image/..;base64,..." — super confiável no <img [src]>
-          this.bannerUrl = reader.result as string;
-        };
-        reader.readAsDataURL(typed);
-      },
-      error: () => {}
+    this.usuarioMidiasService.getMinhaMidia('banner').subscribe((url) => {
+      this.bannerUrl = url;
     });
 
-    this.usuarioMidiasService.getMinhaMidia('foto_perfil').subscribe({
-      next: (blob) => {
-        if (!blob || blob.size === 0) return;
-
-        const typed = blob.type?.startsWith('image/')
-          ? blob
-          : new Blob([blob], { type: 'image/jpeg' });
-
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.fotoUrl = reader.result as string;
-        };
-        reader.readAsDataURL(typed);
-      },
-      error: () => {}
+    this.usuarioMidiasService.getMinhaMidia('foto_perfil').subscribe((url) => {
+      this.fotoUrl = url;
     });
 
-    // 🎥 VÍDEO
-    this.usuarioMidiasService.getMinhaMidia('video').subscribe({
-      next: (blob) => {
-        if (!blob || blob.size === 0) return;
-
-        const typed = blob.type?.startsWith('video/')
-          ? blob
-          : new Blob([blob], { type: 'video/mp4' });
-
-        // revoga o anterior (evita vazamento de memória)
-        if (this.videoObjectUrl) URL.revokeObjectURL(this.videoObjectUrl);
-
-        // cria o Object URL e sanitiza
-        this.videoObjectUrl = URL.createObjectURL(typed);
-        this.videoUrl = this.sanitizer.bypassSecurityTrustUrl(this.videoObjectUrl); // <-- AQUI
-      }
+    this.usuarioMidiasService.getMinhaMidia('video').subscribe((url) => {
+      this.videoUrl = url ? this.sanitizer.bypassSecurityTrustUrl(url) : null;
     });
   }
 
   ngOnDestroy(): void {
-    if (this.videoObjectUrl) {
-      URL.revokeObjectURL(this.videoObjectUrl);
-      this.videoObjectUrl = null;
-    }
   }
 
   getRoleUsuario(): TipoUsuario {

@@ -55,17 +55,15 @@ export class CadastroComunidadeComponent implements OnInit {
 
   private carregarDadosEdicao(id: number) {
     this.isLoading = true;
-    this.comunidadeService.obterComunidadePorIdComBanner(id).subscribe({
+    this.comunidadeService.obterComunidadePorId(id).subscribe({
       next: (c) => {
-        // Preenche o form com os valores atuais
         this.comunidadeForm.patchValue({
           nome: c.nome,
           setor: c.setor,
           descricao: c.descricao,
-          banner: null // importantíssimo: evita sobrescrever se usuário não trocar
+          banner: null 
         });
 
-        // Mostra preview do banner atual (se existir)
         this.bannerPreview = c.bannerUrl || null;
 
         this.isLoading = false;
@@ -83,7 +81,6 @@ export class CadastroComunidadeComponent implements OnInit {
     this.selectedImages['banner'] = null;
     this.bannerPreview = null;
 
-    // Se estiver editando e o usuário removeu, sinaliza para o backend apagar
     if (this.isEditMode) {
       this.removeBanner = true;
     }
@@ -110,7 +107,7 @@ export class CadastroComunidadeComponent implements OnInit {
 
     if (this.comunidadeForm.invalid) {
       this.isLoading = false;
-      this.comunidadeForm.markAllAsTouched();          // força exibir erros nos campos
+      this.comunidadeForm.markAllAsTouched();          
       this.errorMessage = 'Por favor, preencha os dados corretamente.';
       return;
     }
@@ -127,7 +124,6 @@ export class CadastroComunidadeComponent implements OnInit {
       new Blob([JSON.stringify(comunidade)], { type: 'application/json' })
     );
 
-    // arquivo no campo "banner"
     const bannerFile = this.comunidadeForm.value.banner;
     if (bannerFile) {
       formData.append('banner', bannerFile);

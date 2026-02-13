@@ -163,7 +163,7 @@ label.required::after {
 .progress-bar {
   width: 0;
   height: 100%;
-  background-color: var(--accent-color);
+  background-color: var(--lm-primary);
   animation: progress-animation 2s infinite linear;
 }
 

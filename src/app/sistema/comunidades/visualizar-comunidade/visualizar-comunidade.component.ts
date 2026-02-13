@@ -74,19 +74,8 @@ export class VisualizarComunidadeComponent implements OnInit {
     this.comunidadeService.obterComunidadePorId(this.comunidadeId).subscribe({
       next: (comunidade: ComunidadeResponseDTO) => {
         this.comunidade = comunidade;
-        //isso aqui vai mudar, é só pra mostrar na reunião
-        this.http.get(`${environment.apiURLBase}/api/comunidades/${comunidade.id}/banner`, { responseType: 'blob' })
-          .subscribe(blob => {
-            if (!blob || blob.size === 0) {
-              this.bannerUrl = '/assets/imagens/banner-trampo-generico.png';
-              return;
-            }
-            const imgBlob = blob.type?.startsWith('image/') ? blob : new Blob([blob], { type: 'image/jpeg' });
-            const reader = new FileReader();
-            reader.onload = () => this.bannerUrl = reader.result as string; // data:image/...
-            reader.readAsDataURL(imgBlob);
-          });
-          this.isLoading = false;
+        this.bannerUrl = comunidade.bannerUrl || '/assets/imagens/banner-trampo-generico.png';
+        this.isLoading = false;
         },
       error: (err) => {
         this.isLoading = false;
@@ -95,7 +84,6 @@ export class VisualizarComunidadeComponent implements OnInit {
     });
   }
 
-    // Método para abrir o modal de menu
   abrirModalMenu(): void {
     this.modalGenericoService.openModal(
       {
@@ -109,7 +97,6 @@ export class VisualizarComunidadeComponent implements OnInit {
     );
   }
 
-  // Método para fechar o modal
   fecharModalMenu(): void {
     this.modalGenericoService.closeModal();
   }
@@ -119,7 +106,6 @@ export class VisualizarComunidadeComponent implements OnInit {
       this.comunidadeService.sairDaComunidade(this.comunidade.id).subscribe({
         next: () => {
           this.fecharModalMenu();
-          // Aqui você pode redirecionar ou mostrar uma mensagem
            this.router.navigate(['/usuario/comunidades']);
         },
         error: (err) => {

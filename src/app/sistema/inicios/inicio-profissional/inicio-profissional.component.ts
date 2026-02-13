@@ -46,7 +46,8 @@ export class InicioProfissionalComponent implements OnInit {
   bannersCount = 2;
   private bannerTimer: any;
 
-  showCongrats = false;
+  showRocketCongrats = false;
+
 
   constructor(
     private router: Router,
@@ -60,7 +61,6 @@ export class InicioProfissionalComponent implements OnInit {
     this.handleCongratsByUrl();
     this.startBannerCarousel();
 
-
     this.carregarResumoBanner();
     this.carregarProfissionaisPorInteresse();
     this.atualizarPaginacaoProfissionaisInteresse();
@@ -71,7 +71,7 @@ export class InicioProfissionalComponent implements OnInit {
     if (this.bannerTimer) clearInterval(this.bannerTimer);
   }
 
-    private startBannerCarousel(): void {
+  private startBannerCarousel(): void {
     if (this.bannerTimer) clearInterval(this.bannerTimer);
 
     this.bannerTimer = setInterval(() => {
@@ -81,28 +81,27 @@ export class InicioProfissionalComponent implements OnInit {
 
   goToBanner(i: number): void {
     this.activeBannerIndex = i;
-    this.startBannerCarousel(); // reinicia timer
+    this.startBannerCarousel(); 
   }
 
   private handleCongratsByUrl(): void {
     this.route.queryParamMap.subscribe(params => {
-      const ok = params.get('siteConcluido');
+      const ok = params.get('fromSite');
       if (!ok) return;
 
-      this.showCongrats = true;
-      this.activeBannerIndex = 0;
+      this.showRocketCongrats = true;
 
-      // remove o param da URL (pra não ficar repetindo)
       this.router.navigate([], {
         relativeTo: this.route,
-        queryParams: { siteConcluido: null },
+        queryParams: { fromSite: null },
         queryParamsHandling: 'merge',
         replaceUrl: true
       });
 
-      setTimeout(() => (this.showCongrats = false), 9000);
+      setTimeout(() => (this.showRocketCongrats = false), 9000);
     });
   }
+
 
 
   private carregarResumoBanner(): void {
@@ -136,7 +135,6 @@ export class InicioProfissionalComponent implements OnInit {
 
   redirectToSitePublico(): void {
     const id = this.authService.getUsuarioId();
-    console.log('ID do usuário para perfil público:', id);
     if (!id) return;
 
     const url = this.router.serializeUrl(
