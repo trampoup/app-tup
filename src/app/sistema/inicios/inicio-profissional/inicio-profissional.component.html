@@ -10,11 +10,6 @@
             <div class="banner-left">
             <h1>Seu site está ativo e visível para clientes próximos a {{ cidadeBanner }}!</h1>
 
-            <p *ngIf="showCongrats" class="banner-congrats">
-                🎉 Parabéns, {{ nomeProfissional }}! Você completou seu perfil e já está visível na sua região.
-            </p>
-            <p *ngIf="!showCongrats">Veja como você aparece para os clientes.</p>
-
             <button class="visualizar-site" type="button" (click)="redirectToSitePublico()">
                 Visualizar meu site
             </button>
@@ -201,6 +196,11 @@
             <div class="banner-sugestao-left">
                 <h2>Compartilhe seu site e conquiste mais clientes</h2>
                 <p>Crie seu perfil para ficar visível na sua região</p>
+
+                <p *ngIf="showRocketCongrats" class="rocket-congrats">
+                    🎉 Perfil atualizado com sucesso! Agora compartilhe seu site e atraia mais clientes.
+                </p>
+
 
                 <button (click)="redirectToSitePublico()" class="btn-compartilhar" type="button">
                     Compartilhar meu site

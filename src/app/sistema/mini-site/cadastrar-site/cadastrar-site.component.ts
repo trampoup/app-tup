@@ -4,6 +4,7 @@ import { UsuarioMidiasService } from 'src/app/configs/services/usuario-midias.se
 import { UsuarioService } from 'src/app/configs/services/usuario.service';
 import { UsuarioSiteDTO } from './usuario-site-dto';
 import { AuthService } from 'src/app/configs/services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-cadastrar-site',
@@ -34,15 +35,24 @@ export class CadastrarSiteComponent implements OnInit {
 
   skillsCtrl = new FormControl<string>('', { nonNullable: true });
   skills: string[] = [];
+
+  private hasReturnTo = false;
+  private returnToUrl = '/usuario/inicio-profissional';
   
   constructor(
     private formBuilder : FormBuilder,
     private usuarioService:UsuarioService,
     private usuarioMidiaService: UsuarioMidiasService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    const returnTo = this.route.snapshot.queryParamMap.get('returnTo');
+    this.hasReturnTo = !!returnTo;
+    this.returnToUrl = returnTo || '/usuario/inicio-profissional';
+
     this.loadFotoPerfilFromServer();
     this.loadBannerFromServer();
     this.loadVideoFromServer();
@@ -125,7 +135,6 @@ export class CadastrarSiteComponent implements OnInit {
     this.skills.splice(i, 1);
     this.syncSkillsToForm();
   }
-
 
   private loadBannerFromServer() {
     this.usuarioMidiaService.getMinhaMidia('banner').subscribe({
@@ -222,6 +231,7 @@ export class CadastrarSiteComponent implements OnInit {
         if (!temArquivos) {
           this.successMessage = this.isEditMode ? 'Alterações salvas!' : 'Cadastro realizado!';
           this.isLoading = false;
+          this.redirectAfterSaveIfReturnTo();
           return;
         } 
         
@@ -241,6 +251,7 @@ export class CadastrarSiteComponent implements OnInit {
           complete: () => {
             this.successMessage = this.isEditMode ? 'Perfil e mídias atualizados!' : 'Cadastro concluído com mídias!';
             this.isLoading = false;
+            this.redirectAfterSaveIfReturnTo();
           }
         });
       },
@@ -257,6 +268,16 @@ export class CadastrarSiteComponent implements OnInit {
     if (!/[0-9\.]/.test(tecla)) {
       event.preventDefault();
     }
+  }
+
+  private redirectAfterSaveIfReturnTo(): void {
+
+    if (!this.hasReturnTo) return;
+    const tree = this.router.parseUrl(this.returnToUrl);
+
+    tree.queryParams = { ...tree.queryParams, fromSite: 1 };
+
+    this.router.navigateByUrl(tree);
   }
 
 }

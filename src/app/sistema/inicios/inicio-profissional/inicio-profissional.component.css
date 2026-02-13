@@ -351,11 +351,18 @@
 }
 
 
-.banner-congrats{
+.rocket-congrats{
   margin-top: 10px;
-  font-weight: 600;
-  opacity: 0.95;
+  padding: 10px 12px;
+  border-radius: 12px;
+  display: inline-block;
+  font-weight: 700;
+  color: #1b1b1b;
+  background: rgba(255,255,255,0.75);
+  border: 1px solid rgba(0,0,0,0.08);
+  width: fit-content;
 }
+
 
 .banner.banner-avaliacoes{
   background-image: none !important;
