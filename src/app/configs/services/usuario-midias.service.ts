@@ -5,86 +5,59 @@ import { environment } from 'src/environments/environment';
 
 export type MidiaSlot = 'banner' | 'video' | 'foto_perfil';
 
+export interface UsuarioMidiasResponseDTO {
+  bannerUrl?: string | null;
+  fotoPerfilUrl?: string | null;
+  videoUrl?: string | null;
+}
+
 @Injectable({ providedIn: 'root' })
 export class UsuarioMidiasService {
   private baseUrl = environment.apiURLBase + '/api/usuarios/midias';
-  private cache = new Map<number, string | null>();
-
   constructor(private http: HttpClient) {}
 
-  upload({ banner, video, fotoPerfil }: { banner?: File | null; video?: File | null; fotoPerfil?: File | null }): Observable<any> {
-    const form = new FormData();
-    if (banner) form.append('banner', banner);
-    if (video) form.append('video', video);
-    if (fotoPerfil) form.append('fotoPerfil', fotoPerfil);
-    return this.http.post(`${this.baseUrl}`, form, { reportProgress: true, observe: 'events' }) as Observable<HttpEvent<any>>;
+  upload(files: { banner?: File; video?: File; fotoPerfil?: File }): Observable<UsuarioMidiasResponseDTO> {
+    const fd = new FormData();
+    if (files.banner) fd.append('banner', files.banner);
+    if (files.video) fd.append('video', files.video);
+    if (files.fotoPerfil) fd.append('fotoPerfil', files.fotoPerfil);
+    return this.http.post<UsuarioMidiasResponseDTO>(`${this.baseUrl}`, fd);
   }
 
-  getMinhaMidia(slot: MidiaSlot) {
-    return this.http.get(`${this.baseUrl}/obter-minha-midia/${slot}`, {
-      responseType: 'blob'
+  uploadWithProgress(files: { banner?: File; video?: File; fotoPerfil?: File }): Observable<HttpEvent<UsuarioMidiasResponseDTO>> {
+    const fd = new FormData();
+    if (files.banner) fd.append('banner', files.banner);
+    if (files.video) fd.append('video', files.video);
+    if (files.fotoPerfil) fd.append('fotoPerfil', files.fotoPerfil);
+
+    return this.http.post<UsuarioMidiasResponseDTO>(this.baseUrl, fd, {
+      observe: 'events',
+      reportProgress: true,
     });
   }
 
-  getMidiaDoUsuario(slot: MidiaSlot, id : number | string){
-    return this.http.get(`${this.baseUrl}/obter-midia-usuario/${id}/${slot}`, {
-      responseType: 'blob'
-    });
+  getMinhaMidia(slot: MidiaSlot): Observable<string | null> {
+    return this.http.get<{ url: string }>(`${this.baseUrl}/minha/${slot}`).pipe(
+      map(r => r?.url ?? null),
+      catchError(() => of(null))
+    );
+  }
+
+  getMidiaDoUsuario(slot: MidiaSlot, id: number | string): Observable<string | null> {
+    return this.http.get<{ url: string }>(`${this.baseUrl}/usuario/${id}/${slot}`).pipe(
+      map(r => r?.url ?? null),
+      catchError(() => of(null))
+    );
   }
 
   delete(slot: MidiaSlot): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${slot}`);
   }
 
-  getFotoPerfilDataUrl(idUsuario: number, withCreds = false): Observable<string | null> {
-    if (this.cache.has(idUsuario)) {
-      return of(this.cache.get(idUsuario)!);
-    }
-
-    return this.http.get(`${this.baseUrl}/obter-midia-usuario/${idUsuario}/foto_perfil`, {
-      responseType: 'blob',
-      withCredentials: withCreds
-    }).pipe(
-      map((blob) => {
-        if (!blob || blob.size === 0) return null;
-        const typed = blob.type?.startsWith('image/')
-          ? blob
-          : new Blob([blob], { type: 'image/jpeg' });
-        return new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result as string);
-          reader.onerror = reject;
-          reader.readAsDataURL(typed);
-        });
-      }),
-      switchMap((p) => (p ? (p as Promise<string>) : of(null))),
-      map((dataUrl) => {
-        this.cache.set(idUsuario, dataUrl);
-        return dataUrl;
-      }),
-      catchError(() => {
-        this.cache.set(idUsuario, null);
-        return of(null);
-      })
+  getFotosPerfilDaPagina(ids: number[]): Observable<Record<number, string | null>> {
+    return this.http.post<Record<number, string | null>>(`${this.baseUrl}/fotos-perfil`, ids).pipe(
+      catchError(() => of({}))
     );
   }
-
-  getFotosPerfilDaPagina(ids: number[], withCreds = false): Observable<Record<number, string | null>> {
-    const tarefas = ids.map((id) =>
-      this.getFotoPerfilDataUrl(id, withCreds).pipe(map((url) => [id, url] as const))
-    );
-    if (!tarefas.length) return of({});
-    return forkJoin(tarefas).pipe(
-      map((pares) =>
-        pares.reduce((acc, [id, url]) => {
-          acc[id] = url;
-          return acc;
-        }, {} as Record<number, string | null>)
-      )
-    );
-  }
-
-  clearCacheFor(id: number) { this.cache.delete(id); }
-  clearAllCache() { this.cache.clear(); }
 
 }
