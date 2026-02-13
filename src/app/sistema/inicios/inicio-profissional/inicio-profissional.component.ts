@@ -60,7 +60,6 @@ export class InicioProfissionalComponent implements OnInit {
     this.handleCongratsByUrl();
     this.startBannerCarousel();
 
-
     this.carregarResumoBanner();
     this.carregarProfissionaisPorInteresse();
     this.atualizarPaginacaoProfissionaisInteresse();
@@ -71,7 +70,7 @@ export class InicioProfissionalComponent implements OnInit {
     if (this.bannerTimer) clearInterval(this.bannerTimer);
   }
 
-    private startBannerCarousel(): void {
+  private startBannerCarousel(): void {
     if (this.bannerTimer) clearInterval(this.bannerTimer);
 
     this.bannerTimer = setInterval(() => {

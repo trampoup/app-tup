@@ -63,7 +63,6 @@ export class PainelAdminComponent implements OnInit {
   novosUsuarios: any[] = [];
   placeholderFoto = '/assets/imagens/foto-perfil-generico.png';
   private chartCrescimentoMensal: any;
-  private anoCrescimento = new Date().getFullYear();
 
 
   constructor(
@@ -78,7 +77,7 @@ export class PainelAdminComponent implements OnInit {
     this.carregarNovosUsuarios()
     this.renderChartGrafico();
     this.getWeatherForCurrentLocation();
-    // this.renderCharCrescimentoMensal();
+    this.renderCharCrescimentoMensal();
 
     this.authService.obterPerfilUsuario().subscribe(
       (usuario) => {
@@ -119,59 +118,7 @@ export class PainelAdminComponent implements OnInit {
       }));
 
       this.novosUsuarios = parsed;
-
-      const quantidadePorMes = this.agruparPorMes(this.novosUsuarios, this.anoCrescimento);
-      this.renderCrescimentoMensalMock(this.anoCrescimento, quantidadePorMes);
     });
-  }
-
-  private agruparPorMes(novos: any[], ano: number): number[] {
-    const meses = Array(12).fill(0);
-
-    for (const u of (novos || [])) {
-      const d: Date | null = u.ingressou;
-      if (!d || isNaN(d.getTime())) continue;
-
-      if (d.getFullYear() !== ano) continue; // filtra por ano atual (pode remover se quiser)
-
-      const monthIndex = d.getMonth(); // 0..11
-      meses[monthIndex] += 1;
-    }
-
-    return meses;
-  }
-
-  private renderCrescimentoMensalMock(ano: number, quantidadePorMes: number[]) {
-    const options = {
-      series: [{ name: 'Usuários', data: quantidadePorMes }],
-      chart: {
-        type: 'line',
-        height: 350,
-        width: '100%',
-        toolbar: { show: false }
-      },
-      dataLabels: { enabled: false },
-      stroke: { curve: 'smooth' },
-      title: { text: `Crescimento Mensal ${ano}`, align: 'left' },
-      xaxis: {
-        categories: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez']
-      },
-      legend: { show: false }
-    };
-
-    // se já existe, só atualiza
-    if (this.chartCrescimentoMensal) {
-      this.chartCrescimentoMensal.updateOptions(options);
-      this.chartCrescimentoMensal.updateSeries(options.series);
-      return;
-    }
-
-    // cria uma vez
-    this.chartCrescimentoMensal = new ApexCharts(
-      document.querySelector('#chart-crescimento-mensal'),
-      options
-    );
-    this.chartCrescimentoMensal.render();
   }
 
   private parseCreatedAt(value: any): Date | null {
@@ -206,8 +153,7 @@ export class PainelAdminComponent implements OnInit {
     if (this.authService.showModal) {
       this.modalWelcomeService.openModal({
         title: '👋 Bem-vindo!',
-        // description: 'Aqui vai a mensagem que você quiser...',
-        size: 'md'     // sm | md | lg | full  (ajuste para as classes que você definiu no CSS)
+        size: 'md'     
       });
       this.authService.showModal = false;
     }
@@ -291,14 +237,12 @@ export class PainelAdminComponent implements OnInit {
 
   private updateDateTime() {
     const now = new Date();
-    // formata HH:mm em pt-BR
     this.currentTime = now.toLocaleTimeString('pt-BR', {
       hour: '2-digit',
       minute: '2-digit'
     });
 
 
-    // aqui geramos “segunda-feira, 27/05” já em pt-BR
     this.currentDate = now.toLocaleDateString('pt-BR', {
       weekday: 'long',
       day: '2-digit',

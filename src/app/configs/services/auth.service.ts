@@ -124,7 +124,7 @@ export class AuthService {
 
     return this.http.get<UsuarioDadosDTO>(`${this.apiUrl}/token`, { headers }).pipe(
       map(dto => ({
-        idUsuario: dto.id,
+        id: dto.id,
         nome:      dto.nome,
         email:     dto.email,
         tipoUsuario: dto.tipoUsuario as TipoUsuario,
@@ -136,10 +136,12 @@ export class AuthService {
         cpf: dto.cpf,
       })),
       tap(u => {
-        this.idUsuario = u.idUsuario!;
+        this.idUsuario = u.id!;
         console.log('ID do usuário obtido:', this.idUsuario);
         this.tipoUsuarioAtual = u.tipoUsuario;
+        console.log('Usuario:', u);
         this.UsuarioPerfil = u;
+        console.log('Perfil do usuário atualizado:', this.UsuarioPerfil);
         this.usuarioPerfilSubject.next(u);
       }),
       catchError((error: HttpErrorResponse) => {
