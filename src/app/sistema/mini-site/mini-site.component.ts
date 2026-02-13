@@ -89,7 +89,7 @@ export class MiniSiteComponent implements OnInit {
     }
     this.carregarPerfilPublico(id);
     this.isFavorito = this.verificarSeEhFavorito(id);
-    this.carregarServicosComBannner(id);
+    this.carregarServicos(id);
     this.carregarMidiasPublicas(id);
     this.carregarAvaliacoes(id);
   }
@@ -115,8 +115,8 @@ export class MiniSiteComponent implements OnInit {
     });
   }
 
-  private carregarServicosComBannner(id : number | string) {
-    this.servicosService.obterServicosPorProfissionalComBanners(id).subscribe({
+  private carregarServicos(id: number | string) {
+    this.servicosService.obterServicosPorProfissional(id).subscribe({
       next: (servicos) => {
         this.servicos = servicos ?? [];
         this.atualizarPaginacaoServicos();
@@ -124,6 +124,7 @@ export class MiniSiteComponent implements OnInit {
       error: (err) => console.error('Erro ao obter serviços', err),
     });
   }
+
 
   private carregarMidiasPublicas(id: number) {
     // banner

@@ -7,5 +7,5 @@ export class Servico{
     valor?: number;
     setor?: Setor;
     createdAt?: string;
-    bannerUrl?: string  | null; 
+    bannerUrl?: string | null;
 }

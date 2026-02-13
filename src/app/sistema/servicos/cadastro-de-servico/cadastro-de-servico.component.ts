@@ -48,6 +48,8 @@ export class CadastroDeServicoComponent implements OnInit {
           descricao: servico.descricao ?? '',
 
         });
+
+        this.bannerPreview = servico.bannerUrl ?? null;
       },
       error: (err) => {
         this.errorMessage = err?.error?.message || 'Erro ao carregar cupom';
@@ -92,10 +94,10 @@ export class CadastroDeServicoComponent implements OnInit {
       descricao: this.servicoForm.value.descricao!,
       valor: this.servicoForm.value.valor!,
     }
-
+    const banner = this.selectedImages['banner'] ?? null;
     const request$ = this.isEditMode && this.servicoId
-    ? this.servicoService.atualizar(servico)
-    : this.servicoService.cadastrar(servico, this.selectedImages['banner']);
+    ? this.servicoService.atualizar(servico, banner)
+    : this.servicoService.cadastrar(servico, banner);
 
     request$.subscribe({
       next:() =>{

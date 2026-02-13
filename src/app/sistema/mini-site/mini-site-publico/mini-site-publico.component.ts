@@ -76,7 +76,7 @@ export class MiniSitePublicoComponent implements OnInit {
     }
 
     this.carregarPerfilPublico(id);
-    this.carregarServicosComBannner(id);
+    this.carregarServicos(id);
     this.carregarMidiasPublicas(id);
     this.carregarAvaliacoes(id);
   }
@@ -94,8 +94,8 @@ export class MiniSitePublicoComponent implements OnInit {
     });
   }
 
-  private carregarServicosComBannner(id: number | string) {
-    this.servicosService.obterServicosPorProfissionalComBanners(id).subscribe({
+  private carregarServicos(id: number | string) {
+    this.servicosService.obterServicosPorProfissional(id).subscribe({
       next: (servicos) => {
         this.servicos = servicos ?? [];
         this.atualizarPaginacaoServicos();

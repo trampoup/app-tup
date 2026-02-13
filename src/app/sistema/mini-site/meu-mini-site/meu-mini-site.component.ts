@@ -66,7 +66,7 @@ export class MeuMiniSiteComponent implements OnInit {
     this.atualizarPaginacaoAvaliacoes();
 
     this.carregarMeuSite();
-    this.carregarMeusServicosComBanners();
+    this.carregarMeusServicos();
     this.carregarMidias();
     this.carregarMinhasAvaliacoes();
   }
@@ -95,8 +95,8 @@ export class MeuMiniSiteComponent implements OnInit {
     });
   }  
 
-  private carregarMeusServicosComBanners() {
-    this.servicosService.obterMeusServicosComBanners().subscribe({
+  private carregarMeusServicos() {
+    this.servicosService.obterMeusServicos().subscribe({
       next: (servicos) => {
         this.servicos = servicos ?? [];
         this.atualizarPaginacaoServicos();
