@@ -137,11 +137,8 @@ export class AuthService {
       })),
       tap(u => {
         this.idUsuario = u.id!;
-        console.log('ID do usuário obtido:', this.idUsuario);
         this.tipoUsuarioAtual = u.tipoUsuario;
-        console.log('Usuario:', u);
         this.UsuarioPerfil = u;
-        console.log('Perfil do usuário atualizado:', this.UsuarioPerfil);
         this.usuarioPerfilSubject.next(u);
       }),
       catchError((error: HttpErrorResponse) => {

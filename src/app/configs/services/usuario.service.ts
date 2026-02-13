@@ -10,7 +10,7 @@ import { UsuarioAtualizacaoDTO } from 'src/app/sistema/meu-perfil/UsuarioAtualiz
 import { Setor } from 'src/app/cadastro/categorias-enum';
 import { InicioProfissionalResumoDTO } from 'src/app/sistema/inicios/inicio-profissional/InicioProfissionalResumoDTO';
 import { AdminDashboardCardsDTO } from 'src/app/sistema/Dashboards/painel-admin/AdminDashboardCardsDTO';
-import { AdminNovoUsuarioDTO, AdminCrescimentoMensalDTO } from 'src/app/sistema/Dashboards/painel-admin/painel-admin.component';
+import { AdminNovoUsuarioDTO, AdminCrescimentoMensalDTO, AdminUsuariosPorEstadoDTO } from 'src/app/sistema/Dashboards/painel-admin/painel-admin.component';
 
 
 @Injectable({
@@ -108,6 +108,13 @@ export class UsuarioService {
       : `${this.apiUrlLink}/estatisticas/crescimento-mensal-usuarios`;
     return this.http.get<AdminCrescimentoMensalDTO>(url);
   }
+
+  obterUsuariosPorEstadoAdmin() {
+    return this.http.get<AdminUsuariosPorEstadoDTO>(
+      `${this.apiUrlLink}/estatisticas/usuarios-por-estado`
+    );
+  }
+
 
 
 

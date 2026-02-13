@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/configs/services/auth.service';
 import * as ApexCharts from 'apexcharts';
 import { TipoUsuarioDescricao } from 'src/app/login/tipo-usuario-descricao';
 import { ClimaService } from 'src/app/configs/services/clima.service';
+import { listaEstados } from 'src/app/configs/services/cidade.service';
 
 import {
   ApexAxisChartSeries,
@@ -24,7 +25,7 @@ export type ChartOptions = {
   dataLabels: ApexDataLabels;
   stroke: ApexStroke;
   title: ApexTitleSubtitle;
-  legend: ApexLegend;        // <— adicione aqui
+  legend: ApexLegend;        
 };
 
 export interface AdminNovoUsuarioDTO {
@@ -37,6 +38,11 @@ export interface AdminNovoUsuarioDTO {
 export interface AdminCrescimentoMensalDTO {
   ano: number;
   quantidadePorMes: number[]; 
+}
+
+export interface AdminUsuariosPorEstadoDTO {
+  estados: string[];
+  quantidades: number[];
 }
 
 
@@ -62,8 +68,7 @@ export class PainelAdminComponent implements OnInit {
 
   novosUsuarios: any[] = [];
   placeholderFoto = '/assets/imagens/foto-perfil-generico.png';
-  private chartCrescimentoMensal: any;
-
+  private chartUsuariosPorEstado: any;
 
   constructor(
     private authService: AuthService,
@@ -75,7 +80,8 @@ export class PainelAdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.carregarNovosUsuarios()
-    this.renderChartGrafico();
+    // this.renderChartGrafico();
+    this.renderChartUsuariosPorEstado();
     this.getWeatherForCurrentLocation();
     this.renderCharCrescimentoMensal();
 
@@ -147,8 +153,6 @@ export class PainelAdminComponent implements OnInit {
     return null;
   }
 
-
-
   mostrarModalWelcome(){
     if (this.authService.showModal) {
       this.modalWelcomeService.openModal({
@@ -158,6 +162,87 @@ export class PainelAdminComponent implements OnInit {
       this.authService.showModal = false;
     }
   }
+
+  private estadoNomePorSigla = new Map(
+    listaEstados.map(e => [e.sigla.toUpperCase(), e.nome])
+  );
+
+  private estadoLabel(raw: string): string {
+    const v = (raw || '').trim();
+    if (!v) return '—';
+
+    const upper = v.toUpperCase();
+    if (upper.length <= 2 && this.estadoNomePorSigla.has(upper)) {
+      return this.estadoNomePorSigla.get(upper)!;
+    }
+
+    return v;
+  }
+
+
+  private renderChartUsuariosPorEstado(): void {
+    this.usuarioService.obterUsuariosPorEstadoAdmin().subscribe({
+      next: (res) => {
+        const labelsRaw = (res?.estados || []).map(e => this.estadoLabel(e));
+        const seriesRaw = (res?.quantidades || []).map(n => Number(n || 0));
+
+        // opcional: top 8 + "Outros" (pra não lotar o donut)
+        const max = 8;
+        let labels = labelsRaw;
+        let series = seriesRaw;
+
+        if (labelsRaw.length > max) {
+          const topLabels = labelsRaw.slice(0, max);
+          const topSeries = seriesRaw.slice(0, max);
+          const outros = seriesRaw.slice(max).reduce((a, b) => a + b, 0);
+
+          labels = outros > 0 ? [...topLabels, 'Outros'] : topLabels;
+          series = outros > 0 ? [...topSeries, outros] : topSeries;
+        }
+
+        if (this.chartUsuariosPorEstado) {
+          this.chartUsuariosPorEstado.destroy();
+        }
+
+        const options: any = {
+          chart: {
+            type: 'donut',
+            height: 350,
+            width: '100%',
+          },
+          title: {
+            text: 'Usuários por Estado',
+            align: 'left',
+          },
+          series: series.length ? series : [1],
+          labels: labels.length ? labels : ['Sem dados'],
+          theme: { palette: 'palette8' },
+          legend: {
+            show: true,
+            position: 'bottom',
+            horizontalAlign: 'center',
+          },
+          responsive: [
+            {
+              breakpoint: 980,
+              options: {
+                chart: { width: 250 },
+                legend: { position: 'bottom' },
+              },
+            },
+          ],
+        };
+
+        this.chartUsuariosPorEstado = new ApexCharts(
+          document.querySelector('#chart-grafico'),
+          options
+        );
+        this.chartUsuariosPorEstado.render();
+      },
+      error: (err) => console.error('Erro ao carregar usuários por estado', err)
+    });
+  }
+
 
   renderChartGrafico() {
     const options = {
